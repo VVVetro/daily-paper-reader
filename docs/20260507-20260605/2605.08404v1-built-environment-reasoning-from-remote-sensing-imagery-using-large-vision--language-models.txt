@@ -1,0 +1,215 @@
+Title: Built Environment Reasoning from Remote Sensing Imagery Using Large Vision–Language Models
+
+URL Source: https://arxiv.org/pdf/2605.08404v1
+
+Published Time: Tue, 12 May 2026 00:13:45 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# Built Environment Reasoning from Remote Sensing Imagery Using Large Vision–Language Models 1
+
+Dongdong Wang*, Deepak Balakrishnan, Ravi Srinivasan, and Shenhao Wang* 
+
+Department of Urban and Regional Planning, University of Florida M.E. Rinker, Sr. School of Construction Management, University of Florida 
+
+> dongdongwang@ufl.edu, shenhaowang@ufl.edu
+
+## ABSTRACT 
+
+This work investigates the use of large language models (LLMs) for tasks in smart cities. The core idea is to leverage remote sensing imagery to characterize the built environment, including design suggestions, constructability assessment, landuse patterns, and risk identification. We examine remote sensing imagery at multiple spatial scales as inputs for multimodal language modeling and evaluate their effects on built-environment-related reasoning. In addition, we compare state-of-the-art LLMs, including InternVL and Qwen, in terms of accuracy and reliability when generating built environment recommendations. The results demonstrate the potential of integrating remote sensing imagery with large language models to assist smart cities and decision-making. 
+
+Keywords: Built Environment; Large Language Models; Remote Sensing 
+
+## INTRODUCTION 
+
+Large language models (LLMs) have emerged as a powerful paradigm for tackling a wide range of challenges across diverse domains, exhibiting strong capabilities in logical reasoning and infer-ence. Building upon this foundation, vision-language models (VLMs) extend these strengths to multimodal settings, demonstrating promising performance in applications such as medical imag-ing and remote sensing. However, its capabilities in built environment understanding remain largely underexplored, with limited empirical evidence demonstrating its effectiveness, highlighting a crit-ical gap for further investigation. Recent progress in remote sensing VLMs (RS-VLMs) (Kuckreja et al., 2024; Pang et al., 2025; F. Wang et al., 2025; Yao et al., 2025a) have demonstrated promising reasoning capabilities by combining remote sensing imagery and large VLMs. These existing efforts primarily showcase the power of LLMs . While the RS-VLMs demonstrate strong performance in captioning and seman-tic understanding, their numeric reasoning capabilities remain underexplored, such as evaluating spatial contexts or calculating urban density metrics. Quantitative reasoning can facilitate the analysis of built environment metrics, such as building density, land-use composition, and green coverage, revealing quantifiable geospatial patterns. Tra-
+
+> 1Published in the Proceedings of the International Conference on Industrialized Construction 2026.
+
+1
+
+> arXiv:2605.08404v1 [cs.CL] 8 May 2026
+
+ditionally, these metrics are computed through time-consuming pipelines combining GIS, remote sensing imagery, and manual annotations, which require substantial domain expertise and limit scalability. In fact, high-resolution remote sensing imagery offers a scalable and structured visual representation of cities, naturally containing rich built environment and geospatial information. Quantitative reasoning via remote sensing imagery is an ideal testbed for grounded quantitative reasoning because it requires diverse reasoning capabilities including but not limited to object de-tection, proportional estimation, spatial reasoning, and compositional numerical inference. In this work, we investigate the potential of remote sensing–enabled large language models for quantitative understanding and estimation of the built environment, with the goal of supporting efficient building energy planning. We first develop a large-scale benchmark to systematically evaluate quantitative reasoning through visual question answering, revealing the limitations of zero-shot inference. We then perform domain-specific fine-tuning with limited training data, achieving significant performance improvements in built environment estimation and demonstrating strong potential for scalable energy planning applications. Finally, we conduct sensitivity analyses across key factors to highlight the strengths and limitations of current approaches, providing insights to guide future research in large language model–driven building energy analysis. The key contributions of this work are: • Benchmark development. We design a scalable benchmark to evaluate the potential of large language models for efficient built environment estimation, with applications in building en-ergy planning and optimization. The benchmark primarily focuses on quantitative reasoning tasks supported by remote sensing imagery. • Comprehensive LLM evaluation. We conduct an extensive evaluation of state-of-the-art large language models to assess their capability for efficient inference in quantitative under-standing of the built environment. The results reveal notable limitations in direct estimation under zero-shot settings. • Fine-tuning for built environment analysis. We further perform targeted fine-tuning with limited training data and demonstrate consistent performance improvements across multiple large language models. These findings highlight the potential of data-efficient adaptation for scalable energy planning applications. 
+
+## RELATED WORK 
+
+Built Environment for Energy 
+
+Human activity and spatial footprints shape energy consumption patterns across urban built envi-ronments (Fathi et al., 2020). Energy demand is closely linked to the intensity and configuration of the built environment (Zhang et al., 2026). Urban expansion and increased building density raise energy use and intensify the urban heat island effect, leading to higher cooling demand (Z. Wang et al., 2018). In contrast, green areas help mitigate heat accumulation, though their effectiveness depends on spatial arrangement and integration with surrounding structures (Im et al., 2022). Other factors, such as pavement and impervious surfaces, also influence energy use by affecting heat re-tention and local climate (Im et al., 2022). Understanding these interactions supports more efficient infrastructure planning, improved energy management, and sustainable urban development. 2Remote Sensing 
+
+Remote sensing provides an efficient approach for scaling the interpretation and modeling of human footprints across large spatial extents. Given the wide coverage of study regions, remote sensing imagery enables consistent and region level characterization of infrastructure and human activity patterns, supporting more informed decision making (Q. Wang et al., 2025). The analysis of remote sensing imagery has traditionally relied on a range of digital image processing and computer vision techniques. Recently, advances in large language models have introduced new opportunities to enhance this process, with emerging approaches leveraging language driven reasoning to extract and interpret meaningful footprints from imagery (X. Li et al., 2024). These developments offer promising directions for deriving more reliable and scalable representations of built environment characteristics for research and planning applications. 
+
+Large Vision-Language Models 
+
+The emergence of large language models (LLMs), such as ChatGPT and LLaMA (Touvron et al., 2023), has significantly advanced text generation and reasoning capabilities, enabling more sophis-ticated multimodal understanding. Building on this progress, recent large vision language models extend these capabilities beyond domain specific tasks toward more general problem solving. Mod-els such as Qwen (J. Bai et al., 2023) and InternVL (Chen et al., 2024a) integrate vision encoders and scalable visual backbones with language models to support unified multimodal reasoning, im-proved cross modal alignment, and long context understanding. These advances have further driven the development of remote sensing foundation models (Kuckreja et al., 2024; Pang et al., 2025; Yao et al., 2025b), accelerating progress in remote sensing image analysis. 
+
+## BENCHMARK DEVELOPMENT. 
+
+To investigate and demonstrate the potential of large language models for built environment un-derstanding and modeling, we construct a benchmark following a standard pipeline, including data collection, feature engineering, visual question answering generation, and human verification, as illustrated in Figure 1. 
+
+Imagery Data Collection 
+
+We integrate two primary data sources: remote sensing imagery from Mapbox (Rzeszewski, 2023) and land use spatial statistics from OpenStreetMap (OSM) (OpenStreetMap contributors, 2017). Data are organized based on city size using Gazetteer statistics from the U.S. Census Bureau. We select the 335 largest metropolitan areas using city center coordinates from the U.S. Gazetteer Files. These cities provide diverse and dense urban environments, enabling reliable metric derivation while presenting complex scenarios for evaluating vision–language models. For each city, we define a bounding region and extract imagery from Mapbox at zoom level 17 (672 × 672 pixels), covering approximately 450 m × 450 m per tile. A 4 × 4 grid centered at each city yields up to 16 images, capturing surrounding urban contexts. We obtain land use polygons from OSM, including residential, commercial, industrial, and green-related classes (e.g., grass, forest, farmland), as well as water bodies under the natural tag. These spatial annotations are used to derive built environment metrics characterizing urban structure and composition. 3Data 
+
+Collection 
+
+Feature 
+
+Preparatio n
+
+VQA 
+
+Annotatio n
+
+Human 
+
+Verification 
+
+Top 200 
+
+Largest 
+
+Cities 
+
+Remote 
+
+Sensin g
+
+Imagery 
+
+Land 
+
+Use 
+
+Polygons 
+
+Urban Metrics 
+
+Question Formatting 
+
+Image -Metric Pairing 
+
+Prompt Templates 
+
+Anomaly Detection 
+
+QA Sanity Check 
+
+Imagery Filtering  Open -ended 
+
+Multiple -choice  A. B. C.                   
+
+> ----?
+> What is the xxx in this area?
+> Identify the xxx at this location.
+> Explain the xxx measured here.
+> …
+
+Image 
+
+Land Use Ma p
+
+Spatial Locations   
+
+> Building Footprint Ratio 0.276
+> Commercial Percentage 0.223
+> Green Area Percentage 0.274
+> …
+> Building Footprint Ratio
+> Commercial Percentage
+> Green Area Percentage
+> Residential Area Percentage
+> Industrial Area Percentage
+> Amenity Density
+> Land Use Diversity …
+
+Keep 
+
+Discard     
+
+> Building
+> Footprint
+> Ratio
+> > 0.05
+> Building
+> Footprint
+> Ratio
+> <=0.05
+> Building Footprint Ratio >1
+> Land Use Diversity =0
+> Commercial Percentage >1
+> …
+
+Image 
+
+Anomaly 
+
+Metric 
+
+Anomaly  
+
+> The error is caused by a
+> mismatch between the
+> image and OSM data
+
+Figure 1. Benchmark preparation pipeline. Built Environment Metrics 
+
+We carefully select built environment metrics (Oliveira, 2020; Santhanam & Majumdar, 2022) to characterize spatial patterns of urban infrastructure, focusing on factors closely related to energy consumption management and large scale building development. These metrics capture both the structural composition and functional relationships of urban space, including building density, sur-face coverage, and the balance between natural and built elements (Table 1). For example, building footprint ratio and impervious space ratio reflect development intensity and surface sealing, which are directly associated with heat retention and energy demand. Green area percentage and urban blue area percentage represent ecological components that contribute to thermal regulation and mit-igation of heat accumulation. In addition, ratio based metrics such as blue to built up ratio, green to blue index, and blue to green ratio provide insights into the interactions between built structures and environmental features, enabling a more comprehensive understanding of urban microclimate dynamics. Together, these metrics support systematic analysis of how urban form influences en-ergy consumption and provide a foundation for data driven planning and sustainable infrastructure design. 
+
+Table 1. Selected built environment metrics used in this study with definitions. 
+
+Metric Formula Description 
+
+Building Footprint Ratio ∑ Afootprint  
+
+> i
+
+/Atotal Share of land covered by buildings; development intensity. Green Area Percentage Agreen /Atotal Vegetated land share; ecological capacity. Urban Blue Area Percentage Ablue /Atotal Surface water proportion. Impervious Space Ratio Aimpervious /Atotal Fraction of impermeable surfaces. Blue/Built Ratio Ablue /Abuilt Water relative to built-up land. Green–Blue Index Agreen /Ablue Vegetation relative to water. Blue–Green Ratio Ablue /Agreen Water relative to vegetation. 
+
+4Visual Question Answering 
+
+The imagery and corresponding metrics are linked through image–question pairs. For each image, multiple questions are generated, each targeting a specific metric for estimation. All questions are designed in a multiple-choice format, where one option is correct and accompanied by three plausible alternatives. The candidate answers are carefully constructed within a reasonable range rather than including extreme outliers, ensuring that the questions remain valid and challenging, focusing on quantitative reasoning rather than simple anomaly detection. Overall, the proposed benchmark dataset contains 14,523 images and 101,661 visual question–answer pairs, with 9,523 images and 66,661 pairs used for training, and 5,000 images and 35,000 pairs reserved for testing. Each image is associated with 7 metrics on average, and the average question length is 8.11 words, providing a concise yet diverse benchmark for evaluating quantitative reasoning capabilities. 
+
+## EXPERIMENTS 
+
+Training Configuration 
+
+We fine-tune the models using the AdamW optimizer with a learning rate of 5 × 10 −5 and a weight decay of 0.01. Training is performed with a batch size of 32 on four NVIDIA B200 GPUs, using gradient accumulation with 8 steps. Models are trained for 2 epochs with a warmup ratio of 5% of the total training steps, followed by cosine or linear learning rate decay. For parameter-efficient adaptation, we employ LoRA with rank r = 32 and scaling factor α = 16, applied to attention layers (i.e., query and value projections). All experiments are implemented in PyTorch using the HuggingFace Transformers library, with mixed-precision (FP16) training. 
+
+Models 
+
+We selected a diverse set of state-of-the-art VLMs to benchmark their performance on urban im-agery reasoning tasks. The general-purpose models include LLaVA-1.6-7B (Liu et al., 2024), InternVL-3-8B (Chen et al., 2024b), QwenVL-3-8B (S. Bai et al., 2025), and MGM-7B (Y. Li et al., 2025) while domain-specific models include GeoChat-7B (Kuckreja et al., 2024), VHM-7B (Pang et al., 2025), and Falcon-7B (Yao et al., 2025a), covering a range of architectures, training paradigms, and multi-modal capabilities. This selection spans models optimized for instruction-following, spatial reasoning, geospatial imagery interpretation, and general multi-step visual rea-soning. 
+
+Performance Results 
+
+Zero-shot inference yields only modest improvements over random selection, although perfor-mance slightly increases when prompts include explicit semantic cues such as “green,” “blue,” or “percentage.” In contrast, fine-tuning produces substantial performance gains of approximately 90%, highlighting the strong potential of large language models for accurate and scalable quan-titative estimation. In particular, metrics such as Green Area Percentage consistently achieve the highest accuracy, likely due to their clear visual semantics and well-aligned linguistic representa-tions, which facilitate both perception and numerical decoding. The presence of structured terms such as “percentage” further strengthens model performance by providing explicit quantitative tar-gets. While more complex metrics, such as Blue–Green Ratio, remain relatively challenging due to their reliance on higher-level relational reasoning, the overall improvements after fine-tuning indicate that these limitations could be alleviated. Collectively, these results demonstrate that, with 5Table 2. Quantitative reasoning accuracy ( %) of VLMs on multiple-choice questions with zero-shot inference.                                                     
+
+> Built Environment Metrics General-Purpose Models Remote-Sensing Models
+> LLaVA-1.6 InternVL-3 QwenVL-3 MGM GeoChat VHM Falcon Building Footprint Ratio 27.71 36.21 35.21 33.41 22.14 23.09 25.55 Green Area Percentage 35.06 45.72 44.18 43.96 41.29 42.97 42.01 Urban Blue Area Percentage 24.97 34.88 33.94 32.36 21.85 23.66 26.02 Impervious Space Ratio 25.94 36.02 35.77 34.19 22.88 23.14 25.09 Blue to Built-Up Area Ratio 25.02 35.61 36.41 32.79 21.56 22.84 26.57 Green-Blue Infrastructure Index 25.23 37.12 35.08 33.58 22.26 22.95 24.91 Blue-Green Ratio 24.66 35.28 34.47 32.63 23.41 22.89 26.85
+
+Table 3. Quantitative reasoning accuracy ( %) of VLMs on multiple-choice questions after domain-specific fine-tuning.                                                     
+
+> Built Environment Metrics General-Purpose Models Remote-Sensing Models
+> LLaVA-1.6 InternVL-3 QwenVL-3 MGM GeoChat VHM Falcon Building Footprint Ratio 51.38 62.57 58.94 56.12 44.63 47.72 49.21 Green Area Percentage 61.44 72.15 68.73 67.28 63.91 68.22 65.74 Urban Blue Area Percentage 50.21 60.33 58.62 55.79 45.12 46.28 51.67 Impervious Space Ratio 48.27 60.74 61.12 57.86 49.31 48.79 50.56 Blue to Built-Up Area Ratio 49.36 59.08 64.92 56.34 45.03 48.11 52.18 Green-Blue Infrastructure Index 50.71 65.63 61.84 58.06 47.89 47.21 50.37 Blue-Green Ratio 49.02 59.73 58.95 54.11 49.86 47.35 53.29
+
+appropriate adaptation, large language models can effectively capture and scale quantitative under-standing of the built environment. Another important observation is that current state-of-the-art remote sensing models do not con-sistently outperform general-purpose models on these tasks. This gap appears to stem from lim-itations in existing tuning strategies for domain knowledge injection. Despite being tailored for remote sensing imagery, these models still lack sufficient domain-specific understanding for quan-titative reasoning over built environment metrics, particularly when interpreting spatial patterns from aerial views. This finding highlights the need for more effective mechanisms to incorporate structured domain knowledge, especially for quantitative analysis. Improving such integration is essential for advancing model performance in built environment understanding and enabling more reliable large-scale applications. 
+
+## DISCUSSION 
+
+We demonstrate that large language models can effectively estimate built environment characteris-tics in a quantitative manner, offering promising support for energy planning and management at scale. Most metrics show substantial improvement after domain-specific fine-tuning, highlighting the benefits of incorporating domain knowledge. While these results are encouraging and open new directions for further optimization, several limitations remain. Our analysis across cities re-veals noticeable spatial variability in performance; although some larger cities exhibit higher accu-racy, no consistent relationship is observed between city size and model performance. We attribute this variation primarily to inconsistencies in the quality of land use data from OpenStreetMap. In 6particular, cities with lower accuracy often correspond to regions with incomplete or less reliable OSM annotations, which introduce noise into derived metrics and weaken the alignment between remote sensing imagery and urban indicators. These findings suggest that data quality is critical in model performance. Therefore, improving the completeness and reliability of OSM data is essen-tial for advancing vision–language models in built environment reasoning. In addition, planning and analytical applications based on such data should explicitly account for these limitations and incorporate strategies for data validation and quality enhancement. 
+
+## CONCLUSIONS 
+
+This work develops a scalable benchmark to evaluate state-of-the-art vision language models on quantitative visual question answering for remote sensing imagery, with the goal of demonstrat-ing the potential of large language models for quantitative understanding of the built environment and energy efficient planning. The benchmark includes a large collection of images and ques-tion–answer pairs, emphasizing challenging and practical tasks for urban analysis. Our evaluation shows that general-purpose models struggle with remote sensing recognition and numerical esti-mation under zero-shot settings, while domain-specific models provide only modest improvements. With targeted fine-tuning using limited data, performance improves substantially, highlighting the effectiveness of data-efficient adaptation. Overall, the results demonstrate that, with appropriate adaptation, large language models can support scalable and reliable quantitative analysis of the built environment. 
+
+## ACKNOWLEDGEMENTS 
+
+This research was supported by the University of Florida President’s Strategic Initiative for AI-Enabled Smart Cities through the College of Design, Construction and Planning (DCP). 
+
+## REFERENCES 
+
+Bai, J., Bai, S., Chu, Y., Cui, Z., Dang, K., Deng, X., Fan, Y., Ge, W., Han, Y., Huang, F., et al. (2023). Qwen technical report. arXiv preprint arXiv:2309.16609 .Bai, S., Cai, Y., Chen, R., Chen, K., Chen, X., Cheng, Z., Deng, L., Ding, W., Gao, C., Ge, C., et al. (2025). Qwen3-vl technical report. arXiv preprint arXiv:2511.21631 .Chen, Z., Wu, J., Wang, W., Su, W., Chen, G., Xing, S., Zhong, M., Zhang, Q., Zhu, X., Lu, L., et al. (2024a). Internvl: Scaling up vision foundation models and aligning for generic visual-linguistic tasks. Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 24185–24198. Chen, Z., Wu, J., Wang, W., Su, W., Chen, G., Xing, S., Zhong, M., Zhang, Q., Zhu, X., Lu, L., et al. (2024b). Internvl: Scaling up vision foundation models and aligning for generic visual-linguistic tasks. Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 24185–24198. Fathi, S., Srinivasan, R., Fenner, A., & Fathi, S. (2020). Machine learning applications in urban building energy performance forecasting: A systematic review. Renewable and Sustainable Energy Reviews , 133 , 110287. Im, H., Srinivasan, R. S., Maxwell, D., Steiner, R. L., & Karmakar, S. (2022). The impact of climate change on a university campus’ energy use: Use of machine learning and building characteristics. Buildings , 12 (2), 108. 7Kuckreja, K., Danish, M. S., Naseer, M., Das, A., Khan, S., & Khan, F. S. (2024). Geochat: Grounded large vision-language model for remote sensing. Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 27831–27840. Li, X., Wen, C., Hu, Y., Yuan, Z., & Zhu, X. X. (2024). Vision-language models in remote sensing: Current progress and future trends. IEEE Geoscience and Remote Sensing Magazine , 12 (2), 32–66. Li, Y., Zhang, Y., Wang, C., Zhong, Z., Chen, Y., Chu, R., Liu, S., & Jia, J. (2025). Mini-gemini: Mining the potential of multi-modality vision language models. IEEE Transactions on Pat-tern Analysis and Machine Intelligence .Liu, H., Li, C., Li, Y., & Lee, Y. J. (2024). Improved baselines with visual instruction tuning. 
+
+Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 26296–26306. Oliveira, V. (2020). Urban morphology . Springer. OpenStreetMap contributors. (2017). Planet dump retrieved from https://planet.osm.org. Pang, C., Weng, X., Wu, J., Li, J., Liu, Y., Sun, J., Li, W., Wang, S., Feng, L., Xia, G.-S., et al. (2025). Vhm: Versatile and honest vision language model for remote sensing image analysis [Issue: 6]. Proceedings of the AAAI Conference on Artificial Intelligence , 39 , 6381–6388. Rzeszewski, M. (2023). Mapbox. In Evaluating participatory mapping software (pp. 21–40). Springer. Santhanam, H., & Majumdar, R. (2022). Quantification of green-blue ratios, impervious surface area and pace of urbanisation for sustainable management of urban lake–land zones in india-a case study from bengaluru city. Journal of Urban Management , 11 (3), 310–320. Touvron, H., Lavril, T., Izacard, G., Martinet, X., Lachaux, M.-A., Lacroix, T., Rozi` ere, B., Goyal, N., Hambro, E., Azhar, F., et al. (2023). Llama: Open and efficient foundation language models. arXiv preprint arXiv:2302.13971 .Wang, F., Chen, M., Li, Y., Wang, D., Wang, H., Guo, Z., Wang, Z., Shan, B., Lan, L., Wang, Y., et al. (2025). GeoLLaVA-8k: Scaling remote-sensing multimodal large language models to 8k resolution. arXiv preprint arXiv:2505.21375 .Wang, Q., Liang, Y., Zheng, Y., Xu, K., Zhao, J., & Wang, S. (2025). Generative ai for urban planning: Synthesizing satellite imagery via diffusion models. Computers, Environment and Urban Systems , 122 , 102339. Wang, Z., Wang, Y., Zeng, R., Srinivasan, R. S., & Ahrentzen, S. (2018). Random forest based hourly building energy prediction. Energy and Buildings , 171 , 11–25. Yao, K., Xu, N., Yang, R., Xu, Y., Gao, Z., Kitrungrotsakul, T., Ren, Y., Zhang, P., Wang, J., Wei, N., et al. (2025a). Falcon: A remote sensing vision-language foundation model. arXiv e-prints ,arXiv–2503. Yao, K., Xu, N., Yang, R., Xu, Y., Gao, Z., Kitrungrotsakul, T., Ren, Y., Zhang, P., Wang, J., Wei, N., et al. (2025b). Falcon: A remote sensing vision-language foundation model. arXiv preprint arXiv:2503.11070 .Zhang, H., Srinivasan, R., Chen, C., Yang, X., Ganesan, V., & Chen, M. (2026). Multi-scenario assessment of living-wall effects on building air purification, noise attenuation, and thermal insulation using quantum machine learning. Building and Environment , 114492. 8

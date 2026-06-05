@@ -1,0 +1,683 @@
+Title: Enhancing the Socioeconomic Understanding of Foundation Models with Urban Mobility
+
+URL Source: https://arxiv.org/pdf/2606.01745v1
+
+Published Time: Tue, 02 Jun 2026 02:45:47 GMT
+
+Number of Pages: 17
+
+Markdown Content:
+Enhancing the Socioeconomic Understanding of Foundation Models with Urban Mobility 
+
+Baoshen Guo 1, Donghang Li 5, Zhiqing Hong 2, Kailai Sun 1,Heye Huang 3, Alok Prakash 1, Shenhao Wang 4
+
+> 1
+
+Singapore-MIT Alliance for Research and Technology (SMART), Singapore, 
+
+> 2
+
+Hong Kong University of Science & Technology (Guangzhou), China, 
+
+> 3
+
+Korea Advanced Institute of Science & Technology, Korea 
+
+> 4
+
+University of Florida, Gainesville, USA, 5Massachusetts Institute of Technology, Cambridge, USA 
+
+Abstract 
+
+Foundation models have recently been applied to urban socioeconomic prediction using POI text, satellite imagery, and geospatial descrip-tions. However, these models mostly rely on static attributes of individual places, while ig-noring the mobility patterns that reveal how places are functionally connected. To address this gap, we explore whether mobility networks can elicit the geospatial capabilities of founda-tion models by explicitly encoding connectiv-ity among urban entities. We propose Mob-Fusion , a modular mobility-enhanced founda-tion model fusion paradigm, and instantiate it through three complementary designs: (i) mo-bility networks as contexts for zero-shot LLM prompting, (ii) as graph connectors for fusing geospatial visual embeddings with textual em-beddings, and (iii) as structured tokens for mul-timodal LLM reasoning. Using anonymized large-scale mobility datasets from three U.S. metropolitan areas, we find that MobFusion 
+
+improves urban prediction tasks (e.g., median household income, population density, and crime prediction) across three instantiations, demonstrating that incorporating human mobil-ity can effectively improve the socioeconomic understanding of foundation models. 
+
+1 Introduction 
+
+Cities are complex relational systems composed of heterogeneous entities and intertwined interac-tions, and they can be described from multiple per-spectives, including text (Reades et al., 2025; Guo et al., 2025), imagery (Quintana et al., 2025; Fan et al., 2023) such as satellite and street-view im-ages, graph-structured relations (Louail et al., 2015; Alves et al., 2021) such as social and mobility net-works, and numerical measurements such as socioe-conomic indicators. Recent advances in foundation models have achieved remarkable progress in rep-resenting the multimodal characteristics of cities. GeoLLM (Manvi et al., 2023, 2024) leverages tex-tualized geographic contexts to infer regional so-cioeconomic conditions, earth-observation foun-dation models such as AlphaEarth (Brown et al., 2025) provide globally scalable embeddings of the physical environment, and urban vision-language models integrate satellite, street-view, and textual information for socioeconomic sensing and predic-tion (Liu et al., 2025; Hao et al., 2025). However, these studies primarily characterize urban entities or regions through their intrinsic textual and visual attributes, with limited attention to the relational mobility context that reveals how places are func-tionally connected across the city. Human mobility provides relational signals that geographic attributes alone cannot capture. Urban phenomena such as ghost cities (Jin et al., 2017) and post-COVID changes (Chang et al., 2021) are often more clearly reflected in mobility patterns than in the built environment itself, highlighting the importance of movement-based information for understanding cities. Recent studies have incor-porated human mobility into deep learning-based urban modeling, either by using graph neural net-works to capture mobility relations for task-specific prediction (Zhou et al., 2023; Zhang et al., 2021; Hui et al., 2020) or by treating mobility as a modal-ity for alignment with POI semantics and visual fea-tures (Wen et al., 2026). However, systematically integrating human mobility across diverse founda-tion models remains challenging. For example, it remains unclear how to condense complex mobil-ity networks into prompts for efficient zero-shot LLM reasoning, or how to inject mobility-derived relational structure into vision foundation models and MLLMs that primarily reason over visual and textual attributes of individual urban entities. In this paper, we explore whether human mo-bility networks can serve as relational grounding signals that improve foundation models’ ability to reason about urban socioeconomic conditions. Our premise is that foundation models capture rich tex-1
+
+> arXiv:2606.01745v1 [cs.SI] 1 Jun 2026
+
+LLM , Multimodal LLM ,
+
+Vision Foundation Models 
+
+Intrinsic features of CBGs 
+
+Relational structure 
+
+Satellite Images 
+
+POI Texts 
+
+Mobility Networks 
+
+(CBG -POI Visiting Graph ) <latexit sha1_base64="00LxhalxDYbxW0wplSZXFAO1UOI=">AAACI3icbVDLSsNAFJ3UV62vqEs3g0VwISURqSIIRTdCNxXsA5oQJpNJO3TyYGYilJB/ceOvuHGhFDcu/BcnaRbaemC4h3PvnZlz3JhRIQ3jS6usrK6tb1Q3a1vbO7t7+v5BT0QJx6SLIxbxgYsEYTQkXUklI4OYExS4jPTdyV3e7z8RLmgUPsppTOwAjULqU4ykkhz92nIj5olpoEpqdcY0gzfQKpiTmtkZtLxIClUKoZ1ZSmpDa0Sg6eh1o2EUgMvELEkdlOg4+kxdhpOAhBIzJMTQNGJpp4hLihnJalYiSIzwBI3IUNEQBUTYaeExgydK8aAfcXVCCQv190aKApHbUJMBkmOx2MvF/3rDRPpXdkrDOJEkxPOH/IRBGcE8MOhRTrBkU0UQ5lT9FeIx4ghLFWtNhWAuWl4mvfOG2Ww0Hy7qrdsyjio4AsfgFJjgErTAPeiALsDgGbyCd/ChvWhv2kz7nI9WtHLnEPyB9v0D/N2jMQ==</latexit> 
+
+! = {!1, . . . , !K }, K → 1
+
+Foundation Models <latexit sha1_base64="ud4fK/bjQbSGzDIv5y+9TRW1r8M=">AAAB+nicbVC7TsMwFL0pr1JeKYwsFhUSU5UgVBgrWBiLRB9SG1WO47RWHSeyHVAV+iksDCDEypew8Tc4bQZoOZLlo3PulY+Pn3CmtON8W6W19Y3NrfJ2ZWd3b//Arh52VJxKQtsk5rHs+VhRzgRta6Y57SWS4sjntOtPbnK/+0ClYrG419OEehEeCRYygrWRhnZ14Mc8UNPIXNmgNWazoV1z6s4caJW4BalBgdbQ/hoEMUkjKjThWKm+6yTay7DUjHA6qwxSRRNMJnhE+4YKHFHlZfPoM3RqlACFsTRHaDRXf29kOFJ5OjMZYT1Wy14u/uf1Ux1eeRkTSaqpIIuHwpQjHaO8BxQwSYnmU0MwkcxkRWSMJSbatFUxJbjLX14lnfO626g37i5qzeuijjIcwwmcgQuX0IRbaEEbCDzCM7zCm/VkvVjv1sditGQVO0fwB9bnD9vOlGg=</latexit> 
+
+! <latexit sha1_base64="mAuDqqqilXhZ98xn5sNL+20QmA4=">AAAB73icbVBNS8NAEN3Ur1q/qh69LBbBU0lEqseiF48V7Ae0oWy2k3bpZhN3J0IJ/RNePCji1b/jzX/jts1BWx8MPN6bYWZekEhh0HW/ncLa+sbmVnG7tLO7t39QPjxqmTjVHJo8lrHuBMyAFAqaKFBCJ9HAokBCOxjfzvz2E2gjYvWAkwT8iA2VCAVnaKVO2O/hCJD1yxW36s5BV4mXkwrJ0eiXv3qDmKcRKOSSGdP13AT9jGkUXMK01EsNJIyP2RC6lioWgfGz+b1TemaVAQ1jbUshnau/JzIWGTOJAtsZMRyZZW8m/ud1Uwyv/UyoJEVQfLEoTCXFmM6epwOhgaOcWMK4FvZWykdMM442opINwVt+eZW0LqperVq7v6zUb/I4iuSEnJJz4pErUid3pEGahBNJnskreXMenRfn3flYtBacfOaY/IHz+QMhHZAM</latexit> 
+
+## fω
+
+Adapter /
+
+Fusion /
+
+Promptin g 
+
+> <latexit sha1_base64="zQaRxLF/KpNpDa7LpzpCXIFleyQ=">AAACAXicbVDLSsNAFJ34rPUVdSO4GSyCq5KIVJdFNy4r2Ac0IUwmk3boZBJmJkoIceOvuHGhiFv/wp1/46TNQlsPXDiccy/33uMnjEplWd/G0vLK6tp6baO+ubW9s2vu7fdknApMujhmsRj4SBJGOekqqhgZJIKgyGek70+uS79/T4SkMb9TWULcCI04DSlGSkueeeg80ICMkcqdCKmxH+ZZUXg5LTyzYTWtKeAisSvSABU6nvnlBDFOI8IVZkjKoW0lys2RUBQzUtSdVJIE4QkakaGmHEVEuvn0gwKeaCWAYSx0cQWn6u+JHEVSZpGvO8sz5bxXiv95w1SFl25OeZIqwvFsUZgyqGJYxgEDKghWLNMEYUH1rRCPkUBY6dDqOgR7/uVF0jtr2q1m6/a80b6q4qiBI3AMToENLkAb3IAO6AIMHsEzeAVvxpPxYrwbH7PWJaOaOQB/YHz+APEtl98=</latexit>
+
+## ̂
+
+## yi
+
+Income /
+
+Pop . density /
+
+Crime rate  
+
+> <latexit sha1_base64="mAuDqqqilXhZ98xn5sNL+20QmA4=">AAAB73icbVBNS8NAEN3Ur1q/qh69LBbBU0lEqseiF48V7Ae0oWy2k3bpZhN3J0IJ/RNePCji1b/jzX/jts1BWx8MPN6bYWZekEhh0HW/ncLa+sbmVnG7tLO7t39QPjxqmTjVHJo8lrHuBMyAFAqaKFBCJ9HAokBCOxjfzvz2E2gjYvWAkwT8iA2VCAVnaKVO2O/hCJD1yxW36s5BV4mXkwrJ0eiXv3qDmKcRKOSSGdP13AT9jGkUXMK01EsNJIyP2RC6lioWgfGz+b1TemaVAQ1jbUshnau/JzIWGTOJAtsZMRyZZW8m/ud1Uwyv/UyoJEVQfLEoTCXFmM6epwOhgaOcWMK4FvZWykdMM442opINwVt+eZW0LqperVq7v6zUb/I4iuSEnJJz4pErUid3pEGahBNJnskreXMenRfn3flYtBacfOaY/IHz+QMhHZAM</latexit>
+
+# fω ( )
+
+Cambridge is an 
+
+academic and 
+
+cultural hub 
+
+,… 
+
+## ; ; ;
+
+Visual Text Graph Foundation Models 
+
+Geospatial 
+
+Prediction Figure 1: Framework of MobFusion . Intrinsic census block group (CBG) features (Vision, POI text) and relational mobility network are encoded by a set of foundation models Φ and fused via fθ for downstream geospatial prediction. 
+
+tual and visual knowledge of urban entities, while human mobility provides complementary relational signals about how these entities are connected. Specifically, as shown in Figure 1, we propose 
+
+MobFusion , a mobility-enhanced foundation model fusion framework grounded in modular AI and ur-ban sociological insights. MobFusion incorporates mobility in three forms: (i) compressed into textual contexts for zero-shot LLM prompting guided by mobility-based neighborhood effects (Levy et al., 2020); (ii) used as relational connectors for fus-ing earth-observation and textual descriptions of points of interest (POI); and (iii) mapped into graph tokens for multimodal LLM reasoning. The contri-butions are as follows: • We propose a modular mobility-enhanced foundation-modeling paradigm for urban socioe-conomic understanding, combining foundation models’ strength in representing intrinsic geospa-tial attributes with mobility networks’ ability to capture relational urban knowledge. • We construct the mobility networks between Cen-sus Block Groups (CBGs) and POIs, and develop three integration strategies: mobility as prompt-ing contexts for LLMs ( MobFusion-C ), as graph connectors for fusing text and earth-observation embeddings ( MobFusion-G ), and as graph tokens for MLLMs ( MobFusion-T ), guided by urban so-ciological insights. • Experiments on large-scale datasets from three U.S. metropolitan areas, i.e., Chicago, Boston, and New York City, show that incorporating mo-bility consistently improves foundation models on socioeconomic prediction tasks, including me-dian household income, population density, and crime prediction. 
+
+2 Related Works 
+
+Foundation Models for Urban Geospatial Tasks. Large foundation models, including LLMs, MLLMs, and geospatial foundation models such as AlphaEarth, have been increasingly explored for geospatial understanding. GeoLLM (Manvi et al., 2023) prompts geographic coordinates together with auxiliary geographic context to predict geospa-tial indicators, such as population density and eco-nomic livelihoods. Its follow-up study (Manvi et al., 2024) further examines spatial biases in LLM-based geospatial inference. Beyond lan-guage models, geospatial foundation models (Agar-wal et al., 2024; Brown et al., 2025; Mühlemat-ter et al., 2025) have also emerged. AlphaEarth Foundations (Brown et al., 2025) integrates large-scale multimodal Earth observation data into uni-fied geospatial embeddings. Recent works use VLMs and MLLMs for urban socioeconomic pre-diction (Liu et al., 2025; Hao et al., 2025), taking POI text, geospatial descriptions, satellite imagery, and street-view images as input, but still focus on location-level intrinsic attributes and lack mobility-based urban connectivity. 
+
+Mobility in Computational Social Science. Ur-ban mobility has been widely used to reflect urban socioeconomic conditions (Barbosa et al., 2021; Cagney et al., 2020; Aiken et al., 2022; Moro et al., 2021). Existing studies connect mobility net-works to social segregation and exposure (Athey et al., 2021; Moro et al., 2021), neighborhood in-come and economic performance (Alves et al., 2021; Yoshimura et al., 2022), crime (Levy et al., 2020), and pandemic vulnerability (Chang et al., 2021). Beyond outcome prediction, another line of work analyzes the structural properties of mobil-ity systems, including recurring motifs (Schneider 2et al., 2013), community organization (Louail et al., 2015), entropy (Marin et al., 2022), and commuting connectivity (Alves et al., 2021; Li et al., 2026). 
+
+GNN-based Urban Mobility Modeling. Human mobility has become a powerful tool for studying urban socioeconomic phenomena. Existing GNN-based methods (Zhou et al., 2023; Zhang et al., 2021; Hui et al., 2020) typically construct mobility networks with regions or POIs as nodes and mo-bility flows as edges, and learn node embeddings through self-supervised learning for downstream tasks. Some studies (Wen et al., 2026) further treat mobility networks as a backbone or modality for multimodal urban representation learning, deriv-ing region embeddings from mobility graphs and aligning them with visual or textual features. 
+
+3 Preliminary and Problem Statement 
+
+Definition 1 (Mobility Network) A mobility net-work of a city is a CBG-POI heterogeneous graph 
+
+G =  C, P, Ev, Eb), where C = {c1, . . . , c nc } is the set of Census Block Group (CBG) nodes and 
+
+P = {p1, . . . , p np } is the set of point-of-interest (POI) nodes. Two typed edge sets connect them: the visit edges Ev ⊆ C × P , where (ci, p j ) ∈ E v
+
+if residents of ci make at least one recorded visit to pj , each carrying a weight wij = log  1 + nij 
+
+
+
+derived from the visit count nij aggregated over the observation window; and the belonging edges 
+
+Eb ⊆ P × C , where (pj , c i) ∈ E b if pj is physically located inside ci.
+
+Problem Statement: For each CBG ci ∈ C , we observe optional static intrinsic features xi that may include satellite imagery, POI text, or other geographic attributes, together with the mobility network G that provides relational context among CBGs and POIs. Let Φ = {Φ1, . . . , ΦK } denote a (possibly singleton) set of pre-trained founda-tion models, e.g., LLMs, multimodal LLMs, or geospatial foundation models. The task is to pre-dict the socioeconomic indicator vector yi ∈ R|Y| 
+
+(Y = {income , density , crime }) via a predictor 
+
+fθ that composes (and optionally fine-tunes) those foundation models: 
+
+byi = fθ
+
+ xi; G; Φ, (1) where θ denotes the trainable parameters that adapt or fuse Φ. This formulation is general: it covers zero-shot prompting of a single foundation model as well as multi-model compositions in which 
+
+G is encoded by a dedicated graph module and fused with the outputs of Φ. The central ques-tion is whether incorporating G elicits geospatial-understanding capabilities of Φ beyond what static features xi alone can provide. 
+
+4 Methodology 
+
+In this section, we present MobFusion , which con-sists of three variants: (i) MobFusion-C , which treats mobility as contextual information for zero-shot LLM prediction; (ii) MobFusion-G , which uses the mobility network as a graph connector to fuse visual and POI textual features of each CBG; and (iii) MobFusion-T , which encodes the mobility network as graph tokens to enhance multimodal large language models. 
+
+4.1 Mobility as Contexts for Zero-shot Geospatial Prediction with LLMs 
+
+Unlike existing works (Manvi et al., 2024, 2023) that convert a region’s coordinates, address infor-mation, and POI information into prompts, urban mobility data are usually represented as mobility networks and are difficult to prompt directly. Exist-ing graph prompting methods (Perozzi et al., 2024; Fatemi et al., 2024) also face scalability challenges on large mobility networks. Inspired by Triple Neighborhood Effects (Levy et al., 2020), we sum-marize mobility networks from three perspectives: internal regional flows, inbound patterns, and out-bound patterns. We then incorporate these sum-maries into prompts to enable efficient mobility-enhanced zero-shot prediction. 
+
+Definition 2 (Triple Neighborhood Effects) 
+
+Inspired by the triple neighborhood disadvantage 
+
+perspective (Levy et al., 2020), we generalize the focus from disadvantage to broader neighborhood effects. For each CBG i, we define triple neigh-borhood effects through three CBG–POI mobility channels. (i) The internal effect captures visits made by residents of CBG i to POIs located within the same CBG, reflecting local activity intensity. (ii) The outbound effect captures visits made by residents of CBG i to POIs located in other CBGs, reflecting the external opportunities and activities. (iii) The inbound effect captures visits to POIs located in CBG i made by residents from other CBGs, reflecting how CBG i attracts external visitors. 
+
+Mobility Network as Context for Prompting a CBG: Figure 2(a) shows the basic CBG prompt, which only uses the intrinsic POI distribution and 3(a) CBG Prompt only with POI features       
+
+> You are analyzing a Census Block Group (CBG) in Boston. **Location**: 42.3331 N, 71.1035 W This area has 282 recorded places. **Sample POI inside this area**: - Sully 's Barber Shop -- Personal Care / Hair - Apts at 32 Worthington St -- Real Estate - Dunkin '-- Restaurants / Snack Bars - 7-Eleven -- Grocery / Convenience ... **Category distribution**: - Lessors of Real Estate: 171 (61%) - Offices of Physicians: 25 (9%) - Restaurants & Eating: 23 (8%) ... **Summary**: area dominated by Lessors of Real Estate, also featuring Offices of Physicians and Restaurants. Based on what is physically located within this area, estimate the socioeconomic characteristics of this neighborhood. Estimate (income/density/crime) on a 0.0--9.9 scale:
+
+(b) CBG prompts with additional mobility context      
+
+> Same as (a): Location, POI sample, Category distribution, Summary
+> **Resident mobility profile** - where people living here travel: - Outflow: 234,784 trips (297 distinct dests) - Inflow: 1.7x city-avg visitor volume - 24% stay local; 76% travel elsewhere Most distinctive activities (vs city avg): - Video Tape & Disc Rental (z=5.3, 1.3%) - Specialty Food Stores (z=4.4, 1.3%) **Consume locally**: Full-Service Restaurants, Specialty Food, ... **Travel outside for**: Offices of Physicians, Fitness Centers, ... **Attract visitors**: Full-Service Restaurants, Pharmacies, ... Based on what is physically located within this area AND where residents actually travel, estimate the socioeconomic characteristics of this neighborhood. Estimate (income/density/crime) on a 0.0--9.9 scale:
+
+Figure 2: Zero-shot prompt templates: (a) prompt with only intrinsic POI features (sampled POI names and categories) of the CBG; (b) builds on (a) by additionally incorporating the CBG’s mobility neighborhood effects, i.e., internal, inflow, and outflow patterns. 
+
+sampled POI names. This prompt describes what is physically located inside a CBG, but misses the mobility patterns of the CBG. We argue that the socioeconomic character of a CBG is more clearly revealed by where its residents travel , who visit 
+
+it, and what circulates locally , rather than by the supply-side POI list alone. We therefore extend the basic prompt with a structured mobility profile derived from the CBG-POI mobility network G.As shown in Figure 2(b), the mobility-enhanced prompt summarizes three types of information: (1) 
+
+mobility statistics , including total outflow trips, dis-tinct destinations, inflow ratio over the city aver-age, and internal/outflow share; (2) distinctive resi-dent activities , which identify POI categories that are unusually frequent for residents of the target CBG; and (3) triple neighborhood effects summary ,which separately describes what residents consume locally, what they travel outside for, and what at-tracts outside visitors to this CBG. For LLM out-puts, following GeoLLM (Manvi et al., 2023), we formulate prediction as a classification task by scal-ing each label value to the range from 0.0 to 9.9 and rounding it to one decimal place. This constrained label space makes LLM outputs easier to parse and reduces instability caused by free-form numerical generation. 
+
+4.2 Mobility as Graph Connections for Multimodal City Embedding Fusion 
+
+In this section, we examine whether the CBG-POI mobility network can serve as a relational con-nector for multimodal urban representation learn-ing. MobFusion-G propagates information be-tween CBG-level visual embeddings and POI-level textual embeddings through the mobility graph for mobility-aware embedding fusion. 
+
+CBG–POI mobility network: In the mobility network G, for CBG node ci ∈ C , its feature xcbg 
+
+i
+
+is derived from one of two vision-based representa-tions: The first uses satellite images sampled within the CBG boundary, which are encoded by a frozen vision foundation model (e.g., RemoteCLIP (Liu et al., 2024)) and then pooled into a CBG-level rep-resentation. The second uses AlphaEarth embed-dings (Brown et al., 2025), where 10m-resolution embeddings are extracted within the CBG polygon and pooled as the CBG feature. For each POI pj ∈ P , we construct a text de-scription (detailed in Table 5) combining its name, category, and location, and encode it with a frozen text embedding model (e.g., BGE-M3 (Chen et al., 2025)) to obtain its feature xpoi 
+
+j .For feature fusion and message passing, as shown in Figure 3, we use a two-hop heteroge-neous R-GCN (Schlichtkrull et al., 2017) that re-spects the bipartite CBG-POI structure: each hop updates only one side of the graph. The rela-tion set is R = {rv, r b}, where rv denotes the weighted visit relation from CBGs to POIs, and rb
+
+denotes the structural belonging relation from POIs to their host CBGs. Since CBG visual features and POI textual features have different dimensions, we 4Vision Encoder 
+
+Text Embed . Model 
+
+CBG -POI Mobility 
+
+Network 
+
+CBG Node 
+
+Vision Features :
+
+Satellite Images or 
+
+Alphaearth Embedding 
+
+POI Node 
+
+Texts feature :
+
+Category / POI Name 
+
+𝑝 ! 𝑝 " 𝑝 # 𝑝 $
+
+𝑐 ! 𝑐 " 𝑐 %
+
+RGCN 
+
+CBG 
+
+embedding  
+
+> <latexit sha1_base64="zQaRxLF/KpNpDa7LpzpCXIFleyQ=">AAACAXicbVDLSsNAFJ34rPUVdSO4GSyCq5KIVJdFNy4r2Ac0IUwmk3boZBJmJkoIceOvuHGhiFv/wp1/46TNQlsPXDiccy/33uMnjEplWd/G0vLK6tp6baO+ubW9s2vu7fdknApMujhmsRj4SBJGOekqqhgZJIKgyGek70+uS79/T4SkMb9TWULcCI04DSlGSkueeeg80ICMkcqdCKmxH+ZZUXg5LTyzYTWtKeAisSvSABU6nvnlBDFOI8IVZkjKoW0lys2RUBQzUtSdVJIE4QkakaGmHEVEuvn0gwKeaCWAYSx0cQWn6u+JHEVSZpGvO8sz5bxXiv95w1SFl25OeZIqwvFsUZgyqGJYxgEDKghWLNMEYUH1rRCPkUBY6dDqOgR7/uVF0jtr2q1m6/a80b6q4qiBI3AMToENLkAb3IAO6AIMHsEzeAVvxpPxYrwbH7PWJaOaOQB/YHz+APEtl98=</latexit>
+
+̂
+
+yi 
+
+> <latexit sha1_base64="1rDDiz24hLx/w7OOdQxZ5eh81Co=">AAAB9HicbVDLSgNBEOyNrxhfUY9eBoPgKeyKRI9BETxGMA9IljA7mU2GzD6c6Q2EJd/hxYMiXv0Yb/6Ns8keNLFgoKjqpmvKi6XQaNvfVmFtfWNzq7hd2tnd2z8oHx61dJQoxpsskpHqeFRzKULeRIGSd2LFaeBJ3vbGt5nfnnClRRQ+4jTmbkCHofAFo2gktxdQHDEq07tZH/vlil215yCrxMlJBXI0+uWv3iBiScBDZJJq3XXsGN2UKhRM8lmpl2geUzamQ941NKQB1246Dz0jZ0YZED9S5oVI5urvjZQGWk8Dz0xmIfWyl4n/ed0E/Ws3FWGcIA/Z4pCfSIIRyRogA6E4Qzk1hDIlTFbCRlRRhqankinBWf7yKmldVJ1atfZwWanf5HUU4QRO4RwcuII63EMDmsDgCZ7hFd6sifVivVsfi9GCle8cwx9Ynz8NFZJN</latexit>
+
+Et 
+
+> <latexit sha1_base64="2x6Fp4qDlWGg9pMqAvpAxbvqdXs=">AAAB9HicbVDLSgMxFL1TX7W+qi7dBIvgqsyIVJdFEVxWsA9oh5JJM21oJhmTTKEM/Q43LhRx68e482/MtLPQ1gOBwzn3ck9OEHOmjet+O4W19Y3NreJ2aWd3b/+gfHjU0jJRhDaJ5FJ1AqwpZ4I2DTOcdmJFcRRw2g7Gt5nfnlClmRSPZhpTP8JDwUJGsLGS34uwGRHM07tZf9IvV9yqOwdaJV5OKpCj0S9/9QaSJBEVhnCsdddzY+OnWBlGOJ2VeommMSZjPKRdSwWOqPbTeegZOrPKAIVS2ScMmqu/N1IcaT2NAjuZhdTLXib+53UTE177KRNxYqggi0NhwpGRKGsADZiixPCpJZgoZrMiMsIKE2N7KtkSvOUvr5LWRdWrVWsPl5X6TV5HEU7gFM7Bgyuowz00oAkEnuAZXuHNmTgvzrvzsRgtOPnOMfyB8/kDEB2STw==</latexit>
+
+EvFigure 3: CBG-POI mobility network as the connector for the vision and text embedding fusion. 
+
+first project them into a shared hidden space using 
+
+h(0) 
+
+ci = Wcxcbg 
+
+i and h(0) 
+
+pj = Wpxpoi 
+
+j . The first hop updates each POI by aggregating messages from CBGs whose residents visit it (via rv) and from the CBG that physically hosts it (via the re-verse of rb). The second hop updates each CBG by aggregating messages from POIs its residents visit (via the reverse of rv), and from POIs it hosts (via 
+
+rb). This two-hop propagation realizes mobility-driven metapaths such as ci rv
+
+−→ pjr−1
+
+v
+
+−−→ ck (CBGs connected through shared visit destinations) and 
+
+ci rv
+
+−→ pjrb
+
+−→ ck (CBGs connected via the physical locations of visited POIs). The final output is a mobility-aware CBG embedding: 
+
+zi = R -GCN  ci; G, {xcbg 
+
+i }, {xpoi 
+
+j } ∈ Rd. (2) 
+
+Self-supervised pretraining. We first pretrain the heterogeneous encoder without using socioeco-nomic labels. We create two stochastic views of the CBG–POI graph by randomly dropping edges and masking node features. The same R-GCN en-coder maps each view into CBG representations, which are then passed through a projection head. For each CBG, the representations from the two views form a positive pair, while other CBGs in the batch serve as negative samples. Following Sim-CLR (Chen et al., 2020), we optimize a symmetric InfoNCE objective (Oord et al., 2018) that pulls the two views of the same CBG together while pushing apart other CBGs in the batch. 
+
+Supervised fine-tuning. After pretraining, we attach a lightweight regression head hψ (a two-layer MLP) to the CBG embedding zi and predict 
+
+ˆyi = hψ(zi). To balance the scale across heteroge-neous tasks, we standardize labels per training fold to z-scores. The encoder and regression head are optimized jointly using mean squared error: 
+
+LGsup = 1
+
+|Y| 
+
+X
+
+t∈Y 
+
+1
+
+|C train 
+
+t |
+
+X
+
+i∈C train 
+
+t
+
+ ˆyi,t − ˜yi,t 
+
+2, (3) where ˜yi,t denotes the standardized value for task t
+
+and Ctrain 
+
+t is the set of training CBGs with valid la-bels for prediction task t. At evaluation, predictions are inverse-transformed back to the raw scale. !! !" !# !$
+
+"! "" "%
+
+CBG -POI Graph 
+
+CBG Satellite Image 
+
+RGCN 
+
+Question Prompt Q:
+
+Text : Given <img > and <graph 
+
+token > of CBG i, predict …
+
+Vision 
+
+Tower  
+
+> Projector  Graph  adapter
+> Large  Language  Models
+> <latexit sha1_base64="zQaRxLF/KpNpDa7LpzpCXIFleyQ=">AAACAXicbVDLSsNAFJ34rPUVdSO4GSyCq5KIVJdFNy4r2Ac0IUwmk3boZBJmJkoIceOvuHGhiFv/wp1/46TNQlsPXDiccy/33uMnjEplWd/G0vLK6tp6baO+ubW9s2vu7fdknApMujhmsRj4SBJGOekqqhgZJIKgyGek70+uS79/T4SkMb9TWULcCI04DSlGSkueeeg80ICMkcqdCKmxH+ZZUXg5LTyzYTWtKeAisSvSABU6nvnlBDFOI8IVZkjKoW0lys2RUBQzUtSdVJIE4QkakaGmHEVEuvn0gwKeaCWAYSx0cQWn6u+JHEVSZpGvO8sz5bxXiv95w1SFl25OeZIqwvFsUZgyqGJYxgEDKghWLNMEYUH1rRCPkUBY6dDqOgR7/uVF0jtr2q1m6/a80b6q4qiBI3AMToENLkAb3IAO6AIMHsEzeAVvxpPxYrwbH7PWJaOaOQB/YHz+APEtl98=</latexit>
+
+̂
+
+yi
+
+Mean pooling 
+
+of last layer 
+
+Figure 4: Mobility network as graph token for MLLM prediction. 
+
+4.3 Mobility Network as Tokens: Enhance the Geospatial Understanding of MLLMs Mobility Graph Tokens. We further introduce 
+
+MobFusion-T , which injects mobility-aware graph representations into multimodal large language models as virtual graph tokens. For each CBG ci,we use the CBG embedding zi ∈ Rd (d=128 ) pro-duced by the self-supervised stage of MobFusion-G 
+
+(before supervised fine-tuning), so that no socioe-conomic labels are used to construct the graph rep-resentation. A lightweight graph adapter Aη (a two-layer MLP) maps zi into K token embeddings with the same hidden size as the language model: 
+
+Gi = Aη(zi) ∈ RK×H , (4) where H is the hidden dimension of the MLLM and we use K=4 in our experiments. These graph tokens provide a compact representation of the CBG’s mobility context and allow the mobility sig-nal to participate in multimodal reasoning. 
+
+Mobility-enhanced Multimodal Inference and Fine-tuning. As shown in Figure 4, the MLLM input is structured as a sequence of satellite tiles, 
+
+K graph tokens, and the question text, where the satellite tiles are sampled from the target CBG, the K graph tokens are placeholders for mobil-ity information, and the question is either a basic 
+
+or POI-enriched prompt. Following LLaVA-style multimodal injection (Liu et al., 2023), we intro-duce a dedicated graph token ⟨graph ⟩ in the input sequence and assign it the embedding Gi before the sequence is consumed by the language model. This lifts mobility signals into the language em-bedding space alongside image and text tokens, 5allowing them to participate in self-attention across all transformer layers. For urban prediction, we mean-pool the final hidden representations from the last transformer layer and pass them through a regression head: 
+
+ˆyi = hψ
+
+ Pool  Φ( Ii, Gi, Q ) , (5) where Φ denotes the multimodal language model and hψ denotes the two-layer MLP regression head. During training, we keep the vision tower and the base language model weights frozen, and update only the graph adapter, LoRA modules (Hu et al., 2022), and the regression head. We optimize the trainable modules through: 
+
+LTsup = 1
+
+|C train ||Y| 
+
+X
+
+> i∈C train
+
+X
+
+> t∈Y
+
+ ˆyi,t − ˜yi,t 
+
+2, (6) where ˜yi,t denotes the standardized value of each task. This design allows the MLLM to leverage mobility networks for geospatial prediction while requiring only lightweight adaptation. 
+
+5 Evaluation 
+
+5.1 Datasets and Tasks 
+
+We conduct experiments on three large-scale datasets covering Boston, Chicago, and New York City. The datasets are as follows. • Mobility networks. We use SafeGraph Monthly Patterns (SafeGraph, 2024) and Advan Neighbor-hood Patterns (Advan Research, 2025) to con-struct CBG-POI mobility networks, where edges are weighted by aggregated visit volumes. • POI information. We obtain POI attributes from SafeGraph Global Places (SafeGraph, 2022), in-cluding POI names, categories, coordinates, and identifiers. POI text embeddings are produced by BGE-M3 (Chen et al., 2025). • Satellite imagery. We collect the satellite im-agery from the National Agriculture Imagery Program (NAIP) 1 and associate image tiles with CBGs through spatial intersection. • AlphaEarth embeddings. We use AlphaEarth embeddings (Brown et al., 2025), which pro-vide 64-dimensional foundation-model represen-tations at 10-meter resolution, and pool them within each CBG boundary. 
+
+> 1https://naip-usdaonline.hub.arcgis.com/
+
+Socioeconomic Groundtruth. We define three CBG-level urban prediction tasks, including (i) median household income prediction, (ii) popu-lation density prediction, and (iii) crime prediction. Ground-truth labels for income and population are obtained from the census data of 2023 released by the United States Census Bureau (U.S. Census Bureau, 2023). Crime counts are derived from inci-dent records maintained by the police departments of Chicago, New York City, and Boston. Detailed data statistics and descriptions are in Appendix A.1. 
+
+5.2 Experimental Settings Metrics. Following GeoLLM (Manvi et al., 2024, 2023), we use two metrics, Pearson’s r2 and Spearman’s rank correlation ρ. The squared Pear-son coefficient r2 is commonly used in geospa-tial prediction tasks (Manvi et al., 2023; Perez et al., 2017; Jean et al., 2016), which measures the absolute fit on the original label value scale. Spearman’s ρ measures the rank consistency be-tween predicted and ground-truth values. For task 
+
+t ∈ {income , density , crime }, we have ρt =
+
+> Cov
+
+ R(ˆ yt), R( yt)
+
+  
+
+> σR(ˆ yt)σR( yt)
+
+, where ˆyt is the random variable of model-predicted scores for the task t, yt is the corresponding ground-truth random variable, R( ·)
+
+denotes the rank variable, and σR( ·) is its standard deviation. We choose Spearman’s ρ as our pri-mary metric. The performance comparison on the squared Pearson r2 is shown in Appendix A.2. 
+
+Baselines and Implementation: 
+
+• For zero-shot prediction, we evaluate several LLM models, including GPT-4.1 (Achiam et al., 2023), Gemini-2.5-Flash (Comanici et al., 2025), and GPT-5.4 (OpenAI, 2025), under the same prompt setting. • For mobility as the connector evaluation, we compare our MobFusion-G with ridge regres-sion (RidgeCV) (Hoerl and Kennard, 1970) and MORA (Wen et al., 2026). RidgeCV uses: (i) satellite-image (encoded by RemoteCLIP (Liu et al., 2024)), (ii) AlphaEarth embeddings, (iii) mean-pooled POI text embeddings, and (iv) the concatenation of POI embeddings with ei-ther satellite-image or AlphaEarth (Brown et al., 2025) embeddings as inputs. MORA (Wen et al., 2026) aligns pretrained mobility-network embed-dings with visual (AlphaEarth or satellite image embeddings) and POI representations through contrastive learning. 6Boston Chicago NYC Model Variant Inc. Den. Cri. Inc. Den. Cri. Inc. Den. Cri. GPT-4.1 POI only 0.295 0.768 0.427 0.505 0.595 0.647 0.392 0.518 0.682                                                
+
+> Mobility-aware 0.349 0.774 0.440 0.555 0.609 0.658 0.402 0.537 0.672 Gemini-2.5-Flash POI only 0.238 0.651 0.329 0.461 0.492 0.551 0.369 0.430 0.655 Mobility-aware 0.281 0.653 0.344 0.486 0.471 0.508 0.362 0.478 0.623 GPT-5.4 POI only 0.360 0.765 0.435 0.539 0.640 0.560 0.408 0.582 0.668 Mobility-aware 0.417 0.763 0.444 0.558 0.636 0.563 0.473 0.596 0.657
+
+Table 1: Spearman ρ for median household income (Inc.), population density (Den.), and crime (Cri.) prediction across three cities under two prompt variants. Best per column in bold .
+
+• For mobility as graph token evaluation, we evaluate component ablations of the mobility-enhanced VLM (i.e., Qwen2.5-VL-7B 2). We vary the graph-token source, image input, and prompt content, and remove the graph token to test whether mobility information contributes be-yond visual and textual inputs. The detailed hyperparameters and settings are in-troduced in Appendix A.3. 
+
+5.3 Zero-shot Prompting Performance 
+
+Table 1 reports the zero-shot prediction results of three LLMs under POI-only and mobility-aware prompt settings. Mobility context improves income prediction most consistently across three cities, with gains up to +0.065 in Spearman ρ (GPT-5.4 on NYC). However, its effects on population density and crime prediction are more mixed, with sev-eral settings showing marginal or negative changes. This heterogeneity is expected because population density is closely related to built-environment fea-tures, whereas reported crime can be affected by city-specific reporting and patterns. Notably, GPT-5.4 achieves the strongest absolute performance and the largest mobility-driven gains across most settings, suggesting that stronger reasoning capa-bility amplifies the utility of mobility context. Figure 5 compares the spatial distribution of median household income percentile between the ground truth and the zero-shot prediction by GPT-5.4 with mobility contexts. We find that the zero-shot LLM exhibits non-trivial geospatial under-standing: its predicted distribution matches the ground truth at the macro-regional scale across all three cities, correctly localizing broad high- and low-income areas. Yet it tends to over-smooth locally, assigning similar values to neighboring CBGs and missing the fine-grained income het-
+
+> 2https://qwenlm.github.io/blog/qwen2.5-vl/
+
+Figure 5: Spatial distribution of median household in-come percentile. Top: ground truth; bottom: zero-shot predictions from GPT-5.4 with mobility contexts. 
+
+erogeneity within. The spatial visualization of the other metrics is shown in Appendix A.5. 
+
+5.4 Mobility as Connector Evaluation 
+
+Table 2 shows whether the CBG-POI mobility net-work can serve as a connector for multimodal em-bedding fusion. Across the three cities, MobFusion-G achieves the strongest results on income predic-tion and also performs best on crime prediction in Chicago and New York City. The gains on popula-tion density are less consistent, as AlphaEarth em-beddings already provide strong built-environment signals for this task. Overall, the results show that mobility-based relational propagation adds useful information beyond intrinsic visual and POI repre-sentations, especially for income and safety-related prediction. Figure 6 shows UMAP (McInnes et al., 2018) projections of Chicago CBG embeddings colored by income, density, and crime percentile. The em-beddings of MobFusion-G display clearer socioeco-nomic stratification than POI-only and AlphaEarth embeddings, with high- and low-percentile CBGs forming more coherent clusters, which indicates that mobility-enhanced fusion yields a latent space 7Boston Chicago NYC Method Variant Inc. Den. Cri. Inc. Den. Cri. Inc. Den. Cri. RidgeCV AE only 0.587 ±.026 0.874 ±.010 0.538 ±.025 0.611 ±.016 0.809 ±.006 0.724 ±.017 0.570 ±.020 0.774 ±.030 0.461 ±.026 
+
+POI only 0.432 ±.043 0.741 ±.022 0.662 ±.020 0.518 ±.045 0.591 ±.042 0.831 ±.004 0.470 ±.023 0.570 ±.028 0.348 ±.035 
+
+AE ∥ POI 0.563 ±.009 0.863 ±.017 0.583 ±.034 0.591 ±.026 0.742 ±.018 0.830 ±.023 0.563 ±.032 0.759 ±.020 0.476 ±.018 
+
+RemoteCLIP ∥ POI 0.581 ±.043 0.781 ±.019 0.559 ±.031 0.615 ±.005 0.658 ±.025 0.829 ±.008 0.601 ±.022 0.670 ±.026 0.459 ±.031 
+
+MORA AE ∥ POI 0.490 ±.027 0.850 ±.013 0.576 ±.017 0.578 ±.026 0.714 ±.009 0.861 ±.008 0.529 ±.026 0.703 ±.021 0.511 ±.025 
+
+RemoteCLIP ∥ POI 0.613 ±.023 0.867 ±.012 0.612 ±.014 0.648 ±.008 0.773 ±.019 0.876 ±.008 0.625 ±.026 0.721 ±.016 0.526 ±.031 
+
+MobFusion-G AE 0.600 ±.019 0.885 ±.013 0.644 ±.012 0.650 ±.018 0.804 ±.015 0.872 ±.006 0.588 ±.026 0.757 ±.016 0.530 ±.016 
+
+RemoteCLIP 0.616 ±.026 0.861 ±.014 0.610 ±.028 0.661 ±.016 0.770 ±.015 0.878 ±.013 0.627 ±.021 0.727 ±.012 0.530 ±.029 
+
+Table 2: Five-fold results of Spearman ρ. Three method families with two visual encoders for CBGs (i.e., AlphaEarth or embedding of satellite image). Blue color marks the best per column; underline marks the second best. 
+
+better aligned with urban socioeconomic structure. 
+
+Figure 6: UMAP visualization of CBG embeddings in Chicago, colored by percentile rank of income, density, and crime (columns). 
+
+5.5 Mobility-aware MLLM Performance 
+
+To evaluate whether mobility graph tokens enhance MLLMs, we compare several input variants of 
+
+MobFusion-T along three dimensions: the visual feature used to construct the graph token, the visual input, and the textual prompt. For the graph token, CBG nodes in the mobility network are initialized with either AlphaEarth or RemoteCLIP embed-dings and serialized into tokens fed to the MLLM. The visual input consists of one or four satellite tiles sampled within the target CBG boundary. The textual prompt is either basic (city name plus the task question) or POI-enriched (basic prompt aug-mented with a textualized description of the POI distribution within the CBG).                                         
+
+> Graph token Prompt Image Inc. Den. Cri.
+> AlphaEarth POI-enriched 1 tile 0.611 ±.017 0.778 ±.013 0.709 ±.031
+> AlphaEarth POI-enriched 4 tiles 0.614 ±.017 0.776 ±.019 0.704 ±.022
+> RemoteCLIP POI-enriched 1 tile 0.599 ±.018 0.728 ±.009 0.689 ±.031
+> RemoteCLIP POI-enriched 4 tiles 0.604 ±.017 0.744 ±.015 0.694 ±.029
+> AlphaEarth Basic 4 tiles 0.613 ±.023 0.775 ±.009 0.694 ±.027
+> AlphaEarth POI-enriched —0.569 ±.011 0.763 ±.014 0.702 ±.030
+> —Basic 4 tiles 0.605 ±.016 0.732 ±.018 0.635 ±.025
+
+Table 3: Ablation results of mobility-enhanced MLLM variants. Blue marks the best per column; underline marks the second best. The top block contrasts graph tokens and image inputs under the POI-enriched prompt. The bottom block ablates one component at a time: the prompt, the image input, or the graph token. 
+
+Table 3 reports the ablation results on median household income, population density, and crime prediction. The full setting, which combines mobil-ity graph tokens, satellite images, and POI-enriched prompts, achieves the best overall performance. Removing the graph token causes clear drops, es-pecially on population density and crime, show-ing that mobility structure provides useful infor-mation beyond visual and textual inputs. The re-maining ablations suggest that image inputs and POI-enriched prompts contribute complementary signals for geospatial prediction. 
+
+6 Conclusion 
+
+In this work, we examine whether human mobil-ity can enhance foundation models’ understand-ing of urban socioeconomic conditions by comple-menting intrinsic visual and textual features. We propose a mobility-enhanced foundation-modeling paradigm for urban tasks, inspired by modular AI. Experiments show that mobility networks improve LLMs, fusion of geospatial foundation models, and MLLMs on downstream urban tasks. These find-ings can encourage broader NLP research on urban mobility and smart cities. 8Limitations 
+
+Our framework operates at the Census Block Group (CBG) level, which reflects an inherent trade-off between label fidelity and behavioural resolution. Finer units (e.g., Census Block) carry substantially noisier ACS estimates and are often suppressed for privacy; coarser units (Census Tract, ZIP code) smooth out the very mobility signal we exploit, col-lapsing the CBG-POI visit graph to near-uniform aggregate flows. CBGs are the smallest unit at which both the ACS labels remain trustworthy, and the SafeGraph mobility edges retain meaningful spatial structure. A finer-grained study would re-quire an alternative ground truth (administrative or sensor-derived) that we leave to future work. 
+
+Use of AI assistants. We used Claude, ChatGPT, and Gemini for language polishing and code assis-tance during this work. All scientific contributions, including ideas, experiments, and analyses, are the authors’ own. 
+
+Ethical Considerations 
+
+This work raises no individual-level privacy con-cerns. All ground-truth labels come from publicly released ACS 2023 estimates and city open-data crime portals, both already aggregated with pri-vacy thresholds. The mobility data are SafeGraph monthly and neighborhood patterns, aggregated to CBG level by the provider; we access no individ-ual trajectories, no device-level location traces, and make no attempt to re-identify users. Satellite im-agery is pre-licensed daytime tiles containing no personally identifiable information. 
+
+References 
+
+Josh Achiam, Steven Adler, Sandhini Agarwal, Lama Ahmad, Ilge Akkaya, Florencia Leoni Aleman, Diogo Almeida, Janko Altenschmidt, Sam Altman, Shyamal Anadkat, and 1 others. 2023. Gpt-4 techni-cal report. arXiv preprint arXiv:2303.08774 .Advan Research. 2025. Foot Traffic CA / Neighborhood Patterns. Dataset. Mohit Agarwal, Mimi Sun, Chaitanya Kamath, Arbaaz Muslim, Prithul Sarker, Joydeep Paul, Hector Yee, Marcin Sieniek, Kim Jablonski, Swapnil Vispute, and 1 others. 2024. General geospatial inference with a population dynamics foundation model. arXiv preprint arXiv:2411.07207 .Emily Aiken, Suzanne Bellue, Dean Karlan, Chris Udry, and Joshua E Blumenstock. 2022. Machine learning and phone data can improve targeting of humanitar-ian aid. Nature , 603(7903):864–870. Luiz GA Alves, Diego Rybski, and Haroldo V Ribeiro. 2021. Commuting network effect on urban wealth scaling. Scientific Reports , 11(1):22918. Susan Athey, Billy Ferguson, Matthew Gentzkow, and Tobias Schmidt. 2021. Estimating experienced racial segregation in us cities using large-scale gps data. 
+
+Proceedings of the National Academy of Sciences ,118(46):e2026160118. Hugo Barbosa, Surendra Hazarie, Brian Dickinson, Aleix Bassolas, Adam Frank, Henry Kautz, Adam Sadilek, José J Ramasco, and Gourab Ghoshal. 2021. Uncovering the socioeconomic facets of human mo-bility. Scientific reports , 11(1):8616. Boston Police Department. 2024. Crime incident re-ports (august 2015 to date) (source: New system). 
+
+https://data.boston.gov/dataset/crime-inc ident-reports-august-2015-to-date-sourc e-new-system . Analyze Boston Open Data Portal. Christopher F Brown, Michal R Kazmierski, Valerie J Pasquarella, William J Rucklidge, Masha Samsikova, Chenhui Zhang, Evan Shelhamer, Estefania Lahera, Olivia Wiles, Simon Ilyushchenko, and 1 others. 2025. Alphaearth foundations: An embedding field model for accurate and efficient global mapping from sparse label data. arXiv preprint arXiv:2507.22291 .Kathleen A Cagney, Erin York Cornwell, Alyssa W Goldman, and Liang Cai. 2020. Urban mobility and activity space. Annual Review of Sociology ,46(1):623–648. Serina Chang, Emma Pierson, Pang Wei Koh, Jaline Gerardin, Beth Redbird, David Grusky, and Jure Leskovec. 2021. Mobility network models of covid-19 explain inequities and inform reopening. Nature ,589(7840):82–87. Jianlv Chen, Shitao Xiao, Peitian Zhang, Kun Luo, Defu Lian, and Zheng Liu. 2025. M3-embedding: Multi-linguality, multi-functionality, multi-granularity text embeddings through self-knowledge distillation. 
+
+Preprint , arXiv:2402.03216. Ting Chen, Simon Kornblith, Mohammad Norouzi, and Geoffrey Hinton. 2020. A simple framework for contrastive learning of visual representations. arXiv preprint arXiv:2002.05709 .City of Chicago. 2024. Crimes – 2023. https://data .cityofchicago.org/Public-Safety . Chicago Data Portal. Gheorghe Comanici, Eric Bieber, Mike Schaekermann, Ice Pasupat, Noveen Sachdeva, Inderjit Dhillon, Mar-cel Blistein, Ori Ram, Dan Zhang, Evan Rosen, and 1 others. 2025. Gemini 2.5: Pushing the frontier with advanced reasoning, multimodality, long context, and next generation agentic capabilities. arXiv preprint arXiv:2507.06261 .
+
+9Zhuangyuan Fan, Fan Zhang, Becky PY Loo, and Carlo Ratti. 2023. Urban visual intelligence: Uncover-ing hidden city profiles with street view images. 
+
+Proceedings of the National Academy of Sciences ,120(27):e2220417120. Bahare Fatemi, Jonathan Halcrow, and Bryan Perozzi. 2024. Talk like a graph: Encoding graphs for large language models. In International Conference on Learning Representations (ICLR) .Baoshen Guo, Zhiqing Hong, Lidan Cao, Donghang Li, Junyi Li, Can Rong, Alok Prakash, Shenhao Wang, and Jinhua Zhao. 2025. Language models meet urban mobility: A data-centric review. Authorea Preprints .Xixuan Hao, Wei Chen, Yibo Yan, Siru Zhong, Kun Wang, Qingsong Wen, and Yuxuan Liang. 2025. Ur-banvlp: Multi-granularity vision-language pretrain-ing for urban socioeconomic indicator prediction. In 
+
+Proceedings of the AAAI Conference on Artificial Intelligence , volume 39, pages 28061–28069. Arthur E Hoerl and Robert W Kennard. 1970. Ridge re-gression: Biased estimation for nonorthogonal prob-lems. Technometrics , 12(1):55–67. Edward J Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Liang Wang, Weizhu Chen, and 1 others. 2022. Lora: Low-rank adaptation of large language models. Iclr , 1(2):3. Bo Hui, Da Yan, Wei-Shinn Ku, and Wenlu Wang. 2020. Predicting economic growth by region embedding: A multigraph convolutional network approach. In Pro-ceedings of the 29th ACM International Conference on Information & Knowledge Management , pages 555–564. Neal Jean, Marshall Burke, Michael Xie, W Matthew Alampay Davis, David B Lobell, and Stefano Ermon. 2016. Combining satellite imagery and machine learning to predict poverty. Science , 353(6301):790– 794. Xiaobin Jin, Ying Long, Wei Sun, Yuying Lu, Xuhong Yang, and Jingxian Tang. 2017. Evaluating cities’ vi-tality and identifying ghost cities in china with emerg-ing geographical data. Cities , 63:98–109. Brian L Levy, Nolan E Phillips, and Robert J Sampson. 2020. Triple disadvantage: neighborhood networks of everyday urban mobility and violence in us cities. 
+
+American Sociological Review , 85(6):925–956. Donghang Li, Yunhan Zheng, Shenhao Wang, Xiaotong Guo, and Jinhua Zhao. 2026. Quantifying the non-linear causal impact of commute time on us remote work. Transportation Research Part D: Transport and Environment , 151:105153. Fan Liu, Delong Chen, Zhangqingyun Guan, Xiao-cong Zhou, Jiale Zhu, Qiaolin Ye, Liyong Fu, and Jun Zhou. 2024. Remoteclip: A vision language foundation model for remote sensing. Preprint ,arXiv:2306.11029. Haotian Liu, Chunyuan Li, Qingyang Wu, and Yong Jae Lee. 2023. Visual instruction tuning. In NeurIPS .Tianhui Liu, Hetian Pang, Xin Zhang, Jie Feng, Yong Li, and Pan Hui. 2025. Cityrise: Reasoning ur-ban socio-economic status in vision-language mod-els via reinforcement learning. arXiv preprint arXiv:2510.22282 .Tianhui Liu, Hetian Pang, Xin Zhang, Tianjian Ouyang, Zhiyuan Zhang, Jie Feng, Yong Li, and Pan Hui. Citylens: Evaluating large vision-language models for urban socioeconomic sensing. In The Fourteenth International Conference on Learning Representa-tions .Thomas Louail, Maxime Lenormand, Miguel Picornell, Oliva Garcia Cantu, Ricardo Herranz, Enrique Frias-Martinez, José J Ramasco, and Marc Barthelemy. 2015. Uncovering the spatial structure of mobility networks. Nature communications , 6(1):6007. Rohin Manvi, Samar Khanna, Marshall Burke, David Lobell, and Stefano Ermon. 2024. Large language models are geographically biased. arXiv preprint arXiv:2402.02680 .Rohin Manvi, Samar Khanna, Gengchen Mai, Marshall Burke, David Lobell, and Stefano Ermon. 2023. Ge-ollm: Extracting geospatial knowledge from large language models. arXiv preprint arXiv:2310.06213 .Valentina Marin, Carlos Molinero, and Elsa Arcaute. 2022. Uncovering structural diversity in commut-ing networks: global and local entropy. Scientific Reports , 12(1):1684. Leland McInnes, John Healy, and James Melville. 2018. Umap: Uniform manifold approximation and pro-jection for dimension reduction. arXiv preprint arXiv:1802.03426 .Esteban Moro, Dan Calacci, Xiaowen Dong, and Alex Pentland. 2021. Mobility patterns are associated with experienced income segregation in large us cities. 
+
+Nature communications , 12(1):4633. Dominik J Mühlematter, Lin Che, Ye Hong, Martin Raubal, and Nina Wiedemann. 2025. Urbanfusion: Stochastic multimodal fusion for contrastive learn-ing of robust spatial representations. arXiv preprint arXiv:2510.13774 .New York City Police Department. 2024. NYPD com-plaint data historic. https://data.cityofnewyo rk.us/Public-Safety/NYPD-Complaint-Data-H istoric/qgea-i56i . NYC OpenData. Aaron van den Oord, Yazhe Li, and Oriol Vinyals. 2018. Representation learning with contrastive predictive coding. arXiv preprint arXiv:1807.03748 .OpenAI. 2025. Introducing gpt-5. https://openai .com/index/introducing-gpt-5/ . Accessed: 2026-05-10. 
+
+10 Anthony Perez, Christopher Yeh, George Azzari, Mar-shall Burke, David Lobell, and Stefano Ermon. 2017. Poverty prediction with public landsat 7 satel-lite imagery and machine learning. arXiv preprint arXiv:1711.03654 .Bryan Perozzi, Bahare Fatemi, Dustin Zelle, An-ton Tsitsulin, Mehran Kazemi, Rami Al-Rfou, and Jonathan Halcrow. 2024. Let your graph do the talk-ing: Encoding structured data for llms. Preprint ,arXiv:2402.05862. Matias Quintana, Youlong Gu, Xiucheng Liang, Yujun Hou, Koichi Ito, Yihan Zhu, Mahmoud Abdelrahman, and Filip Biljecki. 2025. Global urban visual percep-tion varies across demographics and personalities. 
+
+Nature Cities , pages 1–15. Jonathan Reades, Yingjie Hu, Emmanouil Tranos, and Elizabeth Delmelle. 2025. The city as text. Nature Cities , 2(9):794–800. SafeGraph. 2022. Global Places (POI) & Geometry. Dataset. SafeGraph. 2024. Patterns: SafeGraph Monthly Pat-terns documentation. https://docs.safegraph.c om/docs/monthly-patterns .Michael Schlichtkrull, Thomas N. Kipf, Peter Bloem, Rianne van den Berg, Ivan Titov, and Max Welling. 2017. Modeling relational data with graph convolu-tional networks. Preprint , arXiv:1703.06103. Christian M Schneider, Vitaly Belik, Thomas Couronné, Zbigniew Smoreda, and Marta C González. 2013. Unravelling daily human mobility motifs. Journal of The Royal Society Interface , 10(84). U.S. Census Bureau. 2023. Census Bureau tables. ht tps://data.census.gov/table .Ya Wen, Jixuan Cai, Qiyao Ma, Linyan Li, Xinhuan Chen, Chris Webster, and Yulun Zhou. 2026. Mora: Mobility as the backbone for geospatial representa-tion learning at scale. In The Fourteenth Interna-tional Conference on Learning Representations .Yuji Yoshimura, Yusuke Kumakoshi, Sebastiano Mi-lardo, Paolo Santi, Juan Murillo Arias, Hideki Koizumi, and Carlo Ratti. 2022. Revisiting jane jacobs: quantifying urban diversity. Environment and Planning B: Urban Analytics and City Science ,49(4):1228–1244. Mingyang Zhang, Tong Li, Yong Li, and Pan Hui. 2021. Multi-view joint graph representation learning for ur-ban region embedding. In Proceedings of the twenty-ninth international conference on international joint conferences on artificial intelligence , pages 4431– 4437. Silin Zhou, Dan He, Lisi Chen, Shuo Shang, and Peng Han. 2023. Heterogeneous region embedding with prompt learning. In Proceedings of the AAAI con-ference on artificial intelligence , volume 37, pages 4981–4989. 
+
+A Appendix 
+
+A.1 Details of Datasets                  
+
+> Boston Chicago NYC
+> CBGs with ACS labels 3,273 4,002 6,807 POIs visited volume 136,284 151,972 190,052 CBG-POI edges 44,751,964 87,565,413 31,745,979 Total CBG-POI visits 9.5 ×10 81.6 ×10 93.5 ×10 8
+
+Table 4: Per-city statistics of the mobility data. 
+
+Urban Mobility Data. We utilize SafeGraph Monthly Patterns (SafeGraph, 2024) and Advan Neighborhood Patterns dataset (Advan Research, 2025) to construct mobility networks for three cities. Both datasets aggregate footfall data at the census block group (CBG) level over a one-month period, capturing how populations move between areas and places in terms of both volume and fre-quency. For each city, we build a mobility network in which nodes are CBGs and POIs, and edges are weighted by visit volume. 
+
+Points of Interest (POI). We obtain the Points of Interest data of three cities from the SafeGraph Global Places dataset (SafeGraph, 2022). The POI attributes consist of the ID, NAICS-style category information, textual POI name, and coordinates. Per-POI text embeddings are produced by BGE-m3 (Chen et al., 2025) for use as POI node features in our mobility graph. The POI data samples are introduced in Table 5. 
+
+Satellite Imagery. The satellite imagery is ob-tained from the high-resolution National Agricul-ture Imagery Program (NAIP) 3 for the three study cities. We organize the imagery into a 1km × 1km 
+
+grid and store each grid cell as a 512 × 512 RGB tile. For each CBG, we identify overlapping image tiles through spatial intersection, use the nearest tile as a fallback when no overlap exists, and establish the corresponding CBG–image associations. 
+
+AlphaEarth Embedding. The AlphaEarth em-bedding dataset (Brown et al., 2025) provides global 64-dimensional foundation-model represen-tations for every 10m × 10m location on Earth. We use these embeddings to characterize the geospatial environment of each CBG and mean-pool all corre-sponding 10 m pixel-level vectors into a compact region-level representation. 
+
+> 3https://naip-usdaonline.hub.arcgis.com/
+
+11 Field Value                
+
+> PLACEKEY zzy-227@62j-sg9-3t9 LOCATION_NAME Ria Money Transfer Partner Location
+> TOP_CATEGORY Activities Related to Credit Intermediation
+> SUB_CATEGORY Financial Transactions Processing, Reserve, and Clearinghouse Activities
+> NAICS_CODE 522320
+> LATITUDE 42.305241
+> LONGITUDE -71.114442
+> STREET_ADDRESS 140A South St
+> CITY Jamaica Plain
+> REGION MA
+> POSTAL_CODE 02130
+> cbg_geoid 250251202011
+> Generated poi description for Text embedding model :
+> Location name of the POI is Ria Money Transfer Partner Location. POI address is 140A South St, Jamaica Plain. Approximate coordinates: (42 .30524 ,−71 .11444) .TOP_CATEGORY: Activities Related to Credit Interme-diation. SUB_CATEGORY: Financial Transactions Pro-cessing, Reserve, and Clearinghouse Activities.
+
+Table 5: Example POI feature record and the generated text description of a POI. 
+
+Socioeconomic Groundtruth. We introduce the socioeconomic data sources in three large cities, Boston, Chicago, and New York City, as follows: • Median household income is taken from the American Community Survey 5-Year Estimates (ACS) 2023 release (U.S. Census Bureau, 2023). Values are inflation-adjusted U.S. dollars at the CBG resolution. • Population density : For each CBG c we com-pute density c = pop c / area c in residents per km 2. The numerator pop c is the total popula-tion from the ACS 2023 table. The denominator area c is the geodesic area of the CBG polygon. • Crime Count : We collect 2023 incident-level records from each city’s public safety open-data portal: the Boston Police Department (Boston Po-lice Department, 2024), the City of Chicago Data Portal (City of Chicago, 2024), and NYC Open-Data “NYPD Complaint Data Historic” (New York City Police Department, 2024). 
+
+A.2 Detailed Metric Computation 
+
+Building on the brief description in the main text, this section provides the full formulae and explains how the two metrics are computed for each of the three settings. 
+
+Spearman’s rank correlation ρ. Spearman’s 
+
+ρ measures the rank consistency between pre-dicted and ground-truth values. Let ˆyt denote the random variable of model predictions for task 
+
+t ∈ income , density , crime , yt the correspond-ing ground-truth random variable, R( ·) the rank-transform operator, and σR( ·) the standard devia-tion of the ranks. The Spearman coefficient is 
+
+ρt = Cov  R(ˆ yt), , R( yt)
+
+σR(ˆ yt), σ R( yt) . (7) Because ρt depends only on the ranks of the pre-dictions, it is invariant under any strictly monotone transform applied to either side. This invariance is what lets us place three settings with incommen-surable prediction scales onto a single comparable axis (see below). 
+
+Pearson’s r2. The squared Pearson correlation 
+
+r2 
+
+> t
+
+=
+
+ Cov(ˆ yt, , y t)
+
+σ ˆyt, σy t
+
+2
+
+(8) captures the linear fit on the original label scale and is sensitive to both scale and bias. Following Ge-oLLM (Manvi et al., 2023) and the broader satellite-based socio-economic prediction literature (Perez et al., 2017; Jean et al., 2016), we report r2 
+
+> t
+
+along-side ρt as a secondary metric whenever the predic-tion is numerically comparable to the label value on its native scale. 
+
+Per-setting Metric Calculation. The three set-tings produce predictions on different scales, which defined as follows: • MobFusion-C (Zero-shot LLM prediction). 
+
+Following GeoLLM (Manvi et al., 2023), the frozen LLM is prompted to output a single score 
+
+ˆyt ∈ [0 .0, 9.9] for each CBG and task. We scale the ground-truth task values to the same range before evaluation, so the predicted scores can be compared with the scaled labels. • MobFusion-G (Mobility as graph connector ). The mobility graph encoder is followed by a regression head that predicts different tasks in a z-scored space, where μt, σ t are estimated on the training-fold labels. At evaluation time, we inverse-transform the prediction ˆyt = σt ˆzt + μt.Both ρt and r2 
+
+> t
+
+are then computed on this raw scale. • MobFusion-T (Mobility as graph tokens for MLLM). The model produces per-task predic-tions in a z-scored space, where the normaliza-tion is computed per city and per train fold. For 12 single-city evaluation, we invert the city-specific 
+
+z-score and compute r2 
+
+> t
+
+on the original scale of different tasks. For joint evaluation across Boston, Chicago, and New York City, we report city-normalized Spearman’s ρt. Specifically, pre-dictions and task labels are standardized within each city before concatenation, so the joint ρt
+
+measures within-city ranking ability rather than being dominated by inter-city scale differences. 
+
+K-fold aggregation. All metrics are computed on five-fold experiments. We report the per-fold mean ± standard deviation across the five folds. 
+
+A.3 Hyperparameters. 
+
+For MobFusion-G (Mobility as graph connector) ,we employ a two-layer relational graph convolu-tional network over the CBG-POI graph. CBG nodes are initialised with either a 64-dimensional AlphaEarth embedding or a 768-dimensional Re-moteCLIP embedding, while POI nodes are ini-tialised with the 1024-dimensional textual embed-ding; all hidden representations are projected to 128 dimensions. We first pre-train the encoder for 300 epochs with the InfoNCE objective ( τ = 0 .07 ), and then fine-tune it for an additional 150 epochs under a supervised regression loss with a learning rate of 1 × 10 −3.For MobFusion-T (Mobility as graph tokens for MLLM) , we keep the Qwen2.5-VL-7B back-bone fully frozen and inject LoRA adapters (rank 
+
+r = 16 ) into the q and v projections of all 28 transformer layers. A lightweight GraphAdapter projects the 128-d CBG embedding produced by 
+
+MobFusion-G to K × 3584 graph tokens ( K = 4 ), which are concatenated with the text and image tokens at the input. A linear regression head (3584 → 3) is attached on top of the last hidden state to produce the three task predictions. The trainable parameters are optimized with AdamW (learning rate 2 × 10 −5) for 10 epochs. All training and inference are conducted on four NVIDIA L40S GPUs with 44 GB of memory. 
+
+A.4 More Experimental Results (1) Pearson’s r2 metric for Zero-shot LLM Pre-diction Experiments: Table 6 shows the Pearson’s 
+
+r2 results comparison between different LLM mod-els across two prompt settings (i.e., prompts with POI information, and prompts with mobility-aware contexts). From Table 6, we find that the results are broadly consistent with the Spearman results in Table 1. Mobility-aware prompts generally im-prove income and population-density prediction over POI-only prompts, especially for GPT-5.4. The gains on crime prediction are more mixed, sug-gesting that crime is harder to infer from prompt-level mobility summaries alone. 
+
+(2) Pearson’s r2 metric for Mobility as Connec-tor evaluation: Table 7 reports the Pearson’s r2
+
+results for the mobility-as-connector setting. The results are consistent with the Spearman results in the main text. MobFusion-G achieves the best performance on income prediction across all three cities, showing that CBG-POI mobility propagation is effective for capturing socioeconomic variation. For crime prediction, MobFusion-G obtains the best or second-best results in most cities. For pop-ulation density, the gains are less consistent, since vision-only features, especially AlphaEarth embed-dings, already provide strong cues about the built environment and population concentration. 
+
+(3) Per-city Pearson’s r2 for Mobility-as-Graph-Token. Table 8 reports per-city r2, complement-ing the joint Spearman results in Table 3. First, the configuration, AlphaEarth graph token, POI-enriched prompt, and 4 image tiles, is the most con-sistent across cities and tasks, achieving the best or second-best r2 on 7 of 9 (city, task) columns, which indicates that the three input modalities con-tribute complementary signals. Second, for income and density, all three inputs are needed, whereas for crime in Chicago and NYC, removing the satel-lite image yields the best r2, suggesting that local visual cues introduce noise at this setting. Overall, these results support the value of mobility graph to-kens while also showing that their benefit depends on the prediction task and city context. 
+
+A.5 Spatial Visualization Spatial Visualization of LLM Zero-shot Predic-tion: Figure 7 and Figure 8 provide additional spatial visualizations for population density and crime count. For population density, GPT-5.4 with mobility contexts captures broad high-density ar-eas in each city, especially the urban cores, but still smooths local variation across neighboring CBGs. For crime count, the predictions recover several city-level hotspots, but the spatial match is less stable than for population density. 
+
+UMAP Visualization of AlphaEarth embedding and Our MobFusion-G Embedding: Figure 9 and Figure 10 show UMAP visualization for Boston and New York City. Across both cities, MobFusion-
+
+13 Boston Chicago NYC Model Variant Inc. Den. Cri. Inc. Den. Cri. Inc. Den. Cri. GPT-4.1 POI only 0.072 0.324 0.044 0.228 0.184 0.200 0.137 0.106 0.147 
+
+Mobility-aware 0.098 0.366 0.056 0.275 0.203 0.232 0.150 0.136 0.142 Gemini-2.5-Flash POI only 0.036 0.250 0.032 0.172 0.156 0.164 0.097 0.071 0.119 Mobility-aware 0.060 0.282 0.034 0.209 0.185 0.130 0.109 0.115 0.096 GPT-5.4 POI only 0.126 0.357 0.055 0.259 0.258 0.158 0.112 0.175 0.126 Mobility-aware 0.173 0.384 0.069 0.304 0.270 0.174 0.269 0.198 0.121 
+
+Table 6: Coefficient of Pearson’s r2 on the CBG-level prediction across all three cities. Each LLM emits scores in 
+
+[0 , 9.9] . Inc. /Den. /Cri. denote median household income, population density, and crime count. Best per column in 
+
+bold .
+
+Boston Chicago NYC Method Variant Inc. Den. Cri. Inc. Den. Cri. Inc. Den. Cri. RidgeCV POI only 0.139 ±.069 0.304 ±.053 0.078 ±.033 0.235 ±.067 0.223 ±.044 0.371 ±.063 0.200 ±.028 0.269 ±.038 0.068 ±.018 
+
+AE only 0.352 ±.030 0.633 ±.09 0.094 ±.038 0.376 ±.025 0.577 ±.071 0.370 ±.064 0.353 ±.015 0.485 ±.022 0.178 ±.037 
+
+AE ∥ POI 0.302 ±.033 0.616 ±.086 0.095 ±.027 0.332 ±.047 0.522 ±.068 0.411 ±.087 0.325 ±.043 0.477 ±.025 0.163 ±.061 
+
+RemoteCLIP ∥ POI 0.289 ±.049 0.476 ±.092 −0.033 ±.162 0.370 ±.024 0.369 ±.08 0.446 ±.077 0.360 ±.038 0.375 ±.04 0.164 ±.104 
+
+MORA AE ∥ POI 0.236 ±.036 0.557 ±.074 0.115 ±.053 0.337 ±.024 0.440 ±.018 0.462 ±.118 0.301 ±.023 0.426 ±.03 0.187 ±.031 
+
+RemoteCLIP ∥ POI 0.338 ±.016 0.542 ±.087 0.188 ±.107 0.431 ±.014 0.459 ±.094 0.521 ±.097 0.413 ±.034 0.436 ±.026 0.242 ±.073 
+
+MobFusion-G AE 0.356 ±.027 0.620 ±.084 0.172 ±.061 0.434 ±.02 0.564 ±.026 0.504 ±.11 0.372 ±.026 0.488 ±.028 0.212 ±.049 
+
+RemoteCLIP 0.370 ±.031 0.557 ±.083 0.186 ±.077 0.439 ±.017 0.507 ±.03 0.532 ±.105 0.413 ±.03 0.441 ±.029 0.249 ±.095 
+
+Table 7: MobFusion-G evaluation. 5-fold mean ± std of Pearson’s r2. Blue highlight marks the best, and underline marks the second best, in each (city, target) column. 
+
+Figure 7: Spatial distribution of population density per-centile. Top: ground truth; bottom: zero-shot predic-tions from GPT-5.4 with mobility contexts. 
+
+G embeddings show clearer separation between high- and low-percentile CBGs than POI-only em-beddings, especially for income and population density. Compared with AlphaEarth embeddings, 
+
+MobFusion-G better preserves socioeconomic gra-dients in the latent space, suggesting that mobility-based relational fusion captures information be-yond static built-environment features. 
+
+Figure 8: Spatial distribution of crime count percentile. Top: ground truth; bottom: zero-shot predictions from GPT-5.4 with mobility contexts. 
+
+A.6 Prompt examples 
+
+Fig. 11 and Fig. 12 show example prompts that consider only the intrinsic POI features and the mobility contexts, respectively. 14 Boston Chicago NYC Graph token Prompt Image Inc. Den. Cri. Inc. Den. Cri. Inc. Den. Cri. AlphaEarth POI-enriched 1 tile 0.168 ±.087 0.426 ±.101 0.130 ±.127 0.361 ±.031 0.511 ±.064 0.536 ±.102 0.374 ±.025 0.462 ±.042 0.274 ±.076 
+
+AlphaEarth POI-enriched 4 tiles 0.233 ±.043 0.440 ±.085 0.157 ±.105 0.371 ±.044 0.557 ±.066 0.550 ±.111 0.393 ±.035 0.457 ±.037 0.242 ±.058 
+
+RemoteCLIP POI-enriched 1 tile 0.164 ±.074 0.245 ±.115 0.001 ±.244 0.366 ±.021 0.511 ±.115 0.521 ±.114 0.367 ±.053 0.401 ±.041 0.261 ±.086 
+
+RemoteCLIP POI-enriched 4 tiles 0.200 ±.044 0.263 ±.123 −0.034 ±.281 0.374 ±.047 0.522 ±.078 0.497 ±.087 0.359 ±.03 0.401 ±.031 0.227 ±.099 
+
+AlphaEarth Basic 4 tiles 0.222 ±.043 0.441 ±.073 0.120 ±.179 0.378 ±.018 0.540 ±.047 0.544 ±.098 0.388 ±.029 0.421 ±.075 0.237 ±.083 
+
+AlphaEarth POI-enriched — 0.153 ±.062 0.352 ±.128 −0.066 ±.186 0.354 ±.038 0.511 ±.063 0.587 ±.122 0.319 ±.03 0.448 ±.038 0.294 ±.1
+
+— Basic 4 tiles 0.241 ±.053 0.377 ±.07 0.153 ±.094 0.338 ±.039 0.526 ±.065 0.425 ±.066 0.391 ±.023 0.387 ±.037 0.151 ±.032 
+
+Table 8: Per-city Pearson’s r2 (5-fold mean ± std) for Mobility as Graph token evaluation. Blue highlight marks the best, and underline marks the second best, in each (city, target) column. 
+
+Figure 9: UMAP visualization of CBG embeddings in Boston, colored by percentile rank of income, density, and crime (columns). Rows compare AlphaEarth, POI embedding, and MobFusion-G embedding. 
+
+Figure 10: UMAP visualization of CBG embeddings in New York, colored by percentile rank of income, density, and crime (columns). Rows compare AlphaEarth, POI embedding, and MobFusion-G embedding. 
+
+15 Full prompt — CBG Prompt only with POI features 
+
+You are analyzing a Census Block Group (CBG) in Boston. **Location**: approximately 42.3331 N, 71.1035 W This area has 282 recorded places and businesses within its boundaries. **Sample of businesses/locations inside this area** (8 shown): - Sully 's Barber & Styling Shop -- Personal Care Services / Hair, Nail, and Skin Care Services - Apartments at 32 Worthington St -- Lessors of Real Estate / Lessors of Residential Buildings and Dwellings - Dunkin ' -- Restaurants and Other Eating Places / Snack and Nonalcoholic Beverage Bars - Apartments at 70 Calumet St -- Lessors of Real Estate / Lessors of Residential Buildings and Dwellings - Apartments at 87 Hillside St -- Lessors of Real Estate / Lessors of Residential Buildings and Dwellings - Apartments at 62 Calumet St -- Lessors of Real Estate / Lessors of Residential Buildings and Dwellings - Apartments at 1560 Tremont St -- Lessors of Real Estate / Lessors of Residential Buildings and Dwellings - 7-Eleven -- Grocery Stores / Convenience Stores **Category distribution** (how places are distributed by type): - Lessors of Real Estate: 171 place(s) (61%) - Offices of Physicians: 25 place(s) (9%) - Restaurants and Other Eating Places: 23 place(s) (8%) - Offices of Dentists: 8 place(s) (3%) - Offices of Real Estate Agents and Brokers: 6 place(s) (2%) **Summary**: area dominated by Lessors of Real Estate, also featuring Offices of Physicians, Restaurants and Other Eating Places Based on what is physically located within this area, estimate the socioeconomic characteristics of this neighborhood. Please estimate the following on a scale from 0.0 to 9.9: - 0.0 = very low (e.g. lowest income / lowest density / safest) - 9.9 = very high (e.g. highest income / highest density / most crime) Respond ONLY with valid JSON: {"income": <float>, "density": <float>, "crime": <float>} 
+
+Figure 11: Full POI-only prompt template instantiated on a representative. No mobility information is provided. 
+
+16 Full prompt — CBG Prompt with additional mobility context 
+
+You are analyzing a Census Block Group (CBG) in Boston. **Location**: approximately 42.3331 N, 71.1035 W This area has 282 recorded places and businesses within its boundaries. **Sample of businesses/locations inside this area** (8 shown): - Sully 's Barber & Styling Shop -- Personal Care Services / Hair, Nail, and Skin Care Services - Apartments at 32 Worthington St -- Lessors of Real Estate / Lessors of Residential Buildings and Dwellings - Dunkin ' -- Restaurants and Other Eating Places / Snack and Nonalcoholic Beverage Bars - Apartments at 70 Calumet St -- Lessors of Real Estate / Lessors of Residential Buildings and Dwellings - Apartments at 87 Hillside St -- Lessors of Real Estate / Lessors of Residential Buildings and Dwellings - Apartments at 62 Calumet St -- Lessors of Real Estate / Lessors of Residential Buildings and Dwellings - Apartments at 1560 Tremont St -- Lessors of Real Estate / Lessors of Residential Buildings and Dwellings - 7-Eleven -- Grocery Stores / Convenience Stores **Category distribution** (how places are distributed by type): - Lessors of Real Estate: 171 place(s) (61%) - Offices of Physicians: 25 place(s) (9%) - Restaurants and Other Eating Places: 23 place(s) (8%) - Offices of Dentists: 8 place(s) (3%) - Offices of Real Estate Agents and Brokers: 6 place(s) (2%) **Summary**: area dominated by Lessors of Real Estate, also featuring Offices of Physicians, Restaurants and Other Eating Places ,→
+
+**Resident mobility profile** -- where people living here actually travel: - Outflow: 234,784 trips to other neighborhoods | 297 distinct destinations - Inflow: 1.7x city average visitor volume - 24% of resident trips stay local; 76% travel elsewhere Most distinctive activities of residents (vs city average): - Video Tape and Disc Rental (z=5.3, 1.3% of visits) - All Other Specialty Food Stores (z=4.4, 1.3% of visits) - Offices of Physicians (except Mental Health Specialists) (z=2.6, 36.9% of visits) What residents consume locally: - Full-Service Restaurants - Pharmacies and Drug Stores - All Other Specialty Food Stores What residents travel outside for: - Offices of Physicians (except Mental Health Specialists) - Fitness and Recreational Sports Centers - Full-Service Restaurants What attracts outside visitors here: - Full-Service Restaurants - Pharmacies and Drug Stores - All Other Specialty Food Stores Places residents frequently visit outside this area: - Dunkin '
+
+- Wentworth Institute Of Technology - Massachusetts College of Art and Design - Alexandra V Roth Based on what is physically located within this area AND where residents actually travel, estimate the socioeconomic characteristics of this neighborhood. ,→
+
+Please estimate the following on a scale from 0.0 to 9.9: - 0.0 = very low (e.g. lowest income / lowest density / safest) - 9.9 = very high (e.g. highest income / highest density / most crime) Respond ONLY with valid JSON: {"income": <float>, "density": <float>, "crime": <float>} 
+
+Figure 12: Full mobility-aware prompt template ( MobFusion-C ) on the same Boston CBG as Figure 11. The header (location, POI sample, category distribution, summary) is identical to the POI-only template; the appended Resident mobility profile block adds outflow/inflow volumes, z-scored distinctive activities, and the three-flow consumption breakdown (local consumption, outflow demand, inflow attraction). 
+
+17
