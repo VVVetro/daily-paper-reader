@@ -1,0 +1,820 @@
+Title: Hierarchical Federated Learning with Dynamic Clustering and Adaptive Regularization for Robust Infrastructure Inspection
+
+URL Source: https://arxiv.org/pdf/2606.03084v1
+
+Published Time: Wed, 03 Jun 2026 00:36:17 GMT
+
+Number of Pages: 15
+
+Markdown Content:
+# Graphical Abstract 
+
+## Hierarchical Federated Learning with Dynamic Clustering and Adaptive Regularization for Robust Infrastructure Inspection 
+
+Yuhu Feng, Keisuke Maeda, Takahiro Ogawa, Miki Haseyama 
+
+> arXiv:2606.03084v1 [cs.CV] 2 Jun 2026
+
+# Highlights 
+
+## Hierarchical Federated Learning with Dynamic Clustering and Adaptive Regularization for Robust Infrastructure Inspection 
+
+Yuhu Feng, Keisuke Maeda, Takahiro Ogawa, Miki Haseyama 
+
+• Clustered-DRAPR tackles double heterogeneity in federated infrastructure inspection. 
+
+• Gradient clustering discovers macro-climatic damage patterns without metadata. 
+
+• Dynamic adaptive regularization mitigates client drift from imbalanced labels. Hierarchical Federated Learning with Dynamic Clustering and Adaptive Regularization for Robust Infrastructure Inspection 
+
+## Yuhu Feng a, Keisuke Maeda b, Takahiro Ogawa b and Miki Haseyama b,∗
+
+> a
+
+Graduate School of Information Science and Technology, Hokkaido University, North 14, West 9, Kita-ku, Sapporo, 060-0814, Hokkaido, Japan 
+
+> b
+
+Faculty of Information Science and Technology, Hokkaido University, North 14, West 9, Kita-ku, Sapporo, 060-0814, Hokkaido, Japan 
+
+A R T I C L E I N F O 
+
+Keywords :Structural Health Monitoring Federated Learning Data Heterogeneity Multi-label Classification Dynamic Clustering Deep Learning 
+
+A B S T R A C T 
+
+The deployment of data-driven computer vision models for structural health monitoring (SHM) is heavily constrained by the data silo dilemma due to stringent privacy and security regulations. While federated learning (FL) offers a privacy-preserving collaborative alternative, its application to nation-wide infrastructure networks is severely hindered by the challenge of “double heterogeneity”: macro-level physical divergence across disparate structural types and micro-level statistical imbalances within local datasets. To overcome this challenge, this paper proposes a novel hierarchical federated learning framework. The framework orchestrates a synergistic two-tier optimization strategy. At the macro-level, a dynamic gradient-based clustering mechanism autonomously aggregates distributed clients into specialized expert groups based on their structural degradation trajectories, circumventing the need for prior geographical metadata. Concurrently, at the micro-level, an intra-cluster Dynamic Region-Adaptive Proximal Regularization (DRAPR) module computes a real-time statistical Non-IID Intensity Score for each client. By adaptively modulating a proximal penalty based on local label skewness and gradient divergence, DRAPR effectively calibrates local updates, mitigates client drift, and prevents the catastrophic forgetting of minority damage classes. Comprehensive evaluations on a large-scale, real-world structural inspection dataset demonstrate that the hierarchical integration of macro-clustering and micro-regularization successfully neutralizes dual-level heterogeneity, yielding highly robust and specialized diagnostic models for complex infrastructure inspection. 
+
+## 1. Introduction 
+
+The maintenance and management of civil infrastructure systems, particularly highway bridges and tunnels, represent critical global challenges due to the rapid aging of existing assets. Automated inspection systems based on computer vi-sion and deep learning have emerged as promising solutions to address the labor shortages and subjectivity associated with manual visual inspections [13, 18, 32, 24, 29]. State-of-the-art neural architectures have demonstrated remarkable success in detecting structural defects such as cracks, cor-rosion, and spalling [10, 28, 23]. However, the deployment of these data-driven models in real-world engineering sce-narios is severely hindered by the data silo problem. While local road management agencies and inspection organiza-tions possess vast amounts of structural health monitoring (SHM) data [3, 38, 5, 11], stringent privacy regulations and security concerns often prohibit the centralized aggregation of this sensitive information [31, 34]. Consequently, training a robust, generalized global model using fragmented data distributed across multiple institutions remains a formidable obstacle. Federated Learning (FL) [19, 41, 15] has been intro-duced as a privacy-preserving paradigm to circumvent these data barriers, allowing multiple clients to collaboratively train a model without sharing raw images [27]. Despite its potential, the application of FL in civil infrastructure 
+
+> ∗
+
+Corresponding author  
+
+> mhaseyama@lmd.ist.hokudai.ac.jp
+
+(M. Haseyama) 
+
+> ORCID
+
+(s): 0009-0006-4819-2066 (Y. Feng); 0000-0001-8039-3462 (K. Maeda); 0000-0001-5332-8112 (T. Ogawa); 0000-0003-1496-1761 (M. Haseyama) 
+
+engineering [1, 2] faces a unique and severe challenge: extreme and complex data heterogeneity (Non-IID data) at multiple levels [15, 43]. To systematically address this, we conceptualize data heterogeneity into two distinct tiers. First, at the macro-level (inter-client), infrastructure data exhibits profound physical divergence. For instance, images from coastal steel bridges dominated by salt-induced corrosion differ fundamentally from those of inland concrete structures featuring freeze-thaw cracks [12, 36]. Forcing all such di-verse clients to converge to a single one-size-fits-all global model, as commonly practiced in standard FedAvg [27] or FedProx [43], inevitably leads to suboptimal performance in specific domains. Second, at the micro-level (intra-client), even among clients monitoring similar structures, the local training processes are highly unstable due to statistical im-balances in damage frequencies, varying lighting conditions, and sensor noise. Existing Clustered FL approaches attempt to address the macro-level issue by grouping clients [26, 9, 35], but they typically rely on static assignments and revert to standard averaging within the clusters, entirely neglecting the micro-level training instability (client drift) that persists within each group [7, 14]. To simultaneously tackle these dual-level heterogeneities, this paper proposes Clustered-DRAPR, a novel Hierarchical Dynamic Region-Adaptive Federated Learning framework tailored for infrastructure inspection networks. Diverging from conventional paradigms that rely on a single global model or static predefined groups, our framework orches-trates a synergistic two-tier optimization strategy. At the macro-level, we introduce a gradient-based dynamic cluster-ing mechanism that automatically identifies and segregates 
+
+Y.H. Feng et al.: Preprint submitted to Elsevier Page 1 of 13 Tackling Double Heterogeneity in Federated SHM 
+
+clients with similar structural damage patterns into special-ized expert groups, without requiring prior knowledge of their geographic or physical metadata. At the micro-level, to address the residual heterogeneity within each cluster, we propose a novel Dynamic Region-Adaptive Proximal Regularization (DRAPR) algorithm. As a core component of our framework, DRAPR continuously evaluates a statistical Non-IID intensity score for each client, which is derived from label imbalance and local gradient divergence, to dynamically modulate the regularization weight at every communication round. This ensures that individual clients optimize effectively without diverging from their respective cluster centroids. The main contributions of this paper are summarized as follows: 
+
+• We propose Clustered-DRAPR, a systematic, hierar-chical federated learning framework specifically de-signed to overcome the “double heterogeneity" (inter-group structural differences and intra-group statistical variations) inherent in large-scale civil infrastructure monitoring. 
+
+• We introduce a dynamic clustering algorithm that adaptively groups distributed inspection clients based on the similarity of their evolving model updates, en-abling the collaborative training of specialized models for distinct infrastructure types. 
+
+• We design the DRAPR algorithm as a novel intra-cluster optimization module. By dynamically adjust-ing the proximal regularization penalty according to real-time client heterogeneity, DRAPR effectively mitigates local client drift and stabilizes the training process. 
+
+• We conduct extensive experiments on a real-world na-tional road inspection dataset. The results demonstrate that the proposed unified framework significantly ac-celerates convergence and outperforms state-of-the-art FL baselines in terms of classification accuracy, particularly under extreme Non-IID conditions. The remainder of this paper is organized as follows. Section 2 provides a brief overview of related work. Section 3 presents a detailed description of the proposed method. The experimental results are presented in Section 4, where we provide qualitative and quantitative evaluations of the proposed framework. Section 5 discusses the implications of our findings and the limitations associated with our study. Finally, Section 6 concludes the paper. 
+
+## 2. Related Works 
+
+2.1. Deep Learning for SHM and Privacy Constraints 
+
+In recent years, the integration of DL with computer vision has revolutionized the field of SHM, offering a robust alternative to labor-intensive manual inspections. Compre-hensive reviews indicate that automated algorithms have sig-nificantly improved the efficiency of maintenance strategies for industrial machines and civil infrastructure [28, 8, 25, 39]. Specifically, state-of-the-art architectures, ranging from Convolutional Neural Networks (CNNs) to Vision Trans-formers (ViTs), have demonstrated exceptional performance in detecting structural defects. For instance, recent studies have successfully deployed DL models for the fine-grained classification of multi-level surface information in bridge inspections, achieving human-level accuracy [42]. Similarly, in road maintenance, intelligent systems have been exten-sively developed to automatically identify and characterize pavement cracks under varying environmental conditions [10]. However, the practical deployment of these centralized learning paradigms faces a formidable bottleneck: the data silo dilemma. As highlighted in recent research on AI-driven infrastructure safety, the effectiveness of these models relies heavily on the availability of large-scale, diverse training data [34]. Yet, in the civil engineering sector, inspection data is typically fragmented across various stakeholders, such as regional transportation bureaus and private engineering firms. Furthermore, the emergence of digital twin technolo-gies has heightened the complexity of data governance [31]. Due to stringent data privacy regulations (e.g., GDPR) and concerns regarding the security of critical infrastructure assets, these entities are often reluctant or legally prohibited from sharing raw inspection imagery with a central server. Consequently, individual organizations are forced to train models on limited, isolated datasets, which inevitably leads to poor generalization performance. This conflict between the imperative of data-driven insights and the constraints of data privacy has catalyzed the adoption of decentralized learning frameworks. 
+
+2.2. Federated Learning in Civil Infrastructure 
+
+To address the privacy concerns inherent in cross-institutional data sharing, FL has been increasingly adopted in the civil engineering domain. Early implementations primarily utilized the standard FedAvg [27] algorithm to aggregate local model updates, establishing the feasibility of decentralized training [37]. For instance, the authors in [40] proposed a privacy-preserving framework specifically for miter gate monitoring, verifying that collaborative learning could be achieved without centralizing sensitive hydraulic infrastructure data. Similarly, other studies have begun to explore personalized FL schemes to better tailor damage detection models to specific structural contexts [2]. While these pioneering works have successfully validated the core utility of FL in SHM, they often operate under the assumption of relatively homogeneous data distributions or rely on basic aggregation strategies [30, 33]. Consequently, they may struggle to maintain performance when applied to large-scale networks where inspection images exhibit severe statistical heterogeneity due to varying camera sensors and environmental backgrounds.   
+
+> Y.H. Feng et al.: Preprint submitted to Elsevier Page 2 of 13 Tackling Double Heterogeneity in Federated SHM
+
+Recognizing the limitations of a single one-size-fits-all global model, recent research has started to investigate multi-model approaches. Notably, the study in [6] intro-duced a clustered FL framework for population-based SHM, which partitions the global population of structures into sub-groups to improve prediction accuracy. This approach aligns with the intuition that civil infrastructure naturally forms distinct categories (e.g., suspension bridges vs. truss bridges). However, existing clustered FL methods in this domain typically rely on static assignment mechanisms or hard clustering based on pre-defined physics-based features. They often lack the capability to dynamically adapt to the evolving gradient directions of deep neural networks during the training process. Furthermore, once clusters are formed, these methods usually revert to standard averaging within the group, ignoring the residual Non-IID issues among clients in the same cluster [22, 4]. This highlights the need for a hierarchical framework that can simultaneously manage inter-group structural differences via dynamic clustering and intra-group statistical variations via adaptive regularization. 
+
+2.3. Handling Non-IID Data: Regularization and Clustering 
+
+To mitigate the performance degradation caused by sta-tistical heterogeneity, recent advancements in the broader machine learning community have primarily focused on two strategies: regularization-based optimization and multi-center clustering. In the realm of regularization, the seminal work Fed-Prox [21] introduced a proximal term to the local objec-tive function, constraining local updates to remain close to the global model. By limiting the impact of variable local work, FedProx effectively tackles the statistical het-erogeneity that often destabilizes standard FedAvg. How-ever, FedProx employs a constant regularization coefficient across all clients and communication rounds. This static approach is suboptimal for infrastructure monitoring net-works, where the degree of heterogeneity is dynamic and client-specific (e.g., varying lighting conditions or seasonal structural changes). To address the issue of client drift more explicitly, SCAFFOLD [16] proposed a stochastic controlled averaging method. By utilizing control variates to estimate the update direction of the server and clients, SCAFFOLD corrects the drift in local updates, significantly accelerating convergence. Despite its efficacy, SCAFFOLD still funda-mentally assumes that a single global model can generalize to all clients. In civil engineering scenarios exhibiting ex-treme heterogeneity (e.g., distinct damage patterns between suspension and masonry bridges), forcing convergence to a single centroid—even with drift correction—may compro-mise the model’s ability to capture specialized structural features. Recognizing that a single model may be insufficient, clustered FL allows clients to be grouped into multiple clusters, each maintaining its own specialized model. A representative approach, IFCA (Iterative Federated Cluster-ing Algorithm) [12], alternately estimates cluster identities by minimizing the local loss and subsequently updates the cluster-specific models. While IFCA successfully captures the multi-modal nature of Non-IID data, it typically employs a hard assignment mechanism and reverts to standard aver-aging within each cluster. It lacks a fine-grained mechanism to handle the residual heterogeneity within a cluster, which is critical when clients in the same structural group still possess diverse sensor characteristics or data imbalances. This limitation underscores the necessity for the proposed Clustered-DRAPR framework, which integrates the macro-level specialization of clustering with the micro-level robust-ness of dynamic adaptive regularization. 
+
+## 3. Methodology 
+
+Before delving into the mathematical formulations, Fig-ure 1 illustrates the overall architecture of the proposed Clustered-DRAPR framework. This framework operates through a synergistic, dual-level optimization strategy to address the double heterogeneity inherent in decentral-ized infrastructure data. At the macro-level (server-side), a dynamic gradient-based clustering mechanism aggregates clients with similar structural degradation patterns into distinct expert clusters via cosine similarity matching. Si-multaneously, at the micro-level (client-side), the DRAPR module computes a statistical Non-IID Intensity Score based on local label imbalance and gradient divergence. This score continuously modulates an adaptive proximal pull, prevent-ing local models from drifting away from their respective cluster centroids during training. 
+
+3.1. Problem Formulation and Preliminaries 
+
+In the context of SHM, we consider a decentralized inspection network consisting of a set of clients  ={1 , 2, … , 𝐾 }, where each client represents a regional road management agency or a specific infrastructure monitoring node. Each client 𝑘 ∈  holds a private, local dataset 
+
+𝑘 = {( 𝑥 𝑖 , 𝑦 𝑖 )} 𝑁 𝑘  
+
+> 𝑖 =1
+
+containing 𝑁 𝑘 = |𝑘 | samples. Here, 
+
+𝑥 𝑖 denotes an inspection image (e.g., a photograph of a bridge surface or tunnel lining), and 𝑦 𝑖 ∈  represents the corresponding structural condition or damage label (e.g., intact, crack, or corrosion). The standard objective of FL is to collaboratively train a global machine learning model, parameterized by 𝐰 , without exposing the raw localized data 𝑘 . This is typically formu-lated as minimizing the global empirical risk function 𝐿 (𝐰 )min  
+
+> 𝐰
+
+𝐿 (𝐰 ) = 
+
+> 𝐾
+
+∑
+
+> 𝑘 =1
+
+𝑝 𝑘 𝐹 𝑘 (𝐰 ), (1) where 𝑝 𝑘 = 𝑁 𝑘  
+
+> ∑𝐾 𝑗 =1 𝑁 𝑗
+
+determines the relative impact of client 
+
+𝑘 based on its data volume, such that ∑𝐾 𝑘 =1 𝑝 𝑘 = 1 . The term 
+
+𝐹 𝑘 (𝐰 ) is the local empirical loss function for client 𝑘 , defined as: 
+
+𝐹 𝑘 (𝐰 ) = 1
+
+𝑁 𝑘 
+
+∑
+
+> (𝑥 𝑖 ,𝑦 𝑖 )∈ 𝑘
+
+𝓁 (𝐰 ; 𝑥 𝑖 , 𝑦 𝑖 ), (2)    
+
+> Y.H. Feng et al.: Preprint submitted to Elsevier Page 3 of 13 Tackling Double Heterogeneity in Federated SHM
+> Figure 1: The overall architecture of the proposed Clustered-DRAPR framework. This framework mitigates double heterogeneity through a synergistic two-tier strategy: (top) macro-level dynamic gradient-based clustering at the central server to form specialized expert models without raw data sharing, and (bottom) micro-level DRAPR at the client side to dynamically penalize local drift based on real-time data distribution skewness.
+
+where 𝓁 (⋅) is a task-specific loss function, such as the cross-entropy loss for damage classification tasks. In traditional FL algorithms like FedAvg, clients per-form multiple epochs of local stochastic gradient descent (SGD) to minimize 𝐹 𝑘 (𝐰 ), and a central server periodically aggregates these local updates to compute a single global model 𝐰 𝐺 . This paradigm implicitly assumes that the data distribution across all clients is Independent and Identically Distributed (IID), meaning 𝑃 𝑖 (𝑥, 𝑦 ) = 𝑃 𝑗 (𝑥, 𝑦 ) for any two clients 𝑖 and 𝑗 .However, in real-world civil engineering applications, the IID assumption is strictly violated, leading to severe performance degradation. We formulate this challenge as a 
+
+Double Heterogeneity problem, characterized by two levels of distributional divergence: 
+
+• Macro-level Feature Shift (Physical Divergence): 
+
+The marginal feature distributions vary significantly across clients, i.e., 𝑃 𝑖 (𝑥 ) ≠ 𝑃 𝑗 (𝑥 ). This is driven by varying structural topologies, construction materials, and environmental backgrounds. For example, a client monitoring coastal steel bridges will produce images vastly different in texture and lighting compared to a client monitoring inland concrete tunnels. A single global model 𝐰 𝐺 lacks the capacity to simultaneously represent these distinct physical domains optimally. 
+
+• Micro-level Label Shift (Statistical Imbalance): 
+
+Even among clients monitoring the exact same type of infrastructure, the marginal label distributions di-verge, i.e., 𝑃 𝑖 (𝑦 ) ≠ 𝑃 𝑗 (𝑦 ). Damage occurrences are statistically imbalanced; certain regions may experi-ence a high frequency of corrosion due to climate, while others may rarely encounter it. During local training, this statistical imbalance causes the local   
+
+> Y.H. Feng et al.: Preprint submitted to Elsevier Page 4 of 13 Tackling Double Heterogeneity in Federated SHM
+
+objective 𝐹 𝑘 (𝐰 ) to deviate sharply from the global objective 𝐿 (𝐰 ), a phenomenon known as client drift .To overcome the inherent limitations of Equation (1) in the presence of extreme double heterogeneity, we propose abandoning the single global model constraint. Instead, we formulate a hierarchical optimization problem that seeks to find a set of specialized cluster-centric models 𝐶 ={𝐰 𝐶 1 , 𝐰 𝐶 2 , … , 𝐰 𝐶 𝑀 }, while dynamically constraining local client drift within each cluster. 
+
+3.2. Inter-Cluster Optimization: Dynamic Gradient-Based Clustering 
+
+To address the macro-level physical divergence de-scribed in Section 3.1, our framework abandons the sin-gle global model paradigm in favor of maintaining a set of 𝑀 specialized cluster centroids, denoted as 𝐶 ={𝐰 𝐶 1 , 𝐰 𝐶 2 , … , 𝐰 𝐶 𝑀 }. The primary challenge in forming these clusters within a federated environment is the strict prohibition against accessing raw client data 𝑘 . To cir-cumvent this privacy constraint, we leverage the clients’ model updates as a secure proxy for their underlying data distributions. In deep neural networks for computer vision, it is well-established that the gradients computed during backpropa-gation encode rich semantic information about the training data. Clients monitoring infrastructure with similar damage patterns (e.g., two distinct coastal regions predominantly experiencing steel corrosion) will yield model updates that point in similar directions within the high-dimensional pa-rameter space. Let Δ𝐰 (𝑡 ) 
+
+> 𝑘
+
+denote the pseudo-gradient, or the model update, of client 𝑘 at communication round 𝑡 , defined as: 
+
+Δ𝐰 (𝑡 ) 
+
+> 𝑘
+
+= 𝐰 (𝑡 ) 
+
+> 𝑘
+
+− 𝐰 (𝑡 −1)  
+
+> 𝐶 𝑚 (𝑘 )
+
+, (3) where 𝐰 (𝑡 ) 
+
+> 𝑘
+
+is the locally optimized model of client 𝑘 , and 
+
+𝐰 (𝑡 −1)  
+
+> 𝐶 𝑚 (𝑘 )
+
+is the centroid model of the cluster to which client 𝑘 
+
+was assigned in the previous round. To quantify the structural similarity between the data distributions of different clients, we utilize the cosine simi-larity metric. Unlike Euclidean distance, which can be overly sensitive to the magnitude of the updates (often skewed by local data volumes 𝑁 𝑘 ), cosine similarity effectively captures the directional alignment of the high-dimensional weight vectors. The similarity between the updates of client 
+
+𝑘 and the reference update of cluster 𝑚 is computed at the server side as: sim (Δ 𝐰 (𝑡 ) 
+
+> 𝑘
+
+, Δ𝐰 (𝑡 ) 
+
+> 𝐶 𝑚
+
+) = 
+
+⟨Δ𝐰 (𝑡 ) 
+
+> 𝑘
+
+, Δ𝐰 (𝑡 ) 
+
+> 𝐶 𝑚
+
+⟩‖Δ𝐰 (𝑡 ) 
+
+> 𝑘
+
+‖2‖Δ𝐰 (𝑡 ) 
+
+> 𝐶 𝑚
+
+‖2
+
+, (4) where ⟨⋅, ⋅⟩ denotes the inner product, and Δ𝐰 (𝑡 ) 
+
+> 𝐶 𝑚
+
+represents the moving average of the gradient direction for cluster 𝑚 .Based on this similarity metric, the central server per-forms dynamic clustering at the end of each communication round. The assignment of client 𝑘 to a specific cluster 
+
+𝑐 (𝑡 ) 
+
+> 𝑘
+
+∈ {1 , … , 𝑀 } is determined by identifying the cluster centroid that exhibits the highest directional similarity with the client’s local update: 
+
+𝑐 (𝑡 ) 
+
+> 𝑘
+
+= arg max  
+
+> 𝑚 ∈{1 ,…,𝑀 }
+
+sim (Δ 𝐰 (𝑡 ) 
+
+> 𝑘
+
+, Δ𝐰 (𝑡 ) 
+
+> 𝐶 𝑚
+
+), (5) This dynamic assignment mechanism ensures that the clus-tering is not static but actively adapts to the evolving repre-sentations of the DL model. A client may be reassigned to a different expert cluster if its local data distribution shifts (e.g., due to the introduction of new seasonal inspection data). Once all clients  are partitioned into mutually exclusive cluster sets (𝑡 )1 , (𝑡 )2 , … , (𝑡 ) 
+
+> 𝑀
+
+, the server aggregates the local models within each cluster independently to form the new specialized centroid models for the subsequent round: 
+
+𝐰 (𝑡 ) 
+
+> 𝐶 𝑚
+
+= ∑
+
+> 𝑘 ∈(𝑡 )
+> 𝑚
+
+𝑁 𝑘 
+
+∑
+
+> 𝑗 ∈(𝑡 )
+> 𝑚
+
+𝑁 𝑗 
+
+𝐰 (𝑡 ) 
+
+> 𝑘
+
+, ∀𝑚 ∈ {1 , … , 𝑀 }, (6) Through this inter-cluster optimization process, our frame-work successfully isolates macro-level heterogeneity, allow-ing the system to cultivate a diverse set of expert models specifically tailored to the varied physical characteristics of the national infrastructure network. 
+
+3.3. Intra-Cluster Optimization: Dynamic Region-Adaptive Proximal Regularization 
+
+While the macro-level dynamic clustering detailed in Section 3.2 successfully mitigates physical divergence by grouping structurally similar clients, severe statistical het-erogeneity often persists within each cluster. Even if a set of clients monitors the same type of infrastructure (e.g., concrete bridges), their local datasets may still exhibit ex-treme variations in damage frequencies and data volumes due to distinct local climates or inspection schedules. Such intra-cluster Non-IID data can induce client drift, where a local model rapidly overfits to its imbalanced data, deviating significantly from the cluster’s consensus and destabilizing the aggregated centroid model. To counteract this intra-cluster heterogeneity, we in-troduce the novel DRAPR module. Inspired by the fixed proximal term in FedProx, which restricts local updates to remain close to the global model, DRAPR goes a step further by introducing an adaptive mechanism tailored to the real-time heterogeneity of each client within its specific cluster. The modified local objective function for client 𝑘 ∈ (𝑡 ) 
+
+> 𝑚
+
+is formulated as: 
+
+adapt  
+
+> 𝑘
+
+(𝐰 𝑘 ) = 𝐹 𝑘 (𝐰 𝑘 ) + 𝜇 (𝑡 )
+
+> 𝑘
+
+2 ‖𝐰 𝑘 − 𝐰 (𝑡 −1)  
+
+> 𝐶 𝑚 (𝑘 )
+
+‖2, (7) where 𝐹 𝑘 (𝐰 𝑘 ) is the empirical loss on the local dataset 𝑘 ,
+
+𝐰 (𝑡 −1)  
+
+> 𝐶 𝑚 (𝑘 )
+
+is the received centroid model of cluster 𝑚 (𝑘 ) to which client 𝑘 was assigned in the previous round, and 𝜇 (𝑡 ) 
+
+> 𝑘
+
+is the dynamic proximal regularization coefficient.   
+
+> Y.H. Feng et al.: Preprint submitted to Elsevier Page 5 of 13 Tackling Double Heterogeneity in Federated SHM
+
+The core innovation of DRAPR lies in the dynamic com-putation of 𝜇 (𝑡 ) 
+
+> 𝑘
+
+. Rather than applying a uniform constraint across all clients, DRAPR quantifies a Non-IID Intensity Score 𝑆 (𝑡 ) 
+
+> 𝑘
+
+for each client. This score is mathematically derived from two primary sources of local divergence: label imbalance and gradient variation. First, we quantify the structural label imbalance inherent in the client’s local dataset. Let imb 𝑘 denote the label imbal-ance ratio, defined as: imb 𝑘 = 𝜎 𝑘 
+
+𝜈 𝑘 + 𝜖 , (8) where 𝜎 𝑘 and 𝜈 𝑘 represent the standard deviation and the mean of the damage label distribution across the local dataset 𝑘 , respectively, and 𝜖 is a small constant to ensure numerical stability. A higher imb 𝑘 indicates a severely skewed dataset (e.g., predominantly intact images with extremely rare crack samples). Second, we measure the local gradient divergence, which reflects how far the client’s optimization trajectory deviates from the cluster’s collective direction. By combining these two metrics, the comprehensive Non-IID Intensity Score 𝑆 (𝑡 )
+
+> 𝑘
+
+is computed as: 
+
+𝑆 (𝑡 ) 
+
+> 𝑘
+
+= 𝛼 ‖∇𝐹 𝑘 (𝐰 𝑘 ) − ∇ 𝐹 𝐶 𝑚 (𝑘 ) (𝐰 (𝑡 −1)  
+
+> 𝐶 𝑚 (𝑘 )
+
+)‖2 + 𝛽 ⋅ imb 𝑘 , (9) where 𝛼 and 𝛽 are weighting hyperparameters balancing the contribution of gradient divergence and label imbalance. Finally, utilizing the computed score, the dynamic prox-imal coefficient 𝜇 (𝑡 ) 
+
+> 𝑘
+
+for the current communication round is adaptively scaled: 
+
+𝜇 (𝑡 ) 
+
+> 𝑘
+
+= 𝜇 0 ⋅ 𝑆 (𝑡 )
+
+> 𝑘
+
+𝑆 (𝑡 −1)  
+
+> 𝐶 𝑚
+
++ 𝜖 , (10) where 𝜇 0 acts as a base regularization hyperparameter, and 
+
+𝑆 (𝑡 −1)  
+
+> 𝐶 𝑚
+
+is the average Non-IID Intensity Score of all clients assigned to cluster 𝑚 from the previous communication round. To ensure the stability of the optimization process, the calculation of the Non-IID Intensity Score 𝑆 (𝑡 ) 
+
+> 𝑘
+
+is performed at a precise temporal junction. Specifically, immediately af-ter the central server broadcasts the cluster prototype 𝐰 (𝑡 −1) 
+
+> 𝐶 𝑚 (𝑘 )
+
+to client 𝑘 , and prior to the commencement of the 𝐸 local optimization epochs, the client triggers the computation of 𝑆 (𝑡 ) 
+
+> 𝑘
+
+and the subsequent update of 𝜇 (𝑡 ) 
+
+> 𝑘
+
+. This proactive calibration ensures that the regularization intensity is syn-chronized with the initial state of the local model at the start of each communication round, effectively anchoring the entire local optimization trajectory without introducing intra-round fluctuations in the penalty strength. From an infrastructure engineering perspective, this mechanism functions as an intelligent anchor. If a regional node possesses a highly skewed local dataset—for instance, observing only severe corrosion while completely lacking samples of minor cracks—its calculated 𝑆 (𝑡 ) 
+
+> 𝑘
+
+will be notably high. Consequently, Equation (10) will assign a larger regu-larization weight 𝜇 (𝑡 ) 
+
+> 𝑘
+
+, exerting a stronger mathematical pull that prevents the local model from catastrophically forgetting the shared knowledge of minor cracks learned by the cluster centroid. Conversely, clients with well-balanced, representa-tive datasets are granted more flexibility (a lower 𝜇 (𝑡 ) 
+
+> 𝑘
+
+) to fine-tune the model, thereby jointly accelerating convergence and enhancing the generalizability of the cluster expert models. 
+
+3.4. The Unified Framework: Clustered-DRAPR 
+
+Integrating the macro-level dynamic clustering mech-anism with the micro-level DRAPR module, we present the complete Hierarchical Dynamic Region-Adaptive Fed-erated Learning framework, termed Clustered-DRAPR. The workflow seamlessly orchestrates the collaboration between the central server and the distributed infrastructure nodes without requiring any exchange of raw inspection images. A typical communication round 𝑡 within the Clustered-DRAPR framework executes the following four sequential phases: 1. Broadcasting (Server-Side): The central server trans-mits the latest cluster centroid models (𝑡 −1)  
+
+> 𝐶
+
+to their respectively assigned clients based on the clustering results from the previous round. 2. Local DRAPR Optimization (Client-Side): Upon receiving its designated centroid model 𝐰 (𝑡 −1)  
+
+> 𝐶 𝑚 (𝑘 )
+
+, each client 𝑘 evaluates its real-time Non-IID Intensity Score 𝑆 (𝑡 ) 
+
+> 𝑘
+
+locally using Equation (9). Based on this score, the client calculates the dynamic proximal coefficient 𝜇 (𝑡 ) 
+
+> 𝑘
+
+. Subsequently, the client performs 𝐸 
+
+epochs of local training to minimize the adaptive objective function 𝑎𝑑𝑎𝑝𝑡 𝑘 (Equation (7)). The resulting pseudo-gradient Δ𝐰 (𝑡 ) 
+
+> 𝑘
+
+and the intensity score 𝑆 (𝑡 ) 
+
+> 𝑘
+
+are then securely transmitted to the server. 3. Dynamic Clustering (Server-Side): The server col-lects the updates from all participating clients. Using the cosine similarity metric on the pseudo-gradients 
+
+Δ𝐰 (𝑡 ) 
+
+> 𝑘
+
+, the server re-evaluates the structural affinities of the clients and dynamically partitions them into 𝑀 
+
+distinct expert clusters for the current round. 4. Intra-Cluster Aggregation (Server-Side): Within each newly formed cluster 𝑚 , the server performs a weighted aggregation of the local models to update the centroid model 𝐰 (𝑡 ) 
+
+> 𝐶 𝑚
+
+.The complete step-by-step execution logic of the pro-posed framework is formalized in Algorithm 1. It is worth noting that the proposed Clustered-DRAPR framework is highly communication-efficient and computationally lightweight. The dynamic clustering strictly utilizes the pseudo-gradients 
+
+Δ𝐰 (𝑡 ) 
+
+> 𝑘
+
+already required for standard federated aggregation, while the Non-IID Intensity Score 𝑆 (𝑡 ) 
+
+> 𝑘
+
+is a negligible scalar value. Consequently, the framework introduces minimal communication overhead compared to the conventional Fe-dAvg baseline, making it practically viable for deployment   
+
+> Y.H. Feng et al.: Preprint submitted to Elsevier Page 6 of 13 Tackling Double Heterogeneity in Federated SHM
+
+Algorithm 1 The Proposed Clustered-DRAPR Framework 
+
+Require: Set of clients , total communication rounds 𝑇 ,local epochs 𝐸 , learning rate 𝜂 , base regularization weight 𝜇 0, number of clusters 𝑀 .
+
+Ensure: A set of optimized expert cluster models (𝑇 ) 
+
+> 𝐶
+
+={𝐰 (𝑇 ) 
+
+> 𝐶 1
+
+, … , 𝐰 (𝑇 ) 
+
+> 𝐶 𝑀
+
+}. 
+
+> 1:
+
+Server Initialization: Initialize 𝑀 cluster centroid models 𝐰 (0)  
+
+> 𝐶 1
+
+, … , 𝐰 (0)  
+
+> 𝐶 𝑀
+
+. Randomly assign clients to ini-tial clusters.  
+
+> 2:
+
+for each round 𝑡 = 1 , 2, … , 𝑇 do  
+
+> 3:
+
+Server: Broadcast 𝐰 (𝑡 −1)  
+
+> 𝐶 𝑚 (𝑘 )
+
+to each assigned client 𝑘 . 
+
+> 4:
+
+for each client 𝑘 ∈  in parallel do  
+
+> 5:
+
+Compute Non-IID Intensity Score 𝑆 (𝑡 ) 
+
+> 𝑘
+
+based on local label imbalance and gradient divergence.  
+
+> 6:
+
+Compute dynamic coefficient 𝜇 (𝑡 ) 
+
+> 𝑘
+
+= 𝜇 0 ⋅ 𝑆 (𝑡 ) 
+
+> 𝑘
+> 𝑆 (𝑡 −1)
+> 𝐶𝑚 +𝜖
+
+. 
+
+> 7:
+
+Initialize local model: 𝐰 𝑘 ← 𝐰 (𝑡 −1)  
+
+> 𝐶 𝑚 (𝑘 )
+
+. 
+
+> 8:
+
+for local epoch 𝑒 = 1 to 𝐸 do  
+
+> 9:
+
+Compute local adaptive loss 𝑎𝑑𝑎𝑝𝑡 𝑘 using 𝜇 (𝑡 ) 
+
+> 𝑘
+
+. 
+
+> 10:
+
+Update model: 𝐰 𝑘 ← 𝐰 𝑘 − 𝜂 ∇𝑎𝑑𝑎𝑝𝑡 𝑘 (𝐰 𝑘 ). 
+
+> 11:
+
+end for  
+
+> 12:
+
+Calculate local pseudo-gradient: Δ𝐰 (𝑡 ) 
+
+> 𝑘
+
+= 𝐰 𝑘 −
+
+𝐰 (𝑡 −1)  
+
+> 𝐶 𝑚 (𝑘 )
+
+. 
+
+> 13:
+
+Transmit Δ𝐰 (𝑡 ) 
+
+> 𝑘
+
+and 𝑆 (𝑡 ) 
+
+> 𝑘
+
+to the server.  
+
+> 14:
+
+end for  
+
+> 15:
+
+Server:  
+
+> 16:
+
+Compute moving average direction Δ𝐰 (𝑡 ) 
+
+> 𝐶 𝑚
+
+for each cluster.  
+
+> 17:
+
+for each client 𝑘 ∈  do  
+
+> 18:
+
+Assign client 𝑘 to cluster 𝑐 (𝑡 ) 
+
+> 𝑘
+
+: 
+
+> 19:
+
+𝑐 (𝑡 ) 
+
+> 𝑘
+
+= arg max 𝑚 sim (Δ 𝐰 (𝑡 ) 
+
+> 𝑘
+
+, Δ𝐰 (𝑡 ) 
+
+> 𝐶 𝑚
+
+). 
+
+> 20:
+
+end for  
+
+> 21:
+
+for each cluster 𝑚 = 1 to 𝑀 do  
+
+> 22:
+
+Aggregate local models for cluster 𝑚 : 
+
+> 23:
+
+𝐰 (𝑡 ) 
+
+> 𝐶 𝑚
+
+= ∑
+
+> 𝑘 ∈(𝑡 )
+> 𝑚
+> 𝑁 𝑘
+> ∑
+> 𝑗 ∈(𝑡 )
+> 𝑚
+> 𝑁 𝑗
+
+𝐰 (𝑡 ) 
+
+> 𝑘
+
+. 
+
+> 24:
+
+end for  
+
+> 25:
+
+end for 
+
+on edge devices located at remote infrastructure sites with limited bandwidth. 
+
+## 4. Experiments 
+
+To comprehensively evaluate the effectiveness of the proposed Clustered-DRAPR framework, we conduct exten-sive experiments on a real-world, large-scale civil infrastruc-ture dataset. This section details the dataset configuration, evaluation metrics, baseline methods, and implementation specifics. 
+
+4.1. Experimental Setup and Datasets 
+
+Dataset and Client Partitioning: The experiments uti-lize bridge inspection images and corresponding diagnos-tic records spanning from 2019 to 2021, sourced from the Japanese National Road Facility Inspection Database (xROAD) [17]. To simulate a realistic FL scenario char-acterized by physical and statistical heterogeneity, we ge-ographically partition the dataset into nine distinct clients corresponding to major administrative regions in Japan: Hokkaido, Tohoku, Kanto, Hokuriku, Chubu, Kinki, Chugoku, Shikoku, and Kyushu. In strict adherence to the privacy-preserving premise of FL, data is isolated within each region, and no raw images are shared among clients or with the central server. A total of 77,890 damage images were extracted for this study. The task is formulated as a multi-label image classification problem, where each image is annotated with one or more damage types (e.g., crack, corrosion, delamination). Within each of the nine regional clients, the local dataset is randomly split into a training set (90%) and an evaluation set (10%). 
+
+Heterogeneity Settings: To rigorously assess the algo-rithm’s robustness under varying degrees of task complexity and Non-IID intensity, we design two distinct experimental scenarios based on the number of target damage classes (𝑁 𝑐 ): 
+
+• 5-Class Setting ( 𝑁 𝑐 = 5 ): Focuses on the five most prevalent and critical structural defects (Label IDs 01-05: Corrosion, Crack, Exposed Rebar, Delamination, and Deformation). This represents a moderate level of data heterogeneity. 
+
+• 20-Class Setting ( 𝑁 𝑐 = 20 ): Expands the diagnostic scope to include all 20 standardized damage types, in-corporating 15 additional fine-grained and rare defects (e.g., Bearing Dysfunction, Debris Accumulation). This simulates a highly complex and severe Non-IID environment, as these rare damages exhibit extreme regional imbalance. A comprehensive list detailing all 20 damage categories is provided in Appendix A. 
+
+Evaluation Metrics: The classification performance is eval-uated using four standard metrics: Accuracy (Subset Accu-racy for multi-label tasks), Precision, Recall, and the F1-score. Given the inherent class imbalance typical of struc-tural damage datasets, all metrics are computed using a 
+
+weighted average approach. This ensures that the evaluation is not disproportionately skewed by the majority classes, providing a fair assessment of the model’s predictive capa-bility across all damage types. 
+
+Baselines and Implementation Details: To demonstrate the superiority of the proposed Clustered-DRAPR, we bench-mark it against the following state-of-the-art methods: 
+
+• Local Training (Local): Each client trains an inde-pendent model using only its private dataset for 80 epochs, with absolutely no parameter exchange. This serves as the lower-bound baseline reflecting the data silo problem.   
+
+> Y.H. Feng et al.: Preprint submitted to Elsevier Page 7 of 13
+
+Tackling Double Heterogeneity in Federated SHM 
+
+Table 1 
+
+Quantitative evaluation results (Accuracy, Precision, Recall, and F1-score %) for multi-label classification under 5-class and 20-class settings. Results are presented as mean ± standard deviation.                                                                                                                                                                               
+
+> Method Number of Clusters ( 𝑀 )5 Labels ( 𝑁 𝑐 = 5 )20 Labels ( 𝑁 𝑐 = 20 )Accuracy Precision Recall F1 Accuracy Precision Recall F1
+> Local /37 .83 ± 0 .91 64 .79 ± 1 .24 77 .87 ± 3 .37 70 .70 ± 2 .18 41 .44 ± 4 .95 45 .01 ± 5 .97 60 .79 ± 4 .62 51 .72 ± 5 .43
+> FedAvg 1 (no clustering) 61 .89 ± 1 .03 79 .81 ± 0 .42 68 .23 ± 1 .75 72 .53 ± 1 .38 38 .71 ± 3 .12 66 .06 ± 1 .86 44 .65 ± 5 .22 53 .28 ± 3 .94
+> 262 .74 ± 0 .35 79 .90 ± 0 .17 69 .53 ± 0 .29 73 .58 ± 0 .05 39 .24 ± 6 .52 65 .78 ± 1 .36 45 .82 ± 4 .72 54 .01 ± 5 .28
+> 362 .80 ± 0 .26 79 .77 ± 0 .01 69 .93 ± 0 .28 73 .76 ± 0 .21 39 .49 ± 6 .67 64 .63 ± 5 .93 47 .42 ± 3 .05 54 .70 ± 4 .87
+> FedProx 1 (no clustering) 62 .22 ± 0 .25 79 .28 ± 0 .42 69 .75 ± 0 .93 73 .49 ± 0 .36 39 .98 ± 5 .25 65 .90 ± 3 .54 47 .94 ± 4 .43 55 .50 ± 4 .27
+> 262 .35 ± 0 .25 78 .76 ± 0 .01 71 .20 ± 0 .41 74 .31 ± 0 .23 40 .53 ± 1 .92 65 .39 ± 5 .23 49 .26 ± 3 .46 56 .19 ± 1 .05
+> 362 .51 ± 0 .61 78 .19 ± 0 .32 71 .56 ± 0 .33 74 .22 ± 0 .27 40 .69 ± 4 .33 65 .22 ± 5 .25 49 .29 ± 3 .86 56 .15 ± 3 .47
+> SCAFFOLD 1 (no clustering) 63 .43 ± 1 .28 79 .87 ± 1 .31 70 .48 ± 0 .70 74 .13 ± 0 .01 𝟒𝟐 .𝟕𝟕 ±𝟐 .𝟖𝟑 64 .11 ± 2 .97 45 .75 ± 4 .98 53 .40 ± 3 .57
+> 264 .03 ± 1 .66 79 .56 ± 1 .56 71 .62 ± 0 .53 74 .47 ± 0 .21 39 .43 ± 4 .25 65 .57 ± 1 .59 46 .19 ± 3 .86 54 .20 ± 1 .26
+> 363 .69 ± 1 .73 79 .44 ± 1 .26 71 .29 ± 0 .36 74 .62 ± 0 .59 38 .46 ± 8 .84 65 .19 ± 2 .25 45 .64 ± 1 .17 53 .69 ± 4 .45
+> MOON 1 (no clustering) 62 .51 ± 0 .31 76 .62 ± 0 .16 𝟕𝟓 .𝟐𝟔 ±𝟎 .𝟐𝟖 75 .42 ± 0 .06 40 .25 ± 3 .02 64 .79 ± 8 .96 47 .56 ± 3 .44 54 .85 ± 3 .65
+> 262 .77 ± 0 .12 77 .06 ± 0 .22 74 .70 ± 0 .67 75 .46 ± 0 .53 40 .37 ± 1 .35 65 .51 ± 1 .73 47 .68 ± 1 .96 55 .19 ± 1 .57
+> 362 .79 ± 0 .45 77 .02 ± 0 .08 75 .25 ± 0 .40 75 .69 ± 0 .04 42 .30 ± 4 .22 64 .63 ± 1 .96 50 .36 ± 0 .74 56 .61 ± 3 .13
+> IFCA 262 .56 ± 0 .28 79 .39 ± 0 .61 70 .58 ± 0 .93 74 .34 ± 0 .79 40 .70 ± 5 .03 65 .57 ± 2 .26 49 .00 ± 5 .94 56 .09 ± 3 .67
+> 362 .77 ± 0 .00 79 .20 ± 0 .00 70 .94 ± 0 .01 74 .52 ± 0 .46 40 .52 ± 5 .08 65 .47 ± 4 .75 49 .17 ± 3 .97 56 .16 ± 3 .88
+> Ours
+> 1 (no clustering) 66 .44 ± 1 .97 77 .28 ± 3 .25 74 .58 ± 2 .18 75 .61 ± 0 .08 40 .30 ± 3 .43 65 .75 ± 5 .54 48 .23 ± 5 .89 55 .64 ± 3 .68
+> 263 .95 ± 2 .23 𝟖𝟎 .𝟔𝟖 ±𝟎 .𝟖𝟖 72 .23 ± 1 .51 75 .95 ± 0 .18 40 .74 ± 3 .17 67 .50 ± 2 .04 51 .92 ± 1 .72 58 .69 ± 2 .75
+> 3𝟔𝟔 .𝟗𝟓 ±𝟏 .𝟖𝟎 80 .38 ± 0 .21 74 .06 ± 0 .86 𝟕𝟔 .𝟖𝟓 ±𝟎 .𝟗𝟏 40 .66 ± 1 .75 𝟔𝟖 .𝟏𝟏 ±𝟐 .𝟓𝟕 𝟓𝟐 .𝟏𝟑 ±𝟐 .𝟔𝟐 𝟓𝟗 .𝟎𝟔 ±𝟐 .𝟓𝟏
+
+• FedAvg [27]: The standard FL baseline utilizing un-constrained local updates and a single global model. 
+
+• FedProx [43]: A regularization-based FL method ap-plying a fixed proximal term to mitigate client drift. 
+
+• SCAFFOLD [16]: An optimization-based FL method that utilizes control variates to correct gradient drift. 
+
+• MOON [20]: A contrastive learning-based FL method designed to align image features across clients. 
+
+• IFCA [12]: A representative clustered FL algorithm that groups clients iteratively but lacks intra-cluster dynamic regularization. For all FL methods, the backbone architecture for the lo-cal models is ResNet-18. The global communication rounds are set to 𝑇 = 20 , and the number of local training epochs per round is 𝐸 = 4 . For all FL scenarios, we investigate the influence of the number of clusters by setting 𝑀 ∈ {1 , 2, 3} .The configuration 𝑀 = 1 corresponds to a non-clustered baseline, equivalent to standard global aggregation. It should be noted that as IFCA is an inherently cluster-based algo-rithm designed to partition clients, it is only evaluated under 
+
+𝑀 = 2 and 𝑀 = 3 settings, whereas other baselines and the proposed Clustered-DRAPR are verified across all values of 𝑀 to demonstrate their adaptability. For FedProx and our proposed method, the base proximal regularization hyperparameter is empirically set to 𝜇 0 = 0 .001 . All models are optimized using Stochastic Gradient Descent (SGD) with a uniform learning rate. 
+
+4.2. Quantitative Results and Analysis 
+
+Table 1 presents a comprehensive quantitative compar-ison between the proposed Clustered-DRAPR framework and five state-of-the-art FL baselines across both the 5-label ( 𝑁 𝑐 = 5 ) and 20-label ( 𝑁 𝑐 = 20 ) structural damage classification tasks. Under the moderately heterogeneous 5-class setting, traditional methods like SCAFFOLD and IFCA show reasonable performance, but the proposed framework consistently outperforms all baselines across all evaluated metrics. The performance gap widens drastically under the extreme “double heterogeneity" of the 20-class setting. As the label distribution becomes severely skewed and the phys-ical divergence between clients intensifies, baseline methods suffer from severe client drift and catastrophic forgetting, ev-idenced by a sharp decline in their predictive capabilities. In contrast, Clustered-DRAPR maintains exceptional robust-ness and yields a clear margin of superiority, unequivocally demonstrating its capability to handle complex, real-world infrastructural data heterogeneity. To further evaluate the training efficiency and algo-rithmic stability, Figure 2 traces the F1-score progression of the models over 20 communication rounds under the 5-class setting. The learning curves clearly illustrate that the proposed framework (Ours) achieves faster convergence and maintains a higher, more stable performance plateau in both local model adaptation (Figure 2a) and global model generalization (Figure 2b). By adaptively calibrating the proximal penalty based on real-time skewness, Clustered-DRAPR effectively mitigates the severe intra-round per-formance fluctuations that frequently destabilize standard methods like FedAvg and FedProx. 
+
+Y.H. Feng et al.: Preprint submitted to Elsevier Page 8 of 13 Tackling Double Heterogeneity in Federated SHM 
+
+Table 2 
+
+Ablation study results verifying the individual contributions of the macro-level dynamic clustering ( 𝑀 ) and the micro-level DRAPR module.                                                                             
+
+> Method Configuration Number of Clusters ( 𝑀 )5 Labels ( 𝑁 𝑐 = 5 )20 Labels ( 𝑁 𝑐 = 20 )Accuracy Precision Recall F1 Accuracy Precision Recall F1
+> w/o DRAPR 1 (no clustering) 62 .16 ± 0 .43 76 .34 ± 0 .42 68 .85 ± 0 .86 72 .40 ± 0 .36 39 .79 ± 5 .33 63 .84 ± 3 .45 46 .64 ± 4 .82 53 .90 ± 4 .27
+> 262 .62 ± 0 .25 76 .87 ± 0 .14 72 .03 ± 0 .41 74 .37 ± 0 .23 40 .23 ± 1 .99 64 .39 ± 5 .18 47 .46 ± 3 .49 54 .64 ± 1 .05
+> 362 .57 ± 0 .61 76 .72 ± 0 .28 71 .71 ± 0 .47 74 .13 ± 0 .27 40 .59 ± 4 .43 64 .92 ± 5 .14 47 .78 ± 3 .72 55 .05 ± 3 .47
+> w/ DRAPR (Ours)
+> 1 (no clustering) 66 .44 ± 1 .97 77 .28 ± 3 .25 𝟕𝟒 .𝟓𝟖 ±𝟐 .𝟏𝟖 75 .61 ± 0 .08 40 .30 ± 3 .43 65 .75 ± 5 .54 48 .23 ± 5 .89 55 .64 ± 3 .68
+> 263 .95 ± 2 .23 𝟖𝟎 .𝟔𝟖 ±𝟎 .𝟖𝟖 72 .23 ± 1 .51 75 .95 ± 0 .08 𝟒𝟎 .𝟕𝟒 ±𝟑 .𝟏𝟕 67 .50 ± 2 .04 51 .92 ± 1 .72 58 .69 ± 2 .75
+> 3𝟔𝟔 .𝟗𝟓 ±𝟏 .𝟖𝟎 80 .38 ± 0 .21 74 .06 ± 0 .86 𝟕𝟔 .𝟖𝟓 ±𝟎 .𝟗𝟏 40 .66 ± 1 .75 𝟔𝟖 .𝟏𝟏 ±𝟐 .𝟓𝟕 𝟓𝟐 .𝟏𝟑 ±𝟐 .𝟔𝟐 𝟓𝟗 .𝟎𝟔 ±𝟐 .𝟓𝟏
+
+Figure 2: Learning curves illustrating the F1-score progression of various FL methods over 20 communication rounds under the 5-class setting. (a) Local model performance prior to server aggregation. (b) Global model performance after aggregation. The proposed Clustered-DRAPR framework (Ours) demonstrates faster convergence and superior stability in both local adaptation and global generalization compared to all baselines, effectively mitigating performance fluctuations caused by client drift. 
+
+Finally, a dedicated ablation study was conducted to rigorously validate the individual contributions of the two core architectural modules: the macro-level dynamic cluster-ing and the micro-level dynamic region-adaptive proximal regularization. As detailed in Table 2, eliminating the macro-clustering mechanism (i.e., setting 𝑀 = 1 ) forces all struc-turally diverse clients to optimize toward a single, general-ized global model. This non-clustered configuration results in a noticeable performance degradation compared to clus-tered arrangements ( 𝑀 > 1), particularly when handling the complex 20-class scenario. This phenomenon confirms the fundamental necessity of macro-level clustering; micro-level regularization alone is insufficient to overcome inher-ent macroscopic physical divergence. Conversely, disabling the micro-level regularization (w/o DRAPR) under clustered settings degrades the intra-cluster optimization, leading to a consistent drop in overall metrics. This confirms that without the dynamic, 𝑆 (𝑡 ) 
+
+> 𝑘
+
+-driven penalty, the framework cannot ade-quately suppress local drift caused by microscopic statistical imbalance. Consequently, the ablation analysis conclusively demonstrates that neither component functions optimally in isolation; it is the synergistic, hierarchical integration of both mechanisms that establishes the framework’s state-of-the-art robustness. 
+
+4.3. Qualitative Evaluation and Visualization 
+
+To provide a comprehensive understanding of the frame-work’s diagnostic capabilities and internal mechanisms, we present a dual-perspective qualitative evaluation focusing on both micro-level prediction accuracy and macro-level clustering interpretability. First, Figure 3 illustrates the multi-label classification results on complex real-world structural images. To facilitate a clear visual comparison, predictions are encoded using functional tags: correctly identified damages (true positives) are marked in green, missed underlying defects (catastrophic forgetting/false negatives) are denoted by orange tags with a strikethrough, and hallucinated predictions (client drift/false positives) are highlighted in red. The visualizations explic-itly reveal that traditional FL baselines frequently suffer from catastrophic forgetting (failing to detect co-occurring damages like "Deformation" or "Delamination") and over-fit to local majority classes (hallucinating damages like "Crack"). In stark contrast, the proposed Clustered-DRAPR framework precisely identifies the complete set of ground truth labels without triggering any erroneous predictions, confirming that the 𝑆 (𝑡 ) 
+
+> 𝑘
+
+-driven regularization effectively preserves minority class knowledge and suppresses local-ized noise. 
+
+Y.H. Feng et al.: Preprint submitted to Elsevier Page 9 of 13 Tackling Double Heterogeneity in Federated SHM  
+
+> Figure 3: Qualitative comparison of multi-label structural damage classification across various FL baselines. To enhance visual clarity, predictions are presented as functional tags: correctly predicted damages (true positives) are highlighted in green with a checkmark, missed underlying damages (false negatives) are indicated in orange with a strikethrough, and hallucinated predictions (false positives) are flagged in red with a cross. Compared to traditional methods that suffer from severe client drift—leading to both missing critical defects and generating false alarms—the proposed Clustered-DRAPR framework (Ours) precisely identifies the complete set of ground truth labels without any erroneous predictions.
+
+Furthermore, the qualitative superiority and interpretabil-ity of the framework are corroborated by analyzing its macro-level clustering behavior. Figure 4 visualizes the geographical distribution of the dynamically formed client clusters at communication round 20. Despite receiving no prior geographical or climatic metadata, the algorithm organically partitions the nine Japanese regional clients into distinct groups based solely on the cosine similarity of their local gradient updates. Under the 𝑀 = 2 setting (Figure 4 (a)), the framework effectively separates the regions into two broad groups. More notably, under the optimal 𝑀 = 3 
+
+setting (Figure 4 (b)), the clustering resolves into three distinct spatial groups: Cluster 0 (Hokkaido, Tohoku, and Hokuriku), Cluster 1 (Kanto, Kinki, and Chugoku), and Cluster 2 (Chubu, Shikoku, and Kyushu). This organic geographical alignment powerfully demonstrates that the gradient-matching strategy successfully captures the under-lying data distribution patterns driven by diverse physical environments. Together, the precise image-level predictions and the highly interpretable spatial clustering visually con-firm that the synergistic integration of macro-clustering and micro-regularization successfully neutralizes the double heterogeneity in large-scale infrastructure monitoring. 
+
+## 5. Discussion 
+
+The proposed Clustered-DRAPR framework demon-strates a highly effective approach to overcoming the “double heterogeneity" inherent in nationwide structural health mon-itoring (SHM). A profound finding of this research lies in the behavior of the macro-level dynamic clustering mechanism. Without utilizing any prior geographical or environmental metadata, the algorithm organically identified latent physical degradation patterns, successfully grouping clients into clusters that impeccably mirror real-world macro-climatic zones in Japan. This indicates that aggregating clients based on model update trajectories successfully encapsulate under-lying infrastructural degradation patterns driven by physical environments. Furthermore, the success of the framework highlights the critical necessity of micro-level interventions. The DRAPR module acts as a localized stabilizer. By dynamically com-puting a Non-IID Intensity Score based on label skewness and gradient divergence, DRAPR adaptively penalizes local client drift. This mechanism successfully neutralizes intra-cluster statistical imbalances and prevents the catastrophic forgetting of minority damage classes, which is a pervasive issue in standard FL deployments for infrastructure inspec-tion. While the current framework presents a robust solution for vision-based SHM, certain limitations provide avenues for future exploration. First, the present study assumes syn-chronous communication rounds. In real-world edge de-ployments—such as remote bridges with unstable network connectivity—an asynchronous FL aggregation scheme may be required to prevent straggler bottlenecks. Second, while this research focused exclusively on 2D inspection imagery, future work will aim to extend the Clustered-DRAPR frame-work into a multi-modal FL system. Integrating computer vision with continuous time-series sensor data (e.g., vibra-tions and strains) will be crucial to achieving a more compre-hensive, digital-twin-driven prognostic health management system for civil infrastructure. 
+
+## 6. Conclusion 
+
+The decentralized nature of modern SHM, coupled with stringent data privacy regulations, has necessitated a paradigm shift from centralized data aggregation to dis-tributed machine learning. However, deploying FL across              
+
+> Y.H. Feng et al.: Preprint submitted to Elsevier Page 10 of 13 Tackling Double Heterogeneity in Federated SHM
+> (a) Dynamic clustering result with 𝑀 = 2 (b) Dynamic clustering result with 𝑀 = 3
+> Figure 4: Geographical visualization of the dynamically formed client clusters at communication round 20. The proposed framework aggregates clients based solely on the cosine similarity of their local model updates (gradients) without any prior geographical metadata. (a) Under the 𝑀 = 2 setting, the algorithm partitions the regional clients into two broad groups. (b) Under the 𝑀 = 3
+> setting, the clustering resolves into three distinct groups. This geographical alignment confirms that the gradient-matching strategy successfully captures underlying data distribution patterns.
+
+nationwide infrastructure networks reveals a critical bottle-neck: the “double heterogeneity" characterized by macro-level physical divergence and micro-level statistical im-balance. To surmount this challenge, this paper proposed 
+
+Clustered-DRAPR , a novel hierarchical FL framework specifically engineered for large-scale, privacy-preserving infrastructure inspection. By orchestrating a two-tier optimization strategy, the proposed framework successfully decouples the complex Non-IID problem through gradient-based dynamic clus-tering at the macro-level and DRAPR at the micro-level. Extensive experiments utilizing 77,890 authentic inspec-tion records from the Japanese national xROAD database demonstrated the unequivocal superiority of the proposed framework. In multi-label classification tasks encompassing up to 20 distinct structural damage types, Clustered-DRAPR consistently outperformed state-of-the-art baselines (includ-ing FedProx, SCAFFOLD, MOON, and IFCA) in terms of accuracy, precision, recall, and F1-score. Qualitative evaluations further confirmed its exceptional capability to minimize both false negatives and false positives in com-plex, real-world inspection imagery. Ultimately, the ablation analysis verified that the synergistic integration of both the macro-clustering and micro-regularization modules is indis-pensable for achieving optimal performance under extreme heterogeneity, paving the way for reliable and scalable AI-driven infrastructure maintenance. 
+
+## A. List of Structural Damage Labels 
+
+Table 3 details the comprehensive list of 20 structural damage categories evaluated in the multi-label classification tasks. These categories are derived from the standardized bridge inspection protocols of the Japanese National Road Facility Inspection Database (xROAD). 
+
+## A. Declaration of generative AI and AI-assisted technologies in the manuscript preparation process 
+
+During the preparation of this work the author(s) used Gemini in order to proofread and polish the English phrasing of the manuscript. After using this tool/service, the author(s) reviewed and edited the content as needed and take(s) full responsibility for the content of the published article. 
+
+## CRediT authorship contribution statement 
+
+Yuhu Feng: Conceptualization, Methodology, Soft-ware, Data curation, Writing - Original Draft. Keisuke Maeda: Conceptualization, Supervision, Writing - Review & Editing, Funding acquisition. Takahiro Ogawa: Super-vision, Writing - Review & Editing, Project administration, Funding acquisition. Miki Haseyama: Supervision, Fund-ing acquisition, Resources.   
+
+> Y.H. Feng et al.: Preprint submitted to Elsevier Page 11 of 13
+
+Tackling Double Heterogeneity in Federated SHM 
+
+Table 3 
+
+Comprehensive list of 20 structural damage labels used in the experiments. 
+
+Label ID Damage Category 
+
+01 Corrosion 02 Crack 03 Exposed Rebar 04 Delamination 05 Deformation 06 Efflorescence 07 Puddling 08 Pavement Abnormality 09 Fissure 10 Surface Irregularity 11 Debris Accumulation 12 Coating Deterioration 13 Deck Slab Cracking 14 Loose 15 Breakage 16 Damage to Reinforcement Materials 17 Deterioration 18 Bearing Dysfunction 19 Anchorage Abnormality 20 Settlement / Movement / Tilting 
+
+## References 
+
+[1] Anaissi, A., Suleiman, B., Alyassine, W., 2023. Personalised fed-erated learning framework for damage detection in structural health monitoring. Journal of Civil Structural Health Monitoring 13, 295– 308. [2] Anaissi, A., Suleiman, B., Naji, M., 2021. Intelligent structural damage detection: a federated learning approach, in: International Symposium on Intelligent Data Analysis, pp. 155–170. [3] Bao, Y., Chen, Z., Wei, S., Xu, Y., Tang, Z., Li, H., 2019. The state of the art of data science and engineering in structural health monitoring. Engineering 5, 234–242. [4] Briggs, C., Fan, Z., Andras, P., 2020. Federated learning with hierarchical clustering of local updates to improve training on non-iid data, in: 2020 international joint conference on neural networks (IJCNN), pp. 1–9. [5] Catbas, F.N., Susoy, M., Frangopol, D.M., 2008. Structural health monitoring and reliability estimation: Long span truss bridge appli-cation with environmental monitoring data. Engineering structures 30, 2347–2359. [6] Cheema, M.A., Sarwar, M.Z., Cantero, D., Rossi, P.S., 2025. Clus-tered federated learning for population-based structural health moni-toring. IEEE Internet of Things Journal . [7] Chen, J., Xue, J., Wang, Y., Liu, Z., Huang, L., 2024. Classifier clus-tering and feature alignment for federated learning under distributed concept drift. Advances in Neural Information Processing Systems 37, 81360–81388. [8] Chun, P.J., Yamane, T., Maemura, Y., 2022. A deep learning-based image captioning method to automatically generate comprehensive explanations of bridge damage. Computer-Aided Civil and Infras-tructure Engineering 37, 1387–1401. [9] Cowlishaw, R., Longépé, N., Riccardi, A., 2025. Balancing centrali-sation and decentralisation in federated learning for earth observation-based agricultural predictions. Scientific Reports 15, 10454. [10] El-Din Hemdan, E., Al-Atroush, M., 2025. A review study of intel-ligent road crack detection: Algorithms and systems. International Journal of Pavement Research and Technology , 1–31. [11] Farrar, C.R., Worden, K., 2007. An introduction to structural health monitoring. Philosophical Transactions of the Royal Society A: Mathematical, Physical and Engineering Sciences 365, 303–315. [12] Ghosh, A., Chung, J., Yin, D., Ramchandran, K., 2020. An efficient framework for clustered federated learning. Advances in neural information processing systems 33, 19586–19597. [13] Jia, J., Li, Y., 2023. Deep learning for structural health monitoring: Data, algorithms, applications, challenges, and trends. Sensors 23, 8824. [14] Jothimurugesan, E., Hsieh, K., Wang, J., Joshi, G., Gibbons, P.B., 2023. Federated learning under distributed concept drift, in: Interna-tional Conference on Artificial Intelligence and Statistics, pp. 5834– 5853. [15] Kairouz, P., McMahan, H.B., 2021. Advances and open problems in federated learning. Foundations and trends in machine learning 14, 1–210. [16] Karimireddy, S.P., Kale, S., Mohri, M., Reddi, S., Stich, S., Suresh, A.T., 2020. Scaffold: Stochastic controlled averaging for federated learning, in: International conference on machine learning, pp. 5132– 5143. [17] Ministry of Land, Infrastructure, T., Tourism, . National road struc-ture inspection database, https://road-structures-db.mlit.go.jp . [18] Lehman, M., 2022. The american society of civil engineers’ report card on america’s infrastructure, in: Women in infrastructure, pp. 5– 21. [19] Li, L., Fan, Y., Tse, M., Lin, K.Y., 2020a. A review of applications in federated learning. Computers & Industrial Engineering 149, 106854. [20] Li, Q., He, B., Song, D., 2021. Model-contrastive federated learning, in: Proceedings of the conference on Computer Vision and Pattern Recognition, pp. 10713–10722. [21] Li, T., Sahu, A.K., Zaheer, M., Sanjabi, M., Talwalkar, A., Smith, V., 2020b. Federated optimization in heterogeneous networks. Proceed-ings of Machine learning and systems 2, 429–450. [22] Lu, Z., Pan, H., Dai, Y., Si, X., Zhang, Y., 2024. Federated learning with non-iid data: A survey. IEEE Internet of Things Journal 11, 19188–19209. [23] Maeda, K., Ogawa, N., Ogawa, T., Haseyama, M., 2024. Damage-level classification considering both correlation between image and text data and confidence of attention map. Computer-Aided Civil and Infrastructure Engineering 40, 764–781. [24] Maeda, K., Takahashi, S., Ogawa, T., Haseyama, M., 2019. Con-volutional sparse coding-based deep random vector functional link network for distress classification of road structures. Computer-Aided Civil and Infrastructure Engineering 34, 654–676. [25] Maharjan, S., Chun, P.j., 2026. A large language model-driven frame-work for automated bridge specification generation and simulation validation. Computer-Aided Civil and Infrastructure Engineering , 100014. [26] Mayakannan, S., Krishnamurthy, N., Devi, K.V., Deepalakshmi, R., Rani, S., Jose, A.A., 2023. Navigating the complexity of macro-tasks: Federated learning as a catalyst for effective crowd coordination, in: Handbook on Federated Learning, pp. 308–332. [27] McMahan, B., Moore, E., Ramage, D., Hampson, S., y Arcas, B.A., 2017. Communication-efficient learning of deep networks from decentralized data, in: Artificial intelligence and statistics, pp. 1273– 1282. [28] Mohammadi, S., Sattarpanah Karganroudi, S., Rahmanian, V., 2024. Advancements in smart nondestructive evaluation of industrial ma-chines: A comprehensive review of computer vision and ai techniques for infrastructure maintenance. Machines 13, 11. [29] Moroto, Y., Maeda, K., Ogawa, T., Haseyama, M., 2024. Snow- or ice-covered road detection in winter road surface conditions using deep neural networks. Computer-Aided Civil and Infrastructure Engineering 39, 2935–2950. 
+
+Y.H. Feng et al.: Preprint submitted to Elsevier Page 12 of 13 Tackling Double Heterogeneity in Federated SHM 
+
+[30] Moshawrab, M., Adda, M., Bouzouane, A., Ibrahim, H., Raad, A., 2023. Reviewing federated learning aggregation algorithms; strate-gies, contributions, limitations and future perspectives. Electronics 12, 2287. [31] Pan, Y., 2025. A study on the application of artificial intelligence in digital twin monitoring of building structural health, in: Proceedings of the 2025 International Conference on Artificial Intelligence and Smart Manufacturing, pp. 833–837. [32] Payawal, J.M.G., Kim, D.K., 2023. Image-based structural health monitoring: A systematic review. Applied Sciences 13, 968. [33] Pillutla, K., Kakade, S.M., Harchaoui, Z., 2022. Robust aggregation for federated learning. IEEE Transactions on Signal Processing 70, 1142–1154. [34] Plevris, V., Papazafeiropoulos, G., 2024. Ai in structural health monitoring for infrastructure maintenance and safety. Infrastructures 9, 225. [35] Qin, D., Wang, C., Wen, Q., Chen, W., Sun, L., Wang, Y., 2023. Per-sonalized federated darts for electricity load forecasting of individual buildings. IEEE Transactions on Smart Grid 14, 4888–4901. [36] Sattler, F., Müller, K.R., Samek, W., 2020. Clustered federated learn-ing: Model-agnostic distributed multitask optimization under privacy constraints. IEEE transactions on neural networks and learning systems 32, 3710–3722. [37] Scarselli, G., Nicassio, F., 2025. Machine learning for structural health monitoring of aerospace structures: A review. Sensors 25, 6136. [38] Sohn, H., Farrar, C.R., Hemez, F.M., Shunk, D.D., Stinemates, D.W., Nadler, B.R., Czarnecki, J.J., 2003. A review of structural health monitoring literature: 1996–2001. Los Alamos National Laboratory, USA 1, 10–12989. [39] Yamane, T., Chun, P.j., Dang, J., Honda, R., 2023. Recording of bridge damage areas by 3d integration of multiple images and reduction of the variability in detected results. Computer-Aided Civil and Infrastructure Engineering 38, 2391–2407. [40] YANG, Y., LIN, H., QIAN, G., HU, Z., TODD, M.D., 2025. Aprivacy-preserving framework using federated learning for structural health monitoring with miter gates application. STRUCTURAL HEALTH MONITORING 2025 . [41] Zhang, C., Xie, Y., Bai, H., Yu, B., Li, W., Gao, Y., 2021. A survey on federated learning. Knowledge-Based Systems 216, 106775. [42] Zhang, H., Shen, Z., Lin, Z., Quan, L., Sun, L., 2024. Deep learning-based automatic classification of three-level surface information in bridge inspection. Computer-Aided Civil and Infrastructure Engineer-ing 39, 1431–1451. [43] Zhao, Y., Li, M., Lai, L., Suda, N., Civin, D., Chandra, V., 2018. Fed-erated learning with non-iid data. arXiv preprint arXiv:1806.00582 .
+
+(Graduate Student Member,IEEE) received the B.S. degree in Communication Engineering from Central South University, China, in 2020, and the M.S. degree in Information Science from Hokkaido University, Japan, in 2024. He is cur-rently pursuing a Ph.D. degree with the Graduate School of Information Science and Technology at Hokkaido University. His research interests in-clude image tetrieval and federated learning. 
+
+(Member, IEEE) received the B.S., M.S., and Ph.D. degrees in electronics and information engi-neering from Hokkaido University, Japan, in 2015, 2017, and 2019, respectively. He is currently an Assistant Professor with the Faculty of Information Science and Technology, Hokkaido University. His research interests include multimodal signal pro-cessing, machine learning and its applications. He was a TPC Member of IEEE GCCE2019. He is a member of IEICE. He was the Organized Session Co-Chair of IEEE GCCE2020. 
+
+(Senior Member, IEEE) received the B.S., M.S., and Ph.D. degrees in electronics and information engineering from Hokkaido University, Japan, in 2003, 2005, and 2007, respectively. He joined the Graduate School of Information Science and Technology, Hokkaido University, in 2008. He is currently a Professor with the Faculty of Informa-tion Science and Technology, Hokkaido Univer-sity. His research interests include artificial intelli-gence, the Internet of Things, and big data analysis for multimedia signal processing and its applica-tions. He has been the Special Session Chair of IEEE ISCE2009, the Doctoral Symposium Chair of ACM ICMR2018, the Organized Session Chair of IEEE GCCE2017-2019, the TPC Vice Chair of IEEE GCCE2018, and the Conference Chair of IEEE GCCE2019. He has also been an Associate Editor of ITE Transactions on Media Technology and Applications. He is a member of ACM, IEICE, and ITE. 
+
+(Senior Member, IEEE) received the B.S., M.S., and Ph.D. degrees in electronics from Hokkaido University, Japan, in 1986, 1988, and 1993, respec-tively. She joined the Graduate School of Informa-tion Science and Technology, Hokkaido Univer-sity, as an Associate Professor, in 1994. She was a Visiting Associate Professor with Washington Uni-versity, USA, from 1995 to 1996. She is currently a Professor with the Faculty of Information Sci-ence and Technology, Hokkaido University. Her research interests include image and video process-ing and its development into semantic analysis. She is a fellow of ITE and a member of IEICE and ASJ. She has been the Vice-President of the Institute of Image Information and Television Engineers, Japan (ITE); an Editor-in-Chief of ITE Transac-tions on Media Technology and Applications; the Director of International Coordination and Public-ity at the Institute of Electronics, Information and Communication Engineers (IEICE). 
+
+Y.H. Feng et al.: Preprint submitted to Elsevier Page 13 of 13

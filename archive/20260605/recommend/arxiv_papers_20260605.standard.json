@@ -1,0 +1,614 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-05T21:29:28.322021+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 6,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 9,
+    "quick_skim_target": 11,
+    "quick_selected": 9
+  },
+  "deep_dive": [
+    {
+      "id": "2605.31177v1",
+      "source": "arxiv",
+      "title": "Vanilla ViT for Automotive Point Cloud Semantic Segmentation",
+      "abstract": "Plain Transformers have become the de-facto architecture for processing text, audio, image, and video, offering a unified backbone for multimodal learning. However, state-of-the-art architectures for point cloud semantic segmentation remain dominated by U-Nets architectures where convolutions are interleaved with local or windowed attentions. In this work, we show how to effectively leverage vanilla, non-hierarchical ViTs for segmentation of large-scale automotive lidar scenes. We bridge the performance gap thanks to a carefully designed tokenizer, a lightweight decoder segmentation head, and tailored data augmentations. Our approach, VaViT for Vanilla ViT, matches or exceeds the performance of state-of-the-art methods while maintaining the simplicity of ViT architecture. We provide extensive evaluations on nuScenes, SemanticKITTI, and Waymo Open Dataset to validate the efficiency of our method. Code and models are available at https://github.com/valeoai/VaViT.",
+      "authors": [
+        "Gilles Puy",
+        "Nermin Samet",
+        "Alexandre Boulch",
+        "Spyros Gidaris",
+        "Tuan-Hung VU",
+        "Renaud Marlet"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-29T11:47:02+00:00",
+      "link": "https://arxiv.org/pdf/2605.31177v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "point cloud semantic segmentation using vanilla ViT for automotive lidar scenes, directly transferable to urban environments",
+      "llm_evidence_cn": "基于标准ViT的汽车LiDAR点云语义分割，方法可直接迁移至城市环境",
+      "llm_evidence": "基于标准ViT的汽车LiDAR点云语义分割，方法可直接迁移至城市环境",
+      "canonical_evidence": "基于标准ViT的汽车LiDAR点云语义分割，方法可直接迁移至城市环境",
+      "llm_tldr_en": "Proposes VaViT, a vanilla ViT for point cloud semantic segmentation on lidar scenes, achieving SOTA while maintaining simplicity; directly relevant to semantic segmentation of urban point clouds.",
+      "llm_tldr_cn": "该论文针对点云语义分割中主流U-Net架构复杂的问题，提出使用标准非层次化ViT（VaViT）处理大规模汽车LiDAR场景。通过精心设计的分词器、轻量化解码头和增强策略，在多个自动驾驶基准上达到或超越当前最优方法。该工作证明了纯Transformer在点云分割中的有效性，可灵活迁移至建筑、基础设施等城市环境点云场景理解任务。",
+      "llm_tldr": "该论文针对点云语义分割中主流U-Net架构复杂的问题，提出使用标准非层次化ViT（VaViT）处理大规模汽车LiDAR场景。通过精心设计的分词器、轻量化解码头和增强策略，在多个自动驾驶基准上达到或超越当前最优方法。该工作证明了纯Transformer在点云分割中的有效性，可灵活迁移至建筑、基础设施等城市环境点云场景理解任务。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.29250v1",
+      "source": "arxiv",
+      "title": "OmniRetrieval: Unified Retrieval across Heterogeneous Knowledge Sources",
+      "abstract": "Real-world information needs require access to structurally diverse knowledge sources, from unstructured text and relational tables to knowledge graphs and property graphs. Existing retrievers, however, operate over one source at a time under a fixed query language, leaving the broader landscape of available knowledge fragmented behind incompatible interfaces. A natural attempt at unification would collapse these sources into a shared space, but this erases the structural affordances (such as schemas, ontologies, compositional operators) that give each source its expressive power. Effective retrieval over diverse knowledge, therefore, requires not homogenization but an overarching layer that meets each source on its own terms. To achieve this, we present OmniRetrieval, a framework that takes any natural-language query, identifies appropriate knowledge sources, and dispatches source-native queries to their native execution engines. Across an extensive benchmark spanning 13 datasets and 309 distinct knowledge bases over text, relational, and graph-structured sources, OmniRetrieval exceeds single-source baselines, demonstrating that it can serve as a general-purpose interface to the heterogeneous sources while preserving the structural distinctions that make each source valuable.",
+      "authors": [
+        "Jinheon Baek",
+        "Soyeong Jeong",
+        "Sangwoo Park",
+        "Woongyeong Yeo",
+        "Minki Kang",
+        "Patara Trirat",
+        "Heejun Lee",
+        "Sung Ju Hwang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.IR",
+        "cs.LG"
+      ],
+      "published": "2026-05-28T02:10:35+00:00",
+      "link": "https://arxiv.org/pdf/2605.29250v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "unified retrieval across heterogeneous knowledge sources (text, tables, knowledge graphs); provides overarching layer for data integration",
+      "llm_evidence_cn": "跨异构知识源（文本、表格、知识图谱）的统一检索，为数据集成提供通用层",
+      "llm_evidence": "跨异构知识源（文本、表格、知识图谱）的统一检索，为数据集成提供通用层",
+      "canonical_evidence": "跨异构知识源（文本、表格、知识图谱）的统一检索，为数据集成提供通用层",
+      "llm_tldr_en": "Accessing structurally diverse knowledge sources is fragmented. OmniRetrieval proposes a unified retrieval layer that respects each source's structure (schemas, ontologies) instead of homogenizing them, enabling cross-source retrieval without losing expressive power.",
+      "llm_tldr_cn": "现有检索器只能处理单一知识源，跨结构异构的知识集成困难。本文提出OmniRetrieval，不是将异构源统一到一个空间，而是构建一个上层检索层，尊重每个源的结构特性（模式、本体等），从而在不损失表达力的情况下实现跨源检索。这为智慧城市中多源异构数据（如BIM、GIS、文档）的统一访问提供了关键方法论。",
+      "llm_tldr": "现有检索器只能处理单一知识源，跨结构异构的知识集成困难。本文提出OmniRetrieval，不是将异构源统一到一个空间，而是构建一个上层检索层，尊重每个源的结构特性（模式、本体等），从而在不损失表达力的情况下实现跨源检索。这为智慧城市中多源异构数据（如BIM、GIS、文档）的统一访问提供了关键方法论。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing unified data standards and semantic data models for integrating heterogeneous smart city construction data, including BIM, GIS, documents, images, videos, point clouds, and structured databases.",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.00991v1",
+      "source": "arxiv",
+      "title": "Large Language Models in Transportation Systems Management and Operations: From Text Reasoning to Multi-modal Decision Support",
+      "abstract": "Transportation systems management and operations (TSMO) increasingly depends on timely interpretation of heterogeneous data, from various sensor streams, incident reports, traveler feedback, and visual observations. Large language models (LLMs), including emerging multi-modal large language models (MM-LLMs), provide a new mechanism for integrating these structured and unstructured inputs into operator-facing decision support. This survey paper reviews LLM- and MM-LLM-based applications in TSMO across three domains: transportation operations & services (supply), mobility & fleet services (demand), and data, modeling & decision support. Using a PRISMA-guided screening process, we synthesize current studies while distinguishing operationally oriented applications from prototype and emerging concepts. We further identify recurring challenges in data heterogeneity, real-time inference, explainability, multi-modal fusion, and governance. Finally, we outline existing gaps and future directions in localized adaptation, edge deployment, benchmarking, and cross-agency collaboration. Overall, LLM-based systems appear most promising as a decision-support layer, with MM-LLMs offering particular value when heterogeneous text, visual, and sensor inputs must be integrated.",
+      "authors": [
+        "Siyan Li",
+        "Zehao Wang",
+        "Jiachen Li",
+        "Kanok Boriboonsomsin",
+        "Matthew J. Barth",
+        "Guoyuan Wu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-05-31T04:15:30+00:00",
+      "link": "https://arxiv.org/pdf/2606.00991v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "reviews LLMs for integrating heterogeneous data in transportation systems management",
+      "llm_evidence_cn": "综述大语言模型在交通系统管理中整合异构数据",
+      "llm_evidence": "综述大语言模型在交通系统管理中整合异构数据",
+      "canonical_evidence": "综述大语言模型在交通系统管理中整合异构数据",
+      "llm_tldr_en": "Survey on LLM and multi-modal LLM applications in transportation operations, mobility services, and decision support, highlighting data integration from multiple sources.",
+      "llm_tldr_cn": "交通系统管理依赖多种数据源（传感器、事故报告、视觉观察等）的及时解读。本文系统综述了大语言模型（LLM）和多模态大语言模型（MM-LLM）在交通运营、移动服务和决策支持中的应用。通过PRISMA流程筛选文献，总结了数据整合和推理的方法。该综述为智能城市中交通基础设施的智能管理提供了综合视角。",
+      "llm_tldr": "交通系统管理依赖多种数据源（传感器、事故报告、视觉观察等）的及时解读。本文系统综述了大语言模型（LLM）和多模态大语言模型（MM-LLM）在交通运营、移动服务和决策支持中的应用。通过PRISMA流程筛选文献，总结了数据整合和推理的方法。该综述为智能城市中交通基础设施的智能管理提供了综合视角。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.02374v1",
+      "source": "arxiv",
+      "title": "Spatial Representation Learning Beyond Pixels: Unifying Raster Data and Vector Semantics for Human-Centric Geospatial Foundation Models",
+      "abstract": "Earth Observation (EO) has fundamentally transformed the monitoring of environmental processes and human activities up to planetary scale. Recent advances in self-supervised learning have given rise to Earth Observation Foundation Models (EOFMs), which leverage petabyte-scale unlabeled EO data to learn transferable representations across a wide range of downstream geospatial tasks. Despite these advances, current EOFMs remain largely confined to raster modalities, overlooking the rich, structured information encoded in openly-accessible vector data sources such as OpenStreetMap and Overture. Vector data provides explicit and compact representations of geographic entities, including geometry, topology, and semantic relationships, offering critical contextual signals that are often ambiguous or inaccessible in imagery alone. Raster and vector data thus represent complementary views of geographic space: raster data captures continuous physical and spectral patterns, while vector data encodes discrete objects and their relational structure and often represents more of the human rather than the physical systems (e.g. social or demographic data). However, existing geospatial representation learning paradigms treat these modalities in isolation, relying on imperfect and often lossy transformations to bridge them. This perspective paper calls for a paradigm shift toward joint Spatial Representation Learning (SRL) in an unified embedding space that integrate raster perception with vector-based reasoning. Building on emerging efforts in multimodal geospatial learning, we highlight conceptual foundations, technical challenges, and promising directions for aligning heterogeneous spatial data sources. We contend that such integration is essential for developing next-generation geospatial AI systems capable of more accurate, interpretable, and semantically grounded understanding of the Earth.",
+      "authors": [
+        "Steffen Knoblauch",
+        "Hao Li",
+        "Gengchen Mai",
+        "Konstantin Klemmer",
+        "Song Gao",
+        "WenWen Li"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-01T15:21:58+00:00",
+      "link": "https://arxiv.org/pdf/2606.02374v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "unifying raster and vector semantics for geospatial foundation models, enabling semantic interoperability for urban digital twins",
+      "llm_evidence_cn": "统一栅格与矢量语义用于地理空间基础模型，赋能城市数字孪生语义互操作",
+      "llm_evidence": "统一栅格与矢量语义用于地理空间基础模型，赋能城市数字孪生语义互操作",
+      "canonical_evidence": "统一栅格与矢量语义用于地理空间基础模型，赋能城市数字孪生语义互操作",
+      "llm_tldr_en": "Proposes a framework to integrate raster EO data with vector semantics (OSM) for human-centric geospatial foundation models, supporting urban digital twin integration.",
+      "llm_tldr_cn": "当前地球观测基础模型仅处理栅格数据，忽略矢量语义。本文提出统一栅格和矢量表示的框架，利用自监督学习从OpenStreetMap等源提取结构信息。该工作为城市数字孪生和智慧城市数据平台提供了语义互操作基础，使多源地理数据融合更高效。",
+      "llm_tldr": "当前地球观测基础模型仅处理栅格数据，忽略矢量语义。本文提出统一栅格和矢量表示的框架，利用自监督学习从OpenStreetMap等源提取结构信息。该工作为城市数字孪生和智慧城市数据平台提供了语义互操作基础，使多源地理数据融合更高效。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.02406v1",
+      "source": "arxiv",
+      "title": "Edge Prediction for Roof Wireframe Reconstruction with Transformers",
+      "abstract": "This paper presents a competitive solution to the S23DR Challenge 2026, which aims to reconstruct 3D house roof wireframe models from sparse SfM point clouds and ground-level semantic segmentations and depth maps. Our proposed method utilizes an end-to-end Transformer encoder-decoder architecture inspired by DETR. To effectively process the geometric and semantic data, the sparse SfM point cloud input is dynamically subsampled based on semantic priority and augmented with Gestalt and ADE20k class features. To further increase segmentation context, we fuse the point features with additional Gestalt feature encodings which are obtained by projecting the points into latent feature maps produced by a frozen autoencoder. Learned query embeddings are then decoded directly into 3D wireframe edges via cross-attention mechanisms. Evaluated on the \"HoHo 22k\" dataset, our approach significantly outperforms both handcrafted and learned baselines, achieving a Hybrid Structure Score (HSS) of 0.6476 and securing the second-highest position on the challenge's private leaderboard.",
+      "authors": [
+        "Gustav Hanning",
+        "Ludvig Dillén",
+        "Jonathan Astermark",
+        "Johanna Lidholm",
+        "Viktor Larsson"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-01T15:51:30+00:00",
+      "link": "https://arxiv.org/pdf/2606.02406v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "semantic segmentation and wireframe reconstruction from point clouds",
+      "llm_evidence_cn": "从点云进行语义分割和线框重建",
+      "llm_evidence": "从点云进行语义分割和线框重建",
+      "canonical_evidence": "从点云进行语义分割和线框重建",
+      "llm_tldr_en": "Proposes a Transformer-based method for 3D roof wireframe reconstruction from sparse point clouds and semantic segmentations, achieving competitive results.",
+      "llm_tldr_cn": "该论文针对从稀疏点云和地面语义分割重建3D屋顶线框的挑战，提出基于DETR的端到端Transformer编码器-解码器架构。通过语义优先级动态子采样点云并融合Gestalt特征，在S23DR Challenge 2026中取得竞争力结果，证明了结合几何与语义信息进行点云理解的有效性。",
+      "llm_tldr": "该论文针对从稀疏点云和地面语义分割重建3D屋顶线框的挑战，提出基于DETR的端到端Transformer编码器-解码器架构。通过语义优先级动态子采样点云并融合Gestalt特征，在S23DR Challenge 2026中取得竞争力结果，证明了结合几何与语义信息进行点云理解的有效性。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.05415v1",
+      "source": "arxiv",
+      "title": "Executable Schema Contracts: From Automatic Ingestion to Multi-Source Retrieval",
+      "abstract": "Real-world data spans tables, documents, and semi-structured files with implicit semantics. Querying this data requires integrating evidence across inconsistent schemas and formats, yet existing approaches either demand costly manual engineering or bypass structure entirely. We present a system that automatically discovers an executable schema from raw multi-source data and uses it as a shared contract for knowledge graph construction and query-time retrieval. A closed-world field catalog constrains LLM-based schema discovery to attested fields; deterministic structural analysis infers identity keys, foreign keys, and source hierarchy; and the resulting schema drives extraction, deduplication, and cross-source linking into a provenance-aware knowledge graph. At query time the schema -- optionally extended via a monotonic protocol -- conditions a multi-tool agent routing retrieval across structured lookup, graph traversal, and vector search, returning grounded answers with traceable citations. In controlled zero-shot comparisons using the same LLM, data, and evaluation harness, the system improves over retrieval-only and decomposition-based baselines across four QA benchmarks, with ablations showing that schema-conditioned routing, structural intelligence, and schema-guided construction each contribute to the gains.",
+      "authors": [
+        "Padmaja Jonnalagedda",
+        "Yuguang Yao",
+        "Xiang Gao",
+        "Hilaf Hasson",
+        "Kamalika Das"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-06-03T20:28:36+00:00",
+      "link": "https://arxiv.org/pdf/2606.05415v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "automatic schema discovery and knowledge graph construction from multi-source data",
+      "llm_evidence_cn": "从多源数据自动发现模式并构建知识图谱",
+      "llm_evidence": "从多源数据自动发现模式并构建知识图谱",
+      "canonical_evidence": "从多源数据自动发现模式并构建知识图谱",
+      "llm_tldr_en": "Presents a system that automatically discovers executable schema from raw multi-source data and uses it for knowledge graph construction and query-time retrieval.",
+      "llm_tldr_cn": "提出一个自动从原始多源数据中发现可执行模式并构建知识图谱的系统。该系统利用封闭世界字段目录约束LLM模式发现，通过确定性结构分析推断主键外键，最终生成可溯源的知识图谱并支持多源检索。",
+      "llm_tldr": "提出一个自动从原始多源数据中发现可执行模式并构建知识图谱的系统。该系统利用封闭世界字段目录约束LLM模式发现，通过确定性结构分析推断主键外键，最终生成可溯源的知识图谱并支持多源检索。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2605.29168v1",
+      "source": "arxiv",
+      "title": "Better Later Than Sooner: Neuro-Symbolic Knowledge Graph Construction via Ontology-grounded Post-extraction Correction",
+      "abstract": "Question answering (QA) is a core challenge in AI, particularly for complex queries requiring multi-hop reasoning across documents, or symbolic operations like aggregation or exhaustive listing. Retrieval-augmented generation has become the dominant approach to QA, with recent graph-based variants addressing part of these issues by organizing knowledge to better support compositional questions. However, most textual graph-based RAG methods still lack the structure needed for symbolic operations useful to answer complex questions reliably. This motivates symbolic graph-based approaches, which extract knowledge graphs (KGs) whose relations are logic predicates that enable SQL-like querying. Yet these pipelines typically use LLMs for KG extraction, which can introduce consistency issues, where extracted facts may violate commonsense ontology constraints. We propose a neuro-symbolic framework for ontology-grounded KG construction combining open-domain extraction, embedding-based canonicalization of types and predicates, and targeted LLM-based correction of ontology violations. By deferring corrections to a post-extraction stage, our method avoids repeated LLM calls, substantially reducing token usage while improving KG consistency and preserving downstream QA quality. Finally, we show that the extracted KGs are well suited for symbolic querying by measuring the occurrence of SPARQL graph patterns.",
+      "authors": [
+        "Lorenzo Loconte",
+        "Timothy Hospedales",
+        "Cristina Cornelio"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-05-27T23:09:10+00:00",
+      "link": "https://arxiv.org/pdf/2605.29168v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "knowledge graph construction with ontology-grounded post-extraction correction",
+      "llm_evidence_cn": "基于本体指导的后提取修正的知识图谱构建",
+      "llm_evidence": "基于本体指导的后提取修正的知识图谱构建",
+      "canonical_evidence": "基于本体指导的后提取修正的知识图谱构建",
+      "llm_tldr_en": "Proposes neuro-symbolic KG construction using ontology-grounded post-extraction correction, enabling SQL-like querying and symbolic reasoning; relevant to knowledge graphs for smart city data.",
+      "llm_tldr_cn": "该论文针对现有基于文本的图RAG方法缺乏符号运算能力的问题，提出了一种神经符号知识图谱构建方法，通过本体指导的后提取修正来确保关系谓词的逻辑一致性。该方法生成的结构化知识图谱支持SQL式查询，可应用于智慧城市中BIM、GIS等异构数据的知识整合与推理。实验表明，本体约束有效提升了多跳问答和聚合查询的准确性。",
+      "llm_tldr": "该论文针对现有基于文本的图RAG方法缺乏符号运算能力的问题，提出了一种神经符号知识图谱构建方法，通过本体指导的后提取修正来确保关系谓词的逻辑一致性。该方法生成的结构化知识图谱支持SQL式查询，可应用于智慧城市中BIM、GIS等异构数据的知识整合与推理。实验表明，本体约束有效提升了多跳问答和聚合查询的准确性。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.30014v1",
+      "source": "arxiv",
+      "title": "From GPS Points to Travel Patterns: Flexible and Semantic Trajectory Generation with LLMs",
+      "abstract": "Urban trajectories play a crucial role in modeling urban dynamics and supporting various smart city applications. However, privacy concerns restrict access to large-scale and high-quality trajectory datasets. Trajectory generation provides a promising alternative by synthesizing realistic data to mitigate privacy risks. However, existing methods fail to explicitly capture travel patterns and can only generate fixed-length trajectories under a single condition. To address these limitations, we propose \\textbf{HTP}, which \\textbf{H}ierarchically generates \\textbf{T}ravel patterns first and then generates GPS \\textbf{P}oints by using large language models (LLMs), rather than directly generating GPS points. We first design a trajectory-specific residual quantization variational autoencoder (RQ-VAE) that quantizes micro-level GPS trajectories into compact, macro-level travel pattern tokens in a coarse-to-fine manner. These tokens capture rich segment spatial irregularities, such as point density variations caused by traffic conditions. Then, we extend the LLM vocabulary with travel pattern tokens to align trajectory representations with the LLM input, and apply supervised fine-tuning (SFT) to align the LLM with the trajectory generation task, enabling generation of travel pattern sequences under various conditions. Extensive experiments on two real-world datasets show that HTP outperforms the strongest baseline by an average of 29.78\\% in terms of generation quality. Our code is available at https://github.com/slzhou-xy/HTP.",
+      "authors": [
+        "Silin Zhou",
+        "Chenhao Wang",
+        "Yuntao Wen",
+        "Shuo Shang",
+        "Lisi Chen",
+        "Panos Kalnis"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-05-28T14:39:40+00:00",
+      "link": "https://arxiv.org/pdf/2605.30014v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "hierarchical trajectory generation with LLMs for smart city applications",
+      "llm_evidence_cn": "使用LLM分层生成轨迹，应用于智慧城市",
+      "llm_evidence": "使用LLM分层生成轨迹，应用于智慧城市",
+      "canonical_evidence": "使用LLM分层生成轨迹，应用于智慧城市",
+      "llm_tldr_en": "HTP hierarchically generates travel patterns and GPS points using LLMs, enabling flexible and semantic trajectory generation for smart cities.",
+      "llm_tldr_cn": "该论文提出HTP方法，通过分层生成旅行模式和GPS点来合成轨迹数据。首先利用LLM生成高层旅行模式，再生成详细的GPS坐标，从而克服了现有方法只能生成固定长度轨迹的限制。该方法在智慧城市应用中具有重要意义，可用于隐私保护下的轨迹数据增强和场景模拟。",
+      "llm_tldr": "该论文提出HTP方法，通过分层生成旅行模式和GPS点来合成轨迹数据。首先利用LLM生成高层旅行模式，再生成详细的GPS坐标，从而克服了现有方法只能生成固定长度轨迹的限制。该方法在智慧城市应用中具有重要意义，可用于隐私保护下的轨迹数据增强和场景模拟。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.01939v1",
+      "source": "arxiv",
+      "title": "SAVMap: Structure-Aided Visual Mapping of Large-Scale 2.5D Manhattan Wireframes from Panoramic Video",
+      "abstract": "Precise 3D representations of industrial environments enable tasks such as robot localization and digital twin generation. We propose SAVMap, a method for generating a semantic wireframe map of warehouse shelf and light structures using only a panoramic video camera as the sensor input. Sequences of rectified images with shelf and ceiling-facing views are extracted from a panoramic video captured along the warehouse aisles. Using a semantic segmentation network front end, a set of sparse, semantic structure feature points (e.g., corners of shelf structures, centers of lights) are extracted from each image and tracked across the sequences. By accounting for real-world geometric relationships among the points such as Manhattan grids, a constrained structure-from-motion algorithm yields the 3D points that form a wireframe map. We demonstrate the scalability and accuracy of our proposal in a warehouse with 46 shelving rows, each with faces spanning 55\\,m by 7\\,m. From an hour of panoramic video content, we create wireframe maps for over 5000 shelf elements across the rows, achieving an aggregate mean absolute error of 4.8\\,cm with respect to ground-truth.",
+      "authors": [
+        "Howard Huang",
+        "Bharath Surianarayanan",
+        "Keifer Lee",
+        "Chenyu Wang",
+        "Chen Feng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-01T09:04:29+00:00",
+      "link": "https://arxiv.org/pdf/2606.01939v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "generates semantic wireframe map for digital twin generation",
+      "llm_evidence_cn": "生成用于数字孪生的语义线框地图",
+      "llm_evidence": "生成用于数字孪生的语义线框地图",
+      "canonical_evidence": "生成用于数字孪生的语义线框地图",
+      "llm_tldr_en": "Proposes SAVMap to generate semantic wireframe maps from panoramic video using semantic segmentation and geometric constraints, enabling digital twin creation for industrial environments.",
+      "llm_tldr_cn": "现有方法在生成大规模结构环境的三维表示时依赖昂贵传感器。本文提出SAVMap，仅用全景视频即可生成仓库货架和灯光的语义线框地图。方法利用语义分割网络提取结构特征点，并通过曼哈顿几何约束优化地图精度。在多个仓库数据集上验证，生成的语义地图可有效支持机器人定位和数字孪生构建。该工作展示了低成本的语义地图生成方法，可推广至城市基础设施的数字孪生应用。",
+      "llm_tldr": "现有方法在生成大规模结构环境的三维表示时依赖昂贵传感器。本文提出SAVMap，仅用全景视频即可生成仓库货架和灯光的语义线框地图。方法利用语义分割网络提取结构特征点，并通过曼哈顿几何约束优化地图精度。在多个仓库数据集上验证，生成的语义地图可有效支持机器人定位和数字孪生构建。该工作展示了低成本的语义地图生成方法，可推广至城市基础设施的数字孪生应用。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.30237v1",
+      "source": "arxiv",
+      "title": "GRASP: Plan-Guided Graph Retrieval with Adaptive Fusion and Reranking on Semi-Structured Knowledge Bases",
+      "abstract": "Semi-structured knowledge bases (SKBs) embed textual documents in a typed graph of entities and relations, and underpin applications such as product search, academic paper search, and precision-medicine inquiries. Existing hybrid retrieval systems on SKBs either use the graph only for query expansion, mix textual and structural branches under a global weighting, or rely on fine-tuned graph-traversal generators. We present GRASP, a three-stage SKB retrieval framework unifying plan-based graph retrieval, plan-conditioned fusion with a dense retriever, and a fine-tuned reranker over the fused candidates. GRASP substantially advances the state of the art on every metric across the three STaRK benchmarks, lifting average Hit@1 from 62.0 to 73.9. Ablation and sensitivity studies further confirm the effectiveness and robustness of GRASP.",
+      "authors": [
+        "Yicheng Tao",
+        "Yiqun Wang",
+        "Xiangchen Song",
+        "Xin Luo",
+        "Kai Liu",
+        "Jie Liu"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR",
+        "cs.CL",
+        "cs.LG"
+      ],
+      "published": "2026-05-28T17:07:32+00:00",
+      "link": "https://arxiv.org/pdf/2605.30237v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "plan-guided graph retrieval framework for semi-structured knowledge bases; applicable to smart city KG retrieval",
+      "llm_evidence_cn": "半结构知识库的分层检索框架，可用于智慧城市知识图谱检索",
+      "llm_evidence": "半结构知识库的分层检索框架，可用于智慧城市知识图谱检索",
+      "canonical_evidence": "半结构知识库的分层检索框架，可用于智慧城市知识图谱检索",
+      "llm_tldr_en": "GRASP unifies plan-based graph retrieval, adaptive fusion, and reranking for semi-structured knowledge bases, achieving state-of-the-art results on STaRK benchmarks.",
+      "llm_tldr_cn": "该论文提出了GRASP框架，用于半结构化知识库的检索，包含基于计划的图检索、自适应融合和精细排序三个阶段。在三个STaRK基准上取得了最优结果。该框架可应用于智慧城市中异构知识库的检索与融合，支持城市数据的语义查询。",
+      "llm_tldr": "该论文提出了GRASP框架，用于半结构化知识库的检索，包含基于计划的图检索、自适应融合和精细排序三个阶段。在三个STaRK基准上取得了最优结果。该框架可应用于智慧城市中异构知识库的检索与融合，支持城市数据的语义查询。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.04676v1",
+      "source": "arxiv",
+      "title": "Indexicon: A Spatial Indexing Library",
+      "abstract": "Spatial indexing is foundational to Geographic Information Systems (GIS) and multi-dimensional data management, yet the current open-source landscape poses a significant barrier to research that employs or benchmarks spatial access methods. We observe that most of the existing open-source libraries include a single index. Some are hindered by complex dependencies, missing critical functionalities, inconsistent APIs, and rigid constraints regarding the support of spatial data types. To address this issue, we introduce Indexicon: a unified, highly portable, extendable, open-source spatial indexing library, designed specifically for rapid integration and ease of modification of main-memory spatial access methods. Indexicon provides a comprehensive suite of popular tree-based spatial access methods, including the R-tree, Quad-tree variants, and the KD-tree. Each structure is meticulously implemented as a self-contained, single-file, header-only C++ template with zero external dependencies beyond the standard library. Crucially, every index features a uniform interface, natively supporting bulk-loading, dynamic insertions/deletions, range queries, $k$-nearest neighbor ($k$NN) search, and structural statistics tracking. We also present an extensive performance evaluation of Indexicon against well-established and widely used implementations of these structures (including Boost Geometry, PCL, and Nanoflann) across six real-world geographic datasets. Our results demonstrate that Indexicon's lightweight design matches or outperforms existing state-of-the-art implementations while offering unmatched architectural flexibility. To foster reproducible spatial research, we open-source the complete library alongside our datasets and query workloads.",
+      "authors": [
+        "Panagiotis Simatis",
+        "Panagiotis Bouros",
+        "Nikos Mamoulis"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB",
+        "cs.CG"
+      ],
+      "published": "2026-06-03T10:00:41+00:00",
+      "link": "https://arxiv.org/pdf/2606.04676v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "spatial indexing library for GIS and multi-dimensional data",
+      "llm_evidence_cn": "用于GIS和多维数据的空间索引库",
+      "llm_evidence": "用于GIS和多维数据的空间索引库",
+      "canonical_evidence": "用于GIS和多维数据的空间索引库",
+      "llm_tldr_en": "Presents Indexicon, a unified spatial indexing library for main-memory access methods, facilitating GIS data management and integration.",
+      "llm_tldr_cn": "该论文针对现有空间索引库碎片化、依赖重、功能缺失等问题，提出Indexicon：一个统一、可移植、易扩展的开源空间索引库，支持多种树形索引。Indexicon提供一致API和丰富功能，便于快速集成和基准测试，可有效支撑智慧城市中GIS与多维数据的集成与管理。",
+      "llm_tldr": "该论文针对现有空间索引库碎片化、依赖重、功能缺失等问题，提出Indexicon：一个统一、可移植、易扩展的开源空间索引库，支持多种树形索引。Indexicon提供一致API和丰富功能，便于快速集成和基准测试，可有效支撑智慧城市中GIS与多维数据的集成与管理。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.01208v1",
+      "source": "arxiv",
+      "title": "Schema-Agnostic Knowledge Graph Construction via Hybrid Ontology Discovery for Cyber Threat Intelligence",
+      "abstract": "Cyber threat intelligence (CTI) reports now serve as essential resources for capturing adversary tactics, techniques, and procedures observed in modern attack campaigns. While traditional CTI platforms reduce this intelligence to isolated indicators through fixed schemas such as STIX, ontology-based representations preserve the semantic relationships needed for structured threat analysis. However, existing approaches for ontology-aligned CTI extraction face three challenges: (i) schema-specific pipelines that require manual reconfiguration whenever the schema changes, (ii) prompt-based schema inclusion that fails to scale on large ontologies such as UCO, and (iii) reliance on enterprise LLM APIs that conflicts with privacy constraints when integrating sensitive internal incident data. In this paper, we present ANCHOR, a schema-agnostic CTI knowledge graph construction system that bridges LLMs and formal ontology schemas. At the core of ANCHOR is hybrid ontology discovery, a search-and-navigate mechanism that dynamically explores large-scale ontology schemas, combined with SHACL-based validation to enforce schema-compliant type assignments. Experimental results on the UCO, STIX, and MALOnt schemas show that ANCHOR outperforms existing baselines in ontology typing and schema compliance. In addition, ANCHOR with a local LLM closely matches enterprise LLM typing performance, enabling privacy-preserving CTI analysis with high fidelity.",
+      "authors": [
+        "Seonwoo Kim",
+        "Jinwoo Kim",
+        "Daegyu Kang",
+        "Daeseong Kim",
+        "Insup Lee"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-05-31T12:56:37+00:00",
+      "link": "https://arxiv.org/pdf/2606.01208v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "schema-agnostic knowledge graph construction via ontology discovery, transferable to smart city BIM/GIS data",
+      "llm_evidence_cn": "通过本体发现实现模式无关的知识图谱构建，可迁移至智慧城市BIM/GIS数据",
+      "llm_evidence": "通过本体发现实现模式无关的知识图谱构建，可迁移至智慧城市BIM/GIS数据",
+      "canonical_evidence": "通过本体发现实现模式无关的知识图谱构建，可迁移至智慧城市BIM/GIS数据",
+      "llm_tldr_en": "Proposes a schema-agnostic approach for ontology-aligned knowledge graph construction from cyber threat intelligence reports, which is transferable to smart city data integration.",
+      "llm_tldr_cn": "现有CTI知识图谱构建依赖固定模式，难以适应本体变化。本文提出混合本体发现方法，结合少样本学习与LLM，实现模式无关的图谱构建。虽然针对网络安全领域，但其通用方法可直接迁移至智慧城市中BIM、GIS和点云数据的语义解析与知识图谱构建，为实现AI就绪的城市基础设施数据库提供启示。",
+      "llm_tldr": "现有CTI知识图谱构建依赖固定模式，难以适应本体变化。本文提出混合本体发现方法，结合少样本学习与LLM，实现模式无关的图谱构建。虽然针对网络安全领域，但其通用方法可直接迁移至智慧城市中BIM、GIS和点云数据的语义解析与知识图谱构建，为实现AI就绪的城市基础设施数据库提供启示。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.05639v1",
+      "source": "arxiv",
+      "title": "Q-GNN: Query-Conditioned Graph Neural Networks with Type Awareness for Knowledge Graph Completion",
+      "abstract": "Knowledge Graph Completion (KGC) aims at predicting missing triplets from incomplete knowledge graphs, which is crucial for downstream applications. Recently, Graph Neural Network (GNN)-based methods have achieved remarkable success by performing message passing over query-centered local subgraphs. However, in practice, a query is jointly defined by both the entity and the relation, with both carrying information indispensable for reasoning, yet these methods rely solely on the query relation as the guiding signal, while the information inherent in the query entity is not leveraged to guide inference - the entity serves merely as a structural anchor for subgraph extraction. To this end, we incorporate query entity information into the reasoning process from two perspectives: the first is structural context, i.e., the neighboring structure and relation patterns around the entity, which is encoded by a dedicated context encoder and used to modulate messages; the second is semantic type of the entity, inferred by a large language model, which is incorporated into attention computation and final scoring to provide type-level prior constraints. Together, these two sources of information enable the reasoning process to be guided by both the query relation and the query entity. Experimental results on standard benchmarks demonstrate the effectiveness of the proposed Q-GNN.",
+      "authors": [
+        "Dongxiao He",
+        "Ruqiong Zhang",
+        "Zhizhi Yu",
+        "Ling Ding",
+        "Di Jin",
+        "Guangquan Xu",
+        "Zhiyong Feng"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-04T03:07:22+00:00",
+      "link": "https://arxiv.org/pdf/2606.05639v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "query-conditioned GNN with type awareness for knowledge graph completion",
+      "llm_evidence_cn": "查询条件图神经网络用于知识图谱补全",
+      "llm_evidence": "查询条件图神经网络用于知识图谱补全",
+      "canonical_evidence": "查询条件图神经网络用于知识图谱补全",
+      "llm_tldr_en": "Q-GNN incorporates query entity information into GNN-based KG completion, improving reasoning accuracy.",
+      "llm_tldr_cn": "该论文提出Q-GNN，在基于图神经网络的知识图谱补全中引入查询实体信息，并利用类型感知机制增强推理。不同于以往仅依赖查询关系的方法，Q-GNN同时利用实体和关系信息指导消息传递。在标准数据集上取得了显著改进，可应用于智慧城市知识图谱的推理与补全。",
+      "llm_tldr": "该论文提出Q-GNN，在基于图神经网络的知识图谱补全中引入查询实体信息，并利用类型感知机制增强推理。不同于以往仅依赖查询关系的方法，Q-GNN同时利用实体和关系信息指导消息传递。在标准数据集上取得了显著改进，可应用于智慧城市知识图谱的推理与补全。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.02747v1",
+      "source": "arxiv",
+      "title": "Plan2Map: A Multimodal Benchmark for Document-Grounded Geospatial Boundary Reconstruction from Planning Records",
+      "abstract": "Planning records define restrictions over geographic areas, but their source documents often provide only indirect spatial evidence rather than machine-readable boundaries. We introduce Plan2Map, a 208-case multimodal benchmark for document-grounded geospatial boundary reconstruction from UK planning records. Given only a source planning document, systems must reconstruct a valid geospatial boundary from notice text, schedules, map plates, map labels, and boundary annotations; the reference GeoJSON is held out for scoring. We propose GeoPlanAgent, a document-grounded, geospatial-tool-in-the-loop system that decomposes the task into evidence extraction, localisation, map registration, boundary segmentation, projection, and verification. On Plan2Map, GeoPlanAgent achieves 0.736 mean IoU and 0.904 median IoU, with 67.8\\% of predictions at or above 0.8 IoU, substantially outperforming direct VLM-to-GeoJSON baselines. Diagnostic analysis shows that direct VLM prediction remains unreliable, while remaining errors are concentrated in localisation and map registration, and supervised boundary segmentation substantially improves pixel-level mask quality. Plan2Map provides a concrete testbed for multimodal geospatial reconstruction from public planning records. Project page: https://odeb1.github.io/Plan2Map_Project_Page/.",
+      "authors": [
+        "Fabian Degen",
+        "Oishi Deb",
+        "Jindong Gu",
+        "Junchi Yu",
+        "Samuele Marro",
+        "Philip Torr",
+        "Jialin Yu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-06-01T18:12:16+00:00",
+      "link": "https://arxiv.org/pdf/2606.02747v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "reconstructs geospatial boundaries from planning documents, involving multimodal data and semantic extraction",
+      "llm_evidence_cn": "从规划文档重建地理边界，涉及多模态数据和语义提取",
+      "llm_evidence": "从规划文档重建地理边界，涉及多模态数据和语义提取",
+      "canonical_evidence": "从规划文档重建地理边界，涉及多模态数据和语义提取",
+      "llm_tldr_en": "Introduces Plan2Map benchmark and GeoPlanAgent for document-grounded geospatial boundary reconstruction, demonstrating effective multimodal and semantic processing.",
+      "llm_tldr_cn": "规划记录定义了地理区域限制，但通常只提供间接空间证据。本文提出Plan2Map基准和GeoPlanAgent系统，从UK规划文档（文本、地图图片、标注）中重建有效的地理边界。系统通过证据提取、定位、地图配准、边界分割和投影等步骤完成。实验表明该方法能准确还原边界，为城市规划中的文档到地理数据转化提供了自动化方案，支持智慧城市数据整合。",
+      "llm_tldr": "规划记录定义了地理区域限制，但通常只提供间接空间证据。本文提出Plan2Map基准和GeoPlanAgent系统，从UK规划文档（文本、地图图片、标注）中重建有效的地理边界。系统通过证据提取、定位、地图配准、边界分割和投影等步骤完成。实验表明该方法能准确还原边界，为城市规划中的文档到地理数据转化提供了自动化方案，支持智慧城市数据整合。",
+      "llm_tags": [
+        "query:smart-city:composite"
+      ],
+      "matched_query_tag": "query:smart-city:composite",
+      "matched_query_text": "Papers central to 智慧城市建设中的数据整合与语义化处理, especially work that connects or combines: Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.; Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.; Find research papers describing semantic information extraction from BIM models, including geometry, materials, textures, and object relationships.; Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.; Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.; Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.; Find research papers describing unified data standards and semantic data models for integrating heterogeneous smart city construction data, including BIM, GIS, documents, images, videos, point clouds, and structured databases.; Find research papers describing semantic parsing, ontology learning, and knowledge graph construction from BIM models and point cloud scans for AI ready urban infrastructure databases.; Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.; Find research papers describing cross domain data management methodologies transferred from manufacturing or industrial digital twins to construction, infrastructure, and smart city data integration..",
+      "matched_requirement_id": "req-composite-smart-city",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.03084v1",
+      "source": "arxiv",
+      "title": "Hierarchical Federated Learning with Dynamic Clustering and Adaptive Regularization for Robust Infrastructure Inspection",
+      "abstract": "The deployment of data-driven computer vision models for structural health monitoring (SHM) is heavily constrained by the data silo dilemma due to stringent privacy and security regulations. While federated learning (FL) offers a privacy-preserving collaborative alternative, its application to nationwide infrastructure networks is severely hindered by the challenge of ``double heterogeneity'': macro-level physical divergence across disparate structural types and micro-level statistical imbalances within local datasets. To overcome this challenge, this paper proposes a novel hierarchical federated learning framework. The framework orchestrates a synergistic two-tier optimization strategy. At the macro-level, a dynamic gradient-based clustering mechanism autonomously aggregates distributed clients into specialized expert groups based on their structural degradation trajectories, circumventing the need for prior geographical metadata. Concurrently, at the micro-level, an intra-cluster Dynamic Region-Adaptive Proximal Regularization (DRAPR) module computes a real-time statistical Non-IID Intensity Score for each client. By adaptively modulating a proximal penalty based on local label skewness and gradient divergence, DRAPR effectively calibrates local updates, mitigates client drift, and prevents the catastrophic forgetting of minority damage classes. Comprehensive evaluations on a large-scale, real-world structural inspection dataset demonstrate that the hierarchical integration of macro-clustering and micro-regularization successfully neutralizes dual-level heterogeneity, yielding highly robust and specialized diagnostic models for complex infrastructure inspection.",
+      "authors": [
+        "Yuhu Feng",
+        "Keisuke Maeda",
+        "Takahiro Ogawa",
+        "Miki Haseyama"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-02T03:14:26+00:00",
+      "link": "https://arxiv.org/pdf/2606.03084v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "federated learning for infrastructure inspection, addressing multi-source data heterogeneity in nationwide infrastructure networks",
+      "llm_evidence_cn": "联邦学习用于基础设施检测，解决全国基础设施网络中的多源异质性",
+      "llm_evidence": "联邦学习用于基础设施检测，解决全国基础设施网络中的多源异质性",
+      "canonical_evidence": "联邦学习用于基础设施检测，解决全国基础设施网络中的多源异质性",
+      "llm_tldr_en": "Proposes a hierarchical federated learning framework with dynamic clustering and adaptive regularization for robust infrastructure inspection across diverse structural types.",
+      "llm_tldr_cn": "全国范围基础设施检测面临数据孤岛和双重异构性（结构类型差异与本地数据不平衡）。本文提出层次化联邦学习框架，在宏观层动态聚类结构类型，微观层自适应正则化，实现隐私保护下的协同模型训练。该方法在桥梁、道路等检测任务中提升精度和收敛速度，为智慧城市基础设施管理提供可行方案。",
+      "llm_tldr": "全国范围基础设施检测面临数据孤岛和双重异构性（结构类型差异与本地数据不平衡）。本文提出层次化联邦学习框架，在宏观层动态聚类结构类型，微观层自适应正则化，实现隐私保护下的协同模型训练。该方法在桥梁、道路等检测任务中提升精度和收敛速度，为智慧城市基础设施管理提供可行方案。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
