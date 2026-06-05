@@ -25,3 +25,86 @@ subscriptions:
     stage: A
     diff_threshold_pct: 15
   keyword_recall_mode: or
+  intent_profiles:
+    - tag: smart-city
+      description: 智慧城市建设中的数据整合与语义化处理
+      enabled: true
+      paper_sources:
+        - arxiv
+      keywords:
+        - keyword: smart city data integration
+          keyword_cn: 智慧城市数据集成
+          query: >-
+            Find research papers describing multi-source data integration for smart city construction and urban
+            infrastructure management.
+        - keyword: semantic interoperability in digital twins
+          keyword_cn: 数字孪生中的语义互操作性
+          query: >-
+            Find research papers describing semantic interoperability methods for urban digital twins and city-scale
+            data platforms.
+        - keyword: BIM semantic information extraction
+          keyword_cn: BIM语义信息提取
+          query: >-
+            Find research papers describing semantic information extraction from BIM models, including geometry,
+            materials, textures, and object relationships.
+        - keyword: point cloud semantic segmentation for urban scenes
+          keyword_cn: 城市场景点云语义分割
+          query: >-
+            Find research papers describing semantic segmentation and scene understanding of point clouds for buildings,
+            infrastructure, and urban environments.
+        - keyword: knowledge graph for smart city construction
+          keyword_cn: 智慧城市知识图谱
+          query: >-
+            Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM,
+            GIS, and infrastructure data.
+        - keyword: multimodal urban data fusion
+          keyword_cn: 多模态城市数据融合
+          query: >-
+            Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM,
+            GIS, and sensor data for smart cities.
+      intent_queries:
+        - query: >-
+            Find research papers describing unified data standards and semantic data models for integrating
+            heterogeneous smart city construction data, including BIM, GIS, documents, images, videos, point clouds, and
+            structured databases.
+          query_cn: 查找描述统一数据标准和语义数据模型以集成异构智慧城市数据（包括BIM、GIS、文档、图像、视频、点云和结构化数据库）的科研论文。
+          enabled: true
+          source: manual
+          note: ''
+        - query: >-
+            Find research papers describing semantic parsing, ontology learning, and knowledge graph construction from
+            BIM models and point cloud scans for AI ready urban infrastructure databases.
+          query_cn: 查找描述从BIM模型和点云扫描中进行语义解析、本体学习和知识图谱构建以构建AI就绪城市基础设施数据库的科研论文。
+          enabled: true
+          source: manual
+          note: ''
+        - query: >-
+            Find research papers describing data pipelines and representation learning methods that prepare standardized
+            urban construction data for large language models, digital twins, metaverse systems, and AI analytics.
+          query_cn: 查找描述数据管道和表示学习方法，为大型语言模型、数字孪生、元宇宙系统和AI分析准备标准化城市建设数据的科研论文。
+          enabled: true
+          source: manual
+          note: ''
+        - query: >-
+            Find research papers describing cross domain data management methodologies transferred from manufacturing or
+            industrial digital twins to construction, infrastructure, and smart city data integration.
+          query_cn: 查找描述从制造业或工业数字孪生转移到建筑、基础设施和智慧城市数据集成中的跨域数据管理方法的科研论文。
+          enabled: true
+          source: manual
+          note: ''
+      updated_at: '2026-06-05T02:33:48.829Z'
+source_backends:
+  arxiv:
+    papers_table: arxiv_papers
+    use_vector_rpc: true
+    vector_rpc: match_arxiv_papers
+    vector_rpc_exact: match_arxiv_papers_exact
+    use_bm25_rpc: true
+    bm25_rpc: match_arxiv_papers_bm25
+    sync_table: arxiv_sync_status
+    sync_success_value: success
+    schema: public
+    kind: supabase
+    enabled: true
+    url: https://lyucdwgefyfbmaiopjbk.supabase.co
+    anon_key: sb_publishable_lX-oi64Uxyd7SIVv3_w2Uw_MTOojeKq
