@@ -1,0 +1,670 @@
+Title: DisasterLex: An Expert Concept-to-Schema Knowledge Graph for Geospatial Reasoning in Disaster Analytics
+
+URL Source: https://arxiv.org/pdf/2605.30538v1
+
+Published Time: Mon, 01 Jun 2026 00:11:00 GMT
+
+Number of Pages: 18
+
+Markdown Content:
+## DisasterLex: An Expert Concept-to-Schema Knowledge Graph for Geospatial Reasoning in Disaster Analytics 
+
+Yiming Xiao * Ankit Basu Kai Yin Sahil Vartak Christian Swords Ali Mostafavi 
+
+Texas A&M University 
+
+{yxiao, ankitbasu, kai_yin, svartak, c.swords.9102, mostafavi}@tamu.edu 
+
+Abstract 
+
+Disasters are inevitable and increasingly costly, and effective response depends on querying structured tabular data: precise, information-dense records of hazard, exposure, vulnerabil-ity, and lifeline infrastructure that underpin dis-aster management. Current text-to-SQL meth-ods enable natural-language access to such ta-bles but transfer poorly to the disaster domain, where queries span heterogeneous geospatial schemas and require reasoning over causal rela-tions. We introduce DisasterLex , a knowledge-graph-mediated framework that inserts an Ex-pert Knowledge Graph (EKG) of curated con-cepts and typed causal edges between the user query and the database, bridged to schema by concept-to-table links. The orchestration runs four stages (identifying query entities, routing to the operational domain, planning over causal edges, and grounding the SQL), restricting the schema passed to the model at each step. We in-stantiate it on a disaster-analytics database (36 geospatial tables, 150 columns) with an EKG of 107 concepts, 117 causal edges, and 52 concept-to-schema links, evaluated on a 75-query test set. On all seven base models spanning pro-prietary and open-weight families, DisasterLex beats four state-of-the-art baselines (LightRAG, HippoRAG 2, ReFoRCE, CHESS) by 1.4 × to 2.75 ×, with absolute scores of 1.65 to 3.56 (of 5.0). Error analysis shows baseline failures cluster in routing and multi-table SQL composi-tion, the operations our orchestration explicitly addresses. Code, data, and the EKG artifact are available at this repository and on Zenodo at 10.5281/zenodo.20388029. 
+
+1 Introduction 
+
+Disasters, both natural and technological, in-evitably trigger severe societal, economic, and hu-manitarian consequences (Fan et al., 2021; Lei et al., 2025). During such events, emergency ana-lysts, incident commanders, and affected popula-
+
+> *Corresponding author.
+
+tions rely on rapid, accurate access to structured geospatial data (hazard exposure, population vul-nerability, lifeline-infrastructure readiness) to co-ordinate response under time-critical decision con-straints (Federal Emergency Management Agency, 2017; Comfort, 2007; Bharosa et al., 2010). Re-liable natural-language access to this data could dramatically lower the barrier between an analyst’s question and the underlying tables, but the data it-self resists general-purpose language tools: it spans dozens of heterogeneous tables with specialised se-mantics, where sentinel values mark missingness, scores invert between datasets so that higher means more resilient on one index but more vulnerable on another, and the causal relations a domain expert reasons over (e.g., low community resilience re-duces emergency-response capacity, flood depth in-creases structural damage, power outages cascade to hospital operations) must be encoded externally for the LLM to use. Current natural-language data access approaches fail in this setting for distinct reasons. Text-to-SQL systems (Yu et al., 2018; Li et al., 2023b; Pourreza and Rafiei, 2023) assume a small or pre-selected schema; at our scale, injecting the full 150-column schema into every Text-to-SQL prompt is technically feasible at modern context lengths but dilutes attention across semantically unrelated ta-bles, producing hallucinated joins between, e.g., flood-risk tables and unrelated demographic tables that share only an hex_id key. Standard retrieval-augmented generation (RAG) (Lewis et al., 2020; Gao et al., 2023) retrieves passages when what is needed is executable SQL over structured tables. Graph-augmented RAG (Edge et al., 2024; Peng et al., 2024) builds knowledge graphs from docu-ment corpora to improve passage retrieval, but does not address the schema selection problem that gates structured query answering. Multi-agent text-to-SQL pipelines such as CHESS (Talaei et al., 2024), designed for clean BIRD-style benchmarks, simi-1
+
+> arXiv:2605.30538v1 [cs.LG] 28 May 2026
+
+larly rely on column-name heuristics for schema linking and do not encode domain causal structure. To bridge this gap, we introduce DisasterLex , a knowledge-graph-mediated agentic framework for structured question answering in disaster analytics. At its core is a concept-level schema-linking layer: an expert-curated graph of domain concepts and typed causal edges mapped to executable database schemas. The graph mediates between user vo-cabulary and column names at the table-selection step, leaving SQL generation to the LLM. A four-stage orchestration pipeline (criticality extraction, operationally-motivated routing, causal-informed planning, grounded execution) enforces the opera-tional structure that domain experts already follow. Unlike prior graph-augmented retrieval, schema-linking, and text-to-SQL systems, DisasterLex uses an expert-curated causal concept graph as a domain-specific schema selection layer over structured ta-bles, motivated by the functional structure of the target domain rather than the general-purpose re-trieval setting these systems were designed for. 
+
+Contributions. (1) Concept-level schema link-ing via an expert-curated typed causal graph. 
+
+We address the schema-selection failure mode of prior text-to-SQL and RAG approaches by inter-posing an Expert Knowledge Graph (EKG) of 107 domain concepts and 117 typed causal edges between natural-language queries and a 36-table re-lational schema, connected by 52 explicit concept-to-schema edges. Synonym-based concept match-ing plus 1-hop graph traversal reduces the prompt schema context from 150 columns to typically 10– 20 per query. 
+
+(2) An ICS-motivated four-stage orchestration pipeline whose components are individually load-bearing. We decompose disaster-analytics queries into criticality extraction, three-cluster rout-ing, causal-informed planning, and tool-augmented execution rather than relying on a single ReAct loop (Yao et al., 2023; Federal Emergency Man-agement Agency, 2017; Bigley and Roberts, 2001). Ablating routing drops Tier M (multi-table com-position) by −1.50 on Gemini; ablating planning drops Tier K by −0.29 to −3.19 across models, demonstrating that orchestration choices interact non-trivially with base-model capability. 
+
+(3) A four-tier diagnostic benchmark. A 75-case test split decoupled from development tuning, or-ganized into four tiers that isolate distinct failure modes of natural-language interfaces to geospatial databases (routing, EKG grounding, multi-table composition, data-availability disclosure). Per-tier scoring localizes where SOTA external systems col-lapse, with the largest gaps concentrated on routing and multi-table composition (Table 2). 
+
+(4) Cross-model evidence with quantified seed variance. A five-condition ablation (full pipeline plus four internal-component ablations) replayed across seven architecturally diverse base models spanning closed-source and open-source families (Gemini 3.1 Flash-Lite Preview, DeepSeek V3.2, Qwen 3.6 Flash, Llama 3.1 8B, Qwen3 8B, Qwen3 32B, Llama 3.3 70B) with three random seeds per cell, alongside four state-of-the-art exter-nal comparators: two graph-RAG retrievers (Ligh-tRAG (Guo et al., 2024), HippoRAG 2 (Gutiér-rez et al., 2024)) and two multi-agent text-to-SQL pipelines (CHESS (Talaei et al., 2024), Re-FoRCE (Deng et al., 2025)). The full pipeline beats every general-purpose retrieval substitute and text-to-SQL competitor on every base model, but cross-model ablation deltas reveal substantial het-erogeneity (e.g., DeepSeek is the most tolerant of orchestration removal, Qwen 3.6 the least), qualify-ing any claim that “pipeline structure matters” by which base model is in scope. 
+
+2 System Architecture 
+
+DisasterLex consists of three integrated compo-nents, summarized in Figure 1: a unified knowl-edge graph (§2.1), a concept-aware schema re-trieval mechanism (§2.2), and a four-stage orches-tration pipeline (§2.3). 
+
+2.1 Unified Knowledge Graph 
+
+The unified graph is hosted in Neo4j (Webber, 2012) and combines a faithful representation of the relational schema with curated domain causal knowledge. 
+
+Disaster Data Catalog Graph (DDCG). Auto-introspected from a relational database: each table is a DataTable node with child DataColumn nodes, and JoinRule nodes encode valid join patterns over the primary-key column(s) of each table. In our case study (§3), the DDCG is auto-introspected from a DuckDB (Raasveldt and M"uhleisen, 2019) build of 36 geospatial tables (150 columns) on an H3 (Hierarchical Hexagonal) grid (Brodsky, 2018; Sahr et al., 2003) at resolution 8 joined on a shared 
+
+hex_id key. 2c                
+
+> What are the life -safety
+> risks in Harris County, TX
+> from expected riverine
+> flooding over the next 72
+> hours, and what shelters
+> are available?
+> Emergency Analyst /
+> Incident Commander
+> c
+> + added
+> Crit. Level 15
+> 4High 
+> Geographic Area
+> Harris County, TX
+> Hazard Type
+> Riverine Flooding
+> Context & Criticality
+> Extraction
+> c
+> + added
+> Infrastructure
+> Mitigation
+> Life -Safety
+> Operations
+> Damage Assessment
+> & Response
+> Operational Domain
+> Classification
+> c
+> + added
+> •Decompose: sub -tasks + context
+> •Scout: KG + web
+> •Plan: data, rules, metrics
+> Pre -Execution Research
+> & Planning ReAct 
+> c
+> + added
+> •SQL concept -aware queries on DuckDB
+> •KG traverse causal rules
+> •Synthesize: evidence into recommen -
+> dations
+> Grounded Execution
+> SQL KG 
+> c
+
+Incident Report           
+
+> Illustrative Output
+> Key Findings
+> •…
+> •…
+> •…
+> Recommendations
+> •…
+> •…
+> •…
+> Evidence
+> •…
+> •…
+> •…
+> Confidence & Assumptions
+> •…
+> c
+> c
+
+Causal Knowledge Graph Neo4j Unified Graph)        
+
+> 107 concepts, 117 causal edges, 52 MAPS_TO
+> bridge to the database schema
+> rainfall
+> elevation
+> drainage
+> flood_occurrence
+> Fea ture
+> Intermediate
+> Outcome
+> IN CREASES
+> INCREASES
+> REDUCES
+> INCREASES
+> MAPS_TO Edges Semantic Bridge) +added + added
+> Graph concepts are semantically mapped to
+> database schema (tables/columns)
+> c
+> c
+> c
+> c. . .
+
+Relational Geospatial Database DuckDB              
+
+> Pre -computed H3 Hexagonal Grid over Texas
+> c
+> DuckDB 36 tables & H3 resolution 8
+> cc
+> Example: Population
+> (per hex)
+> 10,000
+> 1,000 10,000
+> 100 1,000
+> 10 100
+> 10
+> Sample Text -to -SQL result
+> Harris County · 3 of 232K rows
+> Pipeline Flow Semantic Mapping
+> MAPS_TO Execution & Data Access External Support
+> Web / LLM 
+> Classification Knowledge
+> Components c
+> Tavily
+> Web Search
+> LLM
+> (via OpenRouter)
+
+1 2 3 4     
+
+> Reason Act Observe Reason Act Observe
+> HP _FLD_002 MAPS_TO flood_occurrence
+> VUL_ 002 MAPS_TO vulnerability
+> HIFL D-EMERGENC
+> -SHELTER -N
+> MAPS_TO shelters
+> shelters sovi
+> flood_
+> score
+> population hex_id
+> 10.88 0.0 6,720
+> 88446caa9b
+> fffff
+> 00.91 91.3 6,320
+> 88446caf55
+> fffff
+> 00.96 99.8 6,299
+> 88446ca1d5
+> fffff
+> impervious
+> run off
+> power
+> disruption INCREASES
+> hospital
+> operations
+> shelter
+> operations REDUCES
+> REDUCES
+> REDUCES
+
+Figure 1: DisasterLex architecture. A natural-language query flows through four stages: (1) context & criticality extraction, (2) operational-domain classification into a domain-specific cluster, (3) a ReAct planner that scouts the EKG and the web, and (4) a ReAct executor that runs concept-aware SQL on DuckDB and traverses EKG causal rules to synthesise an incident report. The expert-curated Causal Knowledge Graph is bridged to the Relational Database by M APS _T O edges. 
+
+Expert Knowledge Graph (EKG). A directed graph of Concept nodes connected by typed causal edges (types: I NCREASES , R EDUCES , I NDICATES ,REQUIRES , S CALES ), each carrying a confidence weight in [0 , 1] . Each concept carries a synonym list supporting fuzzy matching from natural lan-guage. In our case study, the EKG has 107 concept nodes and 117 edges spanning eight conceptual categories (features, intermediate processes, out-comes, domain anchors, interventions, exposures, response assets, infrastructure) with ∼85 aliases. 
+
+Concept-to-schema bridge. A set of 52 edges connects EKG concept nodes to DDCG data tables that are loaded in the current DuckDB build. For ex-ample, flood_occurrence maps to HP_FLD_002 ,the National Risk Index riverine flood risk ta-ble (Federal Emergency Management Agency, 2025), and hospitals maps to EX_LIFE_004 , the hospital facility-count table. 
+
+EKG curation process. The EKG is developed iteratively against domain literature; each causal edge requires either an explicit cited source or a clearly entailed mechanism (e.g., impervious IN-
+
+CREASES runoff , grounded in hydrologic-process literature (Schueler, 1994)). Synonym lists are bootstrapped from LLM-suggested aliases and manually filtered against column documentation; validation uses trace-level spot checks against the benchmark. The case-study source list (drawn from NIMS (Federal Emergency Management Agency, 2017), NRI methodology (Federal Emergency Man-agement Agency, 2025), and peer-reviewed flood, hurricane, social-vulnerability, and community-resilience literature) is released with the artifact. 
+
+2.2 Concept-Aware Schema Retrieval 
+
+Schema retrieval translates a natural-language query into the subset of database schemas needed for SQL generation. The procedure has three steps: (i) synonym-based concept matching against all EKG concept nodes using token-boundary regu-lar expressions, with longest-synonym-first prefer-ence; (ii) Cypher traversal of concept-to-schema edges from activated concepts to DataTable nodes, retrieving columns, join rules, and data-quality warnings (a crosswalk table is always included to support cross-table joins); (iii) injection of the re-sulting compact schema block into the SQL gen-eration prompt in place of the full schema. In our case study, this typically yields 10–20 columns against 150 under naive injection. For example, given the case-study query “How many hospitals in a given county are in flood-exposed zones?”, concept matching activates flood_occurrence 
+
+and hospitals ; traversal returns HP_FLD_002 ,
+
+EX_LIFE_004 , and the crosswalk (12 columns to-tal). 32.3 Pipeline Orchestration 
+
+The orchestrator is a four-stage pipeline imple-mented as a directed graph in LangGraph (one node per stage). (1) Context extraction parses query context (area of interest, hazard or topic, 1–5 criticality level; criticality ≥ 3 gates high-criticality recom-mendations) and runs a data-availability check that surfaces missing or blocked tables. The check is rule-based: curated sentinel-value patterns (e.g. 
+
+sovi = −999 for missing social-vulnerability data in our case study) and a forbidden-table list are matched against the concept-to-table activation set, and any hit produces an explicit disclosure passed to downstream stages. (2) Cluster routing classifies the query into one of k operational clusters specific to the do-main, each with a specialized prompt template. In our case study, the three clusters (life-safety op-erations, damage assessment and response, infras-tructure mitigation) follow the Incident Command System (Federal Emergency Management Agency, 2017; Bigley and Roberts, 2001); the explicit ICS mapping is in Appendix F. (3) Causal-informed planning is a ReAct (Yao et al., 2023) agent that retrieves causal edges from the EKG and produces a structured analysis plan. (4) Tool-augmented execution is a second Re-Act agent with a Text-to-SQL tool (concept-aware schema retrieval, LLM-based SQL generation, syn-tax validation that rejects DELETE /DROP and ref-erences to blocked tables, DuckDB execution, 3-attempt retry on validation or execution errors) and a knowledge-graph tool (1-hop edge retrieval and multi-hop Cypher traversal up to 3 hops). 
+
+3 Evaluation Design 
+
+Case study and dataset. We use a Texas-wide disaster-analytics database as the case study to validate the framework. The DDCG is auto-introspected from a DuckDB build of 36 geospatial tables (150 columns) on the H3 (Brodsky, 2018) hexagonal grid at resolution 8 (827,648 cells per table, ∼0.74 km 2 per cell), with a shared hex_id 
+
+primary key plus a county/state/ZIP crosswalk. Ta-bles span hazard profiles (flood, hurricane, tor-nado, wildfire), exposure (population, critical in-frastructure), social vulnerability and community resilience indices, and Homeland Infrastructure Foundation-Level Data (HIFLD) inventories. The case-study EKG and concept-to-schema mappings are described in Appendix E. 
+
+3.1 Benchmark and Splits 
+
+We evaluate on a 75-case test split organized as a four-tier taxonomy of distinct failure modes (Ta-ble 1). We authored the test split in two phases (county-scoped cases against the catalog of avail-able tables, then a statewide pass adding 15 multi-county cases) and reviewed against the available DDCG schema. The test split divides into 60 county-scoped and 15 statewide queries; per-tier example cases are listed in Appendix L. 
+
+Scoring rubric. Each case produces a 1–5 judge score. Up to 4 of the 5 points come from determin-istic rule-based checks against frozen gold facts; the remaining 1 point comes from an LLM-judged reasoning-quality check on the 5 statewide Tier K cases (Gemini 2.5 Flash; prompt in Appendix J). Per tier: Tier R is scored by routing-state veri-fication against the gold cluster and query-type labels; Tier K combines entity-set matching for ex-pected causal tokens with the reasoning judge on the statewide subset; Tier M uses numeric value matching with tolerance bands ( ±100 hex counts, 
+
+±10% on averages); Tier D uses boolean disclosure checks against gold missing-data flags. 
+
+Faithfulness controls. We bound judge-model bias and test-distribution overfitting with three controls: (i) claim extraction and the reason-ing judge both use Gemini 2.5 Flash, which is never a pipeline under evaluation, mitigating self-evaluation bias (Zheng et al., 2023); (ii) 4 of 5 points per case are rule-based, leaving at most 1 point of judge-model exposure; (iii) the 75-case test split was frozen before any pipeline execution, and a separate equally sized development split with matched tier and scope distribution was used for prompt iteration (its scores are not reported). Claim extraction is validated against human annotation (95% precision; protocol in Appendix K). 
+
+3.2 Conditions 
+
+We evaluate the full DisasterLex pipeline against four internal ablations and four external baselines (Table 7). All conditions are run end-to-end on the 75-case test split across all seven base models with three random seeds per cell, with no domain-specific adaptation. 
+
+Ablation study. We isolate individual orches-tration components to test their contribution to 4Tier n What it measures              
+
+> R (routing) 17 Correct ICS cluster and query-type selection (state-level check). K (EKG grounding) 19 Whether the expected EKG causal tokens (e.g. impervious | I NCREASES |runoff ) appear in the answer. Gold labels are drawn from the EKG, so this tier measures graph grounding rather than independent causal correctness. Web retrieval disabled. M (multi-table) 26 SQL joins across 2–4 tables, with numeric tolerance bands ( ±100 hex counts, ±10% averages). D (disclosure) 13 Transparent disclosure when data is missing, blocked, or contains sentinel values.
+
+Table 1: Four-tier evaluation taxonomy. Each tier targets a distinct failure mode and uses tier-specific gold-label sources. 
+
+the overall pipeline. No Routing replaces con-text extraction and cluster classification with hard-coded defaults (life-safety/shelter-placement tem-plate, criticality 3), testing whether operationally-motivated routing contributes beyond a fixed tem-plate. No Plan skips the pre-execution research step, testing whether causal-informed planning adds value over a single execute-stage ReAct loop. 
+
+ReAct is a standard ReAct agent (Yao et al., 2023) with the same Text-to-SQL and KG tools but no routing, templates, or planning, testing whether the four-stage structure adds value over a vanilla tool-augmented agent. Text-RAG replaces the EKG with chunk retrieval over the same source corpus, testing whether the EKG’s typed causal structure adds value over flat retrieval of the same underlying text. 
+
+External baselines. We test state-of-the-art alter-natives to the curated EKG and fall into two groups. 
+
+LightRAG (Guo et al., 2024) (auto-extracted entity-relation graph with hybrid retrieval) and Hip-poRAG 2 (Gutiérrez et al., 2024) (memory-style re-triever using personalized PageRank over an open-relation graph) test whether general-purpose graph structure suffices once the curated EKG is removed. 
+
+CHESS (Talaei et al., 2024) and ReFoRCE (Deng et al., 2025) are multi-agent text-to-SQL pipelines, SOTA on BIRD and Spider 2.0 respectively; they test whether strong text-to-SQL agents can sub-sume the concept-to-schema orchestration. All four are evaluated under their authors’ recommended configurations; adapting any of them with hand-curated concept-to-schema hints would amount to porting our contribution into their architectures. 
+
+4 Results 
+
+Main results. The full DisasterLex pipeline scores 1.65–3.56 overall across seven base mod-els on the 75-case test split, with three random seeds per cell (Gemini 3.1 Flash-Lite Preview, DeepSeek V3.2, Qwen 3.6 Flash, Llama 3.1 8B, Qwen3 8B, Qwen3 32B, Llama 3.3 70B; Table 2). The per-tier shape (Tier D strongest, Tier M weak-est) is stable across all seven base models. Sensitiv-ity to internal-component ablation, however, varies substantially by base model (Table 3); we unpack the patterns below. 
+
+External baselines fall well below the full pipeline on every model. The four state-of-the-art external systems (LightRAG, HippoRAG 2, Re-FoRCE, CHESS) score 1.4–2.75 × below Disas-terLex on every base model (Table 2, Figure 2). LightRAG is the strongest among them on six of seven base models; HippoRAG 2, ReFoRCE, and CHESS trail in model-dependent order. Every ex-ternal system stays below 2.0 overall on every base model, while the full DisasterLex pipeline exceeds 2.5 on five of seven. Failures localize on Tier R and Tier M: external systems lack both a routing layer and composable multi-table SQL grounded in concept-to-schema retrieval. Tier D scores partially recover for the retrieval-based baselines because data-availability disclosure is reachable from text alone; on the Llama models, LightRAG and Hip-poRAG 2 also recover on Tier K via text-dominant causal vocabulary. 
+
+Routing is universally load-bearing; planning and EKG effects vary by base model. Disabling cluster routing drops Tier M by 0.81–2.67 across all seven base models, the largest single-component drop on Tier M for every model and consistent with routing’s role in anchoring concept-to-schema retrieval. Removing the planning step has highly variable effects: Tier K drops 3.19 on Qwen 3.6 but only 0.20–0.48 on the other six. Replacing the EKG with Text-RAG drops Tier M by 1.16–1.28 on Gemini and Qwen 3.6 and 0.50 on DeepSeek, but only 0.04–0.38 on Llama 3.1 8B, Qwen3 8B, and Qwen3 32B (and slightly improves Llama 3.3 70B), suggesting the EKG’s typed causal structure de-5Model System Overall R† K† M† D†
+
+Gemini 3.1 Flash Lite Preview 
+
+DisasterLex (ours) 3.542 ± 0.036 3.676 ± 0.204 3.607 ± 0.135 2.952 ± 0.107 4.449 ± 0.173 
+
+LightRAG 1.286 ± 0.050 0.676 ± 0.067 1.965 ± 0.098 0.388 ± 0.055 2.885 ± 0.102 ReFoRCE 0.620 ± 0.054 0.157 ± 0.068 0.474 ± 0.139 0.455 ± 0.100 1.769 ± 0.133 HippoRAG 2 0.502 ± 0.004 0.000 ± 0.000 0.377 ± 0.015 0.058 ± 0.000 2.231 ± 0.000 CHESS 0.417 ± 0.195 0.275 ± 0.136 0.456 ± 0.237 0.279 ± 0.083 0.821 ± 0.451 DeepSeek V3.2 
+
+DisasterLex (ours) 3.033 ± 0.083 3.044 ± 0.167 3.235 ± 0.051 2.292 ± 0.131 4.256 ± 0.118 
+
+LightRAG 1.123 ± 0.058 0.588 ± 0.135 1.534 ± 0.172 0.221 ± 0.017 3.026 ± 0.291 HippoRAG 2 0.651 ± 0.027 0.088 ± 0.000 0.710 ± 0.066 0.090 ± 0.022 2.423 ± 0.168 ReFoRCE 0.503 ± 0.088 0.069 ± 0.061 0.456 ± 0.106 0.349 ± 0.098 1.444 ± 0.206 CHESS 0.434 ± 0.017 0.235 ± 0.000 0.184 ± 0.053 0.260 ± 0.033 1.410 ± 0.089 Qwen 3.6 Flash 
+
+DisasterLex (ours) 3.555 ± 0.114 3.554 ± 0.211 3.679 ± 0.141 2.962 ± 0.051 4.564 ± 0.178 
+
+LightRAG 1.407 ± 0.117 0.941 ± 0.111 1.801 ± 0.096 0.397 ± 0.047 3.462 ± 0.428 HippoRAG 2 0.591 ± 0.040 0.147 ± 0.025 0.412 ± 0.076 0.038 ± 0.067 2.538 ± 0.000 CHESS 0.462 ± 0.014 0.588 ± 0.000 0.325 ± 0.030 0.442 ± 0.019 0.538 ± 0.000 ReFoRCE 0.354 ± 0.027 0.000 ± 0.000 0.409 ± 0.102 0.080 ± 0.039 1.282 ± 0.089 Llama 3.1 8B 
+
+DisasterLex (ours) 1.753 ± 0.073 1.864 ± 0.149 1.405 ± 0.265 1.394 ± 0.076 3.030 ± 0.301 
+
+LightRAG 1.268 ± 0.100 0.824 ± 0.025 1.945 ± 0.244 0.660 ± 0.024 2.077 ± 0.335 HippoRAG 2 1.182 ± 0.055 0.559 ± 0.092 1.759 ± 0.128 0.260 ± 0.035 3.000 ± 0.133 CHESS 0.238 ± 0.027 0.069 ± 0.061 0.360 ± 0.055 0.032 ± 0.022 0.692 ± 0.077 ReFoRCE 0.212 ± 0.099 0.000 ± 0.000 0.088 ± 0.076 0.022 ± 0.024 1.051 ± 0.437 Qwen3 8B 
+
+DisasterLex (ours) 2.566 ± 0.029 2.598 ± 0.189 2.492 ± 0.294 1.920 ± 0.063 3.923 ± 0.333 
+
+LightRAG 1.750 ± 0.023 1.044 ± 0.092 2.484 ± 0.148 0.679 ± 0.047 3.744 ± 0.178 HippoRAG 2 0.907 ± 0.054 0.059 ± 0.051 1.389 ± 0.194 0.269 ± 0.035 2.590 ± 0.118 ReFoRCE ‡ 0.330 ± 0.024 0.294 ± 0.083 0.289 ± 0.112 0.317 ± 0.041 0.462 ± 0.326 CHESS 0.069 ± 0.039 0.000 ± 0.000 0.070 ± 0.066 0.096 ± 0.084 0.103 ± 0.118 Qwen3 32B 
+
+DisasterLex (ours) 2.565 ± 0.135 2.657 ± 0.074 2.466 ± 0.372 1.974 ± 0.068 3.769 ± 0.231 
+
+LightRAG 1.388 ± 0.046 0.632 ± 0.067 2.246 ± 0.128 0.538 ± 0.085 2.821 ± 0.118 HippoRAG 2 1.040 ± 0.037 0.176 ± 0.000 1.439 ± 0.110 0.340 ± 0.022 2.987 ± 0.059 ReFoRCE 0.516 ± 0.066 0.314 ± 0.136 0.237 ± 0.091 0.545 ± 0.089 1.128 ± 0.311 CHESS 0.242 ± 0.213 0.078 ± 0.068 0.123 ± 0.106 0.147 ± 0.128 0.821 ± 0.747 Llama 3.3 70B 
+
+DisasterLex (ours) 1.650 ± 0.133 1.662 ± 0.092 1.151 ± 0.189 1.346 ± 0.173 2.974 ± 0.160 
+
+HippoRAG 2 1.200 ± 0.060 0.338 ± 0.067 2.026 ± 0.040 0.324 ± 0.034 2.872 ± 0.311 LightRAG 1.076 ± 0.152 0.809 ± 0.135 1.706 ± 0.387 0.538 ± 0.108 1.577 ± 0.390 ReFoRCE 0.499 ± 0.184 0.196 ± 0.068 0.351 ± 0.219 0.285 ± 0.147 1.538 ± 0.407 CHESS 0.158 ± 0.148 0.039 ± 0.068 0.061 ± 0.106 0.103 ± 0.111 0.564 ± 0.395  
+
+> †
+
+R: routing (cluster + query type); K: EKG grounding; M: multi-table SQL composition; D: data-availability disclosure (§3.1). External baselines run end-to-end in their authors’ designed mode (no routing / EKG / DB access), scored on the same harness. ‡
+
+ReFoRCE / Qwen3 8B: n = 2 seeds (seed 2 exceeded OpenRouter’s 1 M-token context window). 
+
+Table 2: DisasterLex vs. four external baselines on the 75-case test split. Mean ± std over 3 seeds (fractional LLM judge, 0–5); within each model group, baselines are sorted by overall score. Claim extraction uses Gemini 2.5 Flash to prevent self-evaluation bias. Seven base models spanning closed-source and open-source families (8B–70B parameters). Gemini 3.1      
+
+> FL Preview
+> DeepSeek
+> V3.2
+> Qwen 3.6
+> Flash
+> Llama 3.1
+> 8B
+> Qwen3
+> 8B
+> Qwen3
+> 32B
+> Llama 3.3
+> 70B
+> 0
+> 1
+> 2
+> 3
+> 4
+> Mean LLM judge score  (0--5)
+> 3.54
+> 3.03
+> 3.56
+> 1.75
+> 2.57 2.56
+> 1.65
+> DisasterLex LightRAG HippoRAG 2 ReFoRCE CHESS
+
+Figure 2: Overall mean LLM judge score on the 75-case test split for DisasterLex vs. four external baselines (LightRAG, HippoRAG 2, ReFoRCE, CHESS) across all seven base models. DisasterLex Full bars are value-labeled. Bars are means over three random seeds; error bars are ± one standard deviation. 
+
+6Model Condition Overall R† K† M† D†
+
+Gemini 3.1 Flash Lite Preview 
+
+DisasterLex (ours) 3.542 ± 0.036 3.676 ± 0.204 3.607 ± 0.135 2.952 ± 0.107 4.449 ± 0.173 
+
+No Plan 2.955 ± 0.425 3.039 ± 0.514 3.132 ± 0.296 2.428 ± 0.354 4.448 ± 0.303 No Routing 2.489 ± 0.021 2.402 ± 0.180 2.824 ± 0.041 1.455 ± 0.048 4.179 ± 0.222 ReAct 2.404 ± 0.046 2.054 ± 0.122 2.772 ± 0.026 1.811 ± 0.053 3.513 ± 0.097 Text-RAG 2.396 ± 0.076 2.221 ± 0.053 2.690 ± 0.149 1.795 ± 0.015 3.397 ± 0.349 DeepSeek V3.2 
+
+DisasterLex (ours) 3.033 ± 0.083 3.044 ± 0.167 3.235 ± 0.051 2.292 ± 0.131 4.256 ± 0.118 No Plan 2.868 ± 0.011 2.765 ± 0.102 2.947 ± 0.099 2.272 ± 0.056 4.077 ± 0.154 No Routing 2.231 ± 0.057 1.936 ± 0.066 2.372 ± 0.380 1.240 ± 0.183 4.393 ± 0.393 
+
+ReAct 2.660 ± 0.044 2.424 ± 0.058 2.955 ± 0.071 2.003 ± 0.064 3.910 ± 0.308 Text-RAG 2.496 ± 0.067 2.364 ± 0.106 2.816 ± 0.107 1.790 ± 0.094 3.944 ± 0.255 Qwen 3.6 Flash 
+
+DisasterLex (ours) 3.555 ± 0.114 3.554 ± 0.211 3.679 ± 0.141 2.962 ± 0.051 4.564 ± 0.178 
+
+ReAct 2.448 ± 0.124 2.255 ± 0.177 2.524 ± 0.100 1.849 ± 0.209 4.281 ± 0.267 Text-RAG 2.316 ± 0.104 2.241 ± 0.240 2.715 ± 0.113 1.683 ± 0.043 3.496 ± 0.277 No Plan 1.440 ± 0.045 1.397 ± 0.082 0.487 ± 0.173 1.115 ± 0.084 3.538 ± 0.154 No Routing 0.804 ± 0.246 0.824 ± 0.025 0.421 ± 0.194 0.290 ± 0.061 2.159 ± 1.439 Llama 3.1 8B 
+
+DisasterLex (ours) 1.753 ± 0.073 1.864 ± 0.149 1.405 ± 0.265 1.394 ± 0.076 3.030 ± 0.301 
+
+No Routing 0.980 ± 0.099 0.912 ± 0.178 0.588 ± 0.151 0.490 ± 0.020 2.611 ± 0.530 No Plan 1.654 ± 0.105 1.842 ± 0.051 1.210 ± 0.319 1.420 ± 0.200 2.679 ± 0.680 ReAct 1.787 ± 0.064 1.809 ± 0.156 2.161 ± 0.106 1.499 ± 0.056 2.225 ± 0.461 Text-RAG 1.801 ± 0.097 1.900 ± 0.109 1.828 ± 0.084 1.352 ± 0.075 2.981 ± 0.694 Qwen3 8B 
+
+DisasterLex (ours) 2.566 ± 0.029 2.598 ± 0.189 2.492 ± 0.294 1.920 ± 0.063 3.923 ± 0.333 No Routing 1.624 ± 0.044 1.397 ± 0.092 1.689 ± 0.187 0.603 ± 0.089 3.868 ± 0.396 No Plan 2.336 ± 0.144 2.260 ± 0.114 2.243 ± 0.270 1.788 ± 0.178 3.667 ± 0.347 ReAct 2.226 ± 0.077 2.218 ± 0.154 2.633 ± 0.231 1.939 ± 0.063 4.139 ± 0.438 
+
+Text-RAG 1.854 ± 0.029 2.501 ± 0.093 1.320 ± 0.128 1.543 ± 0.082 3.908 ± 0.119 Qwen3 32B 
+
+DisasterLex (ours) 2.565 ± 0.135 2.657 ± 0.074 2.466 ± 0.372 1.974 ± 0.068 3.769 ± 0.231 No Routing 1.737 ± 0.067 1.721 ± 0.025 1.671 ± 0.388 0.721 ± 0.038 3.889 ± 0.175 
+
+No Plan 2.163 ± 0.046 1.995 ± 0.081 2.017 ± 0.140 1.603 ± 0.119 3.718 ± 0.194 ReAct 2.152 ± 0.207 2.280 ± 0.207 2.857 ± 0.087 1.921 ± 0.135 3.648 ± 0.306 Text-RAG 2.106 ± 0.098 2.304 ± 0.111 2.792 ± 0.115 1.717 ± 0.140 3.448 ± 0.390 Llama 3.3 70B 
+
+DisasterLex (ours) 1.650 ± 0.133 1.662 ± 0.092 1.151 ± 0.189 1.346 ± 0.173 2.974 ± 0.160 No Routing 1.150 ± 0.116 0.647 ± 0.051 1.180 ± 0.339 0.532 ± 0.031 3.000 ± 0.277 No Plan 1.659 ± 0.075 1.441 ± 0.135 1.298 ± 0.053 1.369 ± 0.135 3.051 ± 0.118 
+
+ReAct 1.667 ± 0.140 1.642 ± 0.132 1.833 ± 0.249 1.253 ± 0.195 2.286 ± 0.091 Text-RAG 1.666 ± 0.054 1.299 ± 0.073 1.930 ± 0.033 1.474 ± 0.034 2.145 ± 0.327  
+
+> †
+
+Tiers as in Table 2. 
+
+Table 3: Internal-component ablation study. Full DisasterLex pipeline vs. four ablations: No Plan (skip planning), 
+
+No Routing (skip routing), ReAct (vanilla ReAct with the same tools), Text-RAG (chunk retrieval in place of the EKG). Seven base models (8B–70B). Llama 3.1 8B used response_format=json_object on Stages 1–2; Qwen3 32B ReAct ran with a 600 s per-case budget. 
+
+livers most of its benefit when the base model is capable enough to exploit it. 
+
+Cross-model heterogeneity in orchestration sen-sitivity. Per-model sensitivity to ablation differs sharply (Figure 3). Qwen 3.6 Flash is most sensitive: overall drops of 2.75 (No Routing) and 2.12 (No Plan) are the two largest single-component drops in the study. DeepSeek V3.2 is the most tolerant (drops 0.17–0.80 overall); its ReAct baseline alone reaches ∼88% of full-pipeline score, suggesting its intrinsic ReAct loop substitutes for much of what the explicit orches-tration adds elsewhere. The four open-source models (Llama 3.1 8B, Qwen3 8B, Qwen3 32B, Llama 3.3 70B) show smaller-magnitude drops (0.10–0.94) that reflect their lower full-pipeline ceilings. The same pipeline is load-bearing on Qwen 3.6, supportive on Gemini, and partially re-dundant on DeepSeek and the smaller open-source models; any claim that “pipeline structure matters” must be qualified by which base model is in scope. 
+
+Statistical significance. Across all 56 (model, alternative) cells against the full pipeline (7 mod-els × 8 alternatives: 4 internal ablations + 4 ex-ternal baselines), 50 of 56 overall gaps exceed their ∼95% confidence interval computed from the three-seed standard deviations (smallest significant gap: DeepSeek No Plan +0 .17 ± 0.10 ; 46 of the 56 gaps exceed 0.40). The 6 non-significant overall gaps fall on the smaller open-source models; in 5 of them the alternative slightly outperforms Full (|∆| < 0.05 , within seed noise). We use a normal-7approximation interval; a paired permutation test over the 75 cases would be tighter. Extending the test to the 224 per-tier Full-vs-alternative gaps (7 × 8 × 4), 168/224 are significant at p < 0.05 
+
+(154/224 under Bonferroni adjustment). The 56 non-significant gaps concentrate on Tier D (23 of 56) where retrieval-based baselines recover via text disclosure, and on Tier K (18 of 56) for base mod-els where the planning component delivers less benefit. 
+
+5 Related Work 
+
+Text-to-SQL. Text-to-SQL systems on Spider (Yu et al., 2018) and BIRD (Li et al., 2023b), including LLM-based decomposed-prompting ap-proaches (Pourreza and Rafiei, 2023; Dong et al., 2023; Gao et al., 2024) and multi-agent frame-works such as MAC-SQL (Wang et al., 2025a), assume a small or pre-selected schema. Schema linking (Lei et al., 2020; Li et al., 2023a), including recent graph-based work that builds a schema graph from foreign-key and column-name structure to support pathfinding-based linking (Wu et al., 2026; Wang et al., 2025b), performs string-level, learned-embedding, or schema-graph matching but does not encode domain causal structure. Our concept-to-schema bridge differs in two respects: the graph en-codes causal structure (where prior schema-linking work encodes schema-extracted structure), and it is queried for table selection (where prior work targets column-level disambiguation). We frame schema selection as concept-level traversal over a curated knowledge graph that complements down-stream text-to-SQL generation. 
+
+Graph-augmented retrieval. GraphRAG (Edge et al., 2024) and related work (Peng et al., 2024; Pan et al., 2024; Zhang et al., 2025; Procko and Ochoa, 2024; Zhu et al., 2025; Linders and Tom-czak, 2025; Yang et al., 2024) construct knowl-edge graphs from document corpora and use graph structure to improve passage retrieval for question answering. The DisasterLex EKG differs from text-derived KGs in three respects: it is expert-curated; it encodes typed causal relations in place of en-tity co-occurrence; and it mediates retrieval over structured database schemas in place of document passages. The concept-graph layer instantiates the neuro-symbolic pattern advocated by recent reviews (Garcez and Lamb, 2023; Kautz, 2022), with the curated graph supplying typed structure and the LLM supplying language understanding and SQL generation. 
+
+Disaster AI and operational systems. Crisis in-formatics has produced tools for social media clas-sification (Alam et al., 2021; Imran et al., 2015), multimodal damage assessment (Fan et al., 2021; Xiao et al., 2026), and rule-based loss estima-tion (Federal Emergency Management Agency, 2023). Recent surveys of LLMs in disaster man-agement (Lei et al., 2025) note that structured-data querying is underrepresented relative to unstruc-tured text and image analysis, and existing inter-organizational coordination work (Comfort, 2007; Bharosa et al., 2010) identifies information frag-mentation as a primary obstacle. Recent disaster-specific benchmarks (Chen et al., 2026; Liu et al., 2025; Yin et al., 2025a) focus on unstructured-text QA and retrieval over disaster corpora, with concur-rent retriever and RAG-system work in the same regime: DMRetriever (Yin et al., 2025b) trains a family of dense retrievers tailored to disaster-management text, DisastRAG (Li et al., 2026) integrates multi-source disaster information via retrieval-augmented generation, and training-free retrieval-augmented reasoning has been applied to flood-damage nowcasting (Huang et al., 2026). DisasterLex is complementary, targeting structured-table QA mediated by a domain-curated concept graph rather than retrieval over disaster text. To our knowledge, no prior computational system routes queries through clusters motivated by ICS func-tional structure (Federal Emergency Management Agency, 2017; Bigley and Roberts, 2001). 
+
+6 Conclusion 
+
+We present DisasterLex, which couples an expert-curated concept-to-schema knowledge graph with a four-stage orchestrator over a 36-table geospatial database. On a 75-case test split, the full system scores in the 1.65–3.56 band across seven base models (Table 3) and beats four SOTA external baselines by 1.4–2.75 × on every base model (Ta-ble 2), indicating that the concept-to-schema layer plus orchestration matters more than the choice of retrieval substrate or text-to-SQL agent. The concept-to-schema bridge pattern may trans-fer to other domains where expert causal knowl-edge sits alongside time-sensitive structured data, such as medical triage, supply-chain disruption, or infrastructure incident response; a transfer study to a second domain is the natural next step. 8Limitations 
+
+Multimodal extension. DisasterLex currently operates over structured tabular data and the cu-rated EKG. Incorporating complementary mul-timodal evidence streams such as satellite im-agery, sensor telemetry, and crisis-related social media (Xiao et al., 2026; Alam et al., 2021) would enrich situational awareness during active incidents and is a promising direction for follow-up work. 
+
+Multilingual support. The current implementa-tion operates in English. Extending to additional languages, particularly those relevant to multilin-gual emergency-response contexts in Texas and beyond, would broaden the accessibility of the sys-tem and is left to future work. 
+
+Ethics Statement 
+
+DisasterLex is a decision-support tool for disaster analytics. It is not authoritative incident-command guidance. Its outputs (including any high-criticality recommendations triggered at criticality ≥ 3) are intended for review by a qualified emergency-management analyst before any operational action. 
+
+Data provenance and licenses. All input data sources are public-domain U.S. federal datasets and are used in accordance with their respective terms. FEMA National Risk Index (Federal Emer-gency Management Agency, 2025) and FEMA Hazus loss-estimation parameters (Federal Emer-gency Management Agency, 2023) are released by FEMA as open data with no use restrictions for research. The Homeland Infrastructure Foundation-Level Data (HIFLD) catalog is U.S. government open data, distributed under the federal open-data license. The H3 indexing library is Apache-2.0 (Uber). No personally identifiable information ap-pears in the relational backend; the H3 hex grid aggregates exposure and vulnerability indicators to 
+
+∼0.74 km 2 cells. DisasterLex’s code, the curated EKG, and the 75-case test split will be released under an Apache-2.0 license upon acceptance. 
+
+Model artifacts and terms of use. Models ac-cessed via APIs comply with their respective service terms: Gemini 3.1 Flash-Lite Preview and Gemini 2.5 Flash (Google API Terms of Service); DeepSeek V3.2 (open weights under DeepSeek License, with API access via Open-Router); Qwen 3.6 Flash (Alibaba DashScope ser-vice terms); Llama 3.1 8B and Llama 3.3 70B-Instruct (Meta Llama Community License, gated access); Qwen3 8B and Qwen3 32B (Apache 2.0). All models are used for research-only evaluation in this paper. Each model’s underlying license per-mits the academic-comparison use we apply here; we do not redistribute model weights. 
+
+Judge-model bias. Claim extraction and the Tier K reasoning judge use a different LLM (Gem-ini 2.5 Flash) than any pipeline under evaluation, mitigating self-evaluation bias (Zheng et al., 2023). 
+
+Intended use and misuse risks. Intended use: schema-aware question answering over public dis-aster datasets in research and analyst-assist settings. Out-of-scope uses include autonomous operational decision-making, evacuation-order generation, and any application where the absence of a domain expert in the loop could produce life-safety harm. The dual-use risk most salient to this work is over-reliance: a system that returns confident, well-formatted answers risks displacing expert judgment. The criticality-gated recommendation flag and the data-availability disclosure tier are designed to sur-face uncertainty explicitly; they are not a substitute for review. 
+
+Risks specific to emergency-response deploy-ment. Three risks bear naming explicitly given the disaster-analytics application setting. (i) Mis-use in autonomous decision pipelines. The system produces structured recommendations gated by a 1–5 criticality score; if these outputs are piped into automated dispatch, resource allocation, or evacua-tion triggers without human review, errors at higher criticality tiers could cause direct life-safety harm. The criticality-gated tier and the data-availability disclosure surface are designed to flag uncertainty for a human reviewer, not to authorize autonomous action. (ii) Automation bias and authority gradient. 
+
+Confident, well-formatted analyst output combined with an Incident-Command-styled cluster taxon-omy can create a perceived authority that exceeds the system’s actual reliability. In time-pressured emergency-management settings, this risk is ampli-fied, and operators may defer to model output rather than apply domain expertise. Operator training on system limits is required before any analyst-assist deployment. 
+
+Acknowledgements 
+
+This work used Grace at Texas A&M University’s High Performance Research Computing (HPRC), 9and Delta at the National Center for Supercomput-ing Applications through allocation CIV260030 from the Advanced Cyberinfrastructure Coordina-tion Ecosystem: Services & Support (ACCESS) program, which is supported by U.S. National Science Foundation grants #2138259, #2138286, #2138307, #2137603, and #2138296. 
+
+References 
+
+Firoj Alam, Umair Qazi, Muhammad Imran, and Ferda Ofli. 2021. CrisisBench: Benchmarking crisis-related social media datasets for humanitarian in-formation processing. Proceedings of the Interna-tional AAAI Conference on Web and Social Media ,15(1):923–932. Nitesh Bharosa, Marijn Janssen, and Jae K. Lee. 2010. Challenges and obstacles in sharing and coordinating information during multi-agency disaster response: Propositions from field exercises. Information Sys-tems Frontiers , 12(1):49–65. Gregory A. Bigley and Karlene H. Roberts. 2001. The incident command system: High-reliability orga-nizing for complex and volatile task environments. 
+
+Academy of Management Journal , 44(6):1281–1299. Isaac Brodsky. 2018. H3: Uber’s hexagonal hierarchical spatial index. Uber Engineering Blog. Zhitong Chen, Kai Yin, Xiangjue Dong, Chengkai Liu, Xiangpeng Li, Yiming Xiao, Bo Li, Junwei Ma, Ali Mostafavi, and James Caverlee. 2026. DisastQA: A comprehensive benchmark for evaluating ques-tion answering in disaster management. Preprint ,arXiv:2601.03670. Louise K. Comfort. 2007. Inter-organizational design for disaster management: Cognition, communication, coordination, and control. Journal of Seismology and Earthquake Engineering , 9(1–2):61–71. Minghang Deng, Ashwin Ramachandran, Canwen Xu, Lanxiang Hu, Zhewei Yao, Anupam Datta, and Hao Zhang. 2025. ReFoRCE: A Text-to-SQL agent with self-refinement, consensus enforcement, and column exploration. Preprint , arXiv:2502.00675. Xuemei Dong, Chao Zhang, Yuhang Ge, Yuren Mao, Yunjun Gao, Lu Chen, Jinshu Lin, and Dongfang Lou. 2023. C3: Zero-shot Text-to-SQL with chatgpt. 
+
+Preprint , arXiv:2307.07306. Darren Edge, Ha Trinh, Newman Cheng, Joshua Bradley, Alex Chao, Apurva Mody, Steven Truitt, Dasha Metropolitansky, Robert Osazuwa Ness, and Jonathan Larson. 2024. From local to global: A graph RAG approach to query-focused summariza-tion. Preprint , arXiv:2404.16130. Chao Fan, Cheng Zhang, Alex Yahja, and Ali Mostafavi. 2021. Disaster city digital twin: A vision for inte-grating artificial and human intelligence for disaster management. International Journal of Information Management , 56:102049. Federal Emergency Management Agency. 2017. Na-tional incident management system. Technical report, Federal Emergency Management Agency. Federal Emergency Management Agency. 2023. HAZUS estimated annualized earthquake losses for the united states. Technical Report FEMA P-366, Federal Emergency Management Agency. Federal Emergency Management Agency. 2025. Na-tional risk index technical documentation. Techni-cal report, Federal Emergency Management Agency. Version 1.20. Dawei Gao, Haibin Wang, Yaliang Li, Xiuyu Sun, Yichen Qian, Bolin Ding, and Jingren Zhou. 2024. Text-to-SQL empowered by large language models: A benchmark evaluation. Proceedings of the VLDB Endowment , 17(5):1132–1145. Yunfan Gao, Yun Xiong, Xinyu Gao, Kangxiang Jia, Jinliu Pan, Yuxi Bi, Yi Dai, Jiawei Sun, Meng Wang, and Haofen Wang. 2023. Retrieval-augmented gener-ation for large language models: A survey. Preprint ,arXiv:2312.10997. Artur d’Avila Garcez and Luís C. Lamb. 2023. Neu-rosymbolic AI: The 3rd wave. Artificial Intelligence Review , 56(11):12387–12406. Zirui Guo, Lianghao Xia, Yanhua Yu, Tu Ao, and Chao Huang. 2024. LightRAG: Simple and fast retrieval-augmented generation. Preprint , arXiv:2410.05779. Bernal Jiménez Gutiérrez, Yiheng Shu, Yu Gu, Michi-hiro Yasunaga, and Yu Su. 2024. HippoRAG: Neu-robiologically inspired long-term memory for large language models. Preprint , arXiv:2405.14831. Lipai Huang, Kai Yin, Chia-Fu Liu, and Ali Mostafavi. 2026. Training-free retrieval-augmented generation with reinforced reasoning for flood damage nowcast-ing. Computer-Aided Civil and Infrastructure Engi-neering , page 100077. Muhammad Imran, Carlos Castillo, Fernando Diaz, and Sarah Vieweg. 2015. Processing social media mes-sages in mass emergency: A survey. ACM Comput-ing Surveys , 47(4):67:1–67:38. Henry A. Kautz. 2022. The third AI summer: AAAI robert s. engelmore memorial lecture. AI Magazine ,43(1):105–125. Wenqiang Lei, Weiwen Wang, Zhixin Ma, Tian Gan, Wei Lu, Min-Yen Kan, and Tat-Seng Chua. 2020. Re-examining the role of schema linking in Text-to-SQL. In Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP) , pages 6943–6954, Online. Association for Computational Linguistics. 
+
+10 Yuanyuan Lei, Zahra Fatemi, Yaser Keneshloo, Xialei Liu, Sarah Erfani, Chengkai Liu, and Ruihong Zhang. 2025. Harnessing large language models for disaster management: A survey. In Findings of the Asso-ciation for Computational Linguistics: ACL 2025 ,pages 14528–14551, Vienna, Austria. Association for Computational Linguistics. Patrick Lewis, Ethan Perez, Aleksandra Piktus, Fabio Petroni, Vladimir Karpukhin, Naman Goyal, Heinrich K"uttler, Mike Lewis, Wen-tau Yih, Tim Rockt"aschel, Sebastian Riedel, and Douwe Kiela. 2020. Retrieval-augmented generation for knowledge-intensive NLP tasks. In Advances in Neural Information Processing Systems , volume 33, pages 9459–9474. Bo Li, Zhitong Chen, Kai Yin, Junwei Ma, Yiming Xiao, and Ali Mostafavi. 2026. Disastrag: A multi-source disaster information integration and access system based on retrieval-augmented large language models. 
+
+Preprint , arXiv:2605.05210. Haoyang Li, Jing Zhang, Cuiping Li, and Hong Chen. 2023a. RESDSQL: Decoupling schema linking and skeleton parsing for Text-to-SQL. In Proceedings of the AAAI Conference on Artificial Intelligence ,volume 37, pages 13067–13075. Jinyang Li, Binyuan Hui, Ge Qu, Jiaxi Yang, Binhua Li, Bowen Li, Bailin Wang, Bowen Qin, Ruiying Geng, Nan Huo, Xuanhe Zhou, Chenhao Ma, Guoliang Li, Kevin Chen-Chuan Chang, Fei Huang, Reynold Cheng, and Yongbin Li. 2023b. Can LLM Already Serve as A Database Interface? A Big Bench for Large-Scale Database Grounded Text-to-SQLs. In 
+
+Advances in Neural Information Processing Systems ,volume 36. Jasper Linders and Jakub M. Tomczak. 2025. Knowl-edge graph-extended retrieval-augmented generation for question answering. Preprint , arXiv:2504.08893. Hanzhou Liu, Kai Yin, Zhitong Chen, Chenyue Liu, and Ali Mostafavi. 2025. FloodSQL-Bench: A retrieval-augmented benchmark for geospatially-grounded Text-to-SQL. Preprint , arXiv:2512.12084. Shirui Pan, Linhao Luo, Yufei Wang, Chen Chen, Ji-apu Wang, and Xindong Wu. 2024. Unifying large language models and knowledge graphs: A roadmap. 
+
+IEEE Transactions on Knowledge and Data Engi-neering , 36(7):3580–3599. Boci Peng, Yun Zhu, Yongchao Liu, Xiaohe Bo, Haizhou Shi, Chuntao Hong, Yan Zhang, and Siliang Tang. 2024. Graph retrieval-augmented generation: A survey. Preprint , arXiv:2408.08921. Mohammadreza Pourreza and Davood Rafiei. 2023. DIN-SQL: Decomposed in-context learning of Text-to-SQL with self-correction. In Advances in Neural Information Processing Systems , volume 36, pages 36339–36348. Tyler Thomas Procko and Omar Ochoa. 2024. Graph retrieval-augmented generation for large language models: A survey. In 2024 Conference on AI, Sci-ence, Engineering, and Technology (AIxSET) , pages 166–169. Mark Raasveldt and Hannes M"uhleisen. 2019. DuckDB: An embeddable analytical database. In 
+
+Proceedings of the 2019 International Conference on Management of Data , pages 1981–1984, New York, NY, USA. Association for Computing Machinery. Kevin Sahr, Denis White, and A. Jon Kimerling. 2003. Geodesic discrete global grid systems. Cartogra-phy and Geographic Information Science , 30(2):121– 134. Thomas R. Schueler. 1994. The importance of impervi-ousness. Watershed Protection Techniques , 1(3):100– 111. Shayan Talaei, Mohammadreza Pourreza, Yu-Chen Chang, Azalia Mirhoseini, and Amin Saberi. 2024. CHESS: Contextual harnessing for efficient SQL syn-thesis. Preprint , arXiv:2405.16755. Bing Wang, Changyu Ren, Jian Yang, Xinnian Liang, Jiaqi Bai, Linzheng Chai, Zhao Yan, Qian-Wen Zhang, Di Yin, Xing Sun, and Zhoujun Li. 2025a. MAC-SQL: A multi-agent collaborative framework for Text-to-SQL. In Proceedings of the 31st Inter-national Conference on Computational Linguistics ,pages 540–557, Abu Dhabi, UAE. Association for Computational Linguistics. Yihan Wang, Peiyu Liu, and Xin Yang. 2025b. LinkAlign: Enhancing schema linking in Text-to-SQL via joint alignment of multi-granularity schema information. In Proceedings of the 2025 Conference on Empirical Methods in Natural Language Process-ing , pages 977–991, Suzhou, China. Association for Computational Linguistics. Jim Webber. 2012. A programmatic introduction to Neo4j. In Proceedings of the 3rd Annual Conference on Systems, Programming, and Applications: Soft-ware for Humanity , pages 217–218, New York, NY, USA. Association for Computing Machinery. Renhao Wu, Chong Wang, Ehsan Jahan-bakhsh Bashirloo, and Lu Zhou. 2026. Schema-GraphSQL: Text-to-SQL with graph-based schema linking. In Findings of the Association for Computa-tional Linguistics: EACL 2026 , pages 2585–2599, Rabat, Morocco. Association for Computational Linguistics. Yiming Xiao, Kai Yin, and Ali Mostafavi. 2026. CrisiSense-RAG: Crisis sensing multimodal retrieval-augmented generation for rapid disaster impact as-sessment. Preprint , arXiv:2602.13239. Carl Yang, Ran Xu, Linhao Luo, and Shirui Pan. 2024. Knowledge graph and large language model co-learning via structure-oriented retrieval augmented generation. IEEE Data Engineering Bulletin .
+
+11 Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, and Yuan Cao. 2023. ReAct: Synergizing reasoning and acting in language models. In International Conference on Learning Representations .Kai Yin, Xiangjue Dong, Chengkai Liu, Lipai Huang, Yiming Xiao, Zhewei Liu, Ali Mostafavi, and James Caverlee. 2025a. DisastIR: A comprehensive infor-mation retrieval benchmark for disaster management. In Findings of the Association for Computational Lin-guistics: EMNLP 2025 , pages 1836–1867, Suzhou, China. Association for Computational Linguistics. Kai Yin, Xiangjue Dong, Chengkai Liu, Allen Lin, Lingfeng Shi, Ali Mostafavi, and James Caver-lee. 2025b. Dmretriever: A family of models for improved text retrieval in disaster management.       
+
+> Preprint , arXiv:2510.15087. Tao Yu, Rui Zhang, Kai Yang, Michihiro Yasunaga, Dongxu Wang, Zifan Li, James Ma, Irene Li, Qingn-ing Yao, Shanelle Roman, Zilin Zhang, and Dragomir Radev. 2018. Spider: A large-scale human-labeled dataset for complex and cross-domain semantic pars-ing and Text-to-SQL task. In Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing , pages 3911–3921, Brussels, Belgium. Association for Computational Linguistics. Qinggang Zhang, Shengyuan Chen, Yuanchen Bei, Zheng Yuan, Huachi Zhou, Zijin Hong, Junnan Dong, Hao Chen, Yi Chang, and Xiao Huang. 2025. A survey of graph retrieval-augmented generation for customized large language models. Preprint ,arXiv:2501.13958. Lianmin Zheng, Wei-Lin Chiang, Ying Sheng, Siyuan Zhuang, Zhanghao Wu, Yonghao Zhuang, Zi Lin, Zhuohan Li, Dacheng Li, Eric P. Xing, Hao Zhang, Joseph E. Gonzalez, and Ion Stoica. 2023. Judging LLM-as-a-judge with MT-Bench and chatbot arena. In Advances in Neural Information Processing Sys-tems , volume 36. Xiangrong Zhu, Yuexiang Xie, Yi Liu, Yaliang Li, and Wei Hu. 2025. Knowledge graph-guided retrieval augmented generation. Preprint , arXiv:2502.06864.
+
+A Reproducibility Details 
+
+Models. The full DisasterLex pipeline is run with seven base models spanning closed-source and open-source families: Gemini 3.1 Flash-Lite Preview (google/gemini-3.1-flash-lite-preview ), DeepSeek V3.2 (deepseek/ deepseek-v3.2 ), Llama 3.1 8B ( meta-llama/ llama-3.1-8b-instruct ), Qwen3 8B (qwen/ qwen3-8b ), Qwen3 32B (qwen/qwen3-32b ), and Llama 3.3 70B-Instruct (meta-llama/ llama-3.3-70b-instruct ) all served via Open-Router, and Qwen 3.6 Flash ( qwen3.6-flash )served directly via DashScope. Each (model, condition) cell is run three times with random seeds; Tables 2 and 3 report mean ± std. Claim extraction and the Tier K reasoning judge use Gemini 2.5 Flash ( google/gemini-2.5-flash ), a different model from any pipeline under evaluation, to prevent self-evaluation bias. 
+
+Decoding and per-stage hyperparameters. All generation calls use temperature=0 for de-terminism. No top-p truncation; default 
+
+max_tokens . Per-stage settings: Stage 1 (ex-tract) and Stage 2 (classify) prompts request strict JSON output; for small Llama models (3.1 8B, 3.2 3B, 3.2 1B) we additionally bind 
+
+response_format={"type":"json_object"} to suppress safety-trained refusal of hazard-scenario JSON extraction. Stage 3 (plan) ReAct agent has a tool budget of one web_search call and one query_knowledge_graph call before the plan must be emitted. Stage 4 (execute) ReAct agent has at most 8 query_database calls and 2 KG lookups; the text-to-SQL sub-pipeline uses a 3-attempt retry loop on validation or execution errors. Per-case execute timeout is 240s (default) or 600s for slower models (Qwen3 32B). LLM-call timeout is 120s. The Tier K reasoning judge runs with the same temperature=0 setting on Gemini 2.5 Flash. 
+
+Software stack. LangGraph 0.2 for the four-stage orchestrator; LangChain 1.2.15 for the LLM client; Neo4j 5.x for the unified graph (one Docker container, populated from the curated EKG JSON file and the auto-introspected DDCG); DuckDB 1.x for the relational backend (read-only on every query); Tavily Search API for the web-retrieval tool; Python 3.10 in a project-pinned conda envi-ronment. The exact environment file, EKG JSON, and orchestration source are released upon accep-tance. 
+
+Hardware and runtime. The pipeline is API-bound: no local GPU is used for inference. Bench-mark runs were executed on a single workstation with 32 GB RAM. Wall-clock for a full 75-case run is approximately 60–120 minutes per condition with –parallel 3 (three concurrent ReAct work-ers); the No Routing condition runs longer because every query falls through to a single template that triggers more SQL retries. 
+
+Determinism caveat. Even at temperature=0 ,provider routing and load balancing introduce small non-determinism in token-level outputs 12 across runs. To bound this, every (model, con-dition) cell in Table 3 is run three times with in-dependent random seeds, and we report mean ±
+
+std across the three seeds. The observed std (typi-cally 0.05–0.15 on overall scores, larger on a few cells where seed-level variance is genuinely high) bounds the residual non-determinism. 
+
+Data preprocessing. The 36 DuckDB tables are built from public-domain federal data sources: per-hex hazard scores from FEMA NRI (riverine flood, hurricane, tornado, wildfire), exposure and pop-ulation totals from US Census + ACS, social-vulnerability indices from CDC/ATSDR SVI, com-munity resilience from FEMA NRI CRI, and facil-ity inventories from HIFLD (hospitals, fire stations, shelters, power plants). All sources were resampled to the H3 resolution-8 hexagonal grid (a one-time preprocessing pass, ∼2 hours wall-clock on a work-station) and joined on the shared hex_id key. The DDCG node graph is auto-introspected from the resulting DuckDB at system startup; no manual schema curation is involved. The exact preprocess-ing scripts, intermediate tables, and DuckDB build commands are released upon acceptance. 
+
+Compute budget. The full evaluation campaign spans approximately 225 benchmark cells: 7 base models × 5 ablation conditions × 3 seeds (105 cells), 7 base models × 4 external baselines × 3seeds (84 cells, one permanently dropped due to context-length overflow), and 4 further ablation conditions explored on 3 base models during sys-tem design (36 cells). Aggregate token usage is on the order of 700–900M input tokens and 80–130M output tokens on the pipeline models, plus ∼70M tokens on the Gemini 2.5 Flash claim extractor across all evaluation runs. Total billed cost was approximately USD 500–700 at the OpenRouter, DashScope, and Google API rate sheets at the time of the experiments. No GPU compute was used. 
+
+B Data Statistics 
+
+Test-split composition. The frozen test split con-tains 75 cases organized across the four tiers from Table 1: R (routing, n=17), K (EKG grounding, 
+
+n=19), M (multi-table composition, n=26), and D (data-availability disclosure, n=13). Scope splits 60 county-scoped queries against 15 statewide queries; the statewide subset spans all four tiers and is on average ∼0.5 judge-score points harder per tier than the county-scoped subset. Hazard cat-egories are distributed across tiers: flood/hurricane queries account for the largest share ( ∼45%) re-flecting the dominant Texas hazard profile, fol-lowed by wildfire ( ∼18%), tornado ( ∼15%), multi-hazard compound scenarios ( ∼12%), and power-disruption / drought / other ( ∼10%). All cases reference Texas geographies; per-case county and hazard tags are released alongside the benchmark file. 
+
+Construction protocol. The test split was au-thored in two phases by the paper authors. Phase 1 created 60 county-scoped cases against the cata-log of available tables and the curated EKG con-cepts, with a tier-balanced design (R/K/M/D quo-tas met before any case-level review). Phase 2 added 15 statewide multi-county cases to introduce compound-aggregation difficulty (e.g., Texas Pan-handle, Permian Basin, Gulf Coast). All cases were reviewed against the DDCG schema to confirm an-swerability under the available tables. The split was frozen before any pipeline execution and was not opened during system development; a sepa-rate, equally sized development split was used for prompt iteration and ablation prototyping, and its scores are not reported. 
+
+Gold-fact extraction and annotator details. 
+
+Tier R gold labels (correct ICS cluster and query-type identifier) and Tier D gold labels (which data warnings should fire) are deterministic and de-rived from the test-case authorship. Tier K causal-token gold labels are extracted directly from the curated EKG along causal-path traversals for each case; this design measures EKG retrieval ground-ing rather than independent causal correctness. Tier M numeric gold values are produced by running canonical reference SQL against the live DuckDB and capturing the result; tolerance bands ( ±100 hex counts, ±10% on averaged quantities) absorb minor numeric variance from equivalent SQL for-mulations. The 20-case sample (5 per tier) used to validate claim-extraction precision was annotated by one author (single-rater); the per-claim-type pre-cision rates are 97% numeric, 97% causal, 85% boolean, with overall 95% claim-extraction preci-sion. The 20-case sample IDs and annotation notes are released alongside the benchmark. 
+
+Geographic coverage and known biases. All 75 cases reference Texas geographies. The split is intentionally Texas-only because the underlying DuckDB build is Texas-only at H3 resolution 8. As 13 a result, the benchmark does not measure cross-region generalization, hazard portfolios specific to other U.S. regions (e.g., Pacific Northwest seismic, Atlantic Coast nor’easter), or international disaster contexts. Cross-region extension is identified as a primary future-work direction in Limitations. 
+
+C Internal-Ablation Cross-Model Figure 
+
+The bar chart below visualises overall scores from Table 3 across all seven base models. It is refer-enced from §4; the corresponding external-baseline view is shown in Figure 2. 
+
+D Pipeline Prompt Structure 
+
+The four orchestration stages (§2.3) use struc-tured prompt templates; condensed verbatim ex-cerpts of Stages 1, 2, and 4 are shown in Ta-ble 4. Stage 3 (causal-informed planning) is a ReAct (Yao et al., 2023) agent with two tools, 
+
+query_knowledge_graph (retrieves causal edges from the EKG by concept ID) and web_search 
+
+(Tavily). The agent decomposes the query into 2–4 sub-questions, calls the KG tool to retrieve causal context (at most 2 calls), optionally calls 
+
+web_search for current events, and emits a struc-tured plan with named SQL targets and expected metrics; the plan is consumed as text by Stage 4. The full prompt text for all stages (including all rule clauses) is released alongside the code. 
+
+E EKG Schema Details 
+
+The curated Expert Knowledge Graph contains 107 concept nodes distributed across eight cate-gories, connected by 117 typed causal edges (Ta-ble 5). The three concept-to-schema bridge target categories are derived from the auto-introspected DDCG (36 DataTable nodes, 150 DataColumn 
+
+nodes, 7 JoinRule nodes). 
+
+Sample concept-to-schema edges. flood_ occurrence maps to HP_FLD_002 (NRI riverine flood risk); vulnerability maps to VUL_002 
+
+(Social Vulnerability Index) and VUL_004 (pop-ulation social vulnerability index); shelters 
+
+maps to HIFLD-EMERGENC-SHELTER-N (HIFLD national shelter system facilities); hospitals 
+
+maps to EX_LIFE_004 (hospital facility counts); 
+
+population maps to EX_POP_001 (population per hex). The remaining 26 bridges follow the same one-concept-to-one-or-two-tables pattern. 
+
+F ICS Mapping 
+
+The three routing clusters in §2.3 are loosely mo-tivated by the functional structure of the Incident Command System (Federal Emergency Manage-ment Agency, 2017; Bigley and Roberts, 2001); they are not formally aligned with it. Table 6 gives the explicit correspondence. The map-ping compresses the five ICS functional sections (Command, Operations, Planning, Logistics, Fi-nance/Administration) into the subset relevant for analyst-side decision support and omits Command and Finance/Administration as out of scope; the routing decision is therefore best read as a coarse functional triage at the cluster level. 
+
+G Evaluation Conditions H External Baseline Configuration 
+
+LightRAG. We index the same source corpus that backs the EKG (TDIS chunks; n=2,577) using a recent release of the upstream Ligh-tRAG implementation (Guo et al., 2024), pro-ducing an on-disk index of 96 MB containing 85 entities, 85 relations, and 926 chunks. LLM extraction calls use Gemini 3.1 Flash-Lite Pre-view via OpenRouter; embeddings use sentence-transformers/all-MiniLM-L6-v2 (384-dim) to avoid an OpenAI dependency for retrieval. At query time, we retrieve in hybrid mode (local en-tity retrieval + global community retrieval) with 
+
+top_k=10 , surfacing the resulting context block as the sole tool response inside an otherwise unmodi-fied ReAct backbone. The exact commit hash and index artifacts are released upon acceptance. 
+
+Author’s configuration. LightRAG is config-ured under its authors’ recommended defaults except for the unavoidable embedding-model swap (sentence-transformers/all-MiniLM-L6-v2 
+
+in place of an OpenAI embedding model). We did not fine-tune LightRAG’s KG extraction on a disaster-specific ontology and did not provide it with the EKG. Such adaptations would amount to porting the EKG into LightRAG’s architecture, which is the contribution this paper is testing (see §6). LightRAG is evaluated on all seven base models with three seeds each. 
+
+I Worked Example 
+
+We trace the full pipeline through a representa-tive Tier M case ( draft_m33 ) to illustrate concept-aware schema retrieval and the per-case scoring 14 Gemini 3.1      
+
+> FL Preview
+> DeepSeek
+> V3.2
+> Qwen 3.6
+> Flash
+> Llama 3.1
+> 8B
+> Qwen3
+> 8B
+> Qwen3
+> 32B
+> Llama 3.3
+> 70B
+> 0
+> 1
+> 2
+> 3
+> 4
+> Mean LLM judge score  (0--5)
+> 3.54
+> 3.03
+> 3.56
+> 1.75
+> 2.57 2.56
+> 1.65
+> Full No Routing No Plan ReAct Text-RAG
+
+Figure 3: Overall mean LLM judge score for the full DisasterLex pipeline versus four internal-component ablations (No Routing, No Plan, ReAct, Text-RAG) across all seven base models. DisasterLex Full bars are value-labeled. Bars are means over three random seeds; error bars are ± one standard deviation. 
+
+Stage 1: Context Extraction 
+
+“Analyze the disaster management query below. Extract area_of_interest , hazard_type (one of flood , hurricane ,
+
+wildfire , tornado , drought , power_disruption , multi_hazard ), criticality (1–5), and a short rationale. Criticality: 1=Monitor (routine planning); 2=Advisory (watch); 3=Action (warning/imminent, ‘in N hours’); 4=Urgent (active impact: ‘is currently affecting’, ‘has struck’); 5=Critical (‘Cat 5’, ‘catastrophic’, ‘mass casualty’). Any ‘Category 5’ / ‘Cat 5’ hurricane always assigns 5. If the query is past-tense / what-if / planning, cap criticality at 3. User Query: ‘{query}’. Return ONLY JSON: {"area_of_interest": . . . , "hazard_type": . . . , "criticality": N, 
+
+"criticality_rationale": . . . }”
+
+Stage 2: Cluster Routing 
+
+“Determine which operational cluster and query type best fit this request. User Query: ‘{query}’. Context: {hazard} in {area} (Criticality {c}). Cluster Descriptions: (1) life_safety_operations : OPERATIONAL queries: active rescue, SAR-zone identification, evacuation, medical triage. (2) damage_assessment_response : ANALYTICAL queries: post-event damage counts, economic loss, recovery planning, resource gaps, AND causal mechanism questions. (3) infrastructure_mitigation :protecting infrastructure before/during an event: hardening, surge exposure to critical facilities, power-grid vulnerability. Available Query Types per Cluster: {enumerated list}. Disambiguation: ‘identify facilities in <risk zone>’ → infrastruc-ture_mitigation; ‘identify populations with compound risk (no deployment)’ → damage_assessment_response; ‘identify SAR / shelter / evacuation zones’ → life_safety_operations. Return ONLY JSON: {"cluster":. . . , "query_type":. . . } ”
+
+Stage 4: Tool-Augmented Execution 
+
+“You are an Incident Command analyst. Execute the provided analysis plan using actual data. CRITICALITY: {c}. AREA: {area}. {data-availability disclosure block, if any}. {routing template body for the chosen 
+
+(cluster, query_type) }. {concept-aware schema hints}. Constraints: at most 8 query_database calls (use CTEs / JOINs to combine); never call schema-introspection ( DESCRIBE ,
+
+PRAGMA , information_schema , etc.), query actual data tables directly; at most 2 KG lookups; if SQL retries exceed 3 attempts on one logical query, abandon and answer with available data. Recommendations gated by criticality: 1–2 informational; 3 active-response; 4–5 life-safety missions. Self-check before finalizing: (a) did I state every primary numeric metric the question asked for, with its exact value? (b) If the question mentions equity / vulnerable populations, did I address that dimension? (c) If the question asks ‘how/why/cascade/driver’, did I name the causal chain using KG concept IDs (e.g. flood_occurrence INCREASES power_disruption REDUCES hospital_operations )? (d) Are my recommendations gated by Criticality? (e) For regional aggregates, did I sum across the FULL named scope? Output ends with a MANDATORY structured-facts block (one snake-case line per aggregated metric the question re-quested).” 
+
+Table 4: Prompt templates for the four-stage orchestration pipeline (§2.3). Stage 3 (causal-informed planning) is described in prose above; its ReAct system prompt is released alongside the code. Curly braces denote runtime-substituted placeholders (e.g., {query} , {hazard} , {area} , {c} ). 
+
+rubric in action. All field values shown below are taken verbatim from the released benchmark file and the Full-pipeline result for Gemini 3.1 Flash-Lite Preview (seed 1). 
+
+Input. “Flooding in Hidalgo County. Triage the medical system under flood conditions: which hos-pitals are at flood risk, and identify SAR priority zones where patients may be stranded.” 
+
+Stages 1–2 (extract + route). Table 8 shows the routing state populated by the extractor and the cluster/template selected by the router (1 of 18 prompt templates). 15 Node category Count                  
+
+> Feature 19 Intermediate 56 Outcome 4Domain anchor 16 Intervention 5Exposure 3Response asset 2Infrastructure 2
+> Total concepts 107 Edge type Count
+> INCREASES 56 REDUCES 49 INDICATES 9REQUIRES 2SCALES 1
+> Total causal 117 MAPS _T O52
+
+Table 5: EKG schema breakdown. Concept categories follow the type field on each node in the curated EKG; edge types are stored on each Concept –Concept re-lationship. The 52 concept-to-schema edges connect concept nodes to DataTable nodes that are loaded in the current DuckDB build.      
+
+> DisasterLex element ICS analogue Routing clusters
+> Life-safety operations Operations Section (Medical & Rescue) Damage assessment & response Planning Section (Situation Unit) feeding Operations Infrastructure mitigation Planning (Resources Unit) + Logistics (Service Branch)
+> Cross-cutting gates
+> Criticality gate ( ≥3)Incident Action Plan urgency tier (life-safety priority) Data-availability disclosure Documentation Unit (Planning Section)
+
+Table 6: Mapping from DisasterLex pipeline elements to ICS functional sections.        
+
+> Condition Mechanism
+> Full Concept retrieval + ICS routing + planning + execution. No Routing Hardcoded cluster template; area extracted via regex. No Plan No pre-execution causal research step. ReAct ReAct agent (Yao et al., 2023); same tools, no routing/template/plan. Text-RAG Source corpus as text chunks over a ReAct backbone. LightRAG Auto-extracted entity-relation graph (hybrid retrieval) over a ReAct backbone (Guo et al., 2024).
+
+Table 7: The five baseline and ablation conditions eval-uated against the full pipeline (referenced from §3.2).       
+
+> Field Value
+> area_of_interest Hidalgo County
+> hazard_type flood
+> criticality 4 (active impact event)
+> cluster life_safety_operations query_type medical_triage
+
+Table 8: Pipeline state after Stages 1–2 for draft_m33 .The selected prompt template’s stated objective is to “as-sess the vulnerability of the healthcare network and iden-tify potential medical deserts during an active event.” 
+
+Stage 3 (plan). Causal context retrieved from the EKG describes the cascade flood occurrence INCREASES road access disruption → staff and supply chain isolation → backup power exhaustion 
+
+→ hospital operations failure. Plan: enumerate Hidalgo County hex cells, count hospital-bearing hexes, intersect with high-flood-risk hexes (riverine flood score ≥ 75), and identify SAR priority zones. 
+
+Stage 4 (execute). Concept-aware schema re-trieval activates the flood-occurrence, hospitals, and community-resilience concepts. Concept-to-schema traversal selects four tables: HP_FLD_002 
+
+(flood score), EX_LIFE_004 (hospital count), 
+
+CR_001 (community resilience), and the county crosswalk. The injected schema context is 14 columns; full-schema injection would expose 150 columns. The generated SQL joins on the hex iden-tifier, filters on county equal to “Hidalgo County”, applies the high-flood-risk threshold, and returns the affected hex sets together with five opera-tional recommendations (mutual aid activation, field-hospital staging, FEMA Preliminary Damage Assessment, generator fuel resupply, SAR prioriti-zation). The synthesized answer reports 12 total hospital hexes , 6 high-risk hospital hexes (50%) ,16 and includes the causal chain from Stage 3. 
+
+Scoring. The benchmark file specifies five de-terministic checks for draft_m33 (Tier M total weight 5.0; no LLM reasoning judge). Table 9 shows each check, its expected and actual value, and the weighted contribution to the per-case score.                              
+
+> Check Kind WExpected / Actual +
+> routing pipeline match 1.0 match 1.00 num1 numeric ( ±3)1.5 12.0 / 12.0 1.50 num2 numeric ( ±50 )1.5 2597.0 / missing 0.00 bool boolean 0.5 true / true 0.50 rec. count count ≥20.5 2 / 5 0.50
+> Fact score 3.50
+> Reasoning score (Tier M: none) 0.00
+> judge_score_raw 3.50
+
+Table 9: Deterministic scoring breakdown for case m33. W is the check weight; + is the weighted contribution (W × score fraction). Tier M total is 5.0. The pipeline recovers four of five checks; the missing SAR-priority hex count is the single point of failure. This per-case score contributes one cell to the Tier M column of Ta-bles 2 and 3. 
+
+J Tier K Reasoning-Judge Prompt 
+
+For the 5 statewide Tier K cases, a separate LLM judge (Gemini 2.5 Flash) scores the reasoning qual-ity of the system’s answer on a 0–1 scale per check, contributing up to 1 point of the per-case 1–5 to-tal. The judge receives a JSON payload contain-ing the question, the deterministic gold facts, the system answer, and a list of case-specific reason-ing checks (each with an instruction and a list of 
+
+required_points drawn from the curated EKG). The condensed template is shown in Table 10. The reasoning score is added to the determin-istic fact-check score (0–4 points: numeric facts, boolean claims, entity-set matches, routing-state verification) to produce the per-case 1–5 judge score reported in Table 3. For Tier R, M, and D cases, no LLM-judged reasoning component is used; those cases are scored purely by deterministic checks. 
+
+K Annotation Process for the 20-Case Claim-Extraction Validation 
+
+We validated the LLM claim-extraction pipeline (Gemini 2.5 Flash) on a 20-case sample drawn uni-formly from the four tiers (5 cases per tier). One au-thor served as the annotator. For each sampled case,    
+
+> Tier K Reasoning-Judge Prompt
+> “Evaluate the system answer against each reasoning check. Return valid JSON only as {"checks": [{"id": ". . . ", "score_fraction": 0.0, "reason": ". . . "}]} . Score fractions must be between 0 and 1.” {JSON payload with the following keys}
+> question : the user query.
+> gold_facts : the deterministic gold facts for the case.
+> system_answer : the system’s answer text.
+> checks : a list of reasoning checks. Each check contains:
+> id : identifier for this check.
+> kind : check kind (e.g., reasoning_judge ).
+> prompt : case-specific reasoning instruction (e.g., “Evaluate whether the answer explains the physical mechanism by which impervious surface coverage increases stormwater runoff and thereby increases flood occurrence. The reasoning should reference county-specific data, not be purely generic.”).
+> required_points : list of expected points drawn from the curated EKG (e.g., (1) explains that impervious surfaces pre-vent infiltration, increasing surface runoff; (2) connects in-creased runoff to higher flood risk using data; (3) recommen-dations reference the causal insight).
+
+Table 10: Tier K reasoning-judge prompt template (§3.1). The judge (Gemini 2.5 Flash) receives a JSON payload with the question, gold facts, system answer, and a list of case-specific reasoning checks, and returns one score_fraction ∈ [0 , 1] per check together with a short rationale. 
+
+the annotator received: (i) the question, (ii) the sys-tem answer, (iii) the LLM-extracted claim list, and was asked to mark each extracted claim as correct 
+
+(the claim is supported by the system answer text), 
+
+incorrect (the claim is not supported, including hal-lucinated numbers or causal edges), or ambiguous 
+
+(the answer text is unclear). Precision is reported as correct /(correct + incorrect ) over all extracted claims in the sample; ambiguous claims are ex-cluded from the denominator. The 20 cases yielded 247 extracted claims in total. Per-claim-type precision: numeric ( n=109, 97%), causal ( n=63, 97%), boolean ( n=52, 85%), entity-set ( n=23, 95%). The lower boolean preci-sion is driven by the LLM’s tendency to convert hedged answer phrases (“most hospitals”, “a few zones”) into stricter boolean claims, which the an-notator marked incorrect when the underlying an-swer text did not commit to a definite truth value. We discuss the single-rater limitation in Limita-tions; inter-annotator agreement statistics are not reported because the validation was performed by a single annotator. A second-rater pass on the same 20 cases is planned for a future revision. 17 L Per-Tier Example Cases 
+
+To make the tier taxonomy concrete, Table 11 shows one representative case from each of the four tiers (R, K, M, D) drawn from the 75-case test split. Full case IDs let the released benchmark file be cross-referenced.          
+
+> Tier/Case ID Question (truncated)
+> Rdraft_r12 Active wildfire is burning in Kerr County. Map the highest-risk fire zones, identify transmission infrastructure in the fire path, and estimate how many buildings are in the threat area. Kdraft_k13 Severe flooding in Webb County. How does social vulnerability compound emergency response challenges during an active flood? Identify the highest-priority zones for swift-water rescue deployment. Mdraft_m18 Tornado warning in Midland County. Triage critical lifeline infrastructure: count hospital hexes and substation hexes in high tornado risk zones. Report resource gap. Ddraft_d09 Hurricane impact in Cameron County. Assess social vulnerability across all hexes, including those with missing SoVI data, and report the coverage fraction.
+
+Table 11: One example case per tier (lowest-numbered case of each tier in the test split). The Tier D example deliberately asks for an aggregate that crosses hexes with missing SoVI data; the system is expected to report the coverage fraction. 
+
+M Failure-Mode Notes for Tier M 
+
+Tier M (multi-table composition, n=26) is the lowest-scoring tier under the full pipeline on ev-ery base model (Table 3). Qualitatively, the failure modes we observe most often on Tier M cases (without a labeled quantitative breakdown) are: (i) partial schema selection : concept matching acti-vates the right tables but misses one of the auxiliary tables needed to complete a 3- or 4-table join (e.g., includes shelters and surge exposure but omits the crosswalk needed to filter by county); (ii) join-key errors : the LLM joins on hex_id but applies a county filter via the wrong table, producing zero rows or incorrect aggregates; (iii) aggregation drift :when a question asks for both a per-hex count and a regional sum, the system reports one or the other but not both; (iv) tolerance-band misses : numeric answers fall outside the ±100 hex-count band on cases where the system uses a slightly different filter than the gold. A formal annotation of all Tier M failures by category is left to a future revi-sion; the per-case error logs are released alongside the benchmark for independent re-analysis. 18

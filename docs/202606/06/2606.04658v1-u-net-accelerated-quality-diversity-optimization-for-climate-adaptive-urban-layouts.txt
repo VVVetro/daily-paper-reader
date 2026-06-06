@@ -1,0 +1,279 @@
+Title: U-Net-Accelerated Quality-Diversity Optimization for Climate-Adaptive Urban Layouts
+
+URL Source: https://arxiv.org/pdf/2606.04658v1
+
+Published Time: Thu, 04 Jun 2026 01:05:15 GMT
+
+Number of Pages: 13
+
+Markdown Content:
+# U-N ET -A CCELERATED QUALITY -D IVERSITY OPTIMIZATION FOR CLIMATE -A DAPTIVE URBAN LAYOUTS 
+
+A P REPRINT 
+
+Alexander Hagg 
+
+Institute of Technology, Resource and Energy-efficient Engineering (TREE) Bonn-Rhein-Sieg University of Applied Sciences Sankt Augustin, 53757, Germany 
+
+alexander.hagg@h-brs.de 
+
+Tania Guerrero 
+
+Institute of Technology, Resource and Energy-efficient Engineering (TREE) Bonn-Rhein-Sieg University of Applied Sciences Sankt Augustin, 53757, Germany 
+
+tania.guerrero@smail.inf.h-brs.de 
+
+Dirk Reith 
+
+Institute of Technology, Resource and Energy-efficient Engineering (TREE) Bonn-Rhein-Sieg University of Applied Sciences Sankt Augustin, 53757, Germany Fraunhofer Institute for Algorithms and Scientific Computing (SCAI), Sankt Augustin, Germany 
+
+dirk.reith@h-brs.de 
+
+June 4, 2026 
+
+# ABSTRACT 
+
+Optimizing urban layouts for climate adaptation requires balancing building density with cold-air ventilation. Because physics-based climate simulations are computationally expensive, planners typically evaluate fewer than ten manual designs. Quality-Diversity (QD) algorithms offer a way to systematically illuminate the design space, but they require surrogate models to be practical. In this paper, we replace a slow, regulatory physics simulator with a spatial deep-learning surrogate (U-Net) inside an offline MAP-Elites loop. We systematically compare this spatial approach with a traditional Gaussian Process (GP) surrogate across different training-data strategies (quasi-random Sobol sampling vs. active QD bootstrapping). Our results reveal that scalar GP surrogates fail catastrophically when trained on random samples, requiring expensive, actively generated QD archives to generalize. In contrast, the spatial induc-tive bias of the U-Net allows it to learn the underlying physics mapping robustly ( R2 = 0 .996 ), completely independent of the training data source. This allows offline QD optimization to achieve highly accurate fitness rankings ( ρ = 0 .994 ) using only a one-time batch of random training sam-ples. The resulting pipeline, deployed in the open-source OpenSKIZZE tool, generates thousands of diverse, climate-evaluated building layouts in under ten minutes. 
+
+Keywords Quality-Diversity Optimization, Surrogate-Assisted Optimization, Urban Climate Modeling, MAP-Elites, Deep Learning Surrogates, Urban Planning 
+
+# 1 Introduction 
+
+Urban densification – the process of increasing building density within existing settlement boundaries – is a central strategy for reducing land consumption and supporting sustainable urbanization. However, denser urban fabric can 
+
+> arXiv:2606.04658v1 [cs.NE] 3 Jun 2026
+
+U-Net-Accelerated Quality-Diversity Optimization for Climate-Adaptive Urban Layouts A P REPRINT 
+
+obstruct nocturnal cold air drainage flows that are essential for mitigating urban heat islands Alcoforado et al. (2009); Kruse et al. (2018). Cold air forms at night over vegetated and open areas, and gravity-driven katabatic flows transport this cooler air into adjacent built-up zones, providing natural ventilation. New construction that blocks these corridors can measurably increase heat stress for residents and degrade urban climate resilience Berchtold et al. (2023). Physics-based simulation tools such as the KLAM_21 cold air drainage model Sievers (2005) – the German regulatory standard used by the national weather service (Deutscher Wetterdienst (DWD)) – can quantify these effects, but a single evaluation takes 5–20 minutes for isolated parcels and up to 24 hours for realistic city-scale domains. In practice, urban planners manually design and compare fewer than ten building layout variants, making systematic exploration of the design space effectively impossible. QD algorithms Mouret and Clune (2015); Chatzilygeroudis et al. (2021) such as MAP-Elites offer an alternative: rather than converging to a single optimum, they illuminate the full domain of possible designs Hagg et al. (2025) by maintaining a diverse archive of high-performing solutions across multiple user-defined feature dimensions (e.g., site coverage, building height, open space proportion). However, QD algorithms commonly require 10 5 to 10 6 fitness evaluations, rendering direct coupling with physics simulators infeasible. 
+
+Contribution. We bridge this gap with a deep-learning surrogate that replaces the physics simulator entirely during QD optimization (Fig. 2). Our systematic evaluation of training data strategies, surrogate architectures, and QD configurations yields three actionable insights: 
+
+(1) QD bootstrapping is unnecessary for spatial surrogates. We compare data from Surrogate-Assisted Illumination Algorithm (SAIL) Gaier et al. (2018) (QD archives with real KLAM_21 evaluations, which we initially hypothesized to be essential) with Sobol quasi-random samples evaluated by KLAM_21. For scalar GP surrogates, QD-generated data is indeed critical. For the U-Net, however, Sobol data yields equivalent accuracy ( R2 ≥ 0.994 ) – simplifying the practical pipeline. 
+
+(2) Spatial U-Net surrogate. A U-Net Ronneberger et al. (2015) trained on Sobol-sampled KLAM_21 simulations predicts the full 6-channel spatial output from 3-channel input grids at R2 = 0 .996 and ∼2 ms per evaluation. The one-time training data cost ( ∼19,000 simulations, trivially parallelizable on High-Performance Computing (HPC)) is amortized across unlimited subsequent QD runs – each producing ∼100,000 surrogate evaluations in minutes rather than the ∼10,000 hours required by direct simulation. 
+
+(3) Offline QD without exploration. MAP-Elites with the frozen U-Net produces diverse building layouts in 3– 8 minutes. Validation against KLAM_21 ground truth yields Spearman ρ = 0 .994 without any uncertainty-guided exploration mechanism. Along the pipeline, four experiments address: RQ1: What training data strategy yields the best surrogate general-ization, and does it depend on architecture? RQ2: How do Sparse Variational Gaussian Process (SVGP) and U-Net compare for offline QD? RQ3: Can offline surrogate-only QD reliably reproduce physics-validated archives? As a proof of concept, we use isolated square parcels under simplified boundary conditions. This setup isolates morphological effects on cold-air flux. In real urban contexts with irregular geometries, heterogeneous land use, variable winds, and multi-scale domains, surrogate accuracy and ranking fidelity will likely degrade; thus, our metrics represent upper bounds for real-world deployment. The full pipeline is deployed in OpenSKIZZE, an open-source web application for climate-adaptive urban design. 
+
+# 2 Related Work 
+
+QD optimization. MAP-Elites Mouret and Clune (2015) partitions a user-defined feature space into cells and fills each with the highest-performing solution found. Extensions include CVT-MAP-Elites Vassiliades et al. (2018), dif-ferentiable QD Fontaine and Nikolaidis (2021), and covariance matrix adaptation variants Fontaine et al. (2020). The PyRibs framework Tjanaka et al. (2023) provides modular archive and emitter components used in this work. 
+
+Surrogate-assisted QD. SAIL Gaier et al. (2018) introduced GP-assisted MAP-Elites, using an acquisition function (Upper Confidence Bound (UCB)) to balance fitness exploitation with model uncertainty exploration. Subsequent work studied surrogate-assisted illumination in robotics Keller et al. (2020) and aerodynamics Gaier et al. (2018), while Hagg et al. Hagg et al. (2020) showed that surrogate models can also replace the archive’s features. More recently, deep neural networks have replaced GPs as state-of-the-art QD surrogates. For instance, DSA-ME Zhang et al. (2022) trains a DNN to predict objectives and measures in MAP-Elites for game design jointly, and DSAGE Bhatt et al. (2022) utilizes deep surrogates for environment generation. Additionally, Kent et al. Kent et al. (2024) proposed Bayesian optimisation with coupled descriptor functions, and Flageat and Cully Flageat and Cully (2023) addressed uncertainty quantification in noisy QD domains. A critical limitation of these deep QD approaches, however, is that they map genomes directly to scalar outputs (fitness or behavioral descriptors). Because they predict scalars, they remain highly susceptible to developing spurious optima in unseen regions of the input space Gaier et al. (2018). 2U-Net-Accelerated Quality-Diversity Optimization for Climate-Adaptive Urban Layouts A P REPRINT 
+
+Consequently, they still require expensive active-learning loops – interleaving surrogate predictions with true physics evaluations – to correct these errors. More broadly, surrogate-assisted evolutionary computation traditionally balances evaluation cost and accuracy using scalar models (e.g., Kriging/GP d. g Krige (1951); Williams and Rasmussen (2006), Random Forests Breiman (2001)), which struggle with high-dimensional spatial data. We replace scalar approximation with field-to-field spatial U-Net prediction. Modeling the complete physics mapping introduces a strong physical inductive bias that inherently resists spurious optima, enabling accurate, purely offline QD optimization without active-learning loops. 
+
+Deep learning surrogates for physics. U-Net architectures Ronneberger et al. (2015) have been applied as sur-rogates for Computational Fluid Dynamics (CFD) Thuerey et al. (2020); Kochkov et al. (2021), weather predic-tion Pathak et al. (2022), and urban microclimate modeling Mortezazadeh et al. (2022). Conditional GANs Isola et al. (2017) and adversarial image-to-image models Milla-Val et al. (2024) offer alternatives but require more careful train-ing. While architectures such as Fourier Neural Operators Pathak et al. (2022) or conditional GANs offer promising alternatives for fluid dynamics, an exhaustive benchmarking of deep learning architectures is outside the scope of this work. Our primary objective is to demonstrate the fundamental advantage of the spatial representation paradigm over scalar genome-based approximation in QD optimization, leaving the exploration of more advanced spatial architec-tures for future studies. For urban wind specifically, recent work has applied U-Nets to predict pedestrian-level wind distribution around buildings Wang et al. (2025), to optimise city structures for wind resilience Nowak et al. (2024), and to predict urban canopy flows from LES data Vargiemezis and Gorlé (2025). However, none of these combine spatial surrogates with QD optimization. Our contribution is the first to leverage deep spatial surrogates within a QD pipeline, enabling offline MAP-Elites that avoid the spurious-optima failure mode inherent to genome-based scalar surrogates. 
+
+Computational urban climate modeling. Simulating urban cold air flows ranges from full CFD Allegrini et al. (2015) (hours per run) to simplified drainage models such as KLAM_21 Sievers (2005) (minutes). Surrogate-based CFD acceleration has been explored Papadopoulos et al. (2018); Zhang et al. (2023), but not for regulatory cold air models combined with QD optimization. 
+
+# 3 Problem Formulation 
+
+KLAM_21 Sievers (2005) is a 2.5D katabatic cold air drainage model maintained by the DWD. Given terrain elevation, building heights, and land-use classification on a regular grid, it simulates nocturnal cold-air production, accumulation, and gravity-driven flow over multiple time steps. The key output fields at pedestrian level (2 m height) are the cold air content Ex (in 100 J/m 2) and horizontal wind velocity components uq , v q (in m/s). We define the optimization objective as the mean cold air energy flux over the region of interest: 
+
+Φ = ¯Ex · ¯u2m, ¯u2m =
+
+q
+
+¯u2 
+
+> q
+
++ ¯ v2 
+
+> q
+
+(1) where ¯Ex and ¯u2m are spatial averages over the building parcel. Higher Φ indicates better cold air ventilation. The ob-jective is to maximize Φ while exploring diverse building configurations. Prior analysis of the KLAM_21 model Siev-ers (2005); Kruse et al. (2018) indicates that site coverage ratio, Grundflächenzahl (GRZ) is the dominant morpho-logical driver of pedestrian-level cold air flux, because cold air flows predominantly around buildings at ground level rather than over them. Each building layout is encoded as a 60-dimensional genome representing 10 rectangular buildings, each with 6 parameters: position ( x, y), dimensions (width, length), height (in floors), and rotation angle. Buildings can overlap, merging into complex footprints. The genome is decoded into a 2D heightmap on a regular grid at 3 m resolution, which serves as input to both physics simulation and surrogates (Fig. 2). The QD archive uses 8 feature dimensions derived from planning practice: (1) GRZ, (2) floor area ratio, Geschoss-flächenzahl (GFZ), (3) average building height, (4) height variability, (5) average building distance, (6) building count, (7) compactness, and (8) park factor (open space proportion). These correspond to established urban planning metrics under the Baunutzungsverordnung , German Building Use Ordinance (BauNVO) and enable planners to navigate the solution space using familiar descriptors. We use a PyRibs Tjanaka et al. (2023) GridArchive with discretized bins for each feature dimension. As a controlled proof-of-concept, we evaluate layouts on isolated 60 m square parcels at 3 m grid resolution (Fig. 1). The terrain features a continuous 2° downhill slope (west to east), providing gravitational forcing for pure katabatic cold air drainage ( vregio = 0 ). Upwind of the parcel, land use is grassland (KLAM_21 category 7, enabling cold air production); the parcel and downwind area use low-density residential (category 2). Buffer zones extend the domain 3U-Net-Accelerated Quality-Diversity Optimization for Climate-Adaptive Urban Layouts A P REPRINT  
+
+> katabatic flow
+> 2° slope
+> 267 m (89 cells)
+> 198 m (66 cells)
+> 60 m Vegetation (cat. 7)
+> Residential (cat. 2)
+> WE
+
+Figure 1: Simulation domain (plan view). Vegetation (green, west) upwind of the 60 m parcel (red outline) produces cold air that drains eastward towards the residential area (red) under pure katabatic forcing (2° downward terrain slope, no regional wind). The domain extends 66 × 89 cells at 3 m resolution. Stage 1 Data Generation Stage 2 Surrogate Training Stage 3 Offline QD SAIL Sobol or retrain KLAM–21 Training Data U-Net SVGP Frozen Surrogates MAP-Elites Diverse Archive KLAM–21 Validation 
+
+Figure 2: Three-stage experimental pipeline. Stage 1: Training data is generated either via SAIL (physics-in-the-loop QD) or via Sobol sampling with KLAM_21 evaluation. Stage 2: A U-Net and/or SVGP surrogate is trained on the resulting data. Stage 3: Offline MAP-Elites uses the frozen surrogate to produce thousands of diverse layouts in minutes. A subset is validated with KLAM_21. to 66 × 89 cells ( 198 m × 267 m). This simplified setup isolates the effect of building morphology on cold-air flux; the reported accuracy metrics therefore represent upper bounds in real urban contexts. 
+
+# 4 Method: Three-Stage Surrogate Pipeline 
+
+Our pipeline consists of three stages (Fig. 2): (1) generating training data via physics simulation, (2) training surrogate models on the resulting data, and (3) running offline MAP-Elites with the frozen surrogate. We describe each stage below. 
+
+4.1 Stage 1: Data Generation via SAIL 
+
+SAIL Gaier et al. (2018) combines MAP-Elites with a GP surrogate model. In each iteration, the GP is trained on all solutions evaluated so far. An acquisition function (UCB: α(x) = μ(x) + λ · σ(x)) is used as a cheap proxy for fitness inside MAP-Elites. After a fixed number of surrogate-only generations, the most promising solutions (acquisition map elites) are evaluated with the real KLAM_21 simulator, and the GP is retrained. 4U-Net-Accelerated Quality-Diversity Optimization for Climate-Adaptive Urban Layouts A P REPRINT 3   
+
+> 66x94 Input 64
+> 128
+> 256
+> 512
+> 1024
+> 5x6 Bottleneck 512
+> 256
+> 128
+> 64 6
+> 66x94 Output
+> terrain, buildings, landuse uq,vq,uz, vz,Ex,Hx
+
+Figure 3: U-Net architecture (depth 4, 64 base channels). Numbers underneath blocks indicate channel count; block heights are proportional to channels. Each encoder/decoder level applies two 3 × 3 convolutions with batch normal-ization and ReLU. Encoder levels downsample via max-pooling ( ↓2); decoder levels upsample bilinearly ( ↑2) and concatenate skip connections. A final 1 × 1 convolution projects to 6 output channels. Critically, the SAIL archive stores surrogate-predicted fitness values. For downstream use as supervised training data, we re-evaluate all archive elites with the true KLAM_21 simulator to obtain ground-truth labels. This is a one-time batch computation that runs in parallel on an HPC cluster. 
+
+Training data comparison. We compare three data sources: (i) SAIL archives (re-evaluated with KLAM_21 for ground-truth labels), (ii) quasi-random Sobol sequences evaluated with KLAM_21, and (iii) a 50/50 combination. UCB acquisition within SAIL drives exploration of uncertain regions, while MAP-Elites diversity pressure ensures broad feature-space coverage. Whether this coverage advantage translates to better downstream surrogate accuracy – and whether the answer depends on the surrogate architecture – is a central question of this work. 
+
+4.2 Stage 2: Surrogate Models 
+
+We compare two surrogate architectures for use in Stage 3 (offline QD). Both are trained offline on KLAM_21-evaluated data and are distinct from the online GP retrained iteratively within SAIL (Stage 1). 
+
+SVGP. Following Hensman et al. Hensman et al. (2015), we train an SVGP with a Matérn-2.5 kernel with Automatic Relevance Determination (ARD) over 62 input dimensions (60-gene genome + parcel width and height). The model uses 2,000–5,000 inducing points, is implemented in GPyTorch Gardner et al. (2018), and predicts a scalar fitness value with calibrated uncertainty. Training uses early stopping with a patience of 20 epochs, a learning-rate warmup over 10 epochs, and a batch size of 1,024. 
+
+U-Net. A U-Net Ronneberger et al. (2015) with 4 encoder/decoder stages and 64 base filters (Fig. 3) takes 3-channel spatial input (terrain, building heights, land use) and predicts 6 output channels corresponding to KLAM_21 output fields ( uq , v q , u z , v z , E x, H x). The scalar cold air flux objective (Eq. 1) is then derived from the predicted spatial fields. This spatial inductive bias – predicting where flow occurs, not just an aggregate scalar – is a key advantage, as it constrains the model to learn physically plausible spatial patterns. 
+
+4.3 Stage 3: Offline MAP-Elites 
+
+In the final stage, MAP-Elites runs entirely with the frozen U-Net or SVGP surrogate – no physics evaluations at all. We test three configurations: (a) U-Net only : Fitness = fU-Net (x). (b) SVGP only : Fitness = μGP (x), optionally with UCB: μ(x) + λσ (x). (c) Hybrid : Fitness = fU-Net (x) + λ · σGP (x), combining U-Net accuracy with GP uncertainty for exploration. After optimization, a subset of archive elites is validated with the real KLAM_21 simulator to assess the fidelity of the surrogate-predicted rankings. 5U-Net-Accelerated Quality-Diversity Optimization for Climate-Adaptive Urban Layouts A P REPRINT 
+
+Table 1: Overview of experiments, research questions, and key metrics. 
+
+# # Research Question Method Key Metric 1 Training data strategy (RQ1) Cross-domain SVGP evaluation R2
+
+# 2 SVGP hyperparameters (RQ2) Grid search: inducing points R2, calibration 3 U-Net accuracy (RQ2) Train/test on SAIL & Sobol R2 per variable 4 QD with surrogates (RQ3) U-Net/SVGP/Hybrid MAP-Elites Spearman ρ, QD ratio 
+
+Table 2: Cross-domain SVGP evaluation ( R2). Combined data generalizes best. Sobol-trained models fail catastroph-ically on optimized designs.                     
+
+> Training data →Optimized →Sobol →Combined Avg. R2
+> Combined (50/50) 0.964 0.974 0.967 0.968
+> Optimized (SAIL) 0.964 0.889 0.929 0.927 Random (Sobol) −0.000 0.981 0.491 0.490
+
+# 5 Experimental Setup 
+
+5.1 Data Generation 
+
+We generated approximately 19,000 KLAM_21 simulation runs across multiple parcel sizes. For the SAIL-based data, we ran SAIL with real KLAM_21 evaluations and then re-evaluated all archive elites with KLAM_21 to obtain ground-truth fitness labels (the archives store only surrogate-predicted values). For the random baseline, Sobol quasi-random sequences were evaluated directly with KLAM_21. SVGP experiments use the 62D genome-based representation; U-Net experiments use 3-channel spatial grids at native resolution. 
+
+5.2 Experiments Overview 
+
+Table 1 summarizes the four experiments conducted. All experiments use 3 replicates with different random seeds; we report mean ± standard deviation. 
+
+5.3 Evaluation Protocol 
+
+For surrogate accuracy (Exp. 1–3), we use train/test splits and report R2, RMSE, Spearman rank correlation, and 95% confidence interval calibration (for SVGP). Cross-domain evaluation trains on one data source and tests on all three (optimized, Sobol, combined), revealing generalization failure modes. For QD validation (Exp. 4), we sample 100 elites from the surrogate-optimized archive and re-evaluate them with KLAM_21. We report: Spearman ρ between surrogate-predicted and true fitness (ranking fidelity), R2 between predictions and truth, and the QD ratio :QD ratio =
+
+P 
+
+> i∈A
+
+ftrue (xi)
+
+P 
+
+> i∈A
+
+fsurr (xi) (2) where A is the set of validated archive elites, ftrue is the KLAM_21-evaluated fitness, and fsurr is the surrogate-predicted fitness. Values near 1.0 indicate the surrogate neither over- nor under-estimates archive quality. This metric is not standard in the QD literature; it complements QD score Mouret and Clune (2015) by measuring surrogate calibration rather than archive quality per se. 
+
+# 6 Results 
+
+6.1 Training Data Strategy (Exp. 1) 
+
+We trained SVGP models on three data sources – SAIL archives (optimized), Sobol sequences (random), and a 50/50 combination – and evaluated each model on all three test sets. Table 2 shows the average cross-domain R2.The key finding is twofold. First, combined training data achieves the best average cross-domain R2 of 0.968. Second – and more striking – a model trained exclusively on Sobol data fails catastrophically on optimized designs (R2 ≈ 0), despite achieving excellent in-distribution accuracy ( R2 = 0 .981 ). Sobol-sampled designs concentrate in 6U-Net-Accelerated Quality-Diversity Optimization for Climate-Adaptive Urban Layouts A P REPRINT Training Dataset 
+
+Optimized Random Combined Evaluation: Opt. Rand. Comb. Opt. Rand. Comb. 0.964 0.889 0.929 0.000 0.981 0.491 
+
+0.964 0.973 0.967 
+
+# Evaluation Dataset R2 RMSE Pearson r Training Dataset Training Dataset Opt. Rand. Comb. Opt. Rand. Comb. 20 15 10 501.0 0.8 0.6 0.4 0.2 0.0 
+
+Figure 4: Cross-domain SVGP evaluation (Exp. 1). Each panel shows predicted vs. true flux for a model trained on one data source (columns) and tested on another (rows). Sobol-trained models fail on optimized test data, while combined-trained models generalize across all domains. low-coverage, low-fitness regions of the search space and never expose the model to the high-fitness configurations that QD algorithms will produce. SAIL archives, in contrast, span the full fitness landscape because UCB acquisition drives exploration of uncertain regions while MAP-Elites diversity pressure covers the feature space. The combined dataset merges the strengths of both: broad quasi-random coverage and targeted high-fitness representation. Fig. 4 visualizes the cross-domain evaluation matrix, showing the catastrophic failure pattern of Sobol-trained models. 
+
+6.2 SVGP Hyperparameter Optimization (Exp. 2) 
+
+Figure 5 shows a grid search over inducing point count (100 to 5,000) and initialization method. Accuracy improves monotonically with inducing points, saturating around 2,500–5,000 ( R2 = 0 .968 , calibration 95.6%). K-means initial-ization yields <0.1% improvement over random subset selection. Inference throughput ranges from 430,000 samples/s (100 pts) to 59,000 samples/s (5,000 pts). Critically, hyperparameter optimization cannot compensate for poor training data: the best Sobol-trained SVGP still achieves only R2 ≈ 0 on optimized test data regardless of HPO configuration, confirming the primacy of training data selection (Sec. 6.1). 
+
+6.3 U-Net Surrogate Accuracy (Exp. 3) 
+
+We trained U-Net models on both SAIL and Sobol data with two loss functions (MSE and MSE + gradient), 3 seeds each (12 configurations total). Table 3 shows that U-Net achieves R2 ≥ 0.994 in all configurations. Per-variable 
+
+R2 ranges from 0.985 ( vq , cross-wind component at 2 m) to 0.999 ( Ex, cold air content); all six output variables exceed R2 = 0 .98 . While an R2 approaching 1.0 might typically raise concerns of overfitting, it is important to note that the surrogate is learning a deterministic physics simulator on a highly constrained, simplified domain. The underlying mapping is exceptionally smooth and learnable, and this high accuracy reflects the controlled nature of our proof-of-concept rather than overfitting to noise. The ground truth and predicted Figure 6 shows the predicted uq values for several samples for each training data set and loss function. Unlike the SVGP (Sec. 6.1), U-Net accuracy is effectively independent of training data source 
+
+– Sobol and SAIL data yield comparable results. U-Net operates on spatial grids and learns the underlying physics mapping (input fields → output fields), rather than memorizing scalar input–output pairs from a particular region of genome space. This data-source independence eliminates the need for the expensive SAIL bootstrapping stage: trivially parallelizable Sobol samples suffice. 7U-Net-Accelerated Quality-Diversity Optimization for Climate-Adaptive Urban Layouts A P REPRINT R Effect 2 Training Time Effect 1.00 0.98 0.96 0.94 0.92 0.90 Test R 22500 2000 1500 1000 500 0Training Time (seconds) 0 1000 2000 3000 4000 5000 0 1000 2000 3000 4000 5000 Number of Inducing Points Number of Inducing Points opt-kmeans opt-random random-kmeans random-random combined-kmeans combined-random ran-kmeans@100: R2=0.65 
+
+Figure 5: Effect of inducing point count on SVGP test R2 (left) and training time (right). All configurations with ≥500 inducing points achieve R2 > 0.95 . The ran-km configuration at 100 points ( R2 = 0 .65 , off-chart) suffered from a single divergent replicate. Table 3: U-Net accuracy by training configuration. Near-perfect accuracy regardless of data source or loss function. Mean ± std over 3 seeds.                                 
+
+> Data source Loss Overall R2Overall MSE Sobol MSE 0.996 ±0.000 0.004 ±0.000
+> Sobol MSE+grad 0.996 ±0.000 0.004 ±0.000
+> SAIL MSE 0.994 ±0.000 0.006 ±0.000
+> SAIL MSE+grad 0.994 ±0.000 0.006 ±0.000
+
+6.4 QD with Offline Surrogates (Exp. 4) SVGP-based MAP-Elites. Using the SVGP as sole fitness evaluator (5,000 generations, 9 configurations), archives grow to 2,300–5,500 elites but show strongly negative validation R2 (−3.8 to −33 .2) and low Spearman ρ (0.19– 0.47) – the GP develops spurious optima that MAP-Elites exploits. This motivates the U-Net-based approach. 
+
+U-Net, SVGP, and Hybrid QD. We systematically compare 8 configurations (U-Net only, SVGP only, SVGP+UCB with λ ∈ { 0.1, 1.0, 10 .0}, and Hybrid with λ ∈ { 0.1, 1.0, 10 .0}), each with 3 seeds and 100 KLAM_21-validated samples per archive. Table 4 and Figure 7 show the validated results. Although the Hybrid model ( λ = 0 .1) achieves a marginally better Spearman ρ (0.995) and QD ratio (1.033) than the pure U-Net, we select the pure U-Net ( λ = 0 ) as the recommended configuration. The negligible performance gain of the hybrid approach does not justify the added computational overhead and system complexity required to maintain and evaluate an SVGP alongside the U-Net during practical deployment. The results yield three conclusions: (1) U-Net alone is sufficient. Pure U-Net ( ρ = 0 .994 ) and the best hybrid (ρ = 0 .995 ) are statistically equivalent; the QD ratio of 1.049 indicates the U-Net is marginally conservative, which is desirable. (2) SVGP alone is inadequate. All SVGP-only configurations achieve ρ < 0.41 with deeply negative validation R2, confirming that genome-based scalar surrogates are ill-suited for offline QD in spatially structured 8U-Net-Accelerated Quality-Diversity Optimization for Climate-Adaptive Urban Layouts A P REPRINT Ground Truth vs Predictions: uq random MSE random MSE grad SAIL MSE SAIL MSE grad GT Predict GT Predict GT Predict GT Predict GT Predict GT Predict 
+
+Figure 6: U-Net spatial predictions vs. KLAM_21 ground truth for the uq wind velocity component (Exp. 3). Rows show different datasets (random, SAIL) and loss functions (MSE, MSE_GRAD). Each sample shows the ground truth (GT) and the prediction (pred). The U-Net models capture fine-grained flow patterns around buildings with minimal error. Table 4: QD validation: surrogate-predicted vs. KLAM_21 ground truth (100 validated elites per archive). Mean ±
+
+std over 3 seeds. Tier A configurations are statistically equivalent.                                                                                            
+
+> Tier Configuration Spearman ρQD Ratio Validation R2
+> AU-Net ( λ= 0 )0.994 ±0.001 1.049 ±0.000 0.852 ±0.018
+> Hybrid ( λ= 0 .1)0.995 ±0.000 1.033 ±0.001 0.924 ±0.008
+> BHybrid ( λ= 1 .0)0.933 ±0.017 0.890 ±0.009 −0.29 ±0.24
+> CHybrid ( λ= 10 .0)0.731 ±0.033 0.294 ±0.005 −323 ±50
+> DSVGP ( λ= 0 )0.200 ±0.165 0.611 ±0.016 −21 ±3
+> SVGP ( λ= 0 .1)0.348 ±0.059 0.608 ±0.002 −23 ±4
+> ESVGP ( λ= 1 .0)0.404 ±0.070 0.548 ±0.011 −33 ±1
+> SVGP ( λ= 10 .0)0.048 ±0.037 0.238 ±0.003 −585 ±52
+
+domains. (3) High UCB λ is counterproductive. Uncertainty-driven exploration in a frozen-model setting pushes solutions toward unreliable regions. 
+
+6.5 Practical Deployment 
+
+Performance optimization (Numba JIT feature computation, vectorized domain grid construction, batch encoding) reduces the full evaluation pipeline from 823 ms to 187 ms per generation (batch of 1,024). Raw surrogate throughput is ∼465 samples/s for U-Net and ∼2,857 samples/s for SVGP; the SVGP’s unique advantage is calibrated predictive uncertainty. A complete QD run (10,000 generations, ∼80,000 unique evaluations) completes in 31–53 minutes; a practical “coffee break” configuration (1,000 generations) runs in 3–8 minutes. The > 12 , 000 × per-evaluation speedup is amortized after the one-time cost of ∼19,000 training simulations ( ∼130 hours, trivially parallelizable on HPC). Training the U-Net surrogate itself takes approximately 20 minutes on a single NVIDIA A100 GPU. The pipeline is deployed in the open-source OpenSKIZZE web application, integrating German geodata standards with a 6-step workflow: parcel selection, constraint definition, QD optimization, archive exploration, cluster analysis, and 3D comparison with flow overlays. 9U-Net-Accelerated Quality-Diversity Optimization for Climate-Adaptive Urban Layouts A P REPRINT UNET, =0.0 SVGP, =0.0 SVGP, =0.1 SVGP, =1.0 SVGP, =10.0 HYBRID, =0.1 HYBRID, =1.0 HYBRID, =10.0      
+
+> Ground Truth Predicted Ground Truth
+> R² = 0.840 ρ = 0.994 RMSE = 1.48 R² = -25.507 ρ = 0.228 RMSE = 18.69 R² = -25.214 ρ = 0.342 RMSE = 18.70 R² = -33.477 ρ = 0.328 RMSE = 23.93 R² = -520.080 ρ = 0.081 RMSE = 87.01 R² = 0.935 ρ = 0.995 RMSE = 1.09 R² = -0.286 ρ = 0.916 RMSE = 3.48 R² = -349.65 ρ = 0.688 RMSE = 70.5
+> Predicted Predicted Predicted Predicted Predicted Predicted Predicted
+
+Figure 7: QD validation (Exp. 4): surrogate-predicted vs. KLAM_21-validated fitness for 100 archive elites per config-uration. U-Net shows tight clustering around the diagonal ( ρ = 0 .994 ); SVGP configurations exhibit severe prediction divergence due to exploitation of spurious optima. The hybrid surrogate model, which uses U-NET for prediction and SVGP for exploration, shows the most accurate performance when λ is low, where SAIL is less explorative. 
+
+# 7 Discussion 
+
+Why U-Net succeeds where SVGP fails: a representation issue. The comparison between SVGP and U-Net in this work is not a comparison of model classes (GP vs. neural network) but of representation paradigms : genome-based scalar prediction (62D input → scalar fitness) vs. spatial field-to-field prediction ( 66 × 89 × 3 input → 66 ×
+
+89 × 6 output). The U-Net leverages convolutional spatial structure to produce physically coherent flow fields; the SVGP, operating on an opaque genome vector, lacks any spatial inductive bias. Using the raw spatial input for a GP is computationally infeasible: flattening the 3-channel input grid yields ∼17,600 dimensions, far beyond the scalability of GP inference. A neural network predicting scalar fitness from genomes could plausibly exhibit the same spurious-optima failure as the SVGP – it is the spatial representation, not the model class, that prevents the U-Net from producing arbitrary fitness landscapes. We hypothesize that this spatial inductive bias constrains predictions to be physically plausible, reducing the risk of spurious optima in offline QD. Verifying this hypothesis on more complex domains with out-of-distribution inputs is an important direction for future work. More broadly, this result suggests that spatial surrogates should be preferred over scalar genome-based surrogates for offline QD optimization 
+
+whenever the underlying physics has spatial structure. 
+
+The bootstrap cost. For U-Net, Sobol data suffices (Sec. 6.3), so no SAIL run is needed. For SVGP, SAIL archives remain essential; combined training data is recommended when only scalar surrogates are available. 
+
+Prototype limitations. Our proof-of-concept uses simplified boundary conditions: isolated 60 m parcels, continuous 2° terrain slope, pure katabatic flow. The reported R2 values are upper bounds; sensitivity analysis shows that boundary conditions significantly affect absolute flux magnitudes. Heterogeneous land use and variable wind directions will also degrade model performance. We used 3 replicates per configuration; while variance is consistently low (Table 4), future work should use ≥10 replicates. Ongoing work trains multi-scale U-Nets on ∼3 km × 3 km real urban domains with variable wind directions. 
+
+Adaptive Learning and Uncertainty Quantification. We chose a purely offline phase because interleaving deep spatial model retraining during optimization introduces prohibitive computational bottlenecks compared to lightweight 10 U-Net-Accelerated Quality-Diversity Optimization for Climate-Adaptive Urban Layouts A P REPRINT 
+
+GPs. However, adaptive learning remains a compelling path for hardware-accelerated workflows. Additionally, while the SVGP natively provided uncertainty quantification (UQ), it failed during optimization. Integrating UQ directly into the spatial surrogate via Bayesian Neural Networks or deep ensembles is a critical step for ensuring reliability in regulatory urban planning. 
+
+Generalizability. The pipeline (data generation → deep surrogate → offline QD) is domain-agnostic, requiring only an expensive black-box simulator with spatial I/O and a QD formulation with meaningful features. Potential applications include aerodynamic shape optimization, structural design, and other urban planning objectives. 
+
+# 8 Conclusion 
+
+We presented a surrogate-assisted QD pipeline to optimize urban building layouts for cold-air ventilation. A U-Net trained on Sobol-sampled physics simulations predicts KLAM_21 cold air flow fields at R2 = 0 .996 , enabling offline MAP-Elites that produce diverse building layouts with physics-validated ranking fidelity of ρ = 0 .994 – a >12,000 ×
+
+per-evaluation speedup over direct simulation (amortized from the second QD run onward, after one-time training data generation). We note that the very high surrogate accuracy is partly attributable to the simplified, single-parcel layouts considered here; real urban morphologies with irregular geometries and heterogeneous land use are likely to present a harder learning problem. Our systematic evaluation yielded actionable insights: combined QD-archive and Sobol training data generalizes best for scalar surrogates, but spatial surrogates achieve equivalent accuracy with Sobol data alone; deep spatial surrogates outperform genome-based scalar surrogates for offline QD due to spatial inductive biases; and U-Net accuracy is robust to training data source, eliminating the need for expensive bootstrapping. Future work focuses on three directions: (i) multi-scale U-Nets handling variable parcel sizes and real urban contexts – we are currently scaling to 3 km × 3 km domains with heterogeneous building stock, (ii) conditional generative models to replace the parametric encoding with direct, constraint-aware layout generation, and (iii) extension to multi-objective optimization, utilizing multiple objectives and modeling correlations to balance cold-air ventilation with other critical urban metrics such as heat stress, thermal comfort, and solar potential. The pipeline is available as the open-source OpenSKIZZE tool. Application and data are published at https://github. com/alexander-hagg/openskizze – experiments at https://github.com/alexander-hagg/openskizze-ppsn2026.git. 
+
+8.1 Acknowledgements 
+
+This work was funded by the German Federal Environmental Foundation (Deutsche Bundesstiftung Umwelt, DBU), grant no. 39022/01. We thank the DWD for providing the KLAM_21 model and technical support. 
+
+8.2 Competing Interests 
+
+The authors have no competing interests to declare. 
+
+# References 
+
+Alcoforado, M.-J., Andrade, H., Lopes, A., and Vasconcelos, J. (2009). Application of climatic guidelines to urban planning: The example of Lisbon (Portugal). Landscape and Urban Planning , 90(1-2):56–65. Allegrini, J., Dorer, V., and Carmeliet, J. (2015). Coupled CFD, radiation and building energy model for studying heat fluxes in an urban environment with generic building configurations. Sustainable Cities and Society , 19:385–394. Berchtold, M., Zwanzger, S., Büter, B., and Schneider, M. (2023). MUTABOR Abschlussbericht. Technical report, Bundesstadt Bonn. Bhatt, V., Tjanaka, B., Fontaine, M. C., and Nikolaidis, S. (2022). Deep surrogate assisted generation of environments. In Advances in Neural Information Processing Systems (NeurIPS) .Breiman, L. (2001). Random forests. Machine learning , 45(1):5–32. Chatzilygeroudis, K., Cully, A., Vassiliades, V., and Mouret, J.-B. (2021). Quality-diversity optimization: a novel branch of stochastic optimization. Black Box Optimization, Machine Learning, and No-Free Lunch Theorems ,pages 109–135. d. g Krige (1951). A Statistical Approach to Some Mine Valuation and Allied Problems on the Witwatersrand .Flageat, M. and Cully, A. (2023). Uncertain quality-diversity: Evaluation methodology and new methods for quality-diversity in uncertain domains. IEEE Transactions on Evolutionary Computation , 27(6):1674–1688. Fontaine, M. C. and Nikolaidis, S. (2021). Differentiable quality diversity. In Advances in Neural Information Pro-cessing Systems .11 U-Net-Accelerated Quality-Diversity Optimization for Climate-Adaptive Urban Layouts A P REPRINT 
+
+Fontaine, M. C., Togelius, J., Nikolaidis, S., and Hoover, A. K. (2020). Covariance matrix adaptation for the rapid illumination of behavior space. In Proceedings of the Genetic and Evolutionary Computation Conference , pages 94–102. Gaier, A., Asteroth, A., and Mouret, J.-B. (2018). Data-efficient design exploration through surrogate-assisted illumi-nation. Evolutionary Computation , 26(3):381–407. Gardner, J. R., Pleiss, G., Weinberger, K. Q., Bindel, D., and Wilson, A. G. (2018). GPyTorch: Blackbox matrix-matrix Gaussian process inference with GPU acceleration. In Advances in Neural Information Processing Systems (NeurIPS) .Hagg, A., Gaier, A., Wilde, D., Asteroth, A., Foysi, H., and Reith, D. (2025). Full domain analysis in fluid dynamics. 
+
+Machine Learning and Knowledge Extraction , 7(3):86. Hagg, A., Wilde, D., Asteroth, A., and Bäck, T. (2020). Designing air flow with surrogate-assisted phenotypic niching. In International Conference on Parallel Problem Solving from Nature , pages 140–153. Springer. Hensman, J., Matthews, A. G. d. G., and Ghahramani, Z. (2015). Scalable variational Gaussian process classification. In Proceedings of the 18th International Conference on Artificial Intelligence and Statistics (AISTATS) , pages 351– 360. Isola, P., Zhu, J.-Y., Zhou, T., and Efros, A. A. (2017). Image-to-image translation with conditional adversarial networks. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR) , pages 1125–1134. Keller, L., Tanneberg, D., Stark, S., and Peters, J. (2020). Model-based quality-diversity search for efficient robot learning. In 2020 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , pages 9675–9680. IEEE. Kent, P., Gaier, A., Mouret, J.-B., and Branke, J. (2024). Bayesian optimisation for quality diversity search with coupled descriptor functions. IEEE Transactions on Evolutionary Computation , 28(4):1101–1115. Kochkov, D., Smith, J. A., Alieva, A., Wang, Q., Brenner, M. P., and Hoyer, S. (2021). Machine learning–accelerated computational fluid dynamics. Proceedings of the National Academy of Sciences , 118(21). Kruse, A., Müller, N., and Raffalski, N. (2018). Klimaanalyse Nordrhein-Westfalen LANUV-Fachbericht 86. Tech-nical report, Landesamt für Natur, Umwelt und Verbraucherschutz Nordrhein-Westfalen (LANUV). Milla-Val, J., Monta nés, C., and Fueyo, N. (2024). Adversarial image-to-image model to obtain highly detailed wind fields from mesoscale simulations in urban environments. Building and Environment , 265:112036. Mortezazadeh, M., Zou, J., Hosseini, M., Yang, S., and Wang, L. L. (2022). CityFFD – city fast fluid dynamics for urban microclimate simulations on graphics processing units. Urban Climate , 41:101063. Mouret, J.-B. and Clune, J. (2015). Illuminating search spaces by mapping elites. arXiv preprint arXiv:1504.04909 .Nowak, D., Werner, J., Parsons, Q., and Johnson, T. (2024). Optimisation of city structures with respect to high wind speeds using U-Net models. Engineering Applications of Artificial Intelligence , 138:109347. Papadopoulos, S., Azar, E., Woon, W. L., and Kontokosta, C. E. (2018). Evaluation of tree-based ensemble learning algorithms for building energy performance estimation. Journal of Building Performance Simulation , 11(3):322– 332. Pathak, J., Subramanian, S., Harrington, P., Raja, S., Chattopadhyay, A., Mardani, M., Kurth, T., Hall, D., Li, Z., Azizzadenesheli, K., Hassanzadeh, P., Kashinath, K., and Anandkumar, A. (2022). FourCastNet: A global data-driven high-resolution weather forecasting model using adaptive Fourier neural operators. arXiv preprint arXiv:2202.11214 .Ronneberger, O., Fischer, P., and Brox, T. (2015). U-Net: Convolutional networks for biomedical image segmentation. In Medical Image Computing and Computer-Assisted Intervention (MICCAI) , pages 234–241. Springer. Sievers, U. (2005). Das Kaltluftabflussmodell KLAM_21: Theoretische Grundlagen, Anwendung und Handhabung des PC-Modells . Selbstverlag des Deutschen Wetterdienstes. Thuerey, N., Weissenow, K., Prantl, L., and Hu, X. (2020). Deep learning methods for Reynolds-averaged Navier– Stokes simulations of airfoil flows. AIAA Journal , 58(1):25–36. Tjanaka, B., Fontaine, M. C., Lee, D. H., Zhang, Y., Balam, N. R., Dennler, N., Garlanka, S. S., Klapsis, N. D., and Nikolaidis, S. (2023). pyribs: A bare-bones Python library for quality diversity optimization. In Proceedings of the Genetic and Evolutionary Computation Conference , pages 220–229. 12 U-Net-Accelerated Quality-Diversity Optimization for Climate-Adaptive Urban Layouts A P REPRINT 
+
+Vargiemezis, T. and Gorlé, C. (2025). From large-eddy simulations to deep learning: A U-Net model for fast urban canopy flow predictions. Sustainable Cities and Society , 120:106130. Vassiliades, V., Chatzilygeroudis, K., and Mouret, J.-B. (2018). Using centroidal Voronoi tessellations to scale up the multidimensional archive of phenotypic elites algorithm. IEEE Transactions on Evolutionary Computation ,22(4):623–630. Wang, H., Ma, W., Niu, J., and You, R. (2025). Evaluating a deep learning-based surrogate model for predicting wind distribution in urban microclimate design. Building and Environment , 268:112286. Williams, C. K. and Rasmussen, C. E. (2006). Gaussian processes for machine learning , volume 2. MIT press Cambridge, MA. Zhang, Y., Fontaine, M. C., Hoover, A. K., and Togelius, J. (2022). Deep surrogate assisted MAP-Elites for automated Hearthstone deckbuilding. In Proceedings of the Genetic and Evolutionary Computation Conference (GECCO) ,pages 158–167. ACM. Zhang, Y., Rahmani, A., Soleimani, S., and Schlueter, A. (2023). Deep learning for urban microclimate: A review. 
+
+Building and Environment , 243:110603. 13

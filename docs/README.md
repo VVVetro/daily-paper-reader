@@ -6,67 +6,56 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-05
-- 运行时间：2026-06-05 21:38:26 UTC
+- 最新运行日期：2026-06-06
+- 运行时间：2026-06-06 20:08:12 UTC
 - 运行状态：成功
-- 本次总论文数：15
-- 精读区：6
-- 速读区：9
+- 本次总论文数：12
+- 精读区：5
+- 速读区：7
 
 ### 今日简报（AI）
-1) 今日收录15篇论文，精读6篇速读9篇，其中《Vanilla ViT for Automotive Point Cloud Semantic Segmentation》与《OmniRetrieval》获最高关注。  
-2) 值得聚焦方向：基于纯Transformer的点云语义分割（9.0分）与异构知识源统一检索（8.0分），以及结合本体后校正的知识图谱构建（7.0分）。  
-3) 建议优先阅读两篇精读论文，并关注《Better Later Than Sooner》中的神经符号方法对知识图谱构建的启发。
-- 详情：[/202606/05/README](/202606/05/README)
+今日精读《DisasterLex》灾害分析知识图谱与《Central Europe》建筑热数据，速读关注图检索增强与城市地图生成。值得深入《DisasterLex》的地球空间推理方法，以及《MapAgent》的工业级车道级地图生成框架。建议从灾害数据建模或城市智能体方向切入实操。
+- 详情：[/202606/06/README](/202606/06/README)
 
 ### 精读区论文标签
-1. [Vanilla ViT for Automotive Point Cloud Semantic Segmentation](/202606/05/2605.31177v1-vanilla-vit-for-automotive-point-cloud-semantic-segmentation)  
+1. [DisasterLex: An Expert Concept-to-Schema Knowledge Graph for Geospatial Reasoning in Disaster Analytics](/202606/06/2605.30538v1-disasterlex-an-expert-concept-to-schema-knowledge-graph-for-geospatial-reasoning-in-disaster-analytics)  
    标签：评分：9.0/10、query:smart-city
-   evidence：基于标准ViT的汽车LiDAR点云语义分割，方法可直接迁移至城市环境
-2. [OmniRetrieval: Unified Retrieval across Heterogeneous Knowledge Sources](/202606/05/2605.29250v1-omniretrieval-unified-retrieval-across-heterogeneous-knowledge-sources)  
+   evidence：面向灾害分析的地理空间推理知识图谱
+2. [Real-world and simulated thermal data from 960 residential multi-zone buildings in Central Europe](/202606/06/2606.01994v2-real-world-and-simulated-thermal-data-from-960-residential-multi-zone-buildings-in-central-europe)  
    标签：评分：8.0/10、query:smart-city
-   evidence：跨异构知识源（文本、表格、知识图谱）的统一检索，为数据集成提供通用层
-3. [Large Language Models in Transportation Systems Management and Operations: From Text Reasoning to Multi-modal Decision Support](/202606/05/2606.00991v1-large-language-models-in-transportation-systems-management-and-operations-from-text-reasoning-to-multi-modal-decision-support)  
+   evidence：整合真实与模拟数据的多源建筑热数据集
+3. [CEON: Circular Economy Ontology Network](/202606/06/2606.02253v1-ceon-circular-economy-ontology-network)  
    标签：评分：8.0/10、query:smart-city
-   evidence：综述大语言模型在交通系统管理中整合异构数据
-4. [Spatial Representation Learning Beyond Pixels: Unifying Raster Data and Vector Semantics for Human-Centric Geospatial Foundation Models](/202606/05/2606.02374v1-spatial-representation-learning-beyond-pixels-unifying-raster-data-and-vector-semantics-for-human-centric-geospatial-foundation-models)  
+   evidence：面向循环经济的本体网络实现语义互操作性
+4. [SA-DTS: Semantic-Aware Digital Twin Synchronization over 6G Networks](/202606/06/2606.03617v1-sa-dts-semantic-aware-digital-twin-synchronization-over-6g-networks)  
    标签：评分：8.0/10、query:smart-city
-   evidence：统一栅格与矢量语义用于地理空间基础模型，赋能城市数字孪生语义互操作
-5. [Edge Prediction for Roof Wireframe Reconstruction with Transformers](/202606/05/2606.02406v1-edge-prediction-for-roof-wireframe-reconstruction-with-transformers)  
+   evidence：基于语义感知的数字孪生同步框架，利用神经语义编码器降低带宽
+5. [UModel: An Agent-Ready Observability Data Modeling Method at Scale](/202606/06/2606.04799v1-umodel-an-agent-ready-observability-data-modeling-method-at-scale)  
    标签：评分：8.0/10、query:smart-city
-   evidence：从点云进行语义分割和线框重建
-6. [Executable Schema Contracts: From Automatic Ingestion to Multi-Source Retrieval](/202606/05/2606.05415v1-executable-schema-contracts-from-automatic-ingestion-to-multi-source-retrieval)  
-   标签：评分：8.0/10、query:smart-city
-   evidence：从多源数据自动发现模式并构建知识图谱
+   evidence：UModel提供统一本体框架处理异构数据孤岛，可用于智慧城市数据整合
 
 ### 速读区论文标签
-1. [Better Later Than Sooner: Neuro-Symbolic Knowledge Graph Construction via Ontology-grounded Post-extraction Correction](/202606/05/2605.29168v1-better-later-than-sooner-neuro-symbolic-knowledge-graph-construction-via-ontology-grounded-post-extraction-correction)  
+1. [MoG: Mixture of Experts for Graph-based Retrieval-Augmented Generation](/202606/06/2605.31010v1-mog-mixture-of-experts-for-graph-based-retrieval-augmented-generation)  
    标签：评分：7.0/10、query:smart-city
-   evidence：基于本体指导的后提取修正的知识图谱构建
-2. [SAVMap: Structure-Aided Visual Mapping of Large-Scale 2.5D Manhattan Wireframes from Panoramic Video](/202606/05/2606.01939v1-savmap-structure-aided-visual-mapping-of-large-scale-25d-manhattan-wireframes-from-panoramic-video)  
+   evidence：基于图的检索增强生成，使用专家混合组织知识为中心的图
+2. [MapAgent: An Industrial-Grade Agentic Framework for City-scale Lane-level Map Generation](/202606/06/2606.04513v1-mapagent-an-industrial-grade-agentic-framework-for-city-scale-lane-level-map-generation)  
    标签：评分：7.0/10、query:smart-city
-   evidence：生成用于数字孪生的语义线框地图
-3. [Indexicon: A Spatial Indexing Library](/202606/05/2606.04676v1-indexicon-a-spatial-indexing-library)  
+   evidence：城市级车道地图生成集成传感器数据和地图规范，体现城市基础设施多源数据集成
+3. [Scaling Expert Feedback with Reflective Edit Propagation in Compositional Knowledge Bases](/202606/06/2606.05023v1-scaling-expert-feedback-with-reflective-edit-propagation-in-compositional-knowledge-bases)  
    标签：评分：7.0/10、query:smart-city
-   evidence：用于GIS和多维数据的空间索引库
-4. [Q-GNN: Query-Conditioned Graph Neural Networks with Type Awareness for Knowledge Graph Completion](/202606/05/2606.05639v1-q-gnn-query-conditioned-graph-neural-networks-with-type-awareness-for-knowledge-graph-completion)  
-   标签：评分：7.0/10、query:smart-city
-   evidence：查询条件图神经网络用于知识图谱补全
-5. [From GPS Points to Travel Patterns: Flexible and Semantic Trajectory Generation with LLMs](/202606/05/2605.30014v1-from-gps-points-to-travel-patterns-flexible-and-semantic-trajectory-generation-with-llms)  
+   evidence：提出反思性代理推断语义意图并在知识库中传播修正，适用于智慧城市知识图谱构建。
+4. [MechVQA: Benchmarking and Enhancing Multimodal LLMs on Comprehensive Mechanical Drawing Understanding](/202606/06/2605.30794v1-mechvqa-benchmarking-and-enhancing-multimodal-llms-on-comprehensive-mechanical-drawing-understanding)  
    标签：评分：6.0/10、query:smart-city
-   evidence：使用LLM分层生成轨迹，应用于智慧城市
-6. [GRASP: Plan-Guided Graph Retrieval with Adaptive Fusion and Reranking on Semi-Structured Knowledge Bases](/202606/05/2605.30237v1-grasp-plan-guided-graph-retrieval-with-adaptive-fusion-and-reranking-on-semi-structured-knowledge-bases)  
+   evidence：机械图纸理解数据集和方法，类比BIM模型信息提取
+5. [Scaling Datasets for Multi-Sensor, Multi-Agent, and Multi-Domain Learning in Autonomous Systems](/202606/06/2606.04444v1-scaling-datasets-for-multi-sensor-multi-agent-and-multi-domain-learning-in-autonomous-systems)  
    标签：评分：6.0/10、query:smart-city
-   evidence：半结构知识库的分层检索框架，可用于智慧城市知识图谱检索
-7. [Schema-Agnostic Knowledge Graph Construction via Hybrid Ontology Discovery for Cyber Threat Intelligence](/202606/05/2606.01208v1-schema-agnostic-knowledge-graph-construction-via-hybrid-ontology-discovery-for-cyber-threat-intelligence)  
+   evidence：多传感器多域数据集管道，可应用于城市感知融合
+6. [U-Net-Accelerated Quality-Diversity Optimization for Climate-Adaptive Urban Layouts](/202606/06/2606.04658v1-u-net-accelerated-quality-diversity-optimization-for-climate-adaptive-urban-layouts)  
    标签：评分：6.0/10、query:smart-city
-   evidence：通过本体发现实现模式无关的知识图谱构建，可迁移至智慧城市BIM/GIS数据
-8. [Plan2Map: A Multimodal Benchmark for Document-Grounded Geospatial Boundary Reconstruction from Planning Records](/202606/05/2606.02747v1-plan2map-a-multimodal-benchmark-for-document-grounded-geospatial-boundary-reconstruction-from-planning-records)  
+   evidence：使用U-Net代理模型优化气候适应性城市布局，与数字孪生模拟相关
+7. [Beyond Vector Similarity: A Structural Analysis of Graph-Augmented Retrieval for Industrial Knowledge Graphs](/202606/06/2606.06003v1-beyond-vector-similarity-a-structural-analysis-of-graph-augmented-retrieval-for-industrial-knowledge-graphs)  
    标签：评分：6.0/10、query:smart-city
-   evidence：从规划文档重建地理边界，涉及多模态数据和语义提取
-9. [Hierarchical Federated Learning with Dynamic Clustering and Adaptive Regularization for Robust Infrastructure Inspection](/202606/05/2606.03084v1-hierarchical-federated-learning-with-dynamic-clustering-and-adaptive-regularization-for-robust-infrastructure-inspection)  
-   标签：评分：6.0/10、query:smart-city
-   evidence：联邦学习用于基础设施检测，解决全国基础设施网络中的多源异质性
+   evidence：面向工业知识图谱的图增强检索
 
 
 <div class="dpr-home-promo-card">

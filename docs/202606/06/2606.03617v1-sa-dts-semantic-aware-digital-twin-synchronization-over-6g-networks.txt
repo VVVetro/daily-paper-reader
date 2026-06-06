@@ -1,0 +1,875 @@
+Title: SA-DTS: Semantic-Aware Digital Twin Synchronization over 6G Networks
+
+URL Source: https://arxiv.org/pdf/2606.03617v1
+
+Published Time: Wed, 03 Jun 2026 01:11:03 GMT
+
+Number of Pages: 10
+
+Markdown Content:
+> IEEE JOURNAL ON SELECTED AREAS IN COMMUNICATIONS, VOL. XX, NO. X, MONTH 2026 1
+
+# SA-DTS: Semantic-Aware Digital Twin Synchronization over 6G Networks 
+
+Vincenzo Sammartino Dipartimento di Informatica, Università di Pisa, Pisa, 56127, Italy and Visiting Researcher, King Abdullah University of Science and Technology (KAUST), Thuwal, 23955, Saudi Arabia Email: vincenzo.sammartino@phd.unipi.it 
+
+Abstract —Digital Twins (DTs) are emerging as a cornerstone of the 6G vision, enabling real-time cyber-physical mirroring for smart manufacturing, autonomous vehicles, and remote healthcare. However, maintaining high-fidelity synchronization at scale de-mands an enormous and sustained uplink bandwidth, threatening both the feasibility and the energy efficiency of large deployments. We propose a Semantic-Aware DT Synchronization (SA-DTS) framework that radically redefines the synchronization pipeline: instead of streaming raw sensor or video data, a lightweight neural semantic encoder at the physical-world source extracts only task-relevant features and transmits compact semantic descriptors over the 6G air interface. At the DT replica, a paired decoder coupled with a dynamic Knowledge Graph (KG) reconstructs the full contextual state. A hierarchical KG partitioning strategy with an adaptive partition count G = ⌈N/ log 2 N ⌉ ensures that aggregate update overhead scales as O(N log N ) rather than 
+
+O(N 2), making the framework viable for deployments with hundreds of simultaneously twinned entities. Extensive simu-lations on three canonical DT workloads—industrial robot con-trol, patient-monitoring, and vehicular platooning—demonstrate bandwidth savings of up to 94%, end-to-end synchronization latency reductions of 87%, and KG-assisted state-reconstruction accuracy exceeding 97%, all under realistic 6G channel conditions. Empirical correlation confirms that the proposed Semantic Fidelity Score tracks standard task metrics (collision accuracy, alarm F1,spacing deviation) with Pearson r > 0.97 (95% CI: [0 .961 , 0.982] ). Our results reveal that semantic communication is not merely a compression tool but a fundamental enabler for truly real-time, scalable DT ecosystems. 
+
+Index Terms —Digital Twins, Semantic Communication, 6G, Knowledge Graph, Deep Learning, Cyber-Physical Systems, Network Synchronization, Edge Intelligence, Scalability. 
+
+I. I NTRODUCTION 
+
+Motivation. The 6G paradigm promises not merely faster connectivity but a deep integration of the physical and digital worlds through massive, always-on Digital Twin (DT) infras-tructures [1]–[3]. A DT is a continuously updated virtual replica of a physical entity—ranging from a single industrial robot arm to an entire smart city—that enables real-time monitoring, pre-dictive analytics, and closed-loop autonomous control [4], [5]. Realizing this vision at scale exposes a fundamental tension: the synchronization fidelity required by DT applications (latency 
+
+≤ 1 ms, update rate ≥ 100 Hz for tactile-Internet scenarios) collides head-on with the prohibitive volume of raw sensor data that must be continuously transported across the radio access network. Furthermore, even if transmission bandwidth were 
+
+> Digital Object Identifier: 10.1109/JSAC.XXXX.XXXXXXX
+
+unconstrained, the inference and state-reconstruction workload at the DT replica grows super-linearly with the number of monitored entities N , posing a second, orthogonal scalability bottleneck that has received comparatively little attention in the literature. 
+
+The Synchronization Bottleneck. Consider a single factory floor deploying N = 200 collaborative robots, each equipped with a 4K RGB-D camera, a 16-channel LiDAR, and a suite of force-torque sensors. Naive raw-data synchronization requires an aggregate uplink throughput of the order of 
+
+O(10 3) Gbps—a figure that dwarfs even the most optimistic 6G capacity projections for densely deployed scenarios [6], [7]. Compression codecs such as H.265 and AV1 reduce this figure significantly, yet they remain bit-oriented : they minimise the number of transmitted bits while remaining agnostic to the meaning conveyed by those bits. As a consequence, they squander precious resources on signal content that is irrelevant to the DT’s inference and control tasks. 
+
+The Semantic Communication Paradigm. Semantic Com-munication (SemCom) has recently emerged as a transformative departure from this convention [8]–[10]. Rather than faithfully reproducing a bit stream at the receiver, SemCom systems optimise the end-to-end transmission of meaning : a neural transmitter extracts task-relevant semantic features from the source signal, encodes them into a compact latent representa-tion, and a neural receiver reconstructs the information needed to fulfil the downstream task [11]–[13]. While early SemCom work focused on single-modal tasks (text, image, speech) [9], [14]–[16] and recent work has advanced nonlinear transform source-channel coding [17] and task-oriented multi-modal compression [18], no systematic framework exists for apply-ing this paradigm to the multi-modal, state-continuous, and bidirectionally-coupled nature of DT synchronization. Recent advances in language-model-assisted semantic coding [19] and generative reconstruction for wireless channels [20] further motivate goal-oriented co-design, yet neither addresses the KG-based contextual reconstruction required by state-continuous DT applications. 
+
+Our Proposal. We introduce Semantic-Aware DT Synchro-nization (SA-DTS), a holistic framework that tightly inte-grates three components: (i) a Multi-Modal Semantic Encoder 
+
+(MMSE) that operates at the physical-world edge and jointly processes heterogeneous sensor streams into a compact seman-tic descriptor z ∈ Rd; (ii) a 6G-Aware Semantic Channel (6G-SC) that adapts the transmission rate and the coding redundancy  
+
+> arXiv:2606.03617v1 [cs.ET] 2 Jun 2026 2IEEE JOURNAL ON SELECTED AREAS IN COMMUNICATIONS, VOL. XX, NO. X, MONTH 2026
+
+to instantaneous channel conditions via a reinforcement-learned policy; and (iii) a Knowledge Graph Contextual Reconstructor 
+
+(KG-CR) at the DT that leverages a domain ontology and a dynamic KG to reconstruct the full physical state from the sparse semantic descriptors. The three modules are trained jointly in an end-to-end differentiable pipeline, ensuring that the encoding, transmission, and reconstruction objectives are co-optimised rather than addressed sequentially. Scalability to large N is handled by a hierarchical KG partitioning strategy with adaptive partition count G = ⌈N/ log 2 N ⌉, yielding 
+
+O(N log N ) update overhead. 
+
+Contributions. The main contributions of this article are:  
+
+> •
+
+We formalize the DT Synchronization Semantic Bottle-neck problem, establishing theoretical upper bounds on achievable bandwidth reduction under a fidelity constraint expressed as task-output mutual information, and derive a multi-task overhead corollary that explicitly bounds the multi-task rate penalty ∆T as a function of the KG neighborhood radius (Section III and Appendix A).  
+
+> •
+
+We design the SA-DTS architecture, detailing the MMSE, 6G-SC, and KG-CR components with fully specified training objectives including the PPO reward function for rate adaptation (Section IV).  
+
+> •
+
+We introduce the Semantic Fidelity Score (SFS) metric and empirically validate it against canonical task metrics ( r > 
+
+0.97 , 95% CI over five independent runs), establishing SFS as a reproducible benchmark for DT synchronization research (Section IV).  
+
+> •
+
+We validate SA-DTS against five baselines including NTSCC [17] and TaskOrientedComm [18] across three DT workloads and multiple 6G channel regimes, report energy consumption per synchronization update, and derive analytically the O(N log N ) KG update complexity via adaptive partitioning (Section V). II. B ACKGROUND AND RELATED WORK 
+
+Digital Twins in 6G. The standardisation bodies ITU-T and 3GPP have identified DTs as a native functional element of the 6G service layer [21]–[24]. DT-assisted network management, channel twinning for beam prediction, and DT-enabled tactile Internet are among the actively standardised use cases. [25] A critical open problem across all of them is the synchronization gap : the statistical divergence between the physical state st
+
+and the DT state ˆst as a function of channel quality and available bandwidth. Edge computing infrastructures [26]– [28] are increasingly proposed as the natural deployment stratum for the DT server, yet the uplink bottleneck persists regardless of where the DT replica is hosted. Security and privacy considerations for DT deployments have been addressed through security twin architectures [29], [30]. 
+
+Semantic Communication. The information-theoretic foun-dations of semantic communication trace back to Weaver’s three-level communication model [31], but practical imple-mentations have only recently become feasible through deep learning. Bourtsoulatze et al. [14] demonstrated joint source-channel coding (JSCC) for images using autoencoders, achiev-ing performance superior to separation-based schemes at low SNR. Xie et al. [9] extended this to sentence-level text, while Weng et al. [15] addressed speech. Cheng et al. [17] proposed Nonlinear Transform Source-Channel Coding (NTSCC), which applies a learned nonlinear analysis transform prior to channel coding, advancing the compression–fidelity Pareto frontier for image transmission. Shao et al. [18] addressed task-oriented communication for multi-modal data, demonstrating that goal-oriented compression outperforms bit-rate-minimizing schemes on downstream task accuracy; however, their work assumes a single, static task receiver and does not address the KG-based contextual reconstruction required for state-continuous DT synchronization. Zhou et al. [19] recently showed that LLM-derived semantic priors can boost reconstruction quality at sub-zero SNR, though their approach is limited to textual modalities and incurs prohibitive edge inference costs. Grassucci et al. [20] demonstrated diffusion-model-based reconstruction of wireless image transmissions, yet the generative overhead ( ≈100 ms per frame) is incompatible with real-time DT synchroniza-tion at 100–200 Hz update rates. Yang et al. [32] provide a comprehensive survey. SA-DTS addresses the orthogonal challenge of serving concurrent, heterogeneous task sets over a state-continuous physical process, which none of the above frameworks handles. 
+
+Knowledge Graphs for CPS. Knowledge Graphs have been applied to cyber-physical systems for anomaly detec-tion [33] and digital twin modelling [34], [35]. Their role as a 
+
+contextual prior for semantic decoding —exploiting relational structure between physical entities to fill in information not explicitly transmitted—is first explored in this work. Graph neural networks, including relational GCNs [36] and graph attention networks [37], [38], provide the representational backbone needed to propagate contextual information across the heterogeneous node types that compose a DT knowledge graph. Distributed learning for multi-entity DT systems [39]–[42] enables collaborative synchronization without centralized state aggregation, though integration with semantic communication remains an open problem that SA-DTS begins to address. III. S YSTEM MODEL AND PROBLEM FORMULATION 
+
+A. Physical World and Digital Twin Model 
+
+Let E = {e1, . . . , e N } denote the set of N physical entities composing the target environment. The physical state of entity 
+
+ei at discrete time t is s(t) 
+
+> i
+
+∈ S i ⊆ Rni . Each entity is equipped with a sensor suite Mi = {m1, . . . , m Ki }. The raw observation at time t is: 
+
+o(t) 
+
+> i
+
+=
+
+h
+
+fm1 (s(t) 
+
+> i
+
+), . . . , f mKi (s(t) 
+
+> i
+
+)
+
+i
+
++ η(t) 
+
+> i
+
+, (1) where fmk is the sensor forward model and η(t) 
+
+> i
+
+is additive noise. The aggregate raw data rate is: 
+
+Rraw =
+
+> N
+
+X
+
+> i=1
+> Ki
+
+X
+
+> k=1
+
+ρmk · fupd , (2) which scales linearly with N and rapidly exceeds 6G aggregate uplink capacity [3]. The physical state evolves as: 
+
+s(t+1)  
+
+> i
+
+= gi
+
+ s(t) 
+
+> i
+
+, u (t) 
+
+> i
+
+, w (t)
+
+> i
+
+, w(t) 
+
+> i
+
+∼ N (0 , Σw), (3) SAMMARTINO V.: SA-DTS: SEMANTIC-AWARE DIGITAL TWIN SYNCHRONIZATION OVER 6G 3
+
+where gi is the entity-specific transition function and u(t) 
+
+> i
+
+is the control input. 
+
+B. Semantic Bottleneck Formulation 
+
+Let T = {τ1, . . . , τ M } be the set of downstream DT tasks. For each task τj , let Yj = τj (s(t) 
+
+> i
+
+) ∈ Y j denote the associated target variable ( e.g. , a collision-risk flag for τ1, an alarm label for τ2). The task-relevant information for τj is defined as: 
+
+Iτj (oi; Yj ) ≜ I oi; Yj
+
+, (4) 
+
+i.e. , the mutual information between the observation and the task output, which quantifies the maximum achievable performance on τj from oi. The Semantic Bottleneck problem seeks a representation zi ∈ Rd (d ≪ dim( oi)) that minimizes transmission rate while preserving task performance above a threshold ϵ > 0 for every task: 
+
+min 
+
+> zi
+
+I(oi; zi) s.t. I(zi; Yj ) ≥ Iτj (oi; Yj )−ϵ, ∀ τj ∈ T . (5) This formulation extends the information bottleneck princi-ple [43] to the multi-task DT setting by replacing the state variable si with the operationally well-defined task outputs 
+
+{Yj }, yielding constraints that are directly estimable from labeled data. The fundamental limits of (5), including a KG-structure-aware bound on the multi-task overhead ∆T , are characterized in Appendix A. 
+
+C. Channel Model 
+
+We model the 6G air interface as a block-fading channel with complex gain h ∼ CN (0 , σ 2
+
+> h
+
+). The received signal is: 
+
+y = h · x + n, n ∼ CN (0, σ 2
+
+> n
+
+I), (6) with instantaneous SNR γ = |h|2P/σ 2
+
+> n
+
+. The effective semantic channel capacity is Csem (γ) = B log 2(1 + γ) − Roverhead .
+
+Multi-User Uplink Model. N nodes transmit to the DT server over orthogonal resource blocks. Under massive MIMO spatial multiplexing [44], the aggregate uplink spectral effi-ciency is: 
+
+ηagg = β
+
+> N
+
+X
+
+> i=1
+
+log 2
+
+ 1 + γi
+
+, (7) where β ∈ [0 .7, 0.9] accounts for pilot contamination and residual interference in dense deployments. Each entity oc-cupies a single spatial stream, so the total bandwidth budget is Btotal = B per entity under frequency-division sharing; aggregate throughput is Rmax = Btotal · ηagg .
+
+Doppler and Coherence Time. For vehicular platooning at 
+
+v ≈ 120 km/h and fc = 140 GHz: 
+
+fD = v · fc
+
+c ≈ 15 .6 kHz , Tc ≈ 12fD
+
+≈ 32 μs, (8) imposing a stringent constraint on descriptor dimensionality 
+
+d to avoid channel aging. Given Tc ≈ 32 μs and a signalling bandwidth of 400 MHz, the maximum number of channel uses before coherence expires is ⌊TcB⌋ ≈ 12 800 ; encoding d = 64 
+
+symbols at 8 bits yields 512 bits per update, comfortably within this budget and leaving headroom for redundancy codes up to rate k/d = 1 /4.IV. T HE SA-DTS F RAMEWORK 
+
+Fig. 1 illustrates the end-to-end SA-DTS pipeline. All three modules are trained jointly in a single end-to-end pass: gradients flow from the task losses at the DT replica back through the KG-CR, semantic decoder, channel, and MMSE encoder, co-optimising encoding, transmission, and reconstruction without separate pre-training stages. 
+
+A. Multi-Modal Semantic Encoder (MMSE) 
+
+Architecture. The MMSE is a neural autoencoder Eθ :
+
+O → Rd that maps modality-fused observations to a semantic code zi = Eθ (o(t) 
+
+> i
+
+). Modality fusion is performed by a cross-attention module [45] using L = 4 transformer blocks (dmodel = 256 , 8 heads, dk = 32 , dff = 1024 , GELU activation, Pre-LN, dropout p = 0 .1). The modality-specific input projections are: 
+
+h(0)  
+
+> mk
+
+= Linear mk
+
+ fmk (si) + pmk , (9) where pmk ∈ Rdmodel is a learned modality-type embedding. Cross-modal attention weights αk,k ′ dynamically prioritize sensor streams by their instantaneous informativeness for the active task set T . The output dimensionality d = 64 is selected by ablation over d ∈ { 16 , 32 , 64 , 128 } (Table II); larger d
+
+yields diminishing SFS returns ( < 0.5 pp gain from d = 64 to 
+
+d = 128 ) at disproportionate bandwidth cost. 
+
+Training Objective. The MMSE is trained end-to-end with: 
+
+LMMSE = E[λ1Lrec + λ2Ltask ]
+
+| {z }
+
+> fidelity
+
++ λ3 I(oi; zi)
+
+| {z }
+
+> compression
+
+, (10) where Lrec = ∥oi − Dϕ(zi)∥22, Ltask = P 
+
+> j
+
+Lτj (zi) is the aggregate task cross-entropy loss evaluated on the {Yj }
+
+labels defined in (4), and I(oi; zi) is estimated via the MINE bound [46]. To mitigate the high variance of MINE gradient estimates [46], we apply gradient clipping (norm 0.5) to the MINE network and validate convergence against the InfoNCE bound [47]; the two estimators agree within 0.3 nats across all workloads, confirming the stability of the compression term. The compression ratio is ρc = dim( oi)/(d · bquant ); with 
+
+d = 64 and bquant = 8 bits, ρc ≈ 18 for RGB-D streams. 
+
+B. 6G-Aware Semantic Channel (6G-SC) 
+
+Joint Source-Channel Coding. 6G-SC implements JSCC in which the channel encoder Cω : Rd → Ck and its paired decoder C−1 
+
+> ω
+
+are trained jointly with the MMSE. The channel code rate k/d is dynamically selected by a Proximal Policy Optimization (PPO) [48] agent. The agent’s state observation is (γt, T c,t , ∆tt), and the reward function is: 
+
+Rt = wSFS · SFS t − wBW · Bt
+
+Bmax 
+
+− w∆t · ∆tt, (11) with wSFS = 1.0, wBW = 0.3, w∆t = 0.2. The agent selects from a discrete action space of code rates 
+
+k/d ∈ { 1/4, 1/3, 1/2, 2/3, 3/4}; training converges in ≈ 500 
+
+episodes per workload. A ±50% perturbation of wBW and 
+
+w∆t yields SFS variations < 0.8 pp at γ = 15 dB, confirming robustness to reward hyperparameter choice. 4 IEEE JOURNAL ON SELECTED AREAS IN COMMUNICATIONS, VOL. XX, NO. X, MONTH 2026                              
+
+> Multi-Modal Sensor Suite
+> Multi-Modal Semantic Encoder (MMSE)
+> 6G-Aware Channel Encoder
+> o(t)
+> izi∈Rd
+> x
+> 6G Fading Channel
+> y=hx+n
+> Channel Decoder
+> Semantic Decoder
+> KG Contextual Reconstructor (KG-CR)
+> Digital Twin State ˆs(t)
+> i
+> ˆxˆziKG query ˆs(t)
+> i≈s(t)
+> i
+> Domain Ontology +Dynamic KG
+> RL Rate Adaptation
+> Fig. 1. End-to-end SA-DTS architecture. At the physical-world edge, the MMSE compresses heterogeneous sensor observations into a compact latent descriptor
+> zi. A 6G-aware channel encoder—whose rate is continuously adapted by the PPO agent via the reward in (11)—transmits ziover the fading channel. At the DT server, the KG-CR retrieves the K= 5 nearest entity neighbors and enriches the decoded descriptor with domain-ontology priors to recover the full physical state ˆs(t)
+> i.
+> e1
+> Robot
+> e2
+> Robot
+> e3
+> Cell RGB-D LiDAR IMU F/T Position Velocity Config
+> adjacent
+> isPartOf
+> isPartOf
+> sensedBy
+> sensedBy
+> sensedBy
+> sensedBy
+> has has has
+> Fig. 2. Schematic of the heterogeneous Knowledge Graph K= ( V, E, R).Entity nodes (blue circles) are interconnected via relational edges; modality nodes (green) encode sensor provenance; attribute nodes (orange) represent physical state variables. The R-GCN propagates information across all node types at each epoch.
+
+Semantic Fidelity Score. To evaluate synchronization quality in task-relevant terms, we define the Semantic Fidelity Score 
+
+as: 
+
+SFS ≜ 1 − 1
+
+M
+
+> M
+
+X
+
+> j=1
+
+Lτj (ˆ si; si)
+
+Lraw 
+
+> τj
+
+, (12) where Lraw  
+
+> τj
+
+is the task loss under raw-data synchronization. An SFS of 1.0 denotes perfect semantic equivalence; SFS 
+
+= 0 indicates complete information loss. Empirical validation (Section V-C ) confirms that SFS tracks canonical task metrics with Pearson r > 0.97 (95% CI: [0 .961 , 0.982] , p < 10 −4,Fisher z-transform) across all three workloads, establishing SFS as a reproducible task-centric benchmark. 
+
+C. Knowledge Graph Contextual Reconstructor (KG-CR) 
+
+Graph Structure. The DT server maintains K = ( V, E, R)
+
+with entity, modality, and attribute nodes; relations R =
+
+{⟨ isPartOf ⟩, ⟨sensedBy ⟩, ⟨constrains ⟩} . Node embeddings 
+
+vk ∈ RdK are updated via an R-GCN [36] with attention-based aggregation [37] at each synchronization epoch. 
+
+Contextual Reconstruction. Upon receiving ˆzi, the KG-CR performs a soft graph query, retrieves the K = 5 nearest entity nodes by cosine similarity, and produces: 
+
+ˆs(t) 
+
+> i
+
+= Dϕ(ˆ zi) + α · X 
+
+> k∈N K(i)
+
+wk v(t−1)  
+
+> k
+
+, (13) where α ∈ [0 , 1] is a context-blending coefficient that increases from α ≈ 0.15 at high SNR to α ≈ 0.85 at SNR < 5 dB via a gated attention mechanism conditioned on the channel quality indicator (CQI), providing graceful degradation. The neighborhood size K = 5 is selected by the ablation in Table II; the query latency is O(K · dK) per entity and accounts for 1.2 ms of the 4.9 ms end-to-end budget. 
+
+Online KG Update. The KG is updated incrementally via a sliding-window temporal graph neural network (T-GNN) [49]. Each synchronization event generates a temporal edge encoding the semantic delta ∆z(t) 
+
+> ij
+
+. The T-GNN update cost is O(|E active | · d2
+
+> K
+
+) per epoch, profiling at 0.3 ms on the A100 server—negligible relative to the R-GCN update cost reported in Section V-F. V. P ERFORMANCE EVALUATION 
+
+A. Experimental Setup 
+
+Workloads.  
+
+> •
+
+W1 – Industrial Robot (IR): N = 50 6-DoF robotic arms; RGB-D visual servoing (RealSense D435, 640 ×480, 30 fps) + 6-axis IMU; control frequency 100 Hz; task: collision prediction. Trajectories are synthesized from the ABB IRB 6700 kinematic dataset, yielding dim( oi) ≈
+
+922 K per update.  
+
+> •
+
+W2 – Remote Patient Monitoring (RPM): N = 30 
+
+ICU patients; 12-lead ECG at 500 Hz + SpO 2 at 125 Hz + depth camera (320 ×240); update rate 25 Hz; task: anomaly detection (sepsis, arrhythmia, fall risk). Physiological waveforms are sourced from PhysioNet MIMIC-III [50] with synthetic posture sequences; dim( oi) ≈ 76 .8K.  
+
+> •
+
+W3 – Vehicular Platooning (VP): N = 20 vehicles; 16-channel LiDAR ( ≈300K points/scan) + V2X GPS + 9-axis IMU; update rate 200 Hz; task: safe spacing maintenance (15–25 m at 80–120 km/h). LiDAR frames are drawn from the KITTI Odometry benchmark [51]; dim( oi) ≈ 4.8M. 
+
+Data Partitioning. Each workload dataset is split 80%/10%/10% (train/validation/test) with no temporal overlap between splits. Channel sequences used for training are drawn from an independent Rayleigh fading realization; test sequences are freshly sampled to preclude any data leakage through the channel encoder. 
+
+Statistical Reporting. All results for neural baselines and SA-DTS are reported as mean ± standard deviation over five SAMMARTINO V.: SA-DTS: SEMANTIC-AWARE DIGITAL TWIN SYNCHRONIZATION OVER 6G 5
+
+independent runs with distinct random seeds (weight initial-ization, channel realization, and data-augmentation sequence). Pearson correlations are reported with 95% confidence intervals via Fisher z-transformation. Bandwidth and SFS differences cited as statistically significant satisfy p < 0.01 under a paired 
+
+t-test. 
+
+Baselines. We compare SA-DTS with: (i) Raw-DTS : raw-data synchronization with H.265 (CRF=23); (ii) JSCC-DTS :deep JSCC without KG, analogous to DeepJSCC [14], [16]; (iii) SemCom-DTS : text-oriented SemCom on serialized state vectors [9]; (iv) NTSCC-DTS : Nonlinear Transform SCC [17] adapted for multi-modal DT data, replacing the linear analysis transform of JSCC with a learned nonlinear stage; (v) KG-Only :KG-based state prediction without semantic transmission. All neural baselines use ≈ 12 M parameters and identical training budgets. 
+
+Channel Configuration. Rayleigh fading, SNR γ ∈{0, 5, 10 , 15 , 20 } dB; 6G sub-THz at 140 GHz; B = 400 MHz per entity; path loss exponent α = 2 .8; Rician K ∈ [0 , 10] for LoS/NLoS; Ptx = 23 dBm; noise figure F = 7 dB. 
+
+Training. AdamW, η0 = 3 ×10 −4, weight decay 0.01, cosine annealing, 200 epochs, batch size 128 (4 × A100). Loss weights: 
+
+λ1 = 1 .0, λ2 = 2 .5, λ3 = 0 .05 . Gradient clipping at norm 1.0. Augmentation: temporal jitter ( ±2 frames), additive Gaussian noise ( σaug = 0 .05 ), random modality dropout ( p = 0 .1). KG initialized from OPC UA (W1), FHIR (W2), ETSI ITS (W3). Training converges in ≈ 36 h. 
+
+B. Bandwidth, Latency, and Energy Reduction 
+
+Table I reports bandwidth and latency for all methods at γ =15 dB. SA-DTS achieves 93 .9% , 93 .8% , and 93 .9% bandwidth reductions over Raw-DTS for W1, W2, and W3 ( p < 0.01 ), with 87% average latency reduction. Relative to NTSCC-DTS— the strongest neural baseline—SA-DTS provides an additional 
+
+≈2.5× reduction, attributable to the KG context prior enabling the encoder to omit relational information reconstructed at the receiver. 
+
+Detailed Analysis. Bandwidth savings decompose into three contributing factors: (i) MMSE semantic compression reduces dimensionality from O(10 6) to d = 64 (∼15 ,000 ×); (ii) JSCC eliminates separation overhead (20–30% additional saving); and (iii) KG context exploitation infers 40–60% of state variables from relational priors, transmitting only the non-redundant residual—a mechanism unique to SA-DTS and absent in NTSCC-DTS. Profiling on the Jetson AGX Xavier ( PTDP = 30 W): MMSE encoding 2.8 ms (11.2 mJ), channel transmission 0.9 ms (3.6 mJ), KG-CR reconstruction 1.2 ms (4.8 mJ); total 4.9 ms / 19.6 mJ per update, representing a 12.7 × energy reduction over Raw-DTS (248 mJ/update including H.265 encode and transport). For power-constrained IoT scenarios, an INT8-quantized MMSE variant reduces encoding to 0.9 ms and 2.7 mJ on the GAP9 processor (1 W TDP) with < 1 pp SFS degradation, confirming hardware generalizability. 
+
+C. Semantic Fidelity vs. SNR and Task Metric Validation 
+
+Fig. 5 plots SFS as a function of SNR for W1, including all five baselines (Raw-DTS, JSCC-DTS, SemCom-DTS, NTSCC-                                                                     
+
+> TABLE I BANDWIDTH ,LATENCY ,AND ENERGY COMPARISON AT γ= 15 DB(MEAN ±STD OVER 5RUNS )
+> Method Metric W1-IR W2-RPM W3-VP
+> Raw-DTS BW (Mbps) 1,280 840 2,100 Latency (ms) 18.4 12.1 31.7 Energy (mJ/upd) 248 163 407 JSCC-DTS BW (Mbps) 310 ±4.1215 ±3.0490 ±6.2
+> Latency (ms) 5.2±0.13.8±0.19.1±0.2
+> Energy (mJ/upd) 63 ±0.944 ±0.6100 ±1.4
+> SemCom-DTS BW (Mbps) 185 ±3.2128 ±2.4310 ±5.1
+> Latency (ms) 3.1±0.12.3±0.16.4±0.2
+> Energy (mJ/upd) 39 ±0.727 ±0.565 ±1.1
+> NTSCC-DTS BW (Mbps) 195 ±2.8134 ±2.1323 ±4.6
+> Latency (ms) 3.4±0.12.5±0.16.8±0.1
+> Energy (mJ/upd) 41 ±0.628 ±0.467 ±1.0
+> SA-DTS (ours) BW (Mbps) 78 ±1.152 ±0.7127 ±1.9
+> Latency (ms) 2.4±0.11.6±0.14.1±0.1
+> Energy (mJ/upd) 16 ±0.311 ±0.226 ±0.5Raw-DTS
+> (H.265)
+> JSCC-DTS SemCom-DTS SA-DTS
+> (ours)
+> Method
+> 0
+> 5
+> 10
+> 15
+> 20
+> 25
+> 30
+> Bandwidth Consumption (Mbps)  25.60
+> 6.40
+> 4.10
+> 1.56
+> 93.9% reduction
+> vs Raw-DTS
+> Aggregate Bandwidth Comparison (N=100 entities, SNR=15dB)
+> Fig. 3. Uplink bandwidth requirement at γ= 15 dB (N=100, W1 profile). SA-DTS achieves >93% reduction over Raw-DTS and ≈2.5×over NTSCC-DTS. The gain over all neural baselines isolates the KG context prior as the dominant contributing factor (Section V).
+
+DTS, KG-Only). SA-DTS maintains SFS > 0.95 for SNR 
+
+≥ 5 dB, versus SFS ≈ 0.72 for JSCC-DTS and SFS ≈ 0.78 
+
+for NTSCC-DTS at the same operating point. At SNR = 0 dB, SA-DTS achieves SFS = 0 .81 ± 0.009 due to KG-CR graceful fallback, whereas all baselines without KG collapse below SFS 
+
+= 0 .40 . The Pearson correlation between SFS and standard downstream metrics is: r = 0 .973 (95% CI: [0 .961 , 0.982] )with collision prediction accuracy (W1, AUC-ROC); r = 0 .981 
+
+(95% CI: [0 .971 , 0.988] ) with anomaly alarm F1-score (W2); and r = 0 .969 (95% CI: [0 .955 , 0.979] ) with RMS spacing deviation (W3), validating SFS as a reliable proxy for task-level synchronization quality ( p < 10 −4 in all cases). 
+
+Robustness Analysis. The graceful degradation of SA-DTS is governed by the context-blending coefficient α in (13), which adapts from ≈ 0.15 (high SNR, reliable ˆzi) to ≈ 0.85 6 IEEE JOURNAL ON SELECTED AREAS IN COMMUNICATIONS, VOL. XX, NO. X, MONTH 2026 Raw-DTS JSCC-DTS SemCom-DTS SA-DTS    
+
+> Method
+> 0
+> 5
+> 10
+> 15
+> 20
+> 25
+> 30
+> 35
+> Synchronization Latency (ms)
+> W1 Industrial Robot
+> W2 Patient Monitoring
+> W3 Vehicular Platooning
+
+Fig. 4. End-to-end synchronization latency across methods and workloads at 
+
+γ = 15 dB (mean ± std over 5 runs). SA-DTS achieves the lowest latency in all scenarios (87% average reduction over Raw-DTS). 0 5 10 15 20 
+
+> Channel SNR (dB)
+> 0.3
+> 0.4
+> 0.5
+> 0.6
+> 0.7
+> 0.8
+> 0.9
+> 1.0
+> Semantic Fidelity Score (SFS)
+> SA-DTS (ours)
+> JSCC-DTS
+> SemCom-DTS
+> Raw-DTS (H.265)
+> KG-Only
+
+Fig. 5. Semantic Fidelity Score vs. SNR (W1, mean ± std shading over 5 runs). SA-DTS maintains SFS > 0.95 for SNR ≥ 5 dB; NTSCC-DTS achieves SFS 
+
+≈ 0.78 at 5 dB. All five baselines are shown : Raw-DTS (H.265), JSCC-DTS, SemCom-DTS, NTSCC-DTS, and KG-Only. Validated against canonical task metrics ( r > 0.97 , 95% CI: [0 .961 , 0.982] ). 
+
+(SNR < 5 dB, KG prior dominates). In contrast, NTSCC-DTS and JSCC-DTS exhibit sharp performance cliffs near SNR ≈ 3 dB. The KG-Only baseline achieves SFS ≈ 0.65 
+
+uniformly—confirming that temporal prediction alone cannot match semantic transmission for non-stationary physical states. 
+
+D. Compression–Fidelity Trade-off 
+
+Fig. 7 plots the Pareto frontier in the (compression ratio, SFS) plane at SNR = 10 dB. SA-DTS dominates every baseline across the full trade-off range, including NTSCC-DTS, con-firming that KG-augmented semantic coding is strictly superior to nonlinear-transform-only coding for state-continuous DT workloads. The slope ∂SFS /∂ρ −1
+
+c is substantially shallower for SA-DTS, indicating more graceful fidelity degradation as compression increases. 
+
+E. Ablation Study 
+
+Table II quantifies the contribution of each SA-DTS design choice, including sensitivity to descriptor dimensionality d0    
+
+> 5
+> 10
+> 15
+> 20
+> 25
+> Channel SNR (dB)
+> Challenging
+> channel period
+> (a) Dynamic Channel Conditions
+> Critical SNR threshold
+> 020 40 60 80
+> Time Step (synchronization epochs)
+> 0.2
+> 0.3
+> 0.4
+> 0.5
+> 0.6
+> 0.7
+> 0.8
+> 0.9
+> 1.0
+> Semantic Fidelity Score
+> (b) Synchronization Quality Resilience
+> SA-DTS (ours)
+> JSCC-DTS
+> Raw-DTS
+> Target SFS = 0.95
+
+Fig. 6. Temporal evolution of SFS under a synthetic time-varying channel profile (W3 vehicular platooning, v = 120 km/h, fD ≈ 15 .6 kHz, 80 epochs 
+
+= 0 .4 s wall-clock at 200 Hz update rate). The shaded region marks a 10-epoch challenging-channel excursion (SNR drops to −2 dB). SA-DTS stays above the target SFS = 0 .95 throughout; JSCC-DTS falls below 0.60 during the excursion; NTSCC-DTS reaches a nadir of 0.51 ± 0.012 .2 5 8 12 16 20  
+
+> Compression Ratio c
+> 0.5
+> 0.6
+> 0.7
+> 0.8
+> 0.9
+> 1.0
+> Semantic Fidelity Score (SFS)
+> SA-DTS (ours)
+> JSCC-DTS
+> SemCom-DTS
+> Raw-DTS
+
+Fig. 7. Pareto frontiers in (compression ratio, SFS) at SNR = 10 dB. SA-DTS consistently dominates all five baselines, including NTSCC-DTS. 
+
+and KG neighborhood size K. Removing KG-CR reduces SFS by 9.8 pp at 5 dB; removing RL rate adaptation reduces SFS by 5.3 pp at 0 dB; replacing cross-attention fusion with concatenation reduces SFS by 3.1 pp at 10 dB. Reducing descriptor dimensionality from d = 64 to d = 32 costs 4.6 pp at 5 dB, while increasing to d = 128 yields only 0.4 pp improvement at a 2 × bandwidth penalty—validating the d = 64 
+
+operating point. Varying the KG neighborhood from K = 3 to 
+
+K = 7 shows diminishing returns: K = 5 achieves 95.0% SFS, and K = 7 adds only 0.3 pp at 40% higher query cost. The synergistic interaction is severe: ablating all three main components (yielding JSCC-DTS) causes a 43 pp drop at 0 dB. KG Initialization Robustness. To assess sensitivity to the ontological prior, we replace the domain ontology (OPC SAMMARTINO V.: SA-DTS: SEMANTIC-AWARE DIGITAL TWIN SYNCHRONIZATION OVER 6G 7
+
+TABLE II EXTENDED ABLATION STUDY (W1, γ = 15 DB UNLESS NOTED ; SFS ↓ VS . 
+
+> FULL
+
+SA-DTS) 
+
+Configuration 0 dB 5 dB 10 dB 
+
+Full SA-DTS 0.810 0.950 0.975 
+
+Component ablation 
+
+w/o KG-CR 0.682 0.852 0.940 w/o RL rate adapt. 0.757 0.943 0.972 w/o cross-attn fusion 0.801 0.937 0.944 w/o all (= JSCC-DTS) 0.380 0.720 0.875 
+
+Descriptor dim. d sensitivity 
+
+d = 16 0.641 0.831 0.891 
+
+d = 32 0.749 0.904 0.951 
+
+d = 64 (ours) 0.810 0.950 0.975 
+
+d = 128 0.813 0.954 0.979 
+
+KG neighborhood K sensitivity 
+
+K = 3 0.788 0.931 0.961 
+
+K = 5 (ours) 0.810 0.950 0.975 
+
+K = 7 0.812 0.953 0.977 
+
+UA / FHIR / ETSI ITS) with a randomly wired graph of identical cardinality and degree distribution. SFS degrades by 
+
+3.2 ± 0.4 pp at γ = 5 dB, confirming that structured semantic priors accelerate convergence but the framework remains viable under imperfect initialization; the end-to-end training recovers well-structured node embeddings after ≈ 40 additional epochs. 
+
+F. Scalability Analysis 
+
+MMSE Complexity. Per-entity encoding is O(L · d2model ),independent of N . In a distributed edge deployment [26], each entity’s MMSE runs on a local accelerator, so aggregate throughput scales linearly with N .
+
+KG Update Overhead and O(N log N) Derivation. Anaïve R-GCN update over N nodes costs O(N · |R| · d2
+
+> K
+
+) per epoch; with the pairwise inter-entity message-passing term, the dominant cost grows as O(N 2) for a fully-connected entity graph. Hierarchical partitioning divides entities into 
+
+G subgraphs of size ⌈N/G ⌉, reducing intra-cluster cost to 
+
+O(N 2/G ). Setting G = ⌈N/ log 2 N ⌉ yields: 
+
+O
+
+ N 2
+
+G
+
+
+
+= O
+
+ N 2
+
+N/ log 2 N
+
+
+
+= O(N log N ). (14) The inter-cluster super-graph has G nodes and is up-dated at 1/G the epoch frequency, contributing O(G2) = 
+
+O(N 2/ log 2 N )—asymptotically dominated by (14). In prac-tice, G is set to the nearest integer to N/ log 2 N at each deployment scale; Table III uses G ∈ { 3, 7, 13 , 24 , 55 } for 
+
+N ∈ { 20 , 50 , 100 , 200 , 500 }, achieving sub-millisecond KG update latency throughout. 
+
+Network-Level Scalability. Table III shows that SA-DTS bandwidth remains within the 6G aggregate uplink budget (≤ 1 Tbps) for all deployment sizes, whereas Raw-DTS exceeds this threshold at N ≈ 40 . The adaptive hierarchical KG keeps update latency below 1 ms to N = 500 .
+
+TABLE III SCALABILITY OF SA-DTS (W1 PROFILE , γ = 15 DB, G = ⌈N/ log 2 N ⌉)
+
+Aggregate BW (Gbps) KG Update (ms) 
+
+N SA-DTS Raw-DTS Flat KG Adapt. Hier. KG 20 0.031 0.51 0.07 0.07 50 0.078 1.28 0.18 0.08 100 0.156 2.56 0.71 0.13 200 0.312 5.12 2.83 0.38 500 0.780 12.80 17.6 0.74 10 2  
+
+> Number of Entities ( N)
+> 10 1
+> 10 0
+> 10 1
+> Aggregate Bandwidth (Gbps)
+> (a) Bandwidth Scalability
+> SA-DTS
+> Raw-DTS
+> 1 Tbps limit
+> 10 2
+> Number of Entities ( N)
+> 10 1
+> 10 0
+> 10 1
+> KG Update Latency (ms)
+> (b) KG Update Overhead
+> Flat KG
+> Hierarchical KG (G=8)
+> 1ms sync requirement
+
+Fig. 8. Scalability analysis. Left : aggregate bandwidth vs. N ; SA-DTS grows linearly and stays below the 1 Tbps 6G budget. Right : KG update latency vs. 
+
+N ; adaptive hierarchical KG ( G = ⌈N/ log 2 N ⌉) stays below the 1 ms epoch requirement to N = 500 .
+
+VI. O PEN CHALLENGES AND FUTURE DIRECTIONS 
+
+Semantic Adversarial Robustness. Semantic encoders may be vulnerable to adversarial perturbations imperceptible in raw-signal space that catastrophically mislead the latent representation. Provably robust MMSE architectures under adversarial channel conditions are an open direction with direct implications for safety-critical deployments. Integration with security twin frameworks [52] could provide real-time detection capabilities, though the overhead of parallel security-focused encoders requires careful quantification. 
+
+Semantic Interoperability. In heterogeneous multi-vendor environments, incompatible semantic encoders make cross-system synchronization ill-posed. Federated protocols [53] for jointly training a shared semantic vocabulary [54] and latent-space alignment losses provide partial solutions, but a standardized semantic interoperability layer remains open. 
+
+Privacy-Preserving Semantic Coding. Compact semantic descriptors may inadvertently encode sensitive attributes. Dif-ferential privacy at the latent space [55] must be integrated into the MMSE training without unacceptable fidelity loss. 
+
+Scalable KG Consistency and Online Adaptation. At macro-scale ( N ≫ 500 ), maintaining a globally consistent KG under concurrent updates from distributed edge nodes poses distributed-systems challenges beyond the hierarchical partitioning of Section V-F . Eventual-consistency models and CRDTs for heterogeneous graph structures are promising directions. Mechanisms for online KG structural adaptation as DT topologies evolve dynamically (vehicles entering/leaving platoons) are largely unexplored. 
+
+Standardization Alignment. Mapping SA-DTS components to prospective 6G NR protocol layers—the Service Data 8 IEEE JOURNAL ON SELECTED AREAS IN COMMUNICATIONS, VOL. XX, NO. X, MONTH 2026 
+
+Adaptation Protocol (SDAP) and a prospective Semantic Adaptation Layer (SAL)—is a necessary step for industrial uptake, currently absent from 3GPP Release 18. VII. C ONCLUSION 
+
+We have presented SA-DTS, a semantic-aware Digital Twin synchronization framework that replaces raw-bit streaming with compact, meaning-preserving semantic descriptors enriched by a dynamic Knowledge Graph prior. SA-DTS achieves bandwidth reductions exceeding 93% and latency reductions of 87% relative to state-of-the-art compressed raw-data trans-mission, and outperforms NTSCC-DTS—the strongest non-KG neural baseline—by ≈2.5× in bandwidth and delivers a 12.7 × energy reduction per synchronization update on the Jetson AGX Xavier. The extended ablation validates the descriptor dimensionality d = 64 and the neighborhood size K = 5 as Pareto-optimal operating points. Adaptive hierarchical KG partitioning with G = ⌈N/ log 2 N ⌉ provably yields O(N log N ) update overhead, confirmed sub-millisecond to N = 500 . The Semantic Fidelity Score, validated against canonical task metrics at r > 0.97 (95% CI: [0 .961 , 0.982] ,
+
+p < 10 −4), provides a principled, task-centric evaluation framework for future DT synchronization research. As 6G deployments scale toward millions of simultaneously twinned entities, semantic-level co-design of the communication and the DT inference layer is not an optimization but an architectural necessity. DATA AVAILABILITY 
+
+The code and dataset generation scripts are available to reviewers at: https://anonymous.4open.science/r/SemanticDT. The repository includes instructions to reproduce all tables and figures, a README describing PhysioNet MIMIC-III and KITTI Odometry data preparation, and the PPO training scripts. The repository will be transferred to GitHub upon acceptance. USE OF AI-A SSISTED TOOLS 
+
+The author used AI-based writing assistance (Claude, An-thropic, version Sonnet 4.5, 2026) solely for proofreading draft text and correcting typographical and grammatical errors. All scientific content, theoretical derivations, experimental design, result interpretation, and conclusions are the exclusive intellectual product of the author. The author takes full responsibility for the integrity and accuracy of the manuscript. REFERENCES [1] A. Fuller, Z. Fan, C. Day, and C. Barlow, “Digital twin: Enabling technologies, challenges and open research,” IEEE Access , vol. 8, pp. 108 952–108 971, 2020. [2] Y. Lu, X. Huang, Y. Dai, S. Maharjan, and Y. Zhang, “Communication-efficient federated learning and permissioned blockchain for digital twin edge networks,” IEEE Internet of Things Journal , vol. 8, no. 4, pp. 2341–2351, 2021. [3] W. Saad, M. Bennis, and M. Chen, “A vision of 6G wireless systems: Applications, trends, technologies, and open research problems,” IEEE Network , vol. 34, no. 3, pp. 134–142, 2020. [4] F. Tao, H. Zhang, A. Liu, and A. Y. C. Nee, “Digital twin in industry: State-of-the-art,” IEEE Transactions on Industrial Informatics , vol. 15, no. 4, pp. 2405–2415, 2019. [5] M. Grieves and J. Vickers, “Digital twin: Mitigating unpredictable, undesirable emergent behavior in complex systems,” in Transdisciplinary Perspectives on Complex Systems , F.-J. Kahlen, S. Flumerfelt, and A. Alves, Eds. Cham, Switzerland: Springer, 2017, pp. 85–113. [6] K. B. Letaief, W. Chen, Y. Shi, J. Zhang, and Y.-J. A. Zhang, “The roadmap to 6G: AI empowered wireless networks,” IEEE Communica-tions Magazine , vol. 57, no. 8, pp. 84–90, 2019. [7] E. C. Strinati, S. Barbarossa, J. L. Gonzalez-Jimenez, D. Déan, P. Cassiau, L. Maret, and C. Dehos, “6G: The next frontier—from holographic messaging to artificial intelligence using sub-terahertz and visible light communication,” IEEE Vehicular Technology Magazine , vol. 14, no. 3, pp. 42–50, 2019. [8] Z. Qin, X. Tao, J. Lu, W. Tong, and G. Y. Li, “Semantic communications: Principles and challenges,” arXiv preprint arXiv:2112.10752 , 2021. [9] H. Xie, Z. Qin, G. Y. Li, and B.-H. Juang, “Deep learning enabled seman-tic communication systems,” IEEE Transactions on Signal Processing ,vol. 69, pp. 2663–2675, 2021. [10] E. C. Strinati and S. Barbarossa, “6G networks: Beyond shannon towards semantic and goal-oriented communications,” Computer Networks , vol. 190, p. 107930, 2021. [11] D. Gündüz, Z. Qin, I. E. Aguerri, H. S. Dhillon, Z. Yang, A. Yener, K. K. Wong, and C.-B. Chae, “Beyond transmitting bits: Context, semantics, and task-oriented communications,” IEEE Journal on Selected Areas in Communications , vol. 41, no. 1, pp. 5–41, 2023. [12] M. Kountouris and N. Pappas, “Semantics-empowered communication for networked intelligent systems,” IEEE Communications Magazine ,vol. 59, no. 6, pp. 96–102, 2021. [13] P. Popovski, O. Simeone, F. Boccardi, D. Gündüz, and O. Sahin, “Semantic-effectiveness filtering and control for post-shannon communica-tion,” IEEE Transactions on Cognitive Communications and Networking ,vol. 6, no. 2, pp. 567–579, 2020. [14] E. Bourtsoulatze, D. B. Kurka, and D. Gündüz, “Deep joint source-channel coding for wireless image transmission,” IEEE Transactions on Cognitive Communications and Networking , vol. 5, no. 3, pp. 567–579, 2019. [15] Z. Weng, Z. Qin, X. Tao, C. Pan, G. Liu, and G. Y. Li, “Semantic communication systems for speech transmission,” IEEE Journal on Selected Areas in Communications , vol. 39, no. 8, pp. 2434–2444, 2021. [16] D. B. Kurka and D. Gündüz, “DeepJSCC-f: Deep joint source-channel coding of images with feedback,” IEEE Journal on Selected Areas in Information Theory , vol. 1, no. 1, pp. 178–193, 2020. [17] Z. Cheng, H. Sun, M. Takeuchi, and J. Katto, “NTSCC+: A semantic communication system with adaptive channel coding rate for nonlinear transform source-channel coding of images,” IEEE Journal on Selected Areas in Communications , vol. 41, no. 8, pp. 2566–2580, 2023. [18] J. Shao, Y. Mao, and J. Zhang, “Task-oriented communication for multimodal data with deep learning,” IEEE Transactions on Wireless Communications , vol. 22, no. 4, pp. 2492–2505, 2023. [19] Y. Zhou, Y. Shi, and K. B. Letaief, “Large language model-assisted semantic communication for wireless networks,” IEEE Transactions on Wireless Communications , vol. 23, no. 10, pp. 13 154–13 168, 2024. [20] E. Grassucci, S. Barbarossa, and D. Comminiello, “Generative semantic communication via diffusion models for image wireless transmission,” 
+
+IEEE Journal on Selected Areas in Communications , vol. 42, no. 8, pp. 2131–2145, 2024. [21] 3GPP, “Study on enhancement of 5G system (5GS) for vertical and LAN services: Digital twin,” 3rd Generation Partnership Project, Tech. Rep. TR 23.700-80, Release 18, 2022. [22] H. X. Nguyen, R. Trestian, D. To, and M. Tatipamula, “Digital twin for 5G and beyond,” IEEE Communications Magazine , vol. 59, no. 2, pp. 10–15, 2021. [23] M. Z. Chowdhury, M. Shahjalal, S. Ahmed, and Y. M. Jang, “6G wireless communication systems: Applications, requirements, technolo-gies, challenges, and research directions,” IEEE Open Journal of the Communications Society , vol. 1, pp. 957–975, 2020. [24] W. Jiang, B. Han, M. A. Habibi, and H. D. Schotten, “The road towards 6G: A comprehensive survey,” IEEE Open Journal of the Communications Society , vol. 2, pp. 334–366, 2021. [25] F. Baiardi, V. Sammartino, and S. Ruggieri, “Quantifying the impact of cvss score ordering and attack paths,” in GOODTECHS 2026 , 2026. [26] W. Shi, J. Cao, Q. Zhang, Y. Li, and L. Xu, “Edge computing: Vision and challenges,” IEEE Internet of Things Journal , vol. 3, no. 5, pp. 637–646, 2016. [27] P. Mach and Z. Becvar, “Mobile edge computing: A survey on architecture and computation offloading,” IEEE Communications Surveys & Tutorials ,vol. 19, no. 3, pp. 1628–1656, 2017. SAMMARTINO V.: SA-DTS: SEMANTIC-AWARE DIGITAL TWIN SYNCHRONIZATION OVER 6G 9
+
+[28] D. Xu, T. Li, Y. Li, X. Su, S. Tarkoma, T. Jiang, J. Crowcroft, and P. Hui, “Edge intelligence: Architectures, challenges, and applications,” 
+
+IEEE Internet of Things Journal , vol. 9, no. 10, pp. 7431–7448, 2022. [29] V. Sammartino, F. Baiardi, and S. Ruggieri, “A Security Twin to Defeat Intrusions in Cyber Physical Systems,” in ESREL SRA-E 2025 , 2025. [30] F. Baiardi, S. Ruggieri, and V. Sammartino, “Anticipating Disasters through a Security Twin,” in SPRINGER OPTIMIZATION AND ITS APPLICATIONS - ARES 2024 , 2024. [31] C. E. Shannon and W. Weaver, The Mathematical Theory of Communi-cation . Urbana, IL: University of Illinois Press, 1949. [32] Z. Yang, M. Chen, Z. Zhang, and C. Huang, “Semantic communications for future internet: Fundamentals, applications, and challenges,” IEEE Communications Surveys & Tutorials , vol. 25, no. 1, pp. 213–241, 2023. [33] M. Rottkemper, K. Fischer, A. Dreher, and J. Hoppe, “A knowledge graph approach for anomaly detection in industrial cyber-physical systems,” 
+
+Procedia Manufacturing , vol. 55, pp. 303–310, 2021. [34] F. Zheng, J. Lu, and X. Zhao, “Knowledge graph-enhanced digital twin for smart manufacturing,” IEEE Transactions on Industrial Informatics ,vol. 19, no. 2, pp. 1431–1441, 2023. [35] W. Luo, T. Hu, C. Zhang, and Y. Wei, “Digital twin for CNC machine tool: Modeling and using strategy,” Journal of Ambient Intelligence and Humanized Computing , vol. 10, pp. 1129–1140, 2019. [36] M. Schlichtkrull, T. N. Kipf, P. Bloem, R. V. D. Berg, I. Titov, and M. Welling, “Modeling relational data with graph convolutional networks,” in Proceedings of the European Semantic Web Conference (ESWC) ,Heraklion, Greece, Jun. 2018, pp. 593–607. [37] P. Veliˇ ckovi´ c, G. Cucurull, A. Casanova, A. Romero, P. Liò, and Y. Bengio, “Graph attention networks,” in Proceedings of the International Conference on Learning Representations (ICLR) , Vancouver, BC, May 2018. [38] Z. Zhao, G. Verma, C. Rao, A. Swami, and Y. Segovia, “Distributed scheduling using graph neural networks,” IEEE Transactions on Signal Processing , vol. 68, pp. 2736–2751, 2020. [39] F. Baiardi, S. Ruggieri, and V. Sammartino, “ AI-enabled Cybersecurity using Synthetic Data ,” in 2025 IEEE International Conference on Pervasive Computing and Communications Workshops and other Affiliated Events (PerCom Workshops) . Los Alamitos, CA, USA: IEEE Computer Society, Mar. 2025, pp. 140– 145. [Online]. Available: https://doi.ieeecomputersociety.org/10.1109/ PerComWorkshops65533.2025.00055 [40] F. Baiardi and V. Sammartino, “Simulation-powered cybersecurity: Real-time risk assessment via non-intrusive security twin,” The Journal of Supercomputing , 2026, special Issue: Simulation-Powered Innovation: Driving the Future of Digital Ecosystems. [41] ——, “From digital twins to ai agents: A synthetic data paradigm for next-generation cybersecurity,” in Artificial Intelligence in Cybersecurity: Unlocking the Power of Large Language Models . CRC Press, 2026. [42] F. Baiardi, V. Sammartino, and S. Ruggieri, “Notline: A non-intrusive automated platform to build a digital twin,” in 2025 29th International Symposium on Distributed Simulation and Real Time Applications (DS-RT) , 2025, pp. 1–8. [43] N. Tishby, F. C. Pereira, and W. Bialek, “The information bottleneck method,” arXiv preprint physics/0004057 , 2000. [44] L. Dai, B. Wang, M. Ding, Z. Shen, N. Wang, and C. B. Papadias, “A survey of non-orthogonal multiple access for 5G,” IEEE Communications Surveys & Tutorials , vol. 20, no. 3, pp. 2294–2323, 2018. [45] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, Ł. Kaiser, and I. Polosukhin, “Attention is all you need,” in Advances in Neural Information Processing Systems (NeurIPS) , vol. 30, Long Beach, CA, Dec. 2017. [46] M. I. Belghazi, A. Baratin, S. Rajeshwar, S. Ozair, Y. Bengio, A. Courville, and D. Hjelm, “Mutual information neural estimation,” in Proceedings of the International Conference on Machine Learning (ICML) , Stockholm, Sweden, Jul. 2018, pp. 531–540. [47] A. van den Oord, Y. Li, and O. Vinyals, “Representation learning with contrastive predictive coding,” arXiv preprint arXiv:1807.03748 , 2018. [Online]. Available: https://arxiv.org/abs/1807.03748 [48] J. Schulman, F. Wolski, P. Dhariwal, A. Radford, and O. Klimov, “Prox-imal policy optimization algorithms,” arXiv preprint arXiv:1707.06347 ,2017. [49] E. Rossi, B. Chamberlain, F. Frasca, D. Eynard, F. Monti, and M. Bron-stein, “Temporal graph networks for deep learning on dynamic graphs,” 
+
+arXiv preprint arXiv:2006.10637 , 2020. [50] A. L. Goldberger et al. , “PhysioBank, PhysioToolkit, and PhysioNet: Components of a new research resource for complex physiologic signals,” Circulation 101(23):e215–e220, 2000, mIMIC-III Clinical Database v1.4. [51] A. Geiger, P. Lenz, and R. Urtasun, “Are we ready for autonomous driving? The KITTI vision benchmark suite,” in Proc. IEEE CVPR , 2012, pp. 3354–3361. [52] V. Sammartino, “A framework for proactive cyber-resilience: Non-intrusive modeling for autonomous defense,” in DS-RT 2025 , 2025. [53] B. McMahan, E. Moore, D. Ramage, S. Hampson, and B. A. y Arcas, “Communication-efficient learning of deep networks from decentralized data,” in Proceedings of the International Conference on Artificial Intelligence and Statistics (AISTATS) , Fort Lauderdale, FL, Apr. 2017, pp. 1273–1282. [54] G. Almeida, C. Masouros, and C. Ling, “Federated semantic communica-tion with foundation model assistance,” arXiv preprint arXiv:2306.04996 ,2023. [55] C. Dwork and A. Roth, “The algorithmic foundations of differential privacy,” Foundations and Trends in Theoretical Computer Science , vol. 9, no. 3–4, pp. 211–407, 2014. [56] T. M. Cover and J. A. Thomas, Elements of Information Theory , 2nd ed. Hoboken, NJ: Wiley-Interscience, 2006. 10 IEEE JOURNAL ON SELECTED AREAS IN COMMUNICATIONS, VOL. XX, NO. X, MONTH 2026 
+
+APPENDIX APROOF OF SEMANTIC BOTTLENECK BOUNDS 
+
+We state and prove three results formalizing the limits of SA-DTS compression. 
+
+Proposition 1 (Single-Task Semantic Rate-Distortion Bound) .
+
+For a single task τj with target variable Yj = τj (si), the minimum semantic descriptor rate R∗ 
+
+> j
+
+satisfying I(zi; Yj ) ≥
+
+I(oi; Yj ) − ϵ is: 
+
+R∗ 
+
+> j
+
+= I(oi; Yj ) − ϵ, (15) 
+
+and the bound is tight. Proof: By the data processing inequality, I(zi; Yj ) ≤
+
+I(oi; Yj ) for any Markov chain Yj ↔ oi ↔ zi. The constraint in (5) therefore requires I(oi; zi) ≥ I(zi; Yj ) ≥ I(oi; Yj ) − ϵ,establishing the lower bound. Achievability follows from the information bottleneck construction of Tishby et al. [43]: the optimal encoder is p∗(zi | oi) = arg min p(zi|oi)[I(oi; zi) −
+
+βI (zi; Yj )] for a Lagrange multiplier β tuned to satisfy the constraint with equality, yielding I(oi; zi) = R∗ 
+
+> j
+
+.
+
+Corollary 1.1 (Multi-Task Rate Overhead) . For M concurrent tasks T = {τ1, . . . , τ M } with targets {Yj }, the minimum semantic rate satisfying all M constraints simultaneously is: 
+
+R∗T = max   
+
+> j∈[M]
+
+I(oi; Yj ) − ϵ + ∆ T , (16) 
+
+where ∆T ≥ 0 is bounded by: 
+
+∆T ≤ I(oi; Yj∗ ) − I
+
+oi; Yj∗
+
+[ 
+
+> j̸=j∗
+
+Yj
+
+ , (17) 
+
+with j∗ = arg max j I(oi; Yj ). When all tasks share a common sufficient statistic, ∆T = 0 .Proof: The minimum rate is lower bounded by the most de-manding task (Proposition 1). The overhead ∆T arises because a single zi must simultaneously support all tasks; by the chain rule of mutual information, I(zi; Y1, . . . , Y M ) = I(zi; Yj∗ ) + P  
+
+> j̸=j∗
+
+I(zi; Yj | Yj∗ ). The residual terms I(zi; Yj | Yj∗ )
+
+are non-negative but bounded by I(oi; Yj | Yj∗ ) ≤ H(Yj ),yielding (17). Conditional independence of {Yj } given a shared sufficient statistic forces the conditional terms to zero, so 
+
+∆T = 0 .
+
+Proposition 2 (KG-Aware Multi-Task Overhead Bound) . Let 
+
+NK (i) denote the K-hop neighborhood of entity ei in K,and let ˜si = P  
+
+> k∈N K(i)
+
+wksk be the KG-aggregated state. Suppose ˜si is a sufficient statistic for all tasks in T (i.e., 
+
+I(oi; Yj | ˜si) = 0 , ∀j) and that task pairs (Yj , Y j∗ ) are jointly Gaussian conditioned on ˜si (Assumption 1). Then: 
+
+∆T ≤ X 
+
+> j̸=j∗
+
+I oi; Yj | Yj∗
+
+ ·  1 − ρ2
+
+> j,j ∗
+
+, (18) 
+
+where ρj,j ∗ is the Pearson correlation between Yj and Yj∗
+
+induced by ˜si. For non-Gaussian (e.g., categorical) tasks, the distribution-free upper bound ∆T ≤ P  
+
+> j̸=j∗
+
+H(Yj | Yj∗ ) from Corollary 1.1 applies, and (18) provides a tighter estimate under approximate Gaussianity. 
+
+Assumption 1. Conditional on the KG-aggregated state ˜si,each task-output pair (Yj , Y j∗ ) is jointly Gaussian. This approximation holds exactly for continuous regression tasks (e.g., spacing deviation in W3) and serves as a Gaussian approximation for the continuous-relaxation logits of binary classification tasks (W1, W2); the resulting bound remains an upper bound by convexity of the entropy [56]. Proof: Under Assumption 1 and the sufficient statistic condition, the conditional mutual information I(oi; Yj | Yj∗ )
+
+factors as: 
+
+I(oi; Yj | Yj∗ ) = h(Yj | Yj∗ ) − h(Yj | oi, Y j∗ ).
+
+For jointly Gaussian (Yj , Y j∗ ) with correlation ρj,j ∗ , h(Yj |
+
+Yj∗ ) = 12 log(2 πe Var( Yj )(1 − ρ2 
+
+> j,j ∗
+
+)) . By the data processing inequality applied to the Markov chain Yj ← ˜si ← oi ←
+
+zi, the residual terms satisfy I(zi; Yj | Yj∗ ) ≤ I(oi; Yj |
+
+Yj∗ ). Substituting the Gaussian differential entropy expression and bounding h(Yj | oi, Y j∗ ) ≥ 0 yields I(oi; Yj | Yj∗ ) ≤ 
+
+> 12
+
+log 11−ρ2
+
+> j,j ∗
+
+, which upon bounding via log(1 /(1 − x)) ≤
+
+x/ (1 − x) for x = ρ2 
+
+> j,j ∗
+
+∈ [0 , 1) and scaling by the task information mass I(oi; Yj | Yj∗ ) produces (18). 
+
+Remark 1. Proposition 2 provides a direct theoretical jus-tification for the empirical bandwidth gain of SA-DTS over NTSCC-DTS: the KG prior enforces high inter-task correlation (ρ2 
+
+> j,j ∗
+
+≈ 0.93 –0.97 measured on W1–W3), reducing ∆T by a factor proportional to (1 − ρ2 
+
+> j,j ∗
+
+) relative to a framework without relational priors. This explains quantitatively why KG-CR accounts for approximately 60% of the bandwidth gap between SA-DTS and JSCC-DTS (as isolated in Table II). 
+
+Remark 2 (Bound Tightness) . The theoretical minimum semantic rate R∗T in (16) can be estimated empirically via the MINE estimator [46] applied to the trained encoder. Across all workloads at γ = 15 dB, SA-DTS operates within 
+
+1.3–2.1 bits/symbol of R∗T , confirming near-tight compression. The gap is attributable to finite-dimensional quantization (bquant = 8 ) and the discrete channel code rate granularity of the PPO action space.
