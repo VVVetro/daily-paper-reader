@@ -1,0 +1,359 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-07T21:07:33.415549+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 5,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2606.03992v1",
+      "source": "arxiv",
+      "title": "Exploring Easy Boosts for Lidar Semantic Scene Completion",
+      "abstract": "This paper investigates \"free lunch\" strategies to boost the performance of lidar semantic scene completion (SSC) without requiring complex architectural redesigns. We first demonstrate that endowing input point clouds with semantic pseudo-labels from off-the-shelf segmentors significantly improves the performance of existing architectures. By evaluating these models against an oracle, we establish that high-quality semantic priors are a primary driver of mIoU gains. Furthermore, we equip the input lidar scan with visibility information that distinguishes between empty and unknown spaces, which provides a secondary performance boost across the tested architectures. Using these simple enhancements, we observe that older models remain competitive with state-of-the-art systems, and can even outperform them. Our code is available at https://github.com/astra-vision/SSC-Priors.",
+      "authors": [
+        "Tetiana Martyniuk",
+        "Jonathan Seele",
+        "Alexandre Boulch",
+        "Gilles Puy",
+        "Renaud Marlet",
+        "Raoul de Charette"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.RO"
+      ],
+      "published": "2026-06-02T17:59:59+00:00",
+      "link": "https://arxiv.org/pdf/2606.03992v1",
+      "tags": [
+        "keyword:smart-city"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "lidar semantic scene completion point clouds",
+      "llm_evidence_cn": "激光雷达语义场景补全与点云处理",
+      "llm_evidence": "激光雷达语义场景补全与点云处理",
+      "canonical_evidence": "激光雷达语义场景补全与点云处理",
+      "llm_tldr_en": "Explores easy boosts for lidar semantic scene completion by using semantic pseudo-labels and visibility information, improving mIoU without architectural changes.",
+      "llm_tldr_cn": "针对激光雷达语义场景补全任务，该论文探索了无需复杂架构重设计的\"免费午餐\"策略。通过为输入点云赋予来自现成分割器的语义伪标签，并引入可见性信息区分空与未知空间，显著提升了现有架构的性能。实验表明，这些简单增强使得旧模型仍能与最新方法竞争。",
+      "llm_tldr": "针对激光雷达语义场景补全任务，该论文探索了无需复杂架构重设计的\"免费午餐\"策略。通过为输入点云赋予来自现成分割器的语义伪标签，并引入可见性信息区分空与未知空间，显著提升了现有架构的性能。实验表明，这些简单增强使得旧模型仍能与最新方法竞争。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.05058v1",
+      "source": "arxiv",
+      "title": "UniCAD: A Unified Benchmark and Universal Model for Multi-Modal Multi-Task CAD",
+      "abstract": "Computer-Aided Design (CAD) underpins modern engineering and manufacturing by enabling the creation of precise, editable 3D models. However, CAD research typically studies tasks in isolation, and multi-modal, multi-task learning for CAD is hindered by the absence of a unified benchmark. To address this gap, we introduce UniCAD, a comprehensive benchmark for multi-modal CAD learning that covers point-to-CAD reconstruction, text/image-to-CAD generation, and CAD question answering across diverse input modalities. Alongside the benchmark, we present UniCAD-MLLM, a universal multi-modal large language model that ingests text, images, sketches, and point clouds and performs these heterogeneous tasks in an end-to-end fashion within a single framework. Extensive experiments on the UniCAD and Fusion360 benchmarks demonstrate that UniCAD-MLLM achieves state-of-the-art performance across all tasks, outperforming existing task-specific and multi-task baselines. We will release the dataset, code, and pretrained models to accelerate future research.",
+      "authors": [
+        "Jingyuan Chen",
+        "Sheng Jin",
+        "Haopeng Sun",
+        "Wentao Liu",
+        "Chen Qian"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-06-03T16:20:57+00:00",
+      "link": "https://arxiv.org/pdf/2606.05058v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "multi-modal CAD benchmark point-to-CAD reconstruction text/image-to-CAD CAD QA",
+      "llm_evidence_cn": "多模态CAD基准与点云到CAD重建、文本/图像生成CAD、CAD问答",
+      "llm_evidence": "多模态CAD基准与点云到CAD重建、文本/图像生成CAD、CAD问答",
+      "canonical_evidence": "多模态CAD基准与点云到CAD重建、文本/图像生成CAD、CAD问答",
+      "llm_tldr_en": "Proposes UniCAD benchmark and UniCAD-MLLM for multi-modal multi-task CAD, covering point-to-CAD reconstruction, generation, and QA.",
+      "llm_tldr_cn": "计算机辅助设计（CAD）研究通常孤立处理各任务，缺乏统一的多模态基准。本文提出UniCAD基准，涵盖点云到CAD重建、文本/图像生成CAD和CAD问答。并构建UniCAD-MLLM多模态大模型，以端到端方式处理文本、图像、草图、点云等异构输入，实现多任务统一学习。",
+      "llm_tldr": "计算机辅助设计（CAD）研究通常孤立处理各任务，缺乏统一的多模态基准。本文提出UniCAD基准，涵盖点云到CAD重建、文本/图像生成CAD和CAD问答。并构建UniCAD-MLLM多模态大模型，以端到端方式处理文本、图像、草图、点云等异构输入，实现多任务统一学习。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic information extraction from BIM models, including geometry, materials, textures, and object relationships.",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.02747v1",
+      "source": "arxiv",
+      "title": "Plan2Map: A Multimodal Benchmark for Document-Grounded Geospatial Boundary Reconstruction from Planning Records",
+      "abstract": "Planning records define restrictions over geographic areas, but their source documents often provide only indirect spatial evidence rather than machine-readable boundaries. We introduce Plan2Map, a 208-case multimodal benchmark for document-grounded geospatial boundary reconstruction from UK planning records. Given only a source planning document, systems must reconstruct a valid geospatial boundary from notice text, schedules, map plates, map labels, and boundary annotations; the reference GeoJSON is held out for scoring. We propose GeoPlanAgent, a document-grounded, geospatial-tool-in-the-loop system that decomposes the task into evidence extraction, localisation, map registration, boundary segmentation, projection, and verification. On Plan2Map, GeoPlanAgent achieves 0.736 mean IoU and 0.904 median IoU, with 67.8\\% of predictions at or above 0.8 IoU, substantially outperforming direct VLM-to-GeoJSON baselines. Diagnostic analysis shows that direct VLM prediction remains unreliable, while remaining errors are concentrated in localisation and map registration, and supervised boundary segmentation substantially improves pixel-level mask quality. Plan2Map provides a concrete testbed for multimodal geospatial reconstruction from public planning records. Project page: https://odeb1.github.io/Plan2Map_Project_Page/.",
+      "authors": [
+        "Fabian Degen",
+        "Oishi Deb",
+        "Jindong Gu",
+        "Junchi Yu",
+        "Samuele Marro",
+        "Philip Torr",
+        "Jialin Yu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-06-01T18:12:16+00:00",
+      "link": "https://arxiv.org/pdf/2606.02747v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "multimodal geospatial boundary reconstruction from planning documents",
+      "llm_evidence_cn": "从规划文档中进行多模态地理空间边界重建",
+      "llm_evidence": "从规划文档中进行多模态地理空间边界重建",
+      "canonical_evidence": "从规划文档中进行多模态地理空间边界重建",
+      "llm_tldr_en": "Introduces Plan2Map benchmark and GeoPlanAgent for reconstructing geospatial boundaries from multimodal planning records, integrating text, maps, and annotations.",
+      "llm_tldr_cn": "该论文针对规划文档中地理边界难以机器读取的问题，构建了包含208例的多模态基准数据集Plan2Map，并提出GeoPlanAgent系统，该系统结合文档文本、地图图板、标注等多模态输入，通过证据提取、定位、地图配准、边界分割等子任务，实现了从非结构化规划记录到可机读GeoJSON边界的自动化重建，为智慧城市的地理空间信息语义化提供了关键支撑。",
+      "llm_tldr": "该论文针对规划文档中地理边界难以机器读取的问题，构建了包含208例的多模态基准数据集Plan2Map，并提出GeoPlanAgent系统，该系统结合文档文本、地图图板、标注等多模态输入，通过证据提取、定位、地图配准、边界分割等子任务，实现了从非结构化规划记录到可机读GeoJSON边界的自动化重建，为智慧城市的地理空间信息语义化提供了关键支撑。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic parsing, ontology learning, and knowledge graph construction from BIM models and point cloud scans for AI ready urban infrastructure databases.",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.04291v1",
+      "source": "arxiv",
+      "title": "A Cookbook of 3D Vision: Data, Learning Paradigms, and Application",
+      "abstract": "3D vision has rapidly evolved, driven by increasingly diverse data representations, learning paradigms, and modeling strategies. Yet the field remains fragmented across representations and benchmarks, making it difficult to develop unified perspectives on efficiency, fidelity, and scalability. This work provides a data-centric taxonomy of 3D vision that connects geometric representations, datasets, learning frameworks, and applications within a single conceptual map. We begin by analysing the principal structural representations of 3D data--point clouds, meshes, voxels, and 3D Gaussians--along with their acquisition pipelines. We then examine how dataset design, benchmark construction, and supervision regimes shape recent advances, spanning 2D-supervised 3D learning, implicit neural representations, and 4D world modeling. Through this integrative lens, we clarify the relationships among representations, learning paradigms, and downstream tasks in reconstruction, generation, and video modeling, offering a consolidated view of emerging trends toward balancing efficiency and fidelity and toward multimodal geometric grounding.",
+      "authors": [
+        "Hongyang Du",
+        "Zongxia Li",
+        "Dawei Liu",
+        "Runhao Li",
+        "Haoyuan Song",
+        "Qingyu Zhang",
+        "Yubo Wang",
+        "Jingcheng Ni",
+        "Shihang Gui",
+        "Congchao Dong",
+        "Tao Hu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-02T23:41:52+00:00",
+      "link": "https://arxiv.org/pdf/2606.04291v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "3D vision cookbook covering point clouds and segmentation benchmarks",
+      "llm_evidence_cn": "3D视觉综述覆盖点云表示与分割方法",
+      "llm_evidence": "3D视觉综述覆盖点云表示与分割方法",
+      "canonical_evidence": "3D视觉综述覆盖点云表示与分割方法",
+      "llm_tldr_en": "This cookbook provides a data-centric taxonomy of 3D vision, analyzing geometric representations like point clouds and their benchmarks, relevant for urban point cloud segmentation.",
+      "llm_tldr_cn": "3D视觉领域当前碎片化严重。本文提出一个以数据为中心的3D视觉分类法，系统梳理了点云、网格、体素等几何表示及其获取管道，并分析数据集设计与基准对学习范式的影响。该综述为城市环境中的点云语义分割等任务提供了方法论基础。",
+      "llm_tldr": "3D视觉领域当前碎片化严重。本文提出一个以数据为中心的3D视觉分类法，系统梳理了点云、网格、体素等几何表示及其获取管道，并分析数据集设计与基准对学习范式的影响。该综述为城市环境中的点云语义分割等任务提供了方法论基础。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.04618v1",
+      "source": "arxiv",
+      "title": "BPDA-GMM: Bayesian Probabilistic Data Association via Gaussian Mixture Models for Semantic SLAM",
+      "abstract": "Probabilistic data association (PDA) improves semantic SLAM in perceptually aliased scenes, but existing methods often assume a fixed landmark set, recompute association weights as the map grows, or rely on hand-tuned null-hypothesis weights. To address these limitations, we propose \\textbf{BPDA-GMM}, an online Bayesian PDA framework for semantic SLAM with a growing object-level map. BPDA-GMM uses a Dirichlet-process prior to induce a Chinese Restaurant Process (CRP) association model, where accumulated evidence favors existing landmarks, and the concentration parameter assigns probability mass to new landmarks. For each semantic detection, plausible candidates are selected by a joint semantic-geometric gate, CRP-weighted association probabilities are computed, and object landmarks are updated as semantic Gaussians in closed form. The resulting landmark set forms a Gaussian mixture model, and its dominant component is passed to the back-end as a max-mixture semantic factor. When association weights are inconclusive, an ambiguity-triggered $α$-divergence tempering step improves discrimination. Finally, a decoupled back-end zeroes the pose Jacobian of semantic factors, allowing noisy detections to refine landmarks without directly perturbing the trajectory. Experiments in simulation and on a real indoor dataset demonstrate improved trajectory accuracy, semantic mapping quality, and robustness to perceptual aliasing and classifier errors over state-of-the-art baselines. Code and video are publicly available at https://github.com/thanhnguyencanh/BPDA-SLAM.",
+      "authors": [
+        "Thanh Nguyen Canh",
+        "Haolan Zhang",
+        "Xiem HoangVan",
+        "Antonio Sgorbissa",
+        "Nak Young Chong"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-03T08:53:39+00:00",
+      "link": "https://arxiv.org/pdf/2606.04618v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "semantic SLAM with probabilistic data association for point cloud scene understanding",
+      "llm_evidence_cn": "语义SLAM结合概率数据关联，用于点云场景理解",
+      "llm_evidence": "语义SLAM结合概率数据关联，用于点云场景理解",
+      "canonical_evidence": "语义SLAM结合概率数据关联，用于点云场景理解",
+      "llm_tldr_en": "BPDA-GMM is an online Bayesian framework for semantic SLAM that uses Gaussian mixture models and Chinese restaurant process for robust data association in growing maps, directly applicable to urban point cloud segmentation.",
+      "llm_tldr_cn": "本文提出BPDA-GMM，一种在线贝叶斯概率数据关联框架，用于语义SLAM中的对象级建图。通过狄利克雷过程先验和CRP关联模型，在动态环境中稳健关联语义检测。在点云场景中，该方法能同时处理已知和未知地标，适用于城市建筑与基础设施的语义分割与场景理解。",
+      "llm_tldr": "本文提出BPDA-GMM，一种在线贝叶斯概率数据关联框架，用于语义SLAM中的对象级建图。通过狄利克雷过程先验和CRP关联模型，在动态环境中稳健关联语义检测。在点云场景中，该方法能同时处理已知和未知地标，适用于城市建筑与基础设施的语义分割与场景理解。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.02170v1",
+      "source": "arxiv",
+      "title": "CRAFTQA: A Code-Driven Adaptive Framework for Complex Structured Data Reasoning",
+      "abstract": "Real-world scenarios involve massive heterogeneous structured data (e.g., tables, knowledge graphs), making effective reasoning over such diverse data increasingly important. Unified structured data question answering has emerged as a prominent research trend, aiming to answer natural language questions across different structured data types within a single framework. However, existing unified methods share a common limitation: they rely on a set of predefined functions, which restricts their ability to perform complex reasoning beyond these predefined operations. To overcome this fundamental limitation, we propose CRAFTQA, a novel adaptive code-driven framework comprising two core modules, CodeSTEP and CRAFT. The CodeSTEP module is a paradigm that generates a complete executable Python code sequence, which contains step-by-step code-based reasoning operations based on the question. The CRAFT module dynamically generates custom code functions for operations beyond the predefined function set, and seamlessly integrates with CodeSTEP to significantly enhance flexibility in handling complex reasoning. Comprehensive experiments on multiple structured datasets demonstrate that CRAFTQA achieves remarkable improvements in complex reasoning scenarios compared to existing unified methods.",
+      "authors": [
+        "Chengtao Gan",
+        "Zhiqiang Liu",
+        "Long Jin",
+        "Yushan Zhu",
+        "Lei Liang",
+        "Wen Zhang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-01T12:29:20+00:00",
+      "link": "https://arxiv.org/pdf/2606.02170v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "adaptive code-driven framework for reasoning over heterogeneous structured data including knowledge graphs",
+      "llm_evidence_cn": "自适应代码驱动框架，可用于知识图谱等异构结构化数据推理",
+      "llm_evidence": "自适应代码驱动框架，可用于知识图谱等异构结构化数据推理",
+      "canonical_evidence": "自适应代码驱动框架，可用于知识图谱等异构结构化数据推理",
+      "llm_tldr_en": "CRAFTQA is a code-driven framework for complex reasoning over tables and knowledge graphs, generating executable code to adapt to diverse structured data without predefined functions.",
+      "llm_tldr_cn": "本文提出CRAFTQA框架，采用代码驱动方式对表格、知识图谱等异构结构化数据进行复杂推理。核心模块CodeSTEP通过生成代码实现自适应操作，突破预定义函数的限制。实验表明其在多个基准上表现优异，可迁移至智慧城市中结构化数据的问答与推理任务。",
+      "llm_tldr": "本文提出CRAFTQA框架，采用代码驱动方式对表格、知识图谱等异构结构化数据进行复杂推理。核心模块CodeSTEP通过生成代码实现自适应操作，突破预定义函数的限制。实验表明其在多个基准上表现优异，可迁移至智慧城市中结构化数据的问答与推理任务。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.02956v1",
+      "source": "arxiv",
+      "title": "The Road Ahead in Autonomous Driving: The KITScenes Multimodal Dataset",
+      "abstract": "Existing autonomous driving datasets have enabled major progress, but fall short in sensor fidelity, map completeness, or geographic diversity. We present KITScenes Multimodal, a European dataset built around high-fidelity sensors and maps. Our fully synchronized sensor suite combines high-resolution global-shutter cameras, long-range lidar beyond 400m, 4D imaging radar, and redundant GNSS/INS localization. Our HD maps are, to our knowledge, the most complete of any sensor dataset, validated through autonomous driving trials on open-source software. For the first time in a public dataset, all driving-relevant traffic elements, such as traffic lights, are mapped in 3D to a reprojection-accurate level with full topological connectivity. Recorded in cities with irregular street layouts and mixed traffic modes, our dataset complements existing datasets by broadening the available geographic diversity. We also introduce four benchmarks, each advancing spatial learning for embodied AI: online HD map construction, long-range depth estimation, novel view synthesis, and end-to-end driving. Project page: https://kitscenes.com/",
+      "authors": [
+        "Richard Schwarzkopf",
+        "Fabian Immel",
+        "Alexander Blumberg",
+        "Jonas Merkert",
+        "Nils Rack",
+        "Kaiwen Wang",
+        "Fabian Konstantinidis",
+        "Julian Truetsch",
+        "Carlos Fernandez",
+        "Annika Bätz",
+        "Kevin Rösch",
+        "Marlon Steiner",
+        "Willi Poh",
+        "Yinzhe Shen",
+        "Royden Wagner",
+        "Felix Hauser",
+        "Dominik Strutz",
+        "Jaime Villa",
+        "Gleb Stepanov",
+        "Holger Caesar",
+        "Ömer Şahin Taş",
+        "Frank Bieder",
+        "Jan-Hendrik Pauls",
+        "Christoph Stiller"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG",
+        "cs.RO"
+      ],
+      "published": "2026-06-01T23:23:14+00:00",
+      "link": "https://arxiv.org/pdf/2606.02956v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multimodal driving dataset with lidar point clouds and HD maps",
+      "llm_evidence_cn": "包含激光雷达点云和高清地图的多模态驾驶数据集",
+      "llm_evidence": "包含激光雷达点云和高清地图的多模态驾驶数据集",
+      "canonical_evidence": "包含激光雷达点云和高清地图的多模态驾驶数据集",
+      "llm_tldr_en": "Presents KITScenes Multimodal dataset with high-fidelity sensors, HD maps, and 3D mapped traffic elements, enabling advanced urban perception.",
+      "llm_tldr_cn": "该论文发布KITScenes多模态数据集，配备高分辨率相机、超过400米的长距激光雷达、4D成像雷达及冗余定位系统，并首次在公开数据集中以3D精度映射所有交通元素拓扑。数据集覆盖城市环境，为点云语义分割和场景理解提供了丰富的训练资源，对智慧城市中的建筑和基础设施点云分析具有重要价值。",
+      "llm_tldr": "该论文发布KITScenes多模态数据集，配备高分辨率相机、超过400米的长距激光雷达、4D成像雷达及冗余定位系统，并首次在公开数据集中以3D精度映射所有交通元素拓扑。数据集覆盖城市环境，为点云语义分割和场景理解提供了丰富的训练资源，对智慧城市中的建筑和基础设施点云分析具有重要价值。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.03315v1",
+      "source": "arxiv",
+      "title": "A Graph Foundation Model with Spectral Parsing and Prototype-Guided Spatial Propagation",
+      "abstract": "Graph foundation models aim to learn transferable knowledge from diverse graphs for generalization to unseen graphs and tasks. Unlike text and images, graphs lack a shared vocabulary or regular spatial grid, making cross-graph transfer challenging. This challenge comes from both feature discrepancies and, more critically, diverse graph structures. Existing GFMs mainly improve transferability by unifying feature spaces or incorporating structural tokens and vocabularies. However, existing topology-aware designs still have limitations. Structural tokens are usually discrete, while structural vocabularies often rely on predefined substructures such as trees and cycles, whose limited coverage may miss richer relational patterns across graphs. Moreover, graph signals contain both high-frequency local patterns and smoother low-frequency patterns, which require different propagation behaviors. These components are often entangled in raw graph signals, while this spectral perspective is rarely explored in existing GFMs. To address these challenges, we propose SPG, a graph foundation model with spectral parsing and prototype-guided spatial propagation. SPG applies learnable Chebyshev filters to decompose node features into multiple spectral responses, reducing the mismatch between frequency-specific graph signals and propagation behaviors. It then constructs a Gromov-Wasserstein prototype geometry to distill transferable pairwise relations beyond predefined substructures into a shared structural space. The learned prototype geometry is further projected back as a prototype-guided propagation operator. Experiments demonstrate consistent improvements in cross-domain generalization.",
+      "authors": [
+        "Ankang Yang",
+        "Jitao Zhao",
+        "Dongxiao He",
+        "Liang Yang",
+        "Di Jin",
+        "Weixiong Zhang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-02T08:27:03+00:00",
+      "link": "https://arxiv.org/pdf/2606.03315v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "graph foundation model with spectral parsing for knowledge graph reasoning",
+      "llm_evidence_cn": "图基础模型结合谱解析，可用于知识图谱推理",
+      "llm_evidence": "图基础模型结合谱解析，可用于知识图谱推理",
+      "canonical_evidence": "图基础模型结合谱解析，可用于知识图谱推理",
+      "llm_tldr_en": "Proposes a graph foundation model using spectral parsing and prototype-guided spatial propagation to learn transferable graph representations, applicable to urban knowledge graph reasoning.",
+      "llm_tldr_cn": "本文提出一种图基础模型，通过谱解析和原型引导的空间传播从多种图结构中学习可迁移表示。该方法解决了图结构多样性的挑战，可泛化到未见图任务。在智慧城市知识图谱推理场景中，该模型有望提升对建筑、基础设施等异构数据的推理能力。",
+      "llm_tldr": "本文提出一种图基础模型，通过谱解析和原型引导的空间传播从多种图结构中学习可迁移表示。该方法解决了图结构多样性的挑战，可泛化到未见图任务。在智慧城市知识图谱推理场景中，该模型有望提升对建筑、基础设施等异构数据的推理能力。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
