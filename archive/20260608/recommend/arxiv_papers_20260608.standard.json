@@ -1,0 +1,303 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-08T21:07:39.504986+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2606.07280v1",
+      "source": "arxiv",
+      "title": "Geometric-Aware Hypergraph Reasoning for Novel Class Discovery in Point Cloud Segmentation",
+      "abstract": "Novel class discovery in point cloud segmentation aims to transfer knowledge from known classes to automatically identify and segment unlabeled novel classes in point clouds. Existing methods mainly rely on pairwise associations for class assignment and novel class reasoning, which limits their ability to capture complex relationships among known and novel classes and may lead to inaccurate semantic segmentation. To address this issue, we introduce a hypergraph-based framework that models high-order associations among classes and enables collaborative reasoning from known classes to novel classes beyond traditional pairwise relations. Moreover, existing methods tend to focus on semantic feature extraction while paying insufficient attention to geometric information in point clouds. To better exploit spatial structure, we propose Geometric-Aware Prototypes to enhance the representation of class-level geometric cues. By propagating geometric information through hyperedges, the proposed method improves the understanding of spatial distributions across classes and leads to more accurate segmentation. Experiments on the SemanticKITTI and SemanticPOSS datasets demonstrate the effectiveness and superiority of our method.",
+      "authors": [
+        "Zihao Zhang",
+        "Aming Wu",
+        "Yang Li",
+        "Yahong Han",
+        "Jialie Shen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-05T13:55:58+00:00",
+      "link": "https://arxiv.org/pdf/2606.07280v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "point cloud segmentation with hypergraph reasoning for novel class discovery",
+      "llm_evidence_cn": "基于超图推理的点云语义分割新类发现",
+      "llm_evidence": "基于超图推理的点云语义分割新类发现",
+      "canonical_evidence": "基于超图推理的点云语义分割新类发现",
+      "llm_tldr_en": "Proposes a hypergraph-based framework for novel class discovery in point cloud segmentation, modeling high-order associations among classes to improve semantic segmentation accuracy.",
+      "llm_tldr_cn": "现有方法通常利用成对关系进行点云语义分割中的新类发现，但难以捕捉类别间的高阶关联。本文提出一种超图推理框架，建模类别间高阶关联，从已知类协作推理未知类，提升分割精度。实验证明该方法在多个数据集上取得优异结果，为复杂场景中未知物体的自动分割提供了新范式。",
+      "llm_tldr": "现有方法通常利用成对关系进行点云语义分割中的新类发现，但难以捕捉类别间的高阶关联。本文提出一种超图推理框架，建模类别间高阶关联，从已知类协作推理未知类，提升分割精度。实验证明该方法在多个数据集上取得优异结果，为复杂场景中未知物体的自动分割提供了新范式。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.04454v1",
+      "source": "arxiv",
+      "title": "Stepwise Reasoning Enhancement for LLMs via External Subgraph Generation",
+      "abstract": "Large language models have shown strong performance in natural language generation and downstream reasoning tasks, but they still struggle with logical consistency, factual grounding, and interpretability in complex multi-step reasoning. To address these limitations, this paper proposes SGR, a stepwise reasoning enhancement framework that integrates large language models with external knowledge graphs through query-relevant subgraph generation. Given an input question, SGR first extracts key entities, relations, and constraints to construct a structured schema, then retrieves compact subgraphs from a knowledge graph using schema-guided querying. The generated subgraphs provide explicit relational evidence that guides the language model through step-by-step reasoning. In addition, SGR combines direct Cypher-based reasoning with collaborative reasoning integration, allowing candidate answers from multiple reasoning paths to be validated and aggregated according to both model confidence and graph consistency. Experiments on benchmark datasets including CWQ, WebQSP, GrailQA, and KQA Pro demonstrate that SGR improves reasoning accuracy and Hits@1 performance over standard prompting and several knowledge-enhanced baselines. Ablation studies further show that schema guidance and Neo4j-based retrieval are both crucial to the effectiveness of the framework. These results indicate that dynamically generated external subgraphs can improve the accuracy, robustness, and interpretability of LLM-based reasoning.",
+      "authors": [
+        "Xin Zhang",
+        "Yang Cao",
+        "Baoxing Wu",
+        "Kai Song",
+        "Siying Li"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-03T04:58:02+00:00",
+      "link": "https://arxiv.org/pdf/2606.04454v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "knowledge graph reasoning with LLM subgraph generation",
+      "llm_evidence_cn": "知识图谱推理与LLM子图生成",
+      "llm_evidence": "知识图谱推理与LLM子图生成",
+      "canonical_evidence": "知识图谱推理与LLM子图生成",
+      "llm_tldr_en": "Proposes SGR framework that integrates LLMs with external knowledge graphs via query-relevant subgraph generation, enhancing reasoning and interpretability.",
+      "llm_tldr_cn": "本文提出SGR框架，通过查询相关的子图生成将大型语言模型与外部知识图谱集成。方法首先从问题中提取关键实体、关系和约束，构建结构化模式，然后从知识图谱中检索紧凑子图。生成的子图提供显式关系证据引导语言模型逐步推理，增强了逻辑一致性和可解释性。实验表明该方法在多步推理任务上显著提升性能，为知识图谱驱动的LLM推理提供了新范式。",
+      "llm_tldr": "本文提出SGR框架，通过查询相关的子图生成将大型语言模型与外部知识图谱集成。方法首先从问题中提取关键实体、关系和约束，构建结构化模式，然后从知识图谱中检索紧凑子图。生成的子图提供显式关系证据引导语言模型逐步推理，增强了逻辑一致性和可解释性。实验表明该方法在多步推理任务上显著提升性能，为知识图谱驱动的LLM推理提供了新范式。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.06721v1",
+      "source": "arxiv",
+      "title": "SCOUT: Semantic scene COverage via Uncertainty-guided Traversal",
+      "abstract": "Robots that operate over extended periods should not merely visit space; they should progressively understand it. Yet most 3D scene graph pipelines treat perception as a post-processing stage over a fixed dataset, decoupling scene representation from the decisions that determine what is observed in the first place. We present SCOUT, an online semantic exploration framework that closes this loop by coupling active traversal with probabilistic scene graph construction. Given a prior 2D occupancy map and posed RGB-D observations, SCOUT incrementally builds an uncertainty-aware 3D scene graph whose nodes maintain fused geometry and posterior beliefs over open-vocabulary object labels, while edges encode structural relations such as on, inside, belong, and next to. These beliefs are fed back to an uncertainty-guided traversal planner, which selects viewpoints by balancing expected semantic certainty gain, geometric coverage gain, and travel cost. In this way, the robot revisits ambiguous objects when additional evidence matters and expands into unseen free space when the scene remains incomplete. The resulting system treats semantic scene completeness as an operational objective rather than a passive by-product of semantic mapping, moving toward autonomous agents that can patrol, update, and reason about evolving indoor environments with minimal human intervention.",
+      "authors": [
+        "Junyu Mao",
+        "Sara Ayoubi",
+        "Vishnu D. Sharma",
+        "Ilija Hadžić",
+        "Matthew Andrews"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-04T21:13:33+00:00",
+      "link": "https://arxiv.org/pdf/2606.06721v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "online semantic scene graph construction with uncertainty-aware object labels and structural relations",
+      "llm_evidence_cn": "在线语义场景图构建，包含不确定性感知物体标签和结构关系",
+      "llm_evidence": "在线语义场景图构建，包含不确定性感知物体标签和结构关系",
+      "canonical_evidence": "在线语义场景图构建，包含不确定性感知物体标签和结构关系",
+      "llm_tldr_en": "Proposes SCOUT, an online framework that couples active traversal with probabilistic 3D scene graph construction for semantic scene understanding.",
+      "llm_tldr_cn": "论文针对机器人长期操作中场景理解与探索脱节的问题，提出SCOUT框架，通过主动遍历与概率场景图构建闭环，实时生成包含几何、开放词汇物体标签及结构关系（如“在…上”、“属于”）的3D场景图。该方法无需固定数据集，可用于城市环境中建筑和基础设施的点云语义分割与结构化。",
+      "llm_tldr": "论文针对机器人长期操作中场景理解与探索脱节的问题，提出SCOUT框架，通过主动遍历与概率场景图构建闭环，实时生成包含几何、开放词汇物体标签及结构关系（如“在…上”、“属于”）的3D场景图。该方法无需固定数据集，可用于城市环境中建筑和基础设施的点云语义分割与结构化。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.02287v1",
+      "source": "arxiv",
+      "title": "CityTrajBench: A Unified Benchmark for City-Scale Vehicle Trajectory Generation",
+      "abstract": "Urban trajectory generation is a fundamental task for transportation simulation, urban planning, and mobility analytics. However, systematic comparison across trajectory generation methods remains difficult because existing studies often rely on different datasets, preprocessing pipelines, trajectory representations, and evaluation metrics. This fragmentation makes it unclear whether reported performance differences arise from the generation mechanism itself or from inconsistent experimental protocols. To address this issue, we present CityTrajBench, a unified benchmark framework and protocol for city-scale vehicle trajectory generation. CityTrajBench standardizes data ingestion, trajectory normalization, feature construction, model adaptation, map-aware post-processing, model selection, and multi-level evaluation under a common setting. It supports heterogeneous generators, including statistical baselines, VAE-based, GAN-based, diffusion-based, and flow-matching-based models, and evaluates them on three real-world urban trajectory datasets. The benchmark measures global spatial realism, trip-level distribution fidelity, trajectory-level geometric similarity, conditional mobility consistency, and efficiency. Experiments reveal clear trade-offs across model families: DiffTraj is strongest on trajectory-level geometric fidelity, DiffRNTraj is competitive on structure-sensitive global realism, and TrajFlow provides a strong balance across realism, quality, conditional consistency, and efficiency. Meanwhile, a simple Markov baseline remains competitive on coarse-grained trip and local-movement statistics. These findings show that urban trajectory generation quality is inherently multi-objective, that no single model dominates all criteria equally, and that CityTrajBench provides a reproducible benchmark protocol and testbed for future research on urban mobility generation.",
+      "authors": [
+        "Shibo Zhu",
+        "Xiaodan Shi",
+        "Dayin Chen",
+        "Yuntian Chen",
+        "Haoran Zhang",
+        "Tianhao Wu",
+        "Jinyue Yan"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-01T14:08:56+00:00",
+      "link": "https://arxiv.org/pdf/2606.02287v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "unified benchmark for city-scale vehicle trajectory generation, standardizing data ingestion and evaluation",
+      "llm_evidence_cn": "城市级车辆轨迹生成的统一基准，标准化数据输入和评估",
+      "llm_evidence": "城市级车辆轨迹生成的统一基准，标准化数据输入和评估",
+      "canonical_evidence": "城市级车辆轨迹生成的统一基准，标准化数据输入和评估",
+      "llm_tldr_en": "Presents CityTrajBench, a unified benchmark and protocol for city-scale vehicle trajectory generation, enabling fair comparison.",
+      "llm_tldr_cn": "论文针对城市轨迹生成研究中因数据、预处理、评估不一致导致无法公平比较的问题，提出统一基准CityTrajBench，标准化数据输入、轨迹归一化、特征构建和模型适配。该基准涵盖城市交通数据，为智慧城市中的多源数据集成与标准化提供了参考框架。",
+      "llm_tldr": "论文针对城市轨迹生成研究中因数据、预处理、评估不一致导致无法公平比较的问题，提出统一基准CityTrajBench，标准化数据输入、轨迹归一化、特征构建和模型适配。该基准涵盖城市交通数据，为智慧城市中的多源数据集成与标准化提供了参考框架。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.07094v1",
+      "source": "arxiv",
+      "title": "MetaConfigurator: AI-Assisted RDF Authoring from JSON Data",
+      "abstract": "Scientific workflows increasingly generate structured JSON data that is easy to exchange but difficult to interpret consistently across systems due to lacking semantic interoperability. While JSON Schema ensures structural validation, it provides no native support for Linked Data semantics.   This paper presents an RDF Authoring View extending the open-source JSON Schema editor MetaConfigurator, enabling researchers to transform existing JSON, YAML, or CSV data into RDF using AI-assisted RML mappings, refine triples, execute SPARQL queries, visualize knowledge graphs, and export RDF serializations within a single integrated web interface. This workflow is supported by ontology-aware IRI auto-completion, bidirectional synchronization between JSON-LD text views and RDF triple tables, and AI-assisted SPARQL query generation from natural language hints.   We demonstrate the workflow using laboratory data from metal-organic framework (MOF) synthesis experiments. Protocol data describing reagents, procedure steps, and quantities is converted from JSON to ontology-based JSON-LD via RML mappings. We then refine the semantic representation, query relationships between experimental conditions and outcomes, and explore the resulting knowledge graph interactively. This integrated environment bridges conventional structured data management with Semantic Web technologies while preserving experimental context and lowering technical barriers through AI assistance.",
+      "authors": [
+        "Felix Neubauer",
+        "Mahdi Jafarkhani",
+        "Kenichi Endo",
+        "Jürgen Pleiss",
+        "Benjamin Uekermann"
+      ],
+      "primary_category": "cs.SE",
+      "categories": [
+        "cs.SE",
+        "cs.AI"
+      ],
+      "published": "2026-06-05T09:42:01+00:00",
+      "link": "https://arxiv.org/pdf/2606.07094v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "AI-assisted RDF authoring from JSON data for knowledge graph construction",
+      "llm_evidence_cn": "AI辅助从JSON数据生成RDF以构建知识图谱",
+      "llm_evidence": "AI辅助从JSON数据生成RDF以构建知识图谱",
+      "canonical_evidence": "AI辅助从JSON数据生成RDF以构建知识图谱",
+      "llm_tldr_en": "Presents MetaConfigurator, an AI-assisted tool for converting JSON/CSV to RDF using RML mappings and ontology-aware completion.",
+      "llm_tldr_cn": "针对结构化数据缺乏语义互操作性问题，提出MetaConfigurator的RDF编辑视图，利用AI辅助RML映射将JSON/YAML/CSV数据转换为RDF，支持SPARQL查询和知识图谱可视化。该系统通过本体感知的IRI自动完成和双向同步，降低了语义数据构建门槛，可应用于智能城市知识图谱创建。",
+      "llm_tldr": "针对结构化数据缺乏语义互操作性问题，提出MetaConfigurator的RDF编辑视图，利用AI辅助RML映射将JSON/YAML/CSV数据转换为RDF，支持SPARQL查询和知识图谱可视化。该系统通过本体感知的IRI自动完成和双向同步，降低了语义数据构建门槛，可应用于智能城市知识图谱创建。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.03307v2",
+      "source": "arxiv",
+      "title": "Generalizing Graph Foundation Models via Hyperbolic Retrieval-Augmented Generation",
+      "abstract": "Graph foundation models (GFMs) emerged as a dominant paradigm in graph representation learning by leveraging large-scale pre-training for cross-domain inference. However, the parameterized knowledge encoded within these models is insufficient to cope with distribution shifts, limiting their generalization ability. To mitigate this issue, retrieval-augmented generation (RAG) has been introduced to incorporate external knowledge at inference time. Nevertheless, existing RAG frameworks operating in Euclidean space suffer from a fundamental geometric limitation: the polynomial volume growth of Euclidean space is inherently mismatched with the tree-structured external knowledge bases. This mismatch leads to the loss of semantic granularity in retrieval and gives rise to the hubness phenomenon.To address this limitation, we propose a Hyperbolic Retrieval-Augmented Generation (HyRAG) framework designed to enhance the generalization capabilities of GFMs. Specifically, the introduced Hyperbolic Knowledge Indexing module retains the tree-like hierarchies of the external knowledge base by modeling them within hyperbolic space. The Multi-granularity Retrieval module then provides GFMs with the global semantic anchors and local semantic nuances through coarse-grained and fine-grained knowledge retrieval, respectively. Finally, the Dual-path Fusion module achieves effective knowledge integration for graph tasks at both the feature and structural levels. Experiments on multiple graph benchmarks demonstrate significant improvements in the zero-shot setting, highlighting the generalization of our method for robust GFMs inference.",
+      "authors": [
+        "Yifan Jin",
+        "Qirui Ji",
+        "Bin Qin",
+        "Jiangmeng Li",
+        "Lixiang Liu",
+        "Fuchun Sun",
+        "Changwen Zheng"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR",
+        "cs.AI"
+      ],
+      "published": "2026-06-02T08:21:57+00:00",
+      "link": "https://arxiv.org/pdf/2606.03307v2",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "graph foundation model generalization with hyperbolic RAG",
+      "llm_evidence_cn": "基于双曲检索增强生成的图基础模型泛化",
+      "llm_evidence": "基于双曲检索增强生成的图基础模型泛化",
+      "canonical_evidence": "基于双曲检索增强生成的图基础模型泛化",
+      "llm_tldr_en": "Proposes hyperbolic RAG for graph foundation models to address distribution shift, improving generalization with tree-structured external knowledge.",
+      "llm_tldr_cn": "本文提出双曲检索增强生成（RAG）框架，解决图基础模型在分布偏移下的泛化问题。现有欧氏RAG无法匹配树结构外部知识的体积增长，导致语义粒度损失。方法利用双曲空间指数级容量优势，更自然地嵌入层次化知识。实验表明该框架显著提升了跨领域推理的泛化能力，为知识图谱和城市数据平台提供了新工具。",
+      "llm_tldr": "本文提出双曲检索增强生成（RAG）框架，解决图基础模型在分布偏移下的泛化问题。现有欧氏RAG无法匹配树结构外部知识的体积增长，导致语义粒度损失。方法利用双曲空间指数级容量优势，更自然地嵌入层次化知识。实验表明该框架显著提升了跨领域推理的泛化能力，为知识图谱和城市数据平台提供了新工具。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.07172v1",
+      "source": "arxiv",
+      "title": "Textual Supervision Enhances Geospatial Representations in Vision-Language Models",
+      "abstract": "Geospatial understanding is a critical yet underexplored dimension in the development of machine learning systems for tasks such as image geolocation and spatial reasoning. In this work, we analyze the geospatial representations acquired by three model families: vision-only architectures (e.g., ViT), vision-language models (e.g., CLIP), and large-scale multimodal foundation models (e.g., LLaVA, Qwen, and Gemma). By evaluating across image clusters, including people, landmarks, and everyday objects, grouped based on the degree of localizability, we reveal systematic gaps in spatial accuracy and show that textual supervision enhances the learning of geospatial representations. Our findings suggest the role of language as an effective complementary modality for encoding spatial context and multimodal learning as a key direction for advancing geospatial AI.",
+      "authors": [
+        "Marcelo Sartori Locatelli",
+        "Fernando Tonucci",
+        "Jea Kwon",
+        "Luiz Felipe Vecchietti",
+        "Bryan Nathanael Wijaya",
+        "Cheng Yaw Low",
+        "Virgilio Almeida",
+        "Meeyoung Cha"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.CL",
+        "cs.LG"
+      ],
+      "published": "2026-06-05T11:40:13+00:00",
+      "link": "https://arxiv.org/pdf/2606.07172v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "enhances geospatial representations useful for urban data representation learning",
+      "llm_evidence_cn": "增强地理空间表示，可用于智慧城市数据表示学习",
+      "llm_evidence": "增强地理空间表示，可用于智慧城市数据表示学习",
+      "canonical_evidence": "增强地理空间表示，可用于智慧城市数据表示学习",
+      "llm_tldr_en": "Shows textual supervision improves geospatial representations in VLMs, enabling better urban data downstream tasks.",
+      "llm_tldr_cn": "本文分析了视觉、视觉语言和大规模多模态基础模型的地理空间表示能力，发现文本监督能显著提升空间表示质量。该方法可用于智慧城市中多模态数据（如卫星图像、文本描述）的表示学习，为构建标准化的城市数据表示提供了有效途径，有助于数字孪生和AI分析。",
+      "llm_tldr": "本文分析了视觉、视觉语言和大规模多模态基础模型的地理空间表示能力，发现文本监督能显著提升空间表示质量。该方法可用于智慧城市中多模态数据（如卫星图像、文本描述）的表示学习，为构建标准化的城市数据表示提供了有效途径，有助于数字孪生和AI分析。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

@@ -1,0 +1,659 @@
+Title: CityTrajBench: A Unified Benchmark for City-Scale Vehicle Trajectory Generation
+
+URL Source: https://arxiv.org/pdf/2606.02287v1
+
+Published Time: Tue, 02 Jun 2026 02:59:14 GMT
+
+Number of Pages: 19
+
+Markdown Content:
+> 1
+
+# CityTrajBench: A Unified Benchmark for City-Scale Vehicle Trajectory Generation 
+
+Shibo Zhu, Xiaodan Shi ∗, Dayin Chen, Yuntian Chen, Member, IEEE, Haoran Zhang, Senior Member, IEEE, 
+
+Tianhao Wu ∗, and Jinyue Yan ∗
+
+Abstract —Urban trajectory generation is a fundamental task for transportation simulation, urban planning, and mobility analytics. However, systematic comparison across trajectory gen-eration methods remains difficult because existing studies often rely on different datasets, preprocessing pipelines, trajectory rep-resentations, and evaluation metrics. This fragmentation makes it unclear whether reported performance differences arise from the generation mechanism itself or from inconsistent experimental protocols. To address this issue, we present CityTrajBench , a unified benchmark framework and protocol for city-scale vehicle trajectory generation. CityTrajBench standardizes data ingestion, trajectory normalization, feature construction, model adapta-tion, map-aware post-processing, model selection, and multi-level evaluation under a common setting. It supports heterogeneous generators, including statistical baselines, VAE-based, GAN-based, diffusion-based, and flow-matching-based models, and evaluates them on three real-world urban trajectory datasets. The benchmark measures global spatial realism, trip-level distribution fidelity, trajectory-level geometric similarity, conditional mobil-ity consistency, and efficiency. Experiments reveal clear trade-offs across model families: DiffTraj is strongest on trajectory-level geometric fidelity, DiffRNTraj is competitive on structure-sensitive global realism, and TrajFlow provides a strong balance across realism, quality, conditional consistency, and efficiency. Meanwhile, a simple Markov baseline remains competitive on coarse-grained trip and local-movement statistics. These findings show that urban trajectory generation quality is inherently multi-objective, that no single model dominates all criteria equally, and that CityTrajBench provides a reproducible benchmark protocol and testbed for future research on urban mobility generation. 
+
+Index Terms —Trajectory generation, urban mobility modeling, vehicle trajectories, benchmark, deep generative models, perfor-mance evaluation 
+
+* Xiaodan Shi, Tianhao Wu and Jinyue Yan are the corresponding authors. Shibo Zhu and Dayin Chen are with Department of Building Environment and Energy Engineering, The Hong Kong Polytechnic University, Hong Kong SAR, China; Eastern Institute for Advanced Study, Eastern Institute of Technology, Ningbo, China; International Centre of Urban Energy Nexus, The Hong Kong Polytechnic University, Hong Kong SAR, China; E-mail: shibo.zhu@connect.polyu.hk, 23038748r@connect.polyu.hk Xiaodan Shi is with Department of Computer and Systems Sciences, Stockholm University, Sweden. E-mail: xiaodan.shi@dsv.su.se Yuntian Chen is with Zhejiang Key Laboratory of Industrial Intelligence and Digital Twin, Eastern Institute of Technology, Ningbo, China; Ningbo Institute of Digital Twin, Eastern Institute of Technology, Ningbo, China. E-mail: ychen@eitech.edu.cn Tianhao Wu is with Eastern Institute for Advanced Study, Eastern Institute of Technology, Ningbo, Zhejiang, China; Zhejiang Key Laboratory of Indus-trial Intelligence and Digital Twin, Eastern Institute of Technology, Ningbo, China; Ningbo Key Laboratory of Advanced Manufacturing Simulation, Eastern Institute of Technology, Ningbo, China. E-mail: twu@eitech.edu.cn Haoran Zhang is with LocationMind Inc., Tokyo 101-0042, Japan. E-mail: zhang_ronan@locationmind.com Jinyue Yan is with Department of Building Environment and Energy En-gineering, The Hong Kong Polytechnic University, Hong Kong SAR, China; International Centre of Urban Energy Nexus, The Hong Kong Polytechnic University, Hong Kong SAR, China. E-mail: j-jerry.yan@polyu.edu.hk 
+
+I. I NTRODUCTION 
+
+Urban trajectory generation aims to synthesize realistic movement sequences that reflect how vehicles or individuals travel in a city. It is an important capability for a wide range of applications, including transportation simulation, urban planning, mobility-demand analysis, digital twins, and privacy-preserving data sharing [1]–[3]. Compared with conventional prediction tasks, trajectory generation is more challenging because a useful generator must capture not only local move-ment dynamics, but also city-scale spatial coverage, trip-level statistics, and plausible route geometry. In practice, high-quality generation requires simultaneously preserving realism, diversity, contextual consistency, and structural validity [4]– [6]. Driven by these demands, trajectory generation methods have evolved rapidly from classical probabilistic approaches to deep generative models. Early studies mainly relied on transition-based or statistical formulations, which are compu-tationally lightweight and interpretable but limited in mod-eling complex long-range dependencies. More recent work has introduced variational autoencoders (VAEs), generative adversarial networks (GANs), diffusion models, and more recently flow-matching-style models to learn richer trajectory distributions directly from data [5], [7]–[9]. In particular, diffusion-based methods have shown strong promise in mod-eling high-dimensional mobility patterns and incorporating controllability or road-network structure [4], [6]. Despite this progress, a basic question remains insufficiently answered: 
+
+which trajectory generation methods perform best, under what data conditions, and according to which notion of quality? 
+
+A major obstacle is the lack of a unified benchmark for city-scale vehicle trajectory generation. In contrast to trajectory prediction, where benchmark datasets and evaluation practices are relatively mature [10], [11], generation studies are still commonly evaluated under incompatible settings. Existing work often differs in datasets, cleaning rules, temporal sam-pling, train–test splits, feature availability, trajectory represen-tations, and metric choices. Some studies focus mainly on distributional similarity or visual inspection, whereas others emphasize trajectory-level distances or road-network validity [5]–[7]. As a result, published results are difficult to compare directly, and conclusions about which model is “better” may depend as much on the evaluation protocol as on the generation method itself. Fig. 1 summarizes the central motivation of this work: prior trajectory-generation studies are often conducted under incompatible experimental settings, whereas CityTra-
+
+> arXiv:2606.02287v1 [cs.LG] 1 Jun 2026 2
+
+Fig. 1: Motivation of CityTrajBench. Existing trajectory-generation studies often differ in datasets, preprocessing pipelines, trajectory representations, and evaluation metrics, making direct comparison difficult. CityTrajBench unifies benchmark-side normalization, representation alignment, model adaptation, map-aware post-processing, and multi-level evaluation to enable reproducible cross-model comparison. jBench unifies benchmark-side preprocessing, representation alignment, model adaptation, and evaluation to enable fairer and more interpretable comparison. This benchmarking problem is especially challenging in urban settings for three reasons. First, dataset heterogeneity 
+
+is substantial: different cities exhibit different road topologies, sampling frequencies, trip lengths, and mobility regimes, all of which can strongly affect model behavior. Second, repre-sentation heterogeneity is unavoidable: some models generate directly in GPS space, while others operate in road-network, grid, or other constrained representations [5], [6]. Without a unified preprocessing and post-processing protocol, these heterogeneous models cannot be compared fairly. Third, eval-uation heterogeneity remains unresolved: a model that matches city-wide density well may still generate unrealistic individual trajectories, while a model with low trajectory-level distance may fail to recover realistic origin–destination structure or hotspot coverage. A meaningful benchmark must therefore assess multiple aspects of generation quality simultaneously rather than relying on a single metric. To address these challenges, we propose CityTrajBench , a unified benchmark protocol for city-scale vehicle trajectory generation, implemented as a modular benchmark frame-work. CityTrajBench standardizes data ingestion, normaliza-tion, feature construction, model adaptation, map-aware post-processing, checkpoint selection, and evaluation under a com-mon protocol. The framework is designed to support het-erogeneous model families, including statistical, VAE-based, GAN-based, diffusion-based, and flow-matching-based gener-ators, while reducing implementation-induced variability in cross-model comparison. Beyond protocol unification, City-TrajBench also provides a multi-perspective evaluation suite that jointly measures global spatial realism, trip-level distribu-tion fidelity, trajectory-level geometric similarity, conditional mobility consistency, and computational efficiency. Using CityTrajBench, we conduct a systematic empirical study on seven representative generators across three real-world urban trajectory datasets. The benchmark reveals sev-eral stable findings. DiffTraj consistently achieves the best trajectory-level geometric fidelity, DiffRNTraj is particularly strong on structure-sensitive global metrics such as density realism and hotspot recovery, and TrajFlow offers a strong balance between global realism, trajectory-level quality, and computational efficiency. At the same time, even a sim-ple Markov baseline remains competitive on coarse-grained endpoint-related statistics, indicating that low-order transition structure still explains part of urban mobility regularity. These results show that trajectory generation quality is inherently multi-dimensional, and that no single model dominates all evaluation criteria equally. The main contributions of this paper are summarized as follows:  
+
+> •
+
+We propose CityTrajBench , a unified benchmark pro-tocol and framework for city-scale vehicle trajectory generation, with standardized data preprocessing, model interfacing, map-aware post-processing, model selection, and reproducible evaluation.  
+
+> •
+
+We establish a multi-level evaluation protocol that jointly assesses global spatial realism, trip-level statistical fi-delity, trajectory-level geometric similarity, conditional origin–destination consistency, and computational effi-ciency.  
+
+> •
+
+We provide a systematic benchmark study across multiple real-world datasets and heterogeneous model families, revealing stable trade-offs between macro-level realism, micro-level fidelity, structure-aware generation quality, and deployment cost. The remainder of this paper is organized as follows. Section II reviews related work. Section III formulates the problem. Section IV presents the CityTrajBench framework. 3
+
+Section V describes the datasets, baselines, and experimental protocol. Section VI reports the benchmark results and analy-ses. Section VII concludes the paper. II. R ELATED WORK 
+
+Research on trajectory generation has developed rapidly in recent years, spanning classical stochastic models, deep generative architectures, and road-network-aware generation methods. In parallel, the increasing complexity of trajectory data has also highlighted the need for principled evaluation and reproducible benchmarking. In this section, we review the literature from three perspectives: trajectory generation paradigms, road-network- and context-aware generation, and benchmarking and evaluation. 
+
+A. Trajectory Generation Paradigms 
+
+Early studies on mobility synthesis mainly relied on proba-bilistic and statistical formulations, such as Markov chains and related transition-based approaches [12], [13]. These meth-ods are computationally lightweight and interpretable, and they can reproduce coarse-grained mobility regularities such as frequently visited regions or common origin–destination transitions. However, their expressive power is limited when modeling long-range spatial dependencies, complex route structures, and high-dimensional spatiotemporal variability in urban-scale trajectory data [5], [14]. With the development of deep generative modeling, learning-based approaches have become increasingly promi-nent. Variational autoencoder (VAE) frameworks provide a probabilistic latent-variable formulation for modeling trajec-tory distributions, enabling efficient sampling and smooth latent interpolation. They often produce stable training be-havior and can preserve trajectory-level geometric similarity reasonably well [7]. However, they may over-smooth tra-jectories or under-represent rare mobility modes. Generative adversarial networks (GANs) have also been adopted for trajectory synthesis in both urban mobility generation and privacy-preserving synthetic trajectory publishing [8], [14], [15]. Nevertheless, GAN-based models are often sensitive to training instability and mode collapse, which can affect both diversity and reproducibility. More recently, diffusion models have emerged as a powerful alternative for trajectory generation. DiffTraj demonstrates that denoising diffusion probabilistic models can effectively syn-thesize realistic GPS trajectories [5], while subsequent studies such as ControlTraj [4] and DiffRNTraj [6] incorporate con-trollability and road-network structure into the diffusion pro-cess. Flow-matching-based models have also recently shown promise in large-scale trajectory synthesis [9]. Compared with adversarial methods, diffusion- and flow-based approaches typically offer stronger optimization stability and richer con-tinuous trajectory modeling, but may still face challenges in efficiency, controllability, and protocol-sensitive evaluation. 
+
+B. Road-Network- and Context-Aware Trajectory Generation 
+
+A key challenge in urban trajectory generation is that mobility is strongly constrained by external factors, including road topology, departure time, trip distance, and destination semantics. To improve realism, a number of studies have incorporated contextual information or structural priors into generation models. Grid-based approaches discretize space into cells and model transitions or occupancy patterns over grids [16], [17]. These methods are convenient for large-scale learning, but they introduce a granularity–fidelity trade-off: coarse grids lose spatial precision, while fine grids increase sparsity and computational burden. Other methods convert trajectories into image-like represen-tations and then apply image-generation techniques [18], [19]. Although such representations can leverage mature computer vision architectures, they may distort geometric continuity and complicate precise spatial evaluation. In contrast, road-network-aware models explicitly align generation with the graph structure of urban roads [4]. DiffRNTraj [6], for ex-ample, directly generates road-network-constrained trajecto-ries through structure-aware diffusion, improving topological validity and corridor realism. Despite these advances, existing models still differ sub-stantially in their assumptions, input features, and output spaces. Some models generate in raw GPS space, whereas others operate on road edges or grid cells. Some support trip-level conditioning, while others are purely unconditional. This representation mismatch makes fair empirical comparison difficult and motivates a benchmark framework with unified preprocessing, post-processing, and evaluation interfaces [10], [11]. 
+
+C. Benchmarking and Evaluation of Trajectory Models 
+
+Although benchmarking has become standard in many machine learning domains, unified evaluation for trajectory generation remains limited. Existing benchmarks are more common in trajectory prediction than in trajectory generation [10], [11]. For example, prior benchmark efforts often focus on forecasting short-term future motion, pedestrian trajectory prediction, or downstream tasks such as traffic prediction and anomaly detection. These settings are informative, but they do not fully address the challenges of unconditional or conditional generation of complete urban trajectories. Current evaluation practice in trajectory generation is highly fragmented. Different studies use different datasets, prepro-cessing rules, coordinate systems, temporal resolutions, and train/test splits. In addition, evaluation metrics are often inconsistent across papers [7], [10], [11]. Some focus on distributional similarity, such as density matching or origin– destination statistics [5]; others report trajectory-level dis-tances such as Dynamic Time Warping (DTW) or Fréchet distance [9]; still others rely heavily on qualitative visual-ization. As a result, the literature lacks a common basis for answering whether one generation method is broadly better than another, or whether different methods are simply optimized for different notions of quality. This issue is especially pronounced for city-scale vehicle trajectory generation. A model may achieve good trajectory-level similarity yet fail to reproduce global urban coverage. Conversely, a model may match city-wide density well but pro-duce implausible individual paths. Moreover, GPS-based and 4
+
+road-network-based models are often evaluated under different assumptions, which further weakens comparability. A useful benchmark should therefore satisfy at least four requirements: (1) support multiple datasets with standardized preprocessing; (2) compare heterogeneous model families under a common protocol; (3) evaluate both macro-level and micro-level gen-eration quality; and (4) provide reproducible implementations and evaluation scripts. CityTrajBench is designed to meet these requirements for city-scale vehicle trajectory generation. III. P ROBLEM FORMULATION 
+
+In this section, we formalize the city-scale vehicle tra-jectory generation problem considered in this benchmark. Unlike trajectory prediction, which estimates future motion conditioned on observed historical trajectories [10], [11], tra-jectory generation aims to synthesize complete trajectories that are statistically and geometrically consistent with real urban mobility data. In the context of CityTrajBench, the goal is not only to generate plausible individual trajectories, but also to evaluate whether different generative models can faithfully reproduce mobility patterns under a unified protocol across datasets, representations, and metrics. 
+
+A. Trajectory Representation 
+
+Let a trajectory be denoted by 
+
+T = {pt}nt=1 , pt = ( ϕt, λ t), (1) where pt is the spatial position of a vehicle at step t, ϕt
+
+denotes latitude, λt denotes longitude, and n is the trajectory length (i.e., the number of sampled points before fixed-length normalization). Accordingly, a trajectory is an ordered polyline in geographic space that describes the movement of one trip from its origin to its destination. Depending on the model family, a trajectory may also admit an alternative road-network-aligned representation. Let the road network be modeled as a graph 
+
+G = ( V, E), (2) where V and E denote the node and edge sets, respectively. After map matching, a trajectory can be represented as 
+
+T (rn) = {(et, ρ t)}nt=1 , (3) where et ∈ E is the matched road segment and ρt ∈ [0 , 1] 
+
+denotes the relative progress along that segment. This dual representation allows CityTrajBench to compare GPS-based and road-network-based generators within a common bench-marking framework. 
+
+B. Contextual Features 
+
+In addition to the trajectory itself, a generator may condition on auxiliary trip descriptors or structural information. For a trip Ti, we denote its optional conditioning features by Fi. In CityTrajBench, these features can include:  
+
+> •
+
+Trip-level descriptors , such as departure-time slot, travel distance, travel duration, trajectory length, average step distance, average speed, and discretized start/end region identifiers.  
+
+> •
+
+Road-network features , such as road embeddings and connectivity constraints. These contextual signals can be used to support either unconditional generation, where trajectories are sampled only from the learned mobility distribution, or conditional genera-tion, where the generated trajectory is guided by trip-level or network-level descriptors. 
+
+C. Generation Task Formulation 
+
+Let 
+
+D = {(Ti, F i)}Ni=1 (4) denote a dataset of N real trajectories and their associated optional features. The objective of trajectory generation is to learn a generative model Gθ , parameterized by θ, that approximates the data distribution over trajectories. For the unconditional setting, the model aims to learn 
+
+pθ (T ) ≈ pdata (T ), (5) and generates a synthetic trajectory 
+
+bT ∼ pθ (T ). (6) For the conditional setting, the model aims to learn 
+
+pθ (T | F ) ≈ pdata (T | F ), (7) so that, given a feature vector F and possibly a latent noise variable z, it produces 
+
+bT = Gθ (z, F ). (8) The output bT should preserve the essential characteristics of real urban mobility data, including spatial realism, trip-level statistical consistency, and plausible trajectory geometry. For road-network-aware methods, the generated trajectory should additionally satisfy topological consistency with the underlying road graph. 
+
+D. Benchmark Objective 
+
+From a benchmarking perspective, the problem is not lim-ited to learning a single high-performing generator. Instead, the central objective is to evaluate heterogeneous trajectory generation methods under a common and reproducible proto-col. Let 
+
+M = {M1, M 2, . . . , M K } (9) be a set of trajectory generators with different modeling assumptions and output spaces. For each model Mk, CityTra-jBench trains the model on the same training split, generates a set of synthetic trajectories bDk, and evaluates it against the real test distribution Dtest using a unified metric suite: 
+
+mk = Eval 
+
+ bDk, Dtest 
+
+∈ Rd. (10) Here, mk is a d-dimensional metric vector that jointly characterizes generation quality from multiple perspectives, in-cluding global spatial fidelity, trip-level distribution matching, trajectory-level geometric similarity, conditional consistency, 5
+
+and efficiency. The benchmark is therefore designed to com-pare models fairly across heterogeneous representations while exposing trade-offs that would be obscured by single-metric evaluation. 
+
+E. Evaluation Criteria and Challenges 
+
+A practically useful urban trajectory generator should satisfy several requirements simultaneously:  
+
+> •
+
+Global realism : the generated trajectory set should re-produce city-scale spatial density and major mobility corridors.  
+
+> •
+
+Trip-level fidelity : the generated trips should match the distributions of endpoints, travel lengths, and local movement increments.  
+
+> •
+
+Trajectory-level plausibility : individual generated tra-jectories should exhibit realistic geometric shapes and route structures.  
+
+> •
+
+Conditional consistency : when origin, destination, de-parture time, or other descriptors are provided, the gen-erated trajectories should remain coherent with these conditions. These requirements are often competing in practice. A model may match global density distributions well while pro-ducing unrealistic individual paths, or achieve low trajectory-level distance while failing to recover realistic city-wide cover-age. This multi-objective nature of the problem motivates the design of CityTrajBench: a unified benchmark that evaluates trajectory generation comprehensively rather than through a single notion of quality. IV. C ITY TRAJ BENCH 
+
+The goal of this section is not to introduce a new trajectory generator, but to define the benchmark-side protocol that enables fair comparison across heterogeneous generators. We present CityTrajBench , a unified benchmark framework and protocol for city-scale vehicle trajectory generation. City-TrajBench organizes benchmarking into six benchmark-side stages: (i) data ingestion and normalization, (ii) representation alignment and feature construction, (iii) model-specific adap-tation and training, (iv) trajectory generation, (v) map-aware post-processing, and (vi) unified evaluation and visualization. Fig. 2 presents an overview of these modules and their interactions. CityTrajBench is designed around three benchmark prin-ciples. Fidelity requires that preprocessing and evaluation preserve the geographic and structural characteristics of real urban mobility data. Comparability requires that dataset splits, representation conversion, model selection rules, and metric implementations be standardized at the benchmark level. Ex-tensibility requires that the framework support heterogeneous model families, including statistical, VAE-based, GAN-based, diffusion-based, and flow-matching-based generators, without forcing them into an artificial one-size-fits-all interface. To-gether, these principles define the methodological basis of CityTrajBench. 
+
+A. System Overview 
+
+Let D = {(Ti, F i)}Ni=1 denote a dataset of trips, where 
+
+Ti = {(ϕt, λ t)}ni 
+
+> t=1
+
+is a GPS trajectory and Fi is an op-tional descriptor vector. CityTrajBench exposes the following benchmark-level interfaces: 
+
+Reader: S → D , (11) 
+
+Preprocess: D → eD, (12) 
+
+Adapter: ( eD, Π) → X , (13) 
+
+Trainer: X → Θ, (14) 
+
+Generator: (Θ , F ) 7 → bD, (15) 
+
+Evaluator: ( bD, Dtest ) 7 → RK , (16) where S is a storage descriptor, eD is the normalized dataset, 
+
+Π denotes model-specific input contracts, X denotes model-ready tensors, Θ learned parameters, and RK the benchmark metric vector. These abstractions separate benchmark-side protocol design from model-side implementation. In particular, CityTrajBench standardizes preprocessing, representation conversion, evalu-ation, and reporting, while allowing different generators to retain their original modeling assumptions and input/output spaces as much as possible. 
+
+B. Data Ingestion and Normalization 
+
+To support fair comparison across heterogeneous datasets and model families, all data are processed under the same CityTrajBench pipeline. Trajectories are split at the trajectory level by moveid , so that all points from the same trip remain in the same subset. Unique moveid s are randomly shuffled and partitioned into training, validation, and test subsets with a ratio of 70%/15%/15%. After cleaning and dataset-specific normalization, each tra-jectory is further converted to a benchmark-standard sequence representation with a fixed length of L = 200 . Trajectories shorter than L points are linearly interpolated to length L,while longer trajectories are truncated to their first L points. The temporal order of points within each trajectory is pre-served throughout preprocessing. This fixed-length normal-ization reduces variability caused by heterogeneous sampling density and sequence duration, and helps ensure compara-ble model inputs across datasets and baseline families. At the same time, it should be noted that this benchmark-side standardization also changes the raw sequence representation: interpolation may smooth short trajectories, while prefix trun-cation may discard part of long-trip geometry. Accordingly, the reported benchmark results should be interpreted as generation quality under a controlled fixed-horizon representation rather than as a direct evaluation of the original raw variable-length trajectories. Latitude and longitude are then linearly normalized to [−1, 1] using the dataset-specific geographic bounding box. Trip-level descriptors are constructed from the normalized preprocessing pipeline, including departure-time slot, trip dis-tance, trip duration, trajectory length, average step distance, average speed, and discretized start/end region identifiers. 6
+
+Fig. 2: Overview of the CityTrajBench framework. CityTrajBench standardizes benchmark-side data ingestion and normal-ization, representation alignment, feature construction, model adaptation and training, trajectory generation, map-aware post-processing, and unified evaluation and visualization across heterogeneous trajectory generators. In CityTrajBench, trajectories are represented under a uni-fied 30-second sampling setting. Accordingly, duration- and speed-related descriptors are computed consistently from the benchmark-standardized trajectory representation. Absolute departure-time annotation, however, is not uniformly available across datasets: for datasets with valid timestamp information such as Shanghai, departure-time is encoded as one of 288 five-minute slots within a day, whereas for datasets such as Porto and Chengdu, where the processed data do not retain real departure timestamps, the departure-time feature is set to zero as a placeholder. For road-network-aware methods, trajectories are further aligned with the road graph and converted into network-constrained representations. Unless otherwise stated, dataset-level spatial partitions, histogram-construction rules, and trajectory-matching settings are fixed per dataset and shared across all compared methods. The exact benchmark configuration used in this study, including split rules, spatial bounds, sequence horizon, and evaluation grids, is summarized in Appendix B. 
+
+C. Road-Network Representation Alignment and Map Match-ing 
+
+A central difficulty in benchmarking urban trajectory gen-erators is representation heterogeneity: some models oper-ate directly in GPS space, whereas others require road-network-aligned inputs or produce road-constrained outputs. CityTrajBench addresses this issue through a reproducible representation-alignment module based on deterministic ge-ometric projection. The purpose of this module is benchmark-side conversion and evaluation consistency rather than state-of-the-art map matching. Let the road network be represented by G = ( V, E). For a candidate road polyline segment seg = {(ϕk, λ k)}mk=1 , we consider a curve parameterization γ : [0 , 1] → R2 and project a GPS point p = ( ϕ, λ ) onto its closest point on the segment: 
+
+s⋆ ∈ arg min  
+
+> s∈[0 ,1]
+
+dgeo 
+
+ p, γ (s), (17) where dgeo (·, ·) denotes geodesic distance. We then compute the along-segment arclength up to the projected point, 
+
+ℓ⋆ =
+
+Z s⋆
+
+> 0
+
+∥γ′(u)∥ du, (18) and normalize it by the segment length L(seg ) to obtain a relative progress variable 
+
+ρ = ℓ⋆/L (seg ) ∈ [0 , 1] . (19) The matched segment identifier is denoted by e⋆ ∈ E .In practice, CityTrajBench constructs an STRtree over road polylines for candidate retrieval, queries a small set of nearby candidate segments for each GPS point, and assigns the point to the nearest segment by geometric projection. Repeating this process for all points in a trajectory yields an edge-aligned sequence {(e⋆t , ρ t)}nt=1 that preserves the original point order and benchmark sampling alignment. We emphasize that this module is used primarily as a deterministic representation-conversion layer. It provides a common edge-aligned surrogate representation for prepro-cessing and post-generation conversion, and is supplemented by lightweight validity checks described in Sec. IV-F. It should therefore be interpreted as a benchmark-consistency mechanism rather than as a claim of optimal map-matching accuracy. 
+
+Complexity Candidate retrieval through the spatial index is 
+
+O(log |E| ) per point on average, while local interpolation is linear in the number of vertices of the retrieved segment. The overall complexity is therefore near-linear in the number of GPS samples. 
+
+D. Feature Construction 
+
+CityTrajBench supports multi-granular feature extraction at the benchmark level. These features are intended to stan-dardize feature availability and documentation, not to force identical feature usage across all baselines. 7
+
+The benchmark can expose two broad classes of descriptors:  
+
+> •
+
+Trip-level descriptors F (trip) , including departure-time slot, trip distance, trip duration, trajectory length, average step distance, average speed, and discretized start/end region identifiers.  
+
+> •
+
+Road-network descriptors F (rn) , including road embed-dings and connectivity constraints Depending on the baseline architecture, these descriptors may be concatenated with trajectory inputs, routed through model-specific conditioning branches, or not used at all. To avoid structural unfairness, CityTrajBench explicitly distin-guishes between feature availability at the benchmark level and feature usage at the model level. The latter is documented separately for each baseline in the experimental section. This design improves transparency in cross-model comparison while avoiding an artificial one-size-fits-all input interface across fundamentally different model families. 
+
+E. Model-Agnostic Adapters and Training 
+
+To support heterogeneous generators under a common pro-tocol, CityTrajBench uses model-specific adapters to con-vert benchmark-standardized trajectories and descriptors into model-ready tensors: 
+
+Adapt( eD, F ) → X ∈ RN ×L×D , (20) where N is the number of samples, L is the sequence horizon used by the target model interface, and D is the per-step feature dimension. Depending on the baseline, X may contain GPS coordinates, road-network embeddings, temporal encodings, or other supported inputs. This adapter layer is intentionally thin: it preserves the origi-nal input assumptions of each model as much as possible while ensuring benchmark-level consistency in data preparation and reporting. All models are trained on the same train/validation split of a given dataset. Where original implementations ex-pose compatible training settings, they are retained; otherwise, benchmark-default settings are used to reduce undocumented reproduction variance. For reproducibility, each model is evaluated under three random seeds (42, 52, and 62), and benchmark tables report mean ±std over these repeated runs. This practice reduces protocol variance and makes observed differences more at-tributable to the generation mechanism rather than accidental training randomness. 
+
+F. Map-aware Post-processing 
+
+Because different generators produce outputs in different spaces, CityTrajBench converts all generated samples into a common evaluation representation before metric computation. For GPS-space generators, normalized outputs are first mapped back to dataset-specific geographic coordinates. For road-network-aware generators such as DiffRNTraj, outputs are treated as already represented in GPS/road-network space. Generated trajectories are then post-processed by point-wise road-network map matching: each generated point is projected onto its nearest road polyline using the same benchmark-side spatial index and geodesic projection rule as in Sec. IV-C. This post-processing step is used to improve evaluation consistency across heterogeneous output spaces rather than to perform full route reconstruction or global path optimization. Con-sequently, the reported realism metrics should be interpreted as quality after benchmark-side representation unification and lightweight map-aware projection, not as a pure evaluation of raw decoder outputs before any benchmark-side conversion. 
+
+G. Unified Evaluation Protocol 
+
+To ensure fair and reproducible comparison, all metrics are computed under a unified benchmark protocol. Let the real trajectory set be D = {Ti}Nr 
+
+> i=1
+
+and the generated set be bD =
+
+{ bTj }Ng
+
+> j=1
+
+. Before evaluation, all trajectories are converted to a common geographic representation and mapped back to the original coordinate range of the corresponding dataset. Unless otherwise stated, city-level distributions are computed using the same geographic bounds and the same spatial partition for both real and generated data. CityTrajBench evaluates five complementary dimensions: 
+
+global spatial realism , trip-level distribution fidelity ,
+
+trajectory-level geometric similarity , conditional mobility consistency , and computational efficiency . The purpose of this metric suite is not to impose a single ranking criterion, but to expose trade-offs between different notions of generation quality. 
+
+1) Global spatial realism.: We first assess whether a gen-erated set reproduces city-scale density structure and major mobility hotspots. 
+
+Density Error. The city bounding box is partitioned into a fixed G × G grid, shared by the real and generated sets on the same dataset. Let pdens and ˆpdens denote the corresponding normalized cell-density distributions. We define 
+
+DensityError = JSD  pdens , ˆpdens  , (21) where 
+
+JSD( p, q ) = 12 KL( p∥m)+ 12 KL( q∥m), m = 12 (p+q). (22) 
+
+Hotspot Pattern Score. Let ΩK (pdens ) and ΩK (ˆ pdens )
+
+denote the top-K densest cells in the real and generated distributions. We compute 
+
+Precision K = ΩK (pdens ) ∩ ΩK (ˆ pdens )
+
+|ΩK (ˆ pdens )| , (23) 
+
+Recall K = ΩK (pdens ) ∩ ΩK (ˆ pdens )
+
+|ΩK (pdens )| , (24) and define 
+
+PatternScore = 2 · Precision K · Recall K
+
+Precision K + Recall K
+
+. (25) This metric emphasizes recovery of dominant spatial hotspots rather than full-density calibration alone. 8
+
+2) Trip-level distribution fidelity.: We next evaluate whether generated trips preserve coarse-grained mobility statistics. 
+
+Trip Error. Let pstart , p end be the empirical start and end distributions of the real set, and let ˆpstart , ˆpend be their generated counterparts. We define 
+
+TripError = 12
+
+JSD  pstart , ˆpstart  + JSD  pend , ˆpend  
+
+(26) 
+
+Length Error. For each trajectory T , we compute the total travel length 
+
+ℓ(T ) = 
+
+> L
+
+X
+
+> t=2
+
+dgeo 
+
+ (ϕt−1, λ t−1), (ϕt, λ t). (27) Using shared histogram bins constructed from pooled real and generated samples on the same dataset, we compute 
+
+LengthError = JSD  pℓ, ˆpℓ , (28) where pℓ and ˆpℓ are the normalized length distributions. 
+
+JSD-SD. For each trajectory, the step distance is 
+
+st(T ) = dgeo 
+
+ (ϕt−1, λ t−1), (ϕt, λ t), t = 2 , . . . , L. (29) Pooling all step distances from the real and generated sets yields distributions pstep and ˆpstep , and we report 
+
+JSD -SD = JSD  pstep , ˆpstep  . (30) 
+
+3) Trajectory-level geometric similarity.: A direct index-wise pairing between real and generated trajectories is inap-propriate for generative evaluation, because generated samples are not expected to correspond to real samples one by one. CityTrajBench therefore uses nearest-neighbor matching in a surrogate feature space as a support-based plausibility measure rather than as a reconstruction metric. Each trajectory is embedded using start location, end lo-cation, total length, and a low-resolution polyline represen-tation. In implementation, KD-tree candidate retrieval uses standardized start/end coordinates and total length as summary features, after which candidates are re-ranked by surrogate polyline distance. For each generated trajectory bTj , we retrieve a small candidate set of real trajectories and then select the nearest real trajectory in this surrogate space. Denoting the matched real sample by 
+
+Tπ(j) = NN( bTj ), (31) we compute 
+
+DTW j = DTW 
+
+
+
+Tπ(j), bTj
+
+
+
+, (32) 
+
+Frechet j = dF
+
+
+
+Tπ(j), bTj
+
+
+
+. (33) This matching strategy is intended to estimate whether a generated trajectory lies near the support of realistic trajecto-ries in the held-out test set, rather than to measure one-to-one reconstruction accuracy or full distributional discrepancy. It should therefore be interpreted jointly with the benchmark’s global- and trip-level distribution metrics. For each model, we summarize {DTW j } and {Frechet j } using the median, 10th percentile (P10), and 90th percentile (P90). 
+
+4) Conditional mobility consistency.: To evaluate whether generated trajectories preserve origin-dependent destination structure, we partition the dataset bounding box into a shared 
+
+16 × 16 grid and assign each trajectory a start cell o and an end cell d. For each valid origin cell o with at least five real trajectories, we construct the conditional destination distribution 
+
+p(d | o) = Nreal (o, d )
+
+P 
+
+> d′
+
+Nreal (o, d ′) , (34) 
+
+ˆp(d | o) = Ngen (o, d )
+
+P 
+
+> d′
+
+Ngen (o, d ′) (35) where Nreal (o, d ) and Ngen (o, d ) denote the numbers of real and generated trajectories whose start and end cells are (o, d ),respectively. For each valid origin cell, we compute the conditional divergence 
+
+CondDestError( o) = JSD  p(· | o), ˆp(· | o). (36) The reported average conditional destination error is 
+
+AvgCondDestError = 1
+
+|O valid |
+
+X
+
+> o∈O valid
+
+CondDestError( o),
+
+(37) where Ovalid is the set of valid origin cells. To analyze performance across different origin-frequency regimes, valid origin cells are ranked by their real-data start frequency and divided into three groups: Head (top 20%), 
+
+Torso (middle 30%), and Tail (bottom 50%). 
+
+Computational efficiency. To complement fidelity-oriented metrics, CityTrajBench also records trainable parameter count, training time, generation latency, throughput, and peak mem-ory footprint. These measurements allow the benchmark to expose fidelity–efficiency trade-offs instead of ranking models only by generation realism. 
+
+Implementation consistency. For a given dataset, all mod-els are evaluated using the same geographic bounds, spatial partition, histogram-construction rule, and nearest-neighbor matching protocol. This benchmark-side consistency is essen-tial for making cross-model differences interpretable. V. D ATASETS , B ASELINES , AND EXPERIMENTAL 
+
+PROTOCOL 
+
+To enable systematic and reproducible evaluation of city-scale trajectory generation methods, we build CityTrajBench on top of multiple real-world datasets, representative base-line families, and a unified evaluation protocol. This section introduces the datasets, the preprocessing and representation pipeline, the compared baselines, and the fairness constraints used throughout the benchmark. 
+
+A. Datasets 
+
+We evaluate CityTrajBench on three real-world trajectory datasets that differ in city context, vehicle type, and mobility regime. As summarized in Table I, the benchmark covers two large-scale taxi datasets, i.e., Porto and Chengdu, and one electric-vehicle dataset, i.e., Shanghai. Such diversity enables 9
+
+TABLE I: Summary of the trajectory datasets used in the benchmark. 
+
+Dataset City #Traj Avg. Trip Distance Split Description Chengdu Taxi Chengdu 531517 8161.68 m 70% /15% /15% Large-scale taxi trips in a dense inland road network Porto Taxi Porto 538495 5569.47 m 70% /15% /15% Long-term taxi mobility with diverse city-wide route patterns Shanghai EV Shanghai 39615 6728.37 m 70% /15% /15% EV trips with distinct temporal and mobility regimes 
+
+evaluation under heterogeneous urban settings rather than a single city-specific data distribution. 
+
+Porto. The Porto dataset contains GPS trajectories collected from 442 taxis in Porto, Portugal, from January 2013 to June 2014. It is widely used in trajectory learning research and captures long-term urban taxi mobility over a large spatial region. As a benchmark dataset, it is particularly suitable for evaluating whether generation models can recover large-scale spatial coverage and route diversity. 
+
+Chengdu. The Chengdu dataset contains taxi trajectories collected in Chengdu, China, during October 2016. Following standard cleaning and filtering, it provides a large-scale bench-mark with a road topology and travel distribution different from Porto. This dataset is useful for evaluating the robustness of generation models under a different urban structure and traffic organization. 
+
+Shanghai. The Shanghai dataset is derived from electric-vehicle mobility records in Shanghai, China. It contains cleaned trip trajectories from 1,290 EVs over a three-month period, covering different vehicle categories such as battery electric vehicles (BEVs), plug-in hybrid electric vehicles (PHEVs), and range-extended electric vehicles (REEVs). The trajectories are resampled to a uniform 30-second interval. Compared with the taxi datasets, it reflects a different mobility regime and provides a more challenging setting for trajectory generation. Taken together, these three datasets cover different cities, fleet types, travel behaviors, and road structures, thereby supporting a more comprehensive benchmark for city-scale trajectory generation. 
+
+B. Preprocessing and Unified Representation 
+
+All datasets are processed under the CityTrajBench pre-processing pipeline described in Sec. IV-B. In particular, trajectories are split by moveid , normalized to a fixed length of L = 200 , and mapped to the benchmark coordinate range using dataset-specific geographic bounds. Across all datasets, trajectories are represented under a unified 30-second sampling setting. For datasets with available raw timestamps such as Shanghai, the original records are additionally resampled to this interval; for Porto and Chengdu, the processed benchmark TABLE II: Baselines included in the benchmark and their methodological categories.                         
+
+> Method Category Core Idea Reference Markov Statistical Transition-based trajectory generation using Markovian state dynamics [13] VAE VAE-based Vanilla variational autoencoder baseline for trajectory generation [20] TrajVAE VAE-based Structured variational generation for trajectories [7] TrajGAN GAN-based Adversarial trajectory synthesis for realistic mobility generation [15] DiffTraj Diffusion-based Denoising diffusion generation for trajectory sequences [5] DiffRNTraj Diffusion-based Diffusion-based trajectory generation with road-network-aware design [6] TrajFlow Flow-matching-based Flow-matching-based trajectory generation with scalable continuous transport [9]
+
+inputs already follow the same 30-second sampling assump-tion. Trip-level descriptors are then constructed under the same benchmark protocol. In particular, duration- and speed-related features are computed from the unified 30-second representation, while departure-time slots are retained only when valid timestamp information is available; otherwise, the departure-time feature is set to zero. 
+
+C. Baselines 
+
+We include seven representative baselines covering multiple trajectory generation paradigms, including classical stochastic modeling, variational autoencoding, adversarial generation, diffusion-based generation, and flow-matching-based genera-tion. Table II summarizes their methodological categories and core ideas. 
+
+Markov [13] is a first-order transition baseline and serves as a lightweight statistical reference for coarse-grained mobility generation. VAE [20] and TrajVAE [7] represent latent-variable generative approaches, where the latter is more specifically tailored to trajectory generation. TrajGAN [15] represents adversarial trajectory synthesis. DiffTraj [5] and DiffRNTraj 
+
+[6] represent recent diffusion-based methods, with the latter explicitly incorporating road-network structure into the gener-ation process. TrajFlow [9] represents a recent flow-matching-based approach that provides an additional comparison point on the realism–efficiency frontier. In terms of implementation provenance, Markov , VAE ,
+
+TrajVAE , and TrajGAN are implemented by our team within the CityTrajBench framework, while DiffTraj , DiffRNTraj , and 
+
+TrajFlow are adapted from their official released implemen-tations. This design balances faithful reproduction of public methods with benchmark-level consistency in preprocessing, evaluation, and reporting. Together, these baselines span heterogeneous modeling as-sumptions and output spaces, making them suitable for testing whether CityTrajBench supports fair and informative compar-ison across diverse trajectory generation methods. 
+
+D. Evaluation Protocol and Fairness 
+
+All baselines are trained and evaluated under the City-TrajBench protocol. In line with Sec. IV, the goal of this protocol is not to force identical model architectures, identical input information, or identical optimization behavior across fundamentally different generators. Instead, CityTrajBench standardizes the benchmark-side components that determine cross-model comparability: dataset partitioning, preprocessing, representation conversion, sample-count control, evaluation rules, and reporting. Table III summarizes the unified settings adopted throughout the benchmark. 10 
+
+TABLE III: Benchmark-side protocol settings adopted by City-TrajBench for comparable evaluation across heterogeneous baselines.                                
+
+> Aspect Unified Setting Dataset split All methods use the same training / vali-dation / test partition on each dataset. Training data Each model is trained only on the cor-responding training split of the target dataset. Generated sample size For each model and dataset, the number of generated trajectories is matched to the size of the corresponding test split. Evaluation representation All generated outputs are converted to a common evaluation representation before metric computation. Metric implementation All methods are evaluated using the same benchmark-side metric implementations and summary rules. Spatial and histogram settings Geographic bounds, spatial partitions, and histogram-construction rules are fixed per dataset and shared across methods. Trajectory matching The same nearest-neighbor alignment pro-tocol is used for DTW/Fréchet-based trajectory-level comparison. Quantile reporting Median, 10th percentile, and 90th per-centile are reported consistently for all methods. Feature policy Feature availability is standardized at the benchmark level, while feature usage is documented per model. Model selection Official checkpointing strategy when ex-plicitly available; otherwise benchmark-default validation-based selection; no test-based selection. Reproducibility Evaluation scripts, preprocessing rules, and parameter settings are shared uni-formly across methods.
+
+At the dataset level, all methods use the same training, validation, and test split for a given dataset, and each model is trained only on the corresponding training subset. For evaluation, the number of generated trajectories is matched to the size of the held-out test split. This design reduces sample-size-induced bias in distributional metrics and ensures that all methods are compared against the same test distribution under the same sample budget. At the representation level, CityTrajBench follows the representation-aware unification principle introduced in Sec. IV-B. Because different baselines operate in different out-put spaces, all generated samples are converted to a common evaluation representation before metric computation. In partic-ular, benchmark-side post-generation conversion follows the same protocol across models, and trajectory-level geometric evaluation uses the same nearest-neighbor matching proce-dure for all baselines. This consistency is important because, without a shared conversion and matching rule, cross-model differences could be confounded by representation mismatch rather than the generation mechanism itself. A separate fairness issue concerns feature access . As dis-cussed in Sec. IV-D, CityTrajBench distinguishes between 
+
+feature availability at the benchmark level and feature usage 
+
+at the model level. The benchmark can expose a common pool of trip-level and road-network-level descriptors, but heteroge-neous baselines do not necessarily consume the same subset of inputs. We therefore document feature usage explicitly rather than imposing an artificial one-size-fits-all interface. As summarized in Table IV, VAE , TrajVAE , TrajGAN , DiffTraj ,and TrajFlow use GPS trajectories together with trip-level descriptors, including departure time, trip distance, trip du-ration, trajectory length, average step distance, average speed, and start/end region identifiers. Markov uses GPS trajectories with start-region information, while DiffRNTraj uses GPS trajectories, trip length, and explicit road-network structure. This benchmark-side transparency improves interpretability of the results while preserving fidelity to the original model interfaces. Model selection is governed by a benchmark policy that balances reproducibility with faithful method reproduction. When an official implementation explicitly specifies a stopping rule or checkpoint-selection strategy, CityTrajBench retains that strategy as part of the reproduced training pipeline. When such details are unavailable or cannot be unambiguously recovered from the original paper or released code, CityTra-jBench applies a benchmark-default validation-based model-selection rule. Accordingly, TrajFlow follows the checkpoint-selection behavior implemented in its official released code, while the other deep baselines use the benchmark-default validation policy because equally explicit checkpoint-selection rules are not available for them. No method uses the test split for early stopping, checkpoint selection, or hyperparameter tuning. To improve robustness against accidental training variance, all reported results are averaged over three random seeds, and all mean ±std values are computed from these repeated runs. For a given dataset, all baselines are evaluated with the same preprocessing rules, post-generation conversion procedure, metric implementations, and summary statistics. In particular, geographic bounds, spatial partitions, histogram-construction rules, and nearest-neighbor trajectory-matching settings are fixed at the benchmark level for each dataset and shared across all compared methods. In this way, CityTrajBench reduces implementation-induced variability, avoids test leakage, and makes cross-model differences more interpretable under a standardized benchmark-side protocol, while still documenting residual model-specific differences in feature access, output space, and training behavior. Concretely, the current CityTrajBench configuration uses trajectory-level splitting by moveid with a 70%/15%/15% train/validation/test ratio and split seed 42; fixed-length trajec-tory normalization to L = 200 by linear interpolation or prefix truncation; coordinate normalization to [−1, 1] using dataset-specific geographic bounds; a 64 × 64 grid for global spatial metrics; a 16 × 16 grid for conditional destination evaluation; and three random seeds (42, 52, and 62) for repeated runs. A full configuration summary is provided in Appendix B. VI. E XPERIMENTS 
+
+A. Evaluation Metrics 
+
+We evaluate trajectory generation quality from five comple-mentary perspectives: global spatial realism, trip-level statis-tical fidelity, trajectory-level geometric similarity, conditional mobility consistency, and computational efficiency. 11 
+
+TABLE IV: Feature-access settings of the compared baselines under CityTrajBench. “Trip descriptors” include departure-time slot, trip distance, trip duration, trajectory length, average step distance, average speed, and start/end region identifiers when applicable. For models marked “Time-of-day = Yes”, the corresponding input dimension is available in the benchmark interface; for datasets without retained real departure timestamps (e.g., Porto and Chengdu), this field is filled with a zero placeholder. “Road graph” indicates explicit access to road-network structure. 
+
+Method GPS Sequence Trip Descriptors Start/End IDs Time-of-day Road Graph Notes Markov Yes No Yes No No Transition baseline with start-region information VAE Yes Yes Yes Yes No Self-implemented benchmark baseline TrajVAE Yes Yes Yes Yes No Self-implemented benchmark baseline TrajGAN Yes Yes Yes Yes No Self-implemented benchmark baseline DiffTraj Yes Yes Yes Yes No Adapted from official implementation DiffRNTraj Yes Partial No No Yes Uses trip length and road-network structure TrajFlow Yes Yes Yes Yes No Adapted from official implementation 
+
+TABLE V: Results on Porto 
+
+Model Global Level Trip Level Traj Level Density Error ↓ Pattern Score ↑ Trip Error ↓ Length Error ↓ JSD-SD ↓ DTW (Med.) ↓ DTW (P10) ↓ DTW (P90) ↓ Fréchet (Med.) ↓ Fréchet (P10) ↓ Fréchet (P90) ↓
+
+Markov 0.0252 ± 0.0001 0.8134 ± 0.0014 0.0658 ± 0.0008 0.1723 ± 0.0011 0.000001 ± 0.000000 92 .4712 ± 0.0310 50 .0876 ± 0.0706 143 .4532 ± 0.2788 0.9174 ± 0.0018 0.6129 ± 0.0014 1.3279 ± 0.0017 
+
+VAE 0.1527 ± 0.0007 0.3871 ± 0.0093 0.2603 ± 0.0055 0.0129 ± 0.0037 0.001784 ± 0.000185 50 .7349 ± 1.0318 29 .3256 ± 0.6819 86 .6801 ± 1.5097 0.5137 ± 0.0120 0.3177 ± 0.0063 0.8482 ± 0.0170 
+
+TrajVAE 0.1725 ± 0.0029 0.3708 ± 0.0125 0.3239 ± 0.0084 0.0790 ± 0.0152 0.010608 ± 0.000401 79 .9569 ± 0.8341 41 .9737 ± 0.4429 145 .8584 ± 1.2039 0.7909 ± 0.0170 0.4319 ± 0.0065 1.3258 ± 0.0140 
+
+TrajGAN 0.1472 ± 0.0392 0.4466 ± 0.0767 0.2611 ± 0.0467 0.2353 ± 0.1718 0.011652 ± 0.010679 98 .1752 ± 34 .7511 57 .5962 ± 17 .8912 173 .6251 ± 69 .9077 0.9766 ± 0.3304 0.6149 ± 0.1989 1.6280 ± 0.6565 
+
+DiffTraj 0.0237 ± 0.0011 0.8509 ± 0.0171 0.1172 ± 0.0086 0.0008 ± 0.0014 0.000112 ± 0.000186 16 .0542 ± 0.7365 7.1404 ± 0.3623 48 .3437 ± 1.6281 0.2892 ± 0.0116 0.1301 ± 0.0059 0.6809 ± 0.0194 
+
+DiffRNTraj 0.0204 ± 0.0002 0.8191 ± 0.0088 0.0805 ± 0.0012 0.0228 ± 0.0005 0.002314 ± 0.000104 53 .6805 ± 0.6993 12 .2674 ± 0.3300 169 .5574 ± 2.7157 0.6800 ± 0.0052 0.2618 ± 0.0044 1.5959 ± 0.0228 
+
+TrajFlow 0.0148 ± 0.0009 0.8851 ± 0.0136 0.0799 ± 0.0005 0.0288 ± 0.0186 0.000736 ± 0.000455 22 .5946 ± 1.3099 7.1209 ± 0.2267 95 .2365 ± 6.9026 0.4243 ± 0.0172 0.1426 ± 0.0036 1.0849 ± 0.0553 
+
+TABLE VI: Results on Chengdu 
+
+Model Global Level Trip Level Traj Level Density Error ↓ Pattern Score ↑ Trip Error ↓ Length Error ↓ JSD-SD ↓ DTW (Med.) ↓ DTW (P10) ↓ DTW (P90) ↓ Fréchet (Med.) ↓ Fréchet (P10) ↓ Fréchet (P90) ↓
+
+Markov 0.0885 ± 0.0001 0.7221 ± 0.0014 0.1126 ± 0.0002 0.0262 ± 0.0014 0.000043 ± 0.000003 156 .5843 ± 0.4329 90 .7829 ± 0.1100 292 .4632 ± 1.1693 1.6027 ± 0.0028 1.0539 ± 0.0027 2.5847 ± 0.0080 
+
+VAE 0.1687 ± 0.0007 0.4800 ± 0.0056 0.2626 ± 0.0035 0.0198 ± 0.0102 0.008206 ± 0.000842 55 .3763 ± 1.5477 24 .8629 ± 0.3456 108 .5312 ± 1.8550 0.6154 ± 0.0206 0.3321 ± 0.0090 1.0808 ± 0.0156 
+
+TrajVAE 0.1636 ± 0.0088 0.5094 ± 0.0185 0.3666 ± 0.0066 0.0832 ± 0.0088 0.016209 ± 0.001987 86 .6598 ± 2.8439 38 .9554 ± 1.6736 172 .2181 ± 4.4269 0.9749 ± 0.0194 0.5363 ± 0.0125 1.6489 ± 0.0074 
+
+TrajGAN 0.1435 ± 0.0536 0.5265 ± 0.1497 0.3177 ± 0.0663 0.1626 ± 0.0731 0.022803 ± 0.004870 73 .7766 ± 23 .9946 33 .2222 ± 16 .8419 161 .5605 ± 27 .4732 0.8968 ± 0.1908 0.4802 ± 0.1728 1.6872 ± 0.1834 
+
+DiffTraj 0.0204 ± 0.0010 0.8875 ± 0.0042 0.0932 ± 0.0117 0.0021 ± 0.0002 0.001521 ± 0.000154 14 .4064 ± 0.3730 5.5332 ± 0.1855 50 .4729 ± 1.5272 0.3021 ± 0.0033 0.0969 ± 0.0021 0.8111 ± 0.0128 
+
+DiffRNTraj 0.0222 ± 0.0008 0.8354 ± 0.0099 0.0808 ± 0.0007 0.0307 ± 0.0023 0.003124 ± 0.000193 44 .2145 ± 0.9063 7.0357 ± 0.1500 140 .9712 ± 1.5240 0.7600 ± 0.0070 0.1743 ± 0.0052 1.6055 ± 0.0107 
+
+TrajFlow 0.0141 ± 0.0011 0.9177 ± 0.0116 0.0750 ± 0.0078 0.0397 ± 0.0101 0.005237 ± 0.000943 18 .8813 ± 1.8762 5.8942 ± 0.1638 84 .8509 ± 7.5672 0.4152 ± 0.0352 0.1094 ± 0.0057 1.2050 ± 0.0649 
+
+TABLE VII: Results on Shanghai 
+
+Model Global Level Trip Level Traj Level Density Error ↓ Pattern Score ↑ Trip Error ↓ Length Error ↓ JSD-SD ↓ DTW (Med.) ↓ DTW (P10) ↓ DTW (P90) ↓ Fréchet (Med.) ↓ Fréchet (P10) ↓ Fréchet (P90) ↓
+
+Markov 0.0694 ± 0.0011 0.7042 ± 0.0065 0.1508 ± 0.0038 0.1534 ± 0.0004 0.000038 ± 0.000006 66 .7628 ± 0.4947 20 .6044 ± 0.8662 138 .7191 ± 0.8883 0.7135 ± 0.0029 0.2925 ± 0.0056 1.3919 ± 0.0184 
+
+VAE 0.1912 ± 0.0092 0.2877 ± 0.0334 0.4044 ± 0.0107 0.2408 ± 0.0455 0.000786 ± 0.000138 111 .9844 ± 15 .5943 50 .5049 ± 12 .3403 193 .4829 ± 19 .0579 1.0809 ± 0.1611 0.5225 ± 0.1113 1.9079 ± 0.1661 
+
+TrajVAE 0.2097 ± 0.0043 0.3040 ± 0.0099 0.5047 ± 0.0139 0.1196 ± 0.0124 0.000164 ± 0.000065 85 .1678 ± 2.5113 40 .4814 ± 0.9462 151 .8149 ± 3.8028 0.9047 ± 0.0272 0.5012 ± 0.0243 1.4928 ± 0.0301 
+
+TrajGAN 0.2289 ± 0.0769 0.2698 ± 0.1813 0.4714 ± 0.1269 0.3291 ± 0.3119 0.044282 ± 0.076102 203 .0996 ± 224 .5991 127 .5870 ± 165 .9713 302 .6424 ± 251 .9127 2.0038 ± 2.1734 1.3529 ± 1.6633 2.7665 ± 2.0781 
+
+DiffTraj 0.1584 ± 0.0273 0.4849 ± 0.0882 0.3367 ± 0.0361 0.0135 ± 0.0116 0.000042 ± 0.000018 58 .4628 ± 12 .0871 19 .4879 ± 8.2192 170 .6667 ± 11 .0149 0.5639 ± 0.0814 0.2267 ± 0.0654 1.7169 ± 0.0647 
+
+DiffRNTraj 0.0594 ± 0.0020 0.7751 ± 0.0049 0.2346 ± 0.0026 0.0720 ± 0.0005 0.006943 ± 0.000364 100 .1708 ± 2.2021 24 .9288 ± 0.7315 281 .7933 ± 1.2137 1.1115 ± 0.0107 0.3128 ± 0.0040 2.7834 ± 0.0291 
+
+TrajFlow 0.0782 ± 0.0032 0.7148 ± 0.0166 0.2130 ± 0.0025 0.0630 ± 0.0060 0.000271 ± 0.000039 51 .0149 ± 3.0897 7.2631 ± 0.1509 172 .4402 ± 8.9677 0.5971 ± 0.0255 0.1220 ± 0.0030 1.7590 ± 0.0878 
+
+At the global level, we report Density Error and Pattern Score , which measure how well a model recovers the city-wide spatial density distribution and the dominant hotspot structure, respectively. At the trip level, we report Trip Error ,
+
+Length Error , and JSD-SD , which quantify the fidelity of origin–destination distributions, trip-length distributions, and local step-distance statistics. At the trajectory level, we report nearest-neighbor-based DTW and Fréchet distances, summa-rized by the median, 10th percentile (P10), and 90th percentile (P90), so that we can assess not only the typical geometric quality of generated trajectories but also their lower-tail and upper-tail behavior. Unless otherwise stated, lower values indicate better performance for all metrics except Pattern Score , where higher values are better. In addition, we further evaluate conditional mobility con-sistency through origin-conditioned destination divergence and corresponding visualizations. Finally, since practical synthetic trajectory generation must also consider deployability, we compare parameter count, training cost, generation latency, throughput, and memory footprint. Formal metric definitions and implementation-level configuration details are given in Sec. IV-G and Appendix B. 
+
+B. Quantitative Results 
+
+Tables V–VII summarize the benchmark results on Porto, Chengdu, and Shanghai, where the best and second-best values in each column are highlighted in bold and underline, respec-tively. Several consistent patterns emerge. First, the metrics are clearly complementary rather than redundant. Models that perform strongly on city-scale density realism do not neces-sarily achieve the best trajectory-level geometric similarity, and models that preserve endpoint or local step statistics well do not automatically recover realistic full-route shapes. This validates the design of CityTrajBench: urban trajectory generation quality cannot be characterized by a single metric family. Because these metric families capture different and sometimes competing aspects of generation quality, we do not collapse them into a single aggregate score. Second, the strongest results are delivered by continuous generative models, but with distinct specializations. DiffTraj is the most consistently strong model on trajectory-level fidelity across datasets, indicating superior recovery of fine-grained route geometry under the current benchmark protocol. DiffRN-Traj is particularly competitive on structure-sensitive global metrics, suggesting that explicit road-network constraints help preserve city-scale spatial organization and major travel cor-12 
+
+ridors. TrajFlow also emerges as a highly competitive model, often reaching the best or second-best results on global metrics while remaining strong at the trajectory level. Third, simpler baselines remain informative. In particular, 
+
+Markov is consistently competitive on Trip Error and JSD-SD , which implies that endpoint distributions and local move-ment increments are still substantially governed by low-order mobility regularities. However, its weakness on DTW and Fréchet shows that matching coarse statistics is not sufficient for recovering realistic route-level behavior. Finally, result variance across random seeds provides addi-tional insight. TrajGAN exhibits noticeably larger fluctuations than the other methods, especially on Shanghai, indicating weaker optimization stability and less reliable reproducibility. By contrast, the diffusion- and flow-based models are gener-ally more stable across repeated runs. 
+
+1) Results on Porto: Table V shows that Porto already exposes a clear separation between three notions of genera-tion quality: coarse statistical realism, structure-aware spatial realism, and trajectory-level geometric fidelity. At the global and trip levels, the best results are distributed across different models rather than dominated by a single one. 
+
+TrajFlow achieves the best Density Error (0.0148) and Pattern Score (0.8851), indicating the strongest recovery of city-wide density structure and hotspot layout. Markov obtains the best 
+
+Trip Error (0.0658) and JSD-SD (1 × 10 −6), showing that a simple transition-based model can still reproduce endpoint distributions and local movement scales very well. DiffTraj 
+
+attains the best Length Error (0.0008), suggesting especially strong fidelity in trip-scale travel distance. At the trajectory level, however, the ranking changes sharply. DiffTraj is the clear best model on all six DTW and Fréchet statistics, with a substantial margin over the remaining baselines. This indicates that its denoising process is particularly effective at recovering individual route geometry rather than merely matching aggregate distributions. TrajFlow 
+
+forms the second strongest group on Porto, with competitive 
+
+DTW (Med.) , DTW (P10) , Fréchet (Med.) , and Fréchet (P10) ,while VAE is better than TrajVAE and TrajGAN but still clearly behind DiffTraj .An important implication from Porto is that strong macro-level realism does not automatically imply strong sample-level fidelity. For example, TrajFlow and DiffRNTraj recover city-scale structure well, yet only DiffTraj simultaneously achieves very low trajectory-level distances. This suggests that hotspot recovery and road conformity alone are insufficient to guarantee realistic route-shape generation. 
+
+2) Results on Chengdu: Table VI reveals a pattern highly consistent with Porto, which suggests that the benchmark is capturing stable model characteristics rather than dataset-specific noise. At the global and trip levels, TrajFlow is the strongest model overall on Chengdu. It achieves the best Density Error 
+
+(0.0141), Pattern Score (0.9177), and Trip Error (0.0750), indicating excellent recovery of spatial density, hotspot struc-ture, and endpoint distributions. DiffTraj again performs best on Length Error (0.0021), showing strong control over trip-scale travel distances, while Markov retains the best JSD-SD (4.3 × 10 −5), reinforcing the observation that local step statistics are comparatively easy to match with low-order transition mechanisms. At the trajectory level, DiffTraj again dominates all DTW and Fréchet statistics. Importantly, this advantage is not limited to the median. Its DTW (P90) and Fréchet (P90) are also substantially lower than those of all other methods, which means that DiffTraj not only improves typical-case trajectory quality but also reduces the tail risk of generating severely unrealistic routes. In contrast, DiffRNTraj remains strong on global realism but is much weaker on route-level geometry, while TrajFlow offers a more balanced profile but still does not fully match DiffTraj on fine-grained trajectory similarity. Compared with Porto, Chengdu makes the specialization pattern even clearer. TrajFlow and DiffRNTraj are especially strong at reproducing city-scale organization, whereas DiffTraj 
+
+is especially strong at reproducing individual route shapes. This distinction is precisely the kind of trade-off that would be obscured by a benchmark built around only one metric family. 
+
+3) Results on Shanghai: Table VII reports the results on Shanghai, which is the smallest dataset in our benchmark and also the one with the most mixed ranking pattern. It therefore serves as a stress test for robustness under a different mobility regime and more challenging data conditions. At the global and trip levels, DiffRNTraj becomes the strongest structure-aware model, achieving the best Density Error (0.0594) and Pattern Score (0.7751). TrajFlow remains highly competitive, ranking second on Pattern Score , Trip Error , and Length Error . Meanwhile, Markov again obtains the best Trip Error (0.1508) and JSD-SD (3.8 × 10 −5), which shows that even in this harder setting, low-order transition structure still explains part of the endpoint and local-step behavior. At the trajectory level, the ranking becomes less uniform than on Porto and Chengdu. TrajFlow achieves the best 
+
+DTW (Med.) , DTW (P10) , and Fréchet (P10) , while DiffTraj 
+
+achieves the best Fréchet (Med.) . By contrast, Markov and 
+
+TrajVAE perform relatively well on some upper-tail statistics such as DTW (P90) and Fréchet (P90) . This indicates that under Shanghai, model quality is no longer cleanly ordered by a single ranking and becomes more sensitive to whether one emphasizes average-case geometry, local alignment, or worst-case failures. This shift in ranking is itself informative. Compared with the two taxi datasets, Shanghai weakens the dominance of any one method and exposes a clearer tension between global realism and trajectory-level fidelity. One plausible benchmark-level explanation is that the EV-oriented dataset, together with its smaller scale and distinct sampling regime, yields a less regular mobility distribution under the current benchmark representation. Under such conditions, preserving city-scale structure and preserving sample-level geometry may become harder to optimize simultaneously. We emphasize, however, that this interpretation is inferential rather than causal, and should be read as a data-dependent hypothesis consistent with the observed benchmark pattern. 13 
+
+4) Cross-Dataset Findings: Across the three datasets, four benchmark-level findings consistently emerge. 
+
+(1) Different metric families probe genuinely different capabilities. Models that perform well on Density Error and 
+
+Pattern Score do not necessarily achieve the best DTW/Fréchet statistics, and vice versa. This confirms that trajectory gener-ation quality is inherently multi-dimensional. 
+
+(2) Diffusion-style and flow-style models currently define the strongest frontier, but with different strengths. DiffTraj 
+
+is the most consistently strong model for route-level geometric fidelity. DiffRNTraj is especially strong on structure-sensitive macro realism. TrajFlow is competitive in both dimensions and is often strongest on global-level metrics. Together, these methods occupy different points on the realism trade-off frontier rather than forming a single strict ranking. 
+
+(3) Explicit structural priors help macro realism more than micro geometry. The strong performance of DiffRNTraj 
+
+on density and pattern metrics suggests that road-network constraints compress the feasible generation space in a useful way. However, this structural advantage does not automatically translate into the best route-level similarity. In other words, topological plausibility helps recover city-scale organization, but may also reduce flexibility in matching fine-grained geo-metric details. 
+
+(4) Low-order mobility regularity remains surprisingly strong. The competitiveness of Markov on Trip Error and 
+
+JSD-SD across all three datasets indicates that endpoint and local-step distributions are easier to capture than full-route geometry. This also explains why single-metric evaluation can be misleading: a method may appear strong if only OD realism is measured, while still generating unrealistic full trajectories. 
+
+C. Qualitative Analysis 
+
+Figure 3 visualizes the real and generated trajectories on the three datasets. The qualitative patterns are broadly consistent with the quantitative findings, but they also reveal several failure modes that are less obvious from the tables alone. First, DiffRNTraj better recovers the major urban corridors and high-density spatial skeletons than the VAE-, GAN-, and Markov-based baselines. Its generated trajectories align more closely with dominant road structures and hotspot regions, which is consistent with its strong performance on Density Error and Pattern Score . Visually, it tends to produce more network-conforming trajectory sets, reflecting the benefit of explicit road-network awareness. Second, DiffTraj produces trajectories that are more plau-sible at the individual-route level. Compared with the more structure-constrained or coarse statistical baselines, its samples often exhibit better local continuity and route-shape realism. This observation aligns with its clear advantage on DTW and Fréchet metrics, and suggests that DiffTraj is particularly effective at modeling the geometry of complete paths rather than only the aggregate occupancy pattern. Third, Markov captures several major travel directions but tends to over-concentrate movement into coarse and repetitive transition patterns. This helps explain why it remains com-petitive on Trip Error yet weak on trajectory-level distances. The VAE-based and GAN-based baselines can produce locally plausible trajectories in some regions, but they generally underperform in overall spatial coverage and corridor recovery. Their samples often appear either overly diffuse or insuffi-ciently aligned with the dominant urban structure, especially on Shanghai. Overall, the visual evidence reinforces the quantitative con-clusion that different models specialize in different notions of realism: DiffRNTraj is stronger at recovering the city-scale spatial skeleton, whereas DiffTraj is stronger at recovering the geometry of individual trips. 
+
+D. Conditional Mobility Consistency 
+
+We next evaluate whether the models preserve conditional dependence between origins and downstream mobility pat-terns. This evaluation should be interpreted under the current benchmark feature-access and model-adaptation setting. In particular, compared baselines do not use identical condition-ing interfaces, so the reported conditional results reflect both generation quality and the extent to which each reproduced model can exploit origin-related information under CityTra-jBench. We report the main conditional destination evaluation on Chengdu, which provides a clear and stable setting for head/torso/tail analysis and representative visualization under the current protocol. Additional conditional results on Porto and Shanghai are included in Appendix A for completeness. Table VIII reports origin-conditioned destination divergence, and Figures 4 and 5 provide representative visual examples. In contrast to the earlier benchmark version, the current con-ditional evaluation also includes TrajFlow , whose reproduced implementation now supports the corresponding benchmark protocol. TABLE VIII: Origin-conditioned destination divergence on Chengdu.                                         
+
+> Model AvgCondDestError Head Torso Tail NumOrigins Markov 0.6501 0.6406 0.6496 0.6543 246 VAE 0.3837 0.2668 0.3508 0.4507 246 TrajVAE 0.5163 0.4497 0.4813 0.5642 246 TrajGAN 0.5505 0.5058 0.5366 0.5768 246 DiffTraj 0.1532 0.0563 0.1037 0.2220 246 DiffRNTraj 0.3740 0.2261 0.3352 0.4572 246 TrajFlow 0.1585 0.0530 0.1096 0.2304 246
+
+A first observation is that DiffTraj and TrajFlow clearly form the strongest pair under origin-conditioned evaluation. DiffTraj 
+
+achieves the lowest overall AvgCondDestError (0.1532), fol-lowed very closely by TrajFlow (0.1585), while the remaining methods are separated by a large margin. This finding is important because conditional realism is more demanding than unconditional density matching: a model must not only place probability mass in plausible regions globally, but also place it in the correct regions given a specific starting context. At the regime level, the comparison between DiffTraj and 
+
+TrajFlow is even more informative. On Head origins, Tra-jFlow achieves the best result (0.0530), slightly outperforming 
+
+DiffTraj (0.0563). On Torso and Tail origins, however, DiffTraj 
+
+regains the lead with the lowest divergence values, i.e., 0.1037 on Torso and 0.2220 on Tail , compared with 0.1096 and 14 
+
+Porto Chengdu Shanghai                 
+
+> Markov Markov Markov
+> VAE VAE VAE
+> TrajVAE TrajVAE TrajVAE
+> TrajGAN TrajGAN TrajGAN
+> DiffTraj DiffTraj DiffTraj
+> DiffRNTraj DiffRNTraj DiffRNTraj
+> TrajFlow TrajFlow TrajFlow
+> Real Real Real
+
+Fig. 3: Qualitative overview of generated and real trajectories across Porto, Chengdu, and Shanghai. For each model and dataset, each panel contains representative trajectory samples and the corresponding spatial density map, enabling side-by-side inspection of route geometry and global occupancy structure. 15 
+
+0.2304 for TrajFlow , respectively. This suggests that TrajFlow 
+
+is highly effective for high-frequency origin regimes, whereas 
+
+DiffTraj remains slightly more robust when the conditional destination structure becomes sparser and more difficult to recover. 
+
+Fig. 4: Origin-conditioned destination distributions on Chengdu for representative head, torso, and tail origin cells. Each panel compares the real and generated destination dis-tributions under the same origin condition. The visual comparisons in Fig. 4 support the same con-clusion. For frequent origins ( Head ), the real data exhibit a relatively broad and multi-modal destination distribution. Both 
+
+DiffTraj and TrajFlow recover this structure much better than the remaining baselines, with concentrated hotspots appear-ing in the correct general regions. In contrast, Markov still collapses much of the conditional mass into a narrower local area, while DiffRNTraj produces a more diffuse pattern with weaker hotspot sharpness. For medium-frequency origins ( Torso ), the real destination pattern becomes more scattered and sparse. Here, DiffTraj 
+
+provides the closest visual match to the real support, with 
+
+TrajFlow remaining highly competitive and substantially better than the other baselines. Markov , VAE , and TrajVAE still exhibit stronger aggregation bias, while TrajGAN appears less stable and less well calibrated. DiffRNTraj captures part of the dispersion, but its destination mass is still more diffuse than that of DiffTraj and TrajFlow .For rare origins ( Tail ), the task becomes particularly chal-lenging because the real destination distribution is highly sparse and long-tailed. In this regime, DiffTraj again provides the best match, and TrajFlow remains the second strongest model. Both are clearly better than the remaining baselines at preserving sparse long-range destination support. By contrast, 
+
+Markov and the VAE/GAN baselines allocate too much mass to nearby cells or fail to recover the weak but meaningful long-range destination structure. DiffRNTraj performs better than these weaker baselines, but still appears more over-diffused than the two strongest continuous generative models. 
+
+Fig. 5: Origin-conditioned trajectory examples on Chengdu. Under the same origin condition, each panel compares real and generated trajectory samples to illustrate downstream spatial spread and directional diversity across models. Figure 5 further illustrates the same pattern at the trajectory level. Under the same origin condition, DiffTraj and TrajFlow 
+
+generate trajectories whose downstream spatial spread and directional diversity better resemble the real samples, whereas 
+
+Markov and several weaker baselines show either excessive concentration or insufficiently structured dispersion. This in-dicates that stronger conditional destination calibration is accompanied by stronger origin-conditioned trajectory realism. Overall, the updated conditional benchmark refines the earlier global findings. While DiffRNTraj remains highly com-petitive on structure-sensitive macro metrics, DiffTraj and 
+
+TrajFlow are better calibrated when the task requires pre-serving sharper conditional dependencies between origins and downstream movement. On Chengdu, DiffTraj has a slight overall advantage, especially in medium- and low-frequency origin regimes, whereas TrajFlow performs best on the most frequent origins. Together with the supplementary results on Porto and Shanghai reported in Appendix A, these findings suggest that DiffTraj and TrajFlow form the strongest pair for conditional mobility consistency, while their relative rank-ing remains dataset-dependent. This suggests that continuous generative models without explicit road-network decoding constraints may currently offer greater flexibility for modeling sharp conditional destination distributions. 
+
+E. Computational Cost and Efficiency 
+
+Table IX compares parameter count, training cost, and generation efficiency on Porto, which serves as a representative large-scale benchmark setting in our study. These results show that model quality should be interpreted together with com-putational practicality rather than in isolation. All efficiency numbers are measured under the benchmark execution setting used by each reproduced method on a given dataset and should be interpreted as comparative benchmark-side end-to-end cost rather than as hardware-independent absolute deployment cost or a strictly hardware-homogeneous throughput comparison. At one end of the spectrum, VAE is extremely efficient. It has only 445.14K trainable parameters, very low memory usage, and by far the highest generation throughput. However, 16 
+
+TABLE IX: Comparison of computational cost and efficiency for different trajectory generation models on Porto.                                                                        
+
+> Model Trainable Params Training Cost Generation Cost Total Time Avg. Epoch Time Peak GPU Mem. Total Time Avg. Time / Traj. Throughput Peak GPU Mem. (h / min / s) (s / min) (MB / GB) (h / min / s) (ms) (traj/s) (MB / GB) Markov N/A 2.23 min N/A N/A 5.11 h 227.58 4.41 N/A VAE 445.14 K 21.08 min 2.53 s 64.43 MB 1.23 s 0.02 66001.24 13.20 MB TrajVAE 414.40 K 18.12 h 2.17 min 7.11 GB 31.84 s 0.39 2539.31 13.94 MB TrajGAN 416.75 M 5.48 h 1.03 min 7.78 GB 5.24 s 0.07 15409.27 1.58 GB DiffTraj 16.86 M 11.34 h 3.40 min 16.41 GB 18.74 min 13.92 71.85 6.75 GB DiffRNTraj 27.18 M 3.63 h 1.68 min 4.40 GB 40.51 min 30.09 33.23 13.82 GB TrajFlow 15.33 M 6.22 h 1.87 min 4.29 GB 8.96 min 6.66 150.24 282.90 MB
+
+this efficiency comes with a clear loss in benchmark fidelity. Although Markov incurs almost no trainable optimization cost, its measured generation throughput is low under the present benchmark execution setting, since it is implemented as a CPU-side sampling procedure rather than GPU-batched neural inference. Accordingly, this number should be interpreted as benchmark-side end-to-end execution cost under the model’s native implementation regime, not as a strictly hardware-homogeneous throughput comparison. From a deployment perspective, it nevertheless indicates that classical baselines may be less favorable when large-scale synthetic trajectory generation requires high sampling throughput. Among the stronger models, DiffTraj and DiffRNTraj illus-trate the typical cost of iterative diffusion-style generation. Both achieve strong fidelity, but generation is substantially slower than for the VAE-based models and also slower than for TrajFlow . DiffTraj has the largest training memory foot-print, while DiffRNTraj has the slowest generation throughput among the deep generative baselines. This confirms that gains in fidelity and structural realism can come with nontrivial deployment cost. 
+
+TrajFlow is particularly notable from a practical perspective. It remains highly competitive on both global and trajectory-level quality, yet its generation cost is substantially lower than that of the diffusion models and its memory footprint is also moderate. This suggests that flow-matching-based gen-eration may provide a promising compromise on the fidelity– efficiency frontier. Taken together, Table IX indicates that the benchmark does not reveal a single universally optimal model, but rather a Pareto-like trade-off among fidelity, structural realism, and computational cost. In practice, the preferred model depends on whether the application prioritizes route-level fidelity, road conformity, or high-throughput generation. 
+
+F. Discussion 
+
+The experiments lead to three broader implications for urban trajectory generation. First, benchmark conclusions depend strongly on which notion of realism is prioritized . If the target application em-phasizes fine-grained individual-trip fidelity, such as behavior replay or high-quality synthetic route generation, DiffTraj is the most reliable choice in the current benchmark. If the application emphasizes city-scale spatial organization, road conformity, and hotspot recovery, DiffRNTraj and TrajFlow 
+
+are especially attractive. If the goal is lightweight modeling of coarse endpoint statistics, Markov remains a meaningful low-complexity reference. Second, the best-performing methods should be understood as negotiating different trade-offs rather than solving the task in the same way. DiffTraj is strongest in sample-level geometry, DiffRNTraj is strongest in structure-aware realism, and TrajFlow offers a particularly attractive balance between fidelity and efficiency. Shanghai is especially informative in this regard, because under more challenging data conditions, the tension between these objectives becomes sharper and model weaknesses become easier to expose. Third, the results validate the central motivation of City-TrajBench. Without unified preprocessing, representation con-version, and multi-level evaluation, it would be easy to draw misleading conclusions from a narrow metric set. For example, one might conclude that Markov is highly competitive if only endpoint statistics are considered, or that road-network-aware generation is always superior if only density realism is measured. By jointly evaluating global realism, trip-level fidelity, trajectory-level similarity, conditional consistency, and efficiency, CityTrajBench makes these trade-offs explicit and therefore provides a more reliable basis for future model development. VII. C ONCLUSION 
+
+In this paper, we presented CityTrajBench , a unified bench-mark for city-scale vehicle trajectory generation. The bench-mark standardizes data preprocessing, trajectory normaliza-tion, model adaptation, map-aware post-processing, model selection, and multi-level evaluation under a common ex-perimental protocol, enabling fairer comparison across het-erogeneous trajectory generators. By bringing classical sta-tistical methods and modern deep generative models into the same evaluation framework, CityTrajBench addresses a long-standing challenge in trajectory generation research: the lack of reproducible and directly comparable benchmarking settings. Using three real-world urban trajectory datasets and seven representative generation methods, we conducted a system-atic empirical study from multiple perspectives, including global spatial realism, trip-level statistical fidelity, trajectory-level geometric similarity, conditional mobility consistency, and computational efficiency. The results show that trajec-tory generation quality is inherently multi-objective. Contin-uous generative models define the strongest frontier in the current benchmark, with DiffTraj consistently achieving the 17 
+
+best trajectory-level fidelity, DiffRNTraj performing particu-larly well on structure-sensitive global metrics, and TrajFlow 
+
+offering a strong balance between realism and efficiency. At the same time, the benchmark also shows that simple statistical baselines such as Markov remain competitive on certain coarse-grained endpoint-related statistics. These find-ings highlight that no single model dominates all aspects of urban trajectory generation equally, and that meaningful evaluation must consider both macro-level realism and micro-level plausibility. Despite these contributions, the current benchmark has several limitations. First, CityTrajBench focuses on city-scale vehicle trajectory generation and therefore does not yet cover other important mobility modalities, such as pedestrian, cy-cling, or multimodal movement data. Second, although the benchmark includes heterogeneous model families and multi-ple real-world datasets, its current scope is still limited relative to the diversity of urban environments, sensing conditions, and sampling regimes encountered in practice. Third, the present evaluation protocol emphasizes spatial, statistical, and structural fidelity, but does not fully capture all aspects of temporal realism, behavioral causality, or downstream task utility. In particular, the benchmark adopts a fixed-length tra-jectory representation for comparability across heterogeneous models, which may smooth short trajectories and truncate long ones relative to their raw forms. In addition, benchmark-side representation unification includes lightweight map-aware projection before evaluation, so the reported realism metrics reflect post-processed common-format outputs rather than raw decoder outputs alone. Moreover, some model-specific engineering choices, such as feature access, output space, and checkpoint-selection behavior, are necessarily documented rather than fully homogenized, because enforcing a strict one-size-fits-all protocol would distort the original assumptions of several baselines. The conditional evaluation further shows that the strongest continuous generative models better pre-serve origin-dependent destination structure under the current benchmark setting, although their relative ranking varies across datasets. Finally, although the current benchmark includes conditional evaluation for all seven compared baselines under a unified origin-conditioned protocol, the current conditional setting is still limited relative to the broader space of con-trollable trajectory generation, such as jointly constrained origin–destination, departure time, travel purpose, and network restriction settings. These limitations suggest several directions for future work. An important next step is to extend the benchmark to broader mobility settings, including multimodal trajectories, richer temporal annotations, and larger cross-city or cross-region datasets. It is also valuable to incorporate additional evalu-ation dimensions, such as privacy risk, fairness, robustness under distribution shift, and utility for downstream tasks including simulation, forecasting, and policy analysis. An-other promising direction is to support more controllable generation settings, where user-defined constraints such as origin–destination pairs, departure time, travel purpose, or road restrictions can be assessed in a unified manner. Future benchmark extensions should also investigate variable-length evaluation, raw-output versus post-processed evaluation, and more explicit sensitivity analysis for benchmark-side normal-ization choices. Finally, we hope CityTrajBench can serve not only as an evaluation platform, but also as a foundation for reproducible research on urban mobility generation, helping the community develop stronger, more transparent, and more practically useful trajectory generation methods. REFERENCES [1] X. Kong, Q. Chen, M. Hou, H. Wang, and F. Xia, “Mobility trajectory generation: a survey,” Artificial Intelligence Review , vol. 56, no. Suppl 3, pp. 3057–3098, 2023. [2] G. Xiong, Z. Li, M. Zhao, Y. Zhang, Q. Miao, Y. Lv, and F.-Y. Wang, “Trajsgan: A semantic-guiding adversarial network for urban trajectory generation,” IEEE Transactions on Computational Social Systems , vol. 11, no. 2, pp. 1733–1743, 2023. [3] Z. Li, G. Xiong, Y. Lv, P. Ye, X. Liu, S. Tarkoma, and F.-Y. Wang, “An urban trajectory data-driven approach for covid-19 simulation,” IEEE Transactions on Computational Social Systems , vol. 11, no. 3, pp. 4290– 4299, 2024. [4] Y. Zhu, J. J. Yu, X. Zhao, Q. Liu, Y. Ye, W. Chen, Z. Zhang, X. Wei, and Y. Liang, “Controltraj: Controllable trajectory generation with topology-constrained diffusion model,” in Proceedings of the 30th ACM SIGKDD Conference on Knowledge Discovery and Data Mining , 2024, pp. 4676– 4687. [5] Y. Zhu, Y. Ye, S. Zhang, X. Zhao, and J. Yu, “Difftraj: Generating gps trajectory with diffusion probabilistic model,” Advances in Neural Information Processing Systems , vol. 36, pp. 65 168–65 188, 2023. [6] T. Wei, Y. Lin, S. Guo, Y. Lin, Y. Huang, C. Xiang, Y. Bai, and H. Wan, “Diff-rntraj: A structure-aware diffusion model for road network-constrained trajectory generation,” IEEE Transactions on Knowledge and Data Engineering , vol. 36, no. 12, pp. 7940–7953, 2024. [7] X. Chen, J. Xu, R. Zhou, W. Chen, J. Fang, and C. Liu, “Trajvae: A vari-ational autoencoder model for trajectory generation,” Neurocomputing ,vol. 428, pp. 332–339, 2021. [8] J. Rao, S. Gao, Y. Kang, and Q. Huang, “Lstm-trajgan: A deep learning approach to trajectory privacy protection,” arXiv preprint arXiv:2006.10521 , 2020. [9] P. Li, J. Wang, H. Zhang, X. Shi, N. Koshizuka, C. Shimizu, and R. Jiang, “Trajflow: Nation-wide pseudo gps trajectory generation with flow matching models,” in The Fourteenth International Conference on Learning Representations , 2026. [10] P. Kothari, S. Kreiss, and A. Alahi, “Human trajectory forecasting in crowds: A deep learning perspective,” IEEE Transactions on Intelligent Transportation Systems , vol. 23, no. 7, pp. 7386–7400, 2021. [11] L. Feng, M. Bahari, K. M. B. Amor, É. Zablocki, M. Cord, and A. Alahi, “Unitraj: A unified framework for scalable vehicle trajectory prediction,” in European Conference on Computer Vision . Springer, 2024, pp. 106– 123. [12] M. C. Gonzalez, C. A. Hidalgo, and A.-L. Barabasi, “Understanding individual human mobility patterns,” nature , vol. 453, no. 7196, pp. 779–782, 2008. [13] S. Gambs, M.-O. Killijian, and M. N. del Prado Cortez, “Next place prediction using mobility markov chains,” in Proceedings of the first workshop on measurement, privacy, and mobility , 2012, pp. 1–6. [14] S. Choi, J. Kim, and H. Yeo, “Trajgail: Generating urban vehicle tra-jectories using generative adversarial imitation learning,” Transportation Research Part C: Emerging Technologies , vol. 128, p. 103091, 2021. [15] X. Liu, H. Chen, and C. Andris, “trajgans: Using generative adversarial networks for geo-privacy protection of trajectory data (vision paper),” in Location privacy and security workshop , 2018, pp. 1–7. [16] N. Xu, L. Trinh, S. Rambhatla, Z. Zeng, J. Chen, S. Assefa, and Y. Liu, “Simulating continuous-time human mobility trajectories,” in Proc. 9th Int. Conf. Learn. Represent , 2021, pp. 1–9. [17] Y. Yuan, J. Ding, H. Wang, D. Jin, and Y. Li, “Activity trajectory generation via modeling spatiotemporal dynamics,” in Proceedings of the 28th ACM SIGKDD Conference on Knowledge Discovery and Data Mining , 2022, pp. 4752–4762. [18] K. Ouyang, R. Shokri, D. S. Rosenblum, and W. Yang, “A non-parametric generative model for human trajectories.” in IJCAI , vol. 18, 2018, pp. 3812–3817. [19] C. Cao and M. Li, “Generating mobility trajectories with retained data utility,” in Proceedings of the 27th ACM SIGKDD conference on knowledge discovery & data mining , 2021, pp. 2610–2620. 18 
+
+[20] D. P. Kingma and M. Welling, “Auto-encoding variational bayes,” arXiv preprint arXiv:1312.6114 , 2013. 
+
+APPENDIX AADDITIONAL CONDITIONAL DESTINATION RESULTS ON 
+
+PORTO AND SHANGHAI 
+
+In addition to the main Chengdu conditional evaluation re-ported in Sec. VI-D, we provide origin-conditioned destination divergence results for Porto and Shanghai in Tables X and XI. These supplementary results are included to assess whether the conditional benchmark findings generalize beyond the main dataset used for head/torso/tail visualization and discussion in the main text. The appendix results show that the relative strengths of 
+
+DiffTraj and TrajFlow vary across datasets, but both remain among the strongest models in conditional destination consis-tency under the unified protocol. TABLE X: Origin-conditioned destination divergence on Porto. 
+
+Model AvgCondDestError Head Torso Tail NumOrigins Markov 0.5883 0.5082 0.5695 0.6317 210 VAE 0.4059 0.2297 0.3394 0.5162 210 TrajVAE 0.4590 0.3415 0.4274 0.5250 210 TrajGAN 0.4321 0.2885 0.3762 0.5231 210 DiffTraj 0.1961 0.0461 0.1328 0.2942 210 DiffRNTraj 0.3917 0.1842 0.3264 0.5140 210 TrajFlow 0.1771 0.0353 0.1134 0.2721 210 
+
+TABLE XI: Origin-conditioned destination divergence on Shanghai. 
+
+Model AvgCondDestError Head Torso Tail NumOrigins Markov 0.5444 0.4332 0.5157 0.6063 144 VAE 0.5410 0.4202 0.5445 0.5875 144 TrajVAE 0.6007 0.5191 0.5913 0.6392 144 TrajGAN 0.5345 0.4134 0.5359 0.5823 144 DiffTraj 0.4712 0.3256 0.4441 0.5460 144 DiffRNTraj 0.5052 0.3335 0.5018 0.5764 144 TrajFlow 0.3203 0.1709 0.2874 0.4001 144 
+
+APPENDIX BCONFIGURATION SUMMARY OF CITY TRAJ BENCH 
+
+For clarity and reproducibility, Table XII summarizes the ex-act benchmark configuration used in all reported experiments. TABLE XII: Configuration summary of CityTrajBench. 
+
+Category Item Setting 
+
+Dataset Split unit Trajectory-level split by moveid .Split ratio 70% / 15% / 15%. Split rule Unique moveid s are shuffled, then split by ratio. Seed 42. Order Intra-trajectory point order is preserved. Bounds Porto: lat [41.1399, 41.1867], lng [-8.6888, -8.5557]; Chengdu: lat [30.6531, 30.7297], lng [104.0354, 104.1299]; Shanghai: lat [31.2, 31.25], lng [121.405, 121.48]. Grid size 64 × 64 for all datasets. Coord. norm. Min–max normalized to [−1, 1] using each dataset bounding box; fixed length L = 200 .Length normalization &Features Short traj. Linear interpolation to length 200. Long traj. Prefix truncation to the first 200 points. Cond. feat. dim. 8 (departure-time slot, trip distance, trip duration, trajectory length, average step distance, average speed, start ID, end ID). Norm. stats Fitted on train split; applied to val / test. Dataset-specific preprocessing Interval Unified to 30 seconds across datasets. Departure time 288 five-minute bins when timestamps are valid; otherwise 0. Start / end IDs Row-major IDs on a 16 × 16 grid over the dataset bounding box. Trip distance Sum of geodesic distances along the fixed-length trajectory. Spatial metrics Density Error JSD over normalized grid-cell density. Pattern Score Top-K hotspot threshold with K = 409 
+
+(≈ 10% of cells). Trip Error Mean JSD of start and end distributions on the shared grid. Length Error 20 bins from pooled real and generated trajectory lengths. JSD-SD 20 bins from pooled real and generated step distances. Traj. match Match space Local planar xy coordinates in meters converted from latitude / longitude. KD-tree summary Start x, y , end x, y , and total trajectory length. Summary dim. 5. Feature norm. Standardized by real-set mean and std. Retrieval KD-tree nearest-neighbor query. Pool size Top-50. Embedding 32 resampled points. Re-ranking Euclidean distance on the 32-point polyline embedding. Conditional destination evaluation Eval. grid 16 × 16 .Origin unit Start-point grid cell. Dest. unit End-point grid cell on the same grid. Cond. dist. Normalized destination-cell histogram conditioned on an origin cell. Div. metric JSD between real and generated conditional destination distributions. AvgCondDestError Mean JSD over all valid origin cells. Valid origin At least 5 real trajectories per origin cell. Origin groups Ranking Descending real-data start-cell frequency. Head Top 20% of valid origin cells. Torso Middle 30% of valid origin cells. Tail Bottom 50% of valid origin cells. Conditional visualization Grid 16 × 16 .Origin selection One head / torso / tail origin cell selected from valid real origins. Valid threshold At least 30 real trajectories per origin cell. Post-proc. Coord. recovery Inverse mapping from normalized space to dataset GPS bounds. DiffRNTraj Treated as already in GPS / road-network space; no inverse normalization. Map matching Point-wise nearest-road projection using an STRtree spatial index. Runs Seeds 42, 52, 62. Statistic Mean ± std across seeds. Sample size Matched to the corresponding test split size. Hardware GPU NVIDIA A800 80GB PCIe. CUDA / driver CUDA 12.4; NVIDIA driver 550.127.05. Runtime note Markov runs on CPU for fitting and generation; neural models use GPU inference. 19 
+
+Shibo Zhu is currently pursuing his Ph.D. in Building Energy and Environment Engineering at The Hong Kong Polytechnic University. He holds a Bachelor’s degree in Computer Science from the Southern University of Science and Technology. His research interests include time series predic-tion, federated learning, and reinforcement learning. Additionally, Zhu is exploring the application of computer science technologies in enhancing building energy efficiency. 
+
+Xiaodan Shi received the B.E. and M.S. degrees in photogrammetry and remote sensing from Wuhan University, China. She received the Ph.D. degree with the Center for Spatial Information Science, The University of Tokyo, Kashiwa, Japan. She is working as an assistant professor with Department of Computer and Systems Sciences at Stockholm University. Her current research interests include people and vehicle trajectory prediction, trajectory generation and time series prediction for renewable energy. 
+
+Dayin Chen is currently pursuing his Ph.D. in Building Energy and Environment Engineering at The Hong Kong Polytechnic University. He holds both a Bachelor’s and a Master’s degree in Computer Science from the Southern University of Science and Technology. His research interests include mobile computing, crowdsourcing, and neural architecture search. Additionally, Chen is exploring the applica-tion of computer science technologies in enhancing building energy efficiency. 
+
+Yuntian Chen is an assistant professor at East-ern Institute of Technology, Ningbo. He received the B.S. degree from Tsinghua University, Beijing, China, in 2015, the dual B.S. degree from Peking University, Beijing, China, in 2015, and the Ph.D. degree with merit from Peking University, Beijing, China, in 2020. His research field includes scientific machine learning and intelligent energy systems. He is interested in the integration of domain knowledge and data-driven models. 
+
+Hao-Ran Zhang is a Data Scientist at Location-Mind Inc., Tokyo 101-0042, Japan. His current re-search and work focus on spatial data analytics, AI-driven human flow prediction, and the application of location-based big data in fields like urban traffic planning and disaster risk management. He has hands-on experience in developing machine learning models for processing and visualizing large-scale GPS-derived mobility data, and has contributed to optimizing LocationMind’s core services. 
+
+Tianhao Wu graduated from Peking University with dual Bachelor’s degrees in Engineering and Economics, and a Ph.D. in Science. He has com-pleted postdoctoral research at the U.S. Reservoir Engineering Institute and Rice University. As a key researcher, he has participated in major international projects funded by the National Natural Science Foundation of China and collaborated with compa-nies like ExxonMobil and Saudi Aramco. His work has been featured as a cover article in Nano Energy and highlighted in Water Resources Research. He also reviews for several prominent journals, including SPE Journal, Fuel, Computational Geosciences, Energy & Fuels, Journal of Petroleum Science and Engineering, and Journal of Natural Gas Science and Engineering. 
+
+Jerry Yan is a member of the European Academy of Sciences and Arts and the Fellow of Hong Kong Academy of Engineering Sciences, currently serving as a Chair-Professor at the Hong Kong Polytechnic University. With a PhD from the Royal Institute of Technology (KTH), he has held chair professor posi-tions at Luleå University of Technology, Mälardalen University, and KTH, Sweden. Prof. Yan’s research focuses on renewable energy, advanced energy sys-tems, climate change mitigation, and environmental policies. He has a publication record of over 500 papers in renowned journals such as Science, Nature Energy, and Nature Climate Change, and holds more than 10 patents. Having supervised nearly 200 post-doctoral researchers and 50 doctoral candidates, Prof. Yan has secured substantial external grants exceeding 20 million Euros. Prof. Yan’s contributions have been acknowledged through prestigious awards, including the Global Human Settlements Award of Green Technology, the EU Energy Islands’ Award, Research2Business Top100, and the IAGE Lifetime Achieve-ment Award.

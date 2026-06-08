@@ -6,44 +6,43 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-07
-- 运行时间：2026-06-07 21:11:37 UTC
+- 最新运行日期：2026-06-08
+- 运行时间：2026-06-08 21:11:36 UTC
 - 运行状态：成功
-- 本次总论文数：8
-- 精读区：5
-- 速读区：3
+- 本次总论文数：7
+- 精读区：2
+- 速读区：5
 
 ### 今日简报（AI）
-今日精读两篇高分论文：《Exploring Easy Boosts for Lidar Semantic Scene Completion》和《UniCAD: A Unified Benchmark and Universal Model for Multi-Modal Multi-Task CAD》，均获9.0分。重点方向是激光雷达语义场景补全的简易提升方法以及多模态多任务CAD的统一基准模型。建议优先阅读这两篇，尤其适合关注自动驾驶感知和3D场景理解的读者。
-- 详情：[/202606/07/README](/202606/07/README)
+今天处理了5篇论文，精读两篇高评分论文，涉及点云分割新类别发现与LLM推理增强。  
+最值得关注的是《Geometric-Aware Hypergraph Reasoning》在点云分割中的几何超图推理方法，以及《Stepwise Reasoning Enhancement》通过外部子图生成提升LLM推理能力。  
+建议优先精读这两篇高评分论文，并关注速读中《SCOUT》的语义场景覆盖和《Textual Supervision》的视觉-语言模型地理空间表示增强。
+- 详情：[/202606/08/README](/202606/08/README)
 
 ### 精读区论文标签
-1. [Exploring Easy Boosts for Lidar Semantic Scene Completion](/202606/07/2606.03992v1-exploring-easy-boosts-for-lidar-semantic-scene-completion)  
+1. [Geometric-Aware Hypergraph Reasoning for Novel Class Discovery in Point Cloud Segmentation](/202606/08/2606.07280v1-geometric-aware-hypergraph-reasoning-for-novel-class-discovery-in-point-cloud-segmentation)  
    标签：评分：9.0/10、query:smart-city
-   evidence：激光雷达语义场景补全与点云处理
-2. [UniCAD: A Unified Benchmark and Universal Model for Multi-Modal Multi-Task CAD](/202606/07/2606.05058v1-unicad-a-unified-benchmark-and-universal-model-for-multi-modal-multi-task-cad)  
-   标签：评分：9.0/10、query:smart-city
-   evidence：多模态CAD基准与点云到CAD重建、文本/图像生成CAD、CAD问答
-3. [Plan2Map: A Multimodal Benchmark for Document-Grounded Geospatial Boundary Reconstruction from Planning Records](/202606/07/2606.02747v1-plan2map-a-multimodal-benchmark-for-document-grounded-geospatial-boundary-reconstruction-from-planning-records)  
+   evidence：基于超图推理的点云语义分割新类发现
+2. [Stepwise Reasoning Enhancement for LLMs via External Subgraph Generation](/202606/08/2606.04454v1-stepwise-reasoning-enhancement-for-llms-via-external-subgraph-generation)  
    标签：评分：8.0/10、query:smart-city
-   evidence：从规划文档中进行多模态地理空间边界重建
-4. [A Cookbook of 3D Vision: Data, Learning Paradigms, and Application](/202606/07/2606.04291v1-a-cookbook-of-3d-vision-data-learning-paradigms-and-application)  
-   标签：评分：8.0/10、query:smart-city
-   evidence：3D视觉综述覆盖点云表示与分割方法
-5. [BPDA-GMM: Bayesian Probabilistic Data Association via Gaussian Mixture Models for Semantic SLAM](/202606/07/2606.04618v1-bpda-gmm-bayesian-probabilistic-data-association-via-gaussian-mixture-models-for-semantic-slam)  
-   标签：评分：8.0/10、query:smart-city
-   evidence：语义SLAM结合概率数据关联，用于点云场景理解
+   evidence：知识图谱推理与LLM子图生成
 
 ### 速读区论文标签
-1. [CRAFTQA: A Code-Driven Adaptive Framework for Complex Structured Data Reasoning](/202606/07/2606.02170v1-craftqa-a-code-driven-adaptive-framework-for-complex-structured-data-reasoning)  
+1. [SCOUT: Semantic scene COverage via Uncertainty-guided Traversal](/202606/08/2606.06721v1-scout-semantic-scene-coverage-via-uncertainty-guided-traversal)  
+   标签：评分：7.0/10、query:smart-city
+   evidence：在线语义场景图构建，包含不确定性感知物体标签和结构关系
+2. [MetaConfigurator: AI-Assisted RDF Authoring from JSON Data](/202606/08/2606.07094v1-metaconfigurator-ai-assisted-rdf-authoring-from-json-data)  
+   标签：评分：7.0/10、query:smart-city
+   evidence：AI辅助从JSON数据生成RDF以构建知识图谱
+3. [Textual Supervision Enhances Geospatial Representations in Vision-Language Models](/202606/08/2606.07172v1-textual-supervision-enhances-geospatial-representations-in-vision-language-models)  
+   标签：评分：7.0/10、query:smart-city
+   evidence：增强地理空间表示，可用于智慧城市数据表示学习
+4. [CityTrajBench: A Unified Benchmark for City-Scale Vehicle Trajectory Generation](/202606/08/2606.02287v1-citytrajbench-a-unified-benchmark-for-city-scale-vehicle-trajectory-generation)  
    标签：评分：6.0/10、query:smart-city
-   evidence：自适应代码驱动框架，可用于知识图谱等异构结构化数据推理
-2. [The Road Ahead in Autonomous Driving: The KITScenes Multimodal Dataset](/202606/07/2606.02956v1-the-road-ahead-in-autonomous-driving-the-kitscenes-multimodal-dataset)  
+   evidence：城市级车辆轨迹生成的统一基准，标准化数据输入和评估
+5. [Generalizing Graph Foundation Models via Hyperbolic Retrieval-Augmented Generation](/202606/08/2606.03307v2-generalizing-graph-foundation-models-via-hyperbolic-retrieval-augmented-generation)  
    标签：评分：6.0/10、query:smart-city
-   evidence：包含激光雷达点云和高清地图的多模态驾驶数据集
-3. [A Graph Foundation Model with Spectral Parsing and Prototype-Guided Spatial Propagation](/202606/07/2606.03315v1-a-graph-foundation-model-with-spectral-parsing-and-prototype-guided-spatial-propagation)  
-   标签：评分：6.0/10、query:smart-city
-   evidence：图基础模型结合谱解析，可用于知识图谱推理
+   evidence：基于双曲检索增强生成的图基础模型泛化
 
 
 <div class="dpr-home-promo-card">
