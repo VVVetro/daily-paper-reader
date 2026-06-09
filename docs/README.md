@@ -6,43 +6,35 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-08
-- 运行时间：2026-06-08 21:11:36 UTC
+- 最新运行日期：2026-06-09
+- 运行时间：2026-06-09 20:58:08 UTC
 - 运行状态：成功
-- 本次总论文数：7
-- 精读区：2
-- 速读区：5
+- 本次总论文数：5
+- 精读区：3
+- 速读区：2
 
 ### 今日简报（AI）
-今天处理了5篇论文，精读两篇高评分论文，涉及点云分割新类别发现与LLM推理增强。  
-最值得关注的是《Geometric-Aware Hypergraph Reasoning》在点云分割中的几何超图推理方法，以及《Stepwise Reasoning Enhancement》通过外部子图生成提升LLM推理能力。  
-建议优先精读这两篇高评分论文，并关注速读中《SCOUT》的语义场景覆盖和《Textual Supervision》的视觉-语言模型地理空间表示增强。
-- 详情：[/202606/08/README](/202606/08/README)
+今日推荐5篇论文，精读3篇聚焦建筑信息模型与地理空间表示学习。最值得关注：9分的《Ishigaki-IDS》提出BIM信息交付的开源验证感知模型，以及8分的《OSMGraphCLIP》用OpenStreetMap图学习全局位置表示。建议优先精读这两篇高分论文，其余速读可作为AI数据平台与多表匹配的补充。
+- 详情：[/202606/09/README](/202606/09/README)
 
 ### 精读区论文标签
-1. [Geometric-Aware Hypergraph Reasoning for Novel Class Discovery in Point Cloud Segmentation](/202606/08/2606.07280v1-geometric-aware-hypergraph-reasoning-for-novel-class-discovery-in-point-cloud-segmentation)  
+1. [Ishigaki-IDS: An Open-Weight Verifier-Aware Model for Information Delivery Specification Drafting in Building Information Modeling](/202606/09/2606.08545v1-ishigaki-ids-an-open-weight-verifier-aware-model-for-information-delivery-specification-drafting-in-building-information-modeling)  
    标签：评分：9.0/10、query:smart-city
-   evidence：基于超图推理的点云语义分割新类发现
-2. [Stepwise Reasoning Enhancement for LLMs via External Subgraph Generation](/202606/08/2606.04454v1-stepwise-reasoning-enhancement-for-llms-via-external-subgraph-generation)  
+   evidence：建筑信息模型信息交付规范起草，处理领域词汇和XML模式
+2. [OSMGraphCLIP: Learning Global Location Representations from OpenStreetMap Graphs](/202606/09/2606.08046v1-osmgraphclip-learning-global-location-representations-from-openstreetmap-graphs)  
    标签：评分：8.0/10、query:smart-city
-   evidence：知识图谱推理与LLM子图生成
+   evidence：利用OpenStreetMap数据构建异构图，保留道路、建筑物等城市要素的拓扑和语义关系，支持智慧城市知识图谱构建
+3. [From USD Scenes to Knowledge Graphs: Zero-Shot Ontology Grounding with LLMs](/202606/09/2606.09134v1-from-usd-scenes-to-knowledge-graphs-zero-shot-ontology-grounding-with-llms)  
+   标签：评分：8.0/10、query:smart-city
+   evidence：利用LLM从3D场景零样本生成本体标注并构建知识图谱
 
 ### 速读区论文标签
-1. [SCOUT: Semantic scene COverage via Uncertainty-guided Traversal](/202606/08/2606.06721v1-scout-semantic-scene-coverage-via-uncertainty-guided-traversal)  
+1. [Architectural Evolution and Selection Framework for Database Systems in AI-Ready Data Platforms](/202606/09/2606.08317v1-architectural-evolution-and-selection-framework-for-database-systems-in-ai-ready-data-platforms)  
    标签：评分：7.0/10、query:smart-city
-   evidence：在线语义场景图构建，包含不确定性感知物体标签和结构关系
-2. [MetaConfigurator: AI-Assisted RDF Authoring from JSON Data](/202606/08/2606.07094v1-metaconfigurator-ai-assisted-rdf-authoring-from-json-data)  
-   标签：评分：7.0/10、query:smart-city
-   evidence：AI辅助从JSON数据生成RDF以构建知识图谱
-3. [Textual Supervision Enhances Geospatial Representations in Vision-Language Models](/202606/08/2606.07172v1-textual-supervision-enhances-geospatial-representations-in-vision-language-models)  
-   标签：评分：7.0/10、query:smart-city
-   evidence：增强地理空间表示，可用于智慧城市数据表示学习
-4. [CityTrajBench: A Unified Benchmark for City-Scale Vehicle Trajectory Generation](/202606/08/2606.02287v1-citytrajbench-a-unified-benchmark-for-city-scale-vehicle-trajectory-generation)  
+   evidence：面向AI就绪数据平台的数据库架构选择框架
+2. [RACT: Retrieval Augmented Column-Table Learning and Prediction for Multi-Table Schema Matching](/202606/09/2606.07843v1-ract-retrieval-augmented-column-table-learning-and-prediction-for-multi-table-schema-matching)  
    标签：评分：6.0/10、query:smart-city
-   evidence：城市级车辆轨迹生成的统一基准，标准化数据输入和评估
-5. [Generalizing Graph Foundation Models via Hyperbolic Retrieval-Augmented Generation](/202606/08/2606.03307v2-generalizing-graph-foundation-models-via-hyperbolic-retrieval-augmented-generation)  
-   标签：评分：6.0/10、query:smart-city
-   evidence：基于双曲检索增强生成的图基础模型泛化
+   evidence：自监督模式匹配技术用于多源数据集成
 
 
 <div class="dpr-home-promo-card">

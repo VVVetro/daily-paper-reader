@@ -1,0 +1,192 @@
+Title: From USD Scenes to Knowledge Graphs: Zero-Shot Ontology Grounding with LLMs
+
+URL Source: https://arxiv.org/pdf/2606.09134v1
+
+Published Time: Tue, 09 Jun 2026 01:50:24 GMT
+
+Number of Pages: 5
+
+Markdown Content:
+# From USD Scenes to Knowledge Graphs: Zero-Shot Ontology Grounding with LLMs 
+
+Jiangtao Shuai 1, Zongxiong Chen 2, Manfred Hauswirth 1,2, Sonja Schimmler 1,2
+
+Abstract — Constructing knowledge graphs from 3D simu-lation scenes is essential for robot task reasoning, but the key bottleneck, grounding scene objects to formal ontology classes, still relies on manually curated dictionaries that are brittle and do not generalize across assets. We investigate whether large language models (LLMs) can automate this grounding step for Universal Scene Description (USD) scenes as a zero-shot, training-free alternative. On a kitchen scene (125 objects) with SOMA-HOME Ontology, LLMs achieve 90– 96% exact-match accuracy with descriptive names and 49–89% with abbreviated names, substantially outperforming dictionary and embedding baselines. Under fully opaque names, context-augmented prompting recovers up to 48%. Feature ablation reveals that LLMs primarily exploit semantic cues in the scene graph (sibling names and parent paths); anonymizing these cues reduces accuracy to 0–6%, while geometry alone yields only 4–17%. 
+
+I. I NTRODUCTION 
+
+For autonomous robots, understanding objects as semanti-cally grounded entities is essential for knowledge-driven rea-soning and task execution [1]. A well-established approach is to represent environment knowledge using ontologies, which provide a formal schema for constructing knowledge graphs. Perceived objects are reflected in this schema as typed instances, enabling commonsense reasoning and task planning [2], [3]. Digital twins have emerged as a key infrastructure for robot software development and evaluation, yet their seman-tic potential remains largely untapped: scene elements are rarely linked to formal ontologies, and knowledge graphs, when present, serve as metadata stores rather than active rea-soning components [4]. Universal Scene Description (USD), increasingly adopted as the scene representation backbone in digital twin platforms, exemplifies this gap. USD encodes scenes as hierarchical graphs of primitives ( prims ) with rich geometric attributes and parent-child relationships, but these structures reflect spatial organization rather than ontological semantics. Moreover, as a format designed for asset exchange across diverse users, USD relies on user-defined identifiers whose naming conventions vary widely, making consistent mapping to ontology classes nontrivial. Prior work [5], [6] constructs knowledge graphs from USD scenes by mapping prims to OWL classes (grounding) 
+
+*This research has received funding from the German Research Founda-tion (DFG) under project numbers 441926934 (NFDI4Cat) and 460234259 (NFDI4DataScience) 
+
+> 1
+
+The authors are with Technical University of Berlin, Germany and 2Fraunhofer FOKUS, Germany. 
+
+{firstname.lastname }@tu-berlin.de ;
+
+{firstname.lastname }@fokus.fraunhofer.de Prompt 
+
+> Assembly
+> LLM
+> Semantic
+> Labels
+> Instantiation
+> ABox Individuals
+> Knowledge Graph
+> Domain Concepts
+> Ontology
+> Prompts
+> TBox
+> Linearization
+> USD Scene Assets
+> Context
+> Extraction
+> TBox
+
+Fig. 1: Overview of the proposed LLM-based ontology grounding pipeline for USD scenes. USD scene attributes are extracted and combined with a linearized ontology TBox into prompts; the LLM predicts semantic labels (ontology classes) for each prim, which are then instantiated as ABox individuals to form a knowledge graph. Blue boxes denote data sources and artifacts; orange boxes denote processing steps; dashed borders indicate modules adopted from the Multiverse framework [5]. The rendered kitchen scene is adopted from [7]. 
+
+and instantiating ABox individuals. However, the grounding step relies on handcrafted dictionaries that require expert curation and do not generalize to diverse assets, preventing the pipeline from scaling without manual effort. We present, to the best of our knowledge, the first study exploring whether LLMs can automate this grounding step, enabling zero-shot knowledge graph construction from USD scenes. Specifically, we ask: Can an LLM infer the correct ontology class of a USD prim solely from information available in the USD scene description, and what roles do different information sources play in this grounding process? 
+
+Our contributions are summarized as follows:  
+
+> •
+
+We present the first study of LLM-based ontology grounding for USD scenes, showing that off-the-shelf LLMs provide a zero-shot alternative to handcrafted mapping for semantic grounding in knowledge-graph construction.  
+
+> •
+
+We empirically evaluate LLM-based ontology ground-ing under varying naming conditions, demonstrating strong performance with descriptive identifiers and rea-sonable robustness under reduced lexical cues.  
+
+> arXiv:2606.09134v1 [cs.RO] 8 Jun 2026 •
+
+We provide an in-depth analysis of the factors driving ontology grounding performance, revealing that ontol-ogy class assignment is driven primarily by semantic cues embedded in USD scene graphs. II. P ROBLEM FORMULATION 
+
+Constructing a knowledge graph from a USD scene re-quires two steps: (1) grounding —mapping each prim to an ontology class, and (2) instantiation —creating ABox [8] individuals with spatial and relational properties derived from the scene graph. Instantiation can be automated given correct class assignments (e.g., using tools from [5]); therefore, we focus on the grounding problem. To formalize this question, we have to specify (i) what information the grounding function g has available, and (ii) how the contribution of each information source is measured. We address (i) below and (ii) through the experimental design in Section IV. Formally, let the set of prims in a USD scene be S =
+
+{p1, . . . , p n} and let C denote the set of classes in an OWL TBox. Grounding is a mapping g : S → C that assigns each prim pi a class ci = g(pi) ∈ C . When no leaf class provides a sufficient match, we instruct the model to return the most specific applicable superclass rather than an ”unknown” label, so that downstream tasks can still leverage partial type information (e.g., knowing an object is Furniture even when its exact subclass is uncertain). Each prim provides multiple information sources, includ-ing a user-defined name, geometric attributes (bounding box, mass), world-frame position, and scene-graph context (parent path and siblings). To study their individual contributions, we define three naming regimes that progressively degrade the most accessible cue, the prim name: semantic , abbre-viated , and opaque . (Section IV-A) Under opaque naming, grounding relies entirely on non-lexical features, directly testing the sufficiency of geometric and hierarchical context. We further perform a feature ablation (Section IV-E) over geometry, position, and hierarchy to quantify their individual contributions. III. A PPROACH 
+
+As illustrated in Figure 1, we convert structured USD at-tributes (Sec. III-A) into natural-language prompts (Sec. III-C), combined with a linearized ontology TBox (Sec. III-B). The LLM performs zero-shot grounding by selecting the best-matching class using pretrained world knowledge, as the TBox provides descriptions but not canonical object dimensions, e.g., linking a 1.9m bounding box to the class 
+
+Refrigerator relies on the model’s internalized priors about real-world object sizes. To study the contribution of different signals, we design three prompting strategies that progressively incorporate USD-derived context (Section III-C). 
+
+A. Context Extraction from USD 
+
+For each prim pi in the USD stage, we extract three groups of features: (i) Geometry (axis-aligned bounding box (w, h, d ) in meters and mass m in kilograms, when available via UsdPhysicsMassAPI ); (ii) Position (world-frame translation (x, y, z )); and (iii) Hierarchy (the prim’s full parent path, e.g., /.../SinkArea grp/Sink grp ,and the names of its sibling prims in the scene graph). These features are formatted as key-value pairs in plain text and concatenated into the prompt (see supplementary material for an example). Note that the hierarchy features carry two distinct types of information: structural informa-tion (depth, sibling count) and lexical information (semantic content of sibling and parent names). As our ablation study will show (Section IV-E), the latter dominates. 
+
+B. TBox Linearization 
+
+The ontology TBox is linearized into a flat list of all relevant classes (both leaf and intermediate nodes) with their parent class and natural-language descriptions derived from 
+
+rdfs:comment annotations. For instance:            
+
+> Bowl (subClassOf: Crockery) --Around, deep object used to contain food or liquid.
+
+Including intermediate classes (e.g., Crockery ,
+
+DesignedContainer ) allows the model to select an appropriate superclass when no leaf class provides a sufficient match. The list is presented in alphabetical order; we do not preserve the tree structure in the prompt, though positional effects in long class lists may influence predictions [9]. 
+
+C. Prompting Strategies 
+
+We design three prompting strategies with increasing input richness. (A) Name-only uses only the prim name and the linearized TBox, isolating lexical cues. (B) Context-augmented additionally incorporates geometric, positional, and hierarchical context (Section III-A), instructing the model to use all features and prefer parent classes when evidence is insufficient. (C) Chain-of-thought (CoT) uses the same inputs as (B) but requires step-by-step reasoning over geometry, mass, position, and scene-graph context be-fore producing the final JSON mapping, encouraging explicit multi-feature integration at the cost of increased output tokens. Notably, for Qwen in instruct mode (Q-NT), CoT does not trigger internal reasoning during inference; instead, it explicitly instructs the model to generate visible reasoning text (e.g., analyzing bounding-box dimensions, scene-graph context, and candidate classes) before committing to a clas-sification. IV. E XPERIMENTS 
+
+A. Experiment Setup 
+
+We use the Kitchen Set USD asset from Pixar [7] as our testbed, as it provides a high-quality and structurally rich scene suitable for evaluating grounding methods. We con-struct a dataset of 125 object-level prims from approximately 2,700 scene prims by excluding grouping nodes, camera/light prims, sub-components (e.g., screws), and prims without physical geometry, enabling manual verification of ground-truth labels. The selected objects span diverse categories, including furniture, appliances, containers, cutlery, tools, and decorations, ensuring representativeness. The target ontology is SOMA-HOME [3], a home-environment extension of SOMA with 94 kitchen-relevant classes organized in a multi-level hierarchy (max depth 5). Its functional organization (e.g., Crockery ) creates se-mantically meaningful ambiguity among geometrically sim-ilar objects (e.g., cups vs. bowls), while class descriptions (rdfs:comment ) provide natural-language cues without specifying canonical dimensions, requiring implicit world knowledge. As a publicly available ontology integrated into robotic systems such as KnowRob [2], it enables our results to be situated within an existing deployment pipeline. Of the 125 prims, 86 map to leaf classes directly, while 39 require superclass mapping (e.g., Toaster →Appliance ). To construct naming regimes, we transform each prim name as follows: semantic retains the original identifier (e.g., 
+
+CupCBlue 1 ); abbreviated applies collision-free vowel re-moval with per-word truncation (e.g., cpcbl1 ); opaque re-places the name with a sequential identifier (e.g., obj 042 ). We evaluate Gemini 2.5 Flash (2.5F), Gemini 3 Flash Preview (3F), and Qwen 3.5-27B [10] (Qwen), with Qwen tested in thinking (Q-T) and instruct (Q-NT) modes. All models use temperature 0 for deterministic decoding; de-tailed configurations can be found in the replication pack-age https://github.com/JTShuai/USD_2_KG 
+
+B. Evaluation Metrics a) Exact-Match Accuracy (EMA): The fraction of prims that were assigned their ground-truth class: EMA = 1
+
+n
+
+> n
+
+X
+
+> i=1
+
+⊮[ˆ ci = c∗ 
+
+> i
+
+] (1) where ˆci is the predicted class and c∗ 
+
+> i
+
+the ground-truth class. 
+
+b) Hierarchical F1 (HF1): Since ontology classes form a tree, predictions that select ancestors or siblings of the ground-truth class are more informative than random guesses. Following Silla and Freitas [11], each class is expanded into its ancestor set ↑ c = {c, parent (c), . . . , root },and hierarchical precision ( hP ) and recall ( hR ) are defined as: 
+
+hP = | ↑ ˆc ∩ ↑ c∗|| ↑ ˆc| , hR = | ↑ ˆc ∩ ↑ c∗|| ↑ c∗| (2) The final score is the macro-averaged harmonic mean of hP 
+
+and hR :
+
+HF1 = 1
+
+n
+
+> n
+
+X
+
+> i=1
+
+2 hP i hR i
+
+hP i + hR i
+
+(3) This metric assigns full credit to exact matches and partial credit to predictions that are close in the class hierarchy. 
+
+C. Baselines 
+
+We compare against three non-LLM baselines:  
+
+> •
+
+Multiverse (Dictionary Mapping) : the dictionary-based mapping from [5], which maps prim names to OWL classes via exact string lookup.                                                                                                    
+
+> TABLE I: Grounding performance on the Pixar Kitchen Set (125 prims) using the SOMA-HOME ontology (94 classes) under three naming regimes (semantic, abbreviated, opaque). Results are reported as exact-match ac-curacy (EMA, %) and hierarchical F1 (HF1). (A)–(C) denote prompting strategies with increasing input richness (see Section III-C). Non-LLM baselines are shown at the top; 2.5F = Gemini 2.5 Flash, 3F = Gemini 3 Flash, Q-NT = Qwen 3.5-27B instruct, and Q-T = Qwen 3.5-27B thinking. “fail” indicates degenerate outputs (see text).
+> Method Semantic Abbreviated Opaque
+> EMA HF1 EMA HF1 EMA HF1 Multiverse 9.09 0.00 0.00 LV-NN 2.50 2.50 2.50 S-BERT 67 .85 14 .52 2.53 2.5F (A) 96 .99 84 .93 6.50 2.5F (B) 94 .98 77 .93 33 .70 2.5F (C) 94 .98 76 .91 30 .70 3F (A) 94 .99 80 .93 6.42 3F (B) 92 .98 89 .96 48 .79
+> 3F (C) 94 .98 83 .97 48 .78 Q-NT (A) 94 .98 67 .83 6.50 Q-NT (B) 90 .98 54 .79 17 .62 Q-NT (C) 90 .98 49 .68 26 .68 Q-T (A) 94 .98 75 .90 fail fail Q-T (B) 94 .99 69 .77 19 .50 Q-T (C) 90 .98 73 .89 21 .53
+> •
+
+S-BERT : cosine similarity between Sentence-BERT [12] embeddings ( all-MiniLM-L6-v2 ) of the prim name and each ontology class name; the nearest neighbor is selected.  
+
+> •
+
+Log-Volume Nearest Neighbor (LV-NN) : each ontology class is assigned an approximate bounding-box volume based on common-sense priors (e.g., Refrigerator ≈
+
+1.5 m 3, Cup ≈ 0.5 ×10 −3 m3). Each prim is matched to the class with the nearest volume on a log scale. This baseline is name-independent and uses only geometric information. Note that supervised baselines are infeasible in our single-scene setting as all labeled data serves as the test set. 
+
+D. Main Results 
+
+Table I presents results across all methods and naming regimes. 
+
+a) Can LLMs ground USD prims from names alone?: 
+
+All LLMs achieve 90–96% EMA on semantic names and retain 49–89% on abbreviated names, substantially outper-forming S-BERT (67%/14%), the Multiverse (9%/0%), and LV-NN (2% across all regimes). The Multiverse’s low score reflects its limited vocabulary; LV-NN’s constant perfor-mance confirms that bounding-box volume alone cannot support fine-grained classification. These results indicate that LLMs can reliably ground USD prims in a zero-shot setting when name cues are available. 
+
+b) Can geometric and hierarchical context compensate for missing names?: With only the opaque name and TBox, Strategy (A) scores 6% across all models. Adding geometric and hierarchical context (B) raises performance to 17–48% (Gemini 3F achieves the highest (48%)), confirming that non-lexical USD signals carry grounding-relevant information TABLE II: Feature ablation of context under opaque naming using Strat-egy (B) (125 prims, 94 classes). Each row corresponds to a subset of input features provided to the LLM. “anon.” denotes conditions where semantic sibling names and parent paths are replaced with opaque identifiers. Results are reported as exact-match accuracy (EMA, %).                             
+
+> Condition 2.5F 3F Q-NT Q-T
+> Geometry only 17 17 11 4Hierarchy only 28 54 21 22 Geo + position 25 12 69Position only 4769Full ctx. (anon.) 18 15 25 8Hier. only (anon.) 0665
+
+However, as the ablation in Section IV-E reveals, much of this gain stems from semantic sibling names and parent paths that remain visible in the opaque regime. 
+
+c) Chain-of-thought.: CoT (C) yields inconsistent gains over context-only (B) under opaque naming: Q-NT improves by 9 points (17% →26%), while other models show com-parable or slightly degraded performance. No consistent benefits are observed under abbreviated or semantic naming. Notably, Q-NT is the only configuration without internal reasoning, which may explain its larger gains: prompt-induced reasoning serves as its primary mechanism for multi-feature integration, whereas models with built-in reasoning (Q-T, Gemini) benefit less from additional external guidance. These results suggest that explicit step-by-step reasoning may benefit models without internal reasoning capabilities under challenging conditions, but is not universally effective, indicating the need for more targeted CoT designs. 
+
+d) Thinking mode failure by Qwen 3.5-27B.: Q-T (A) on opaque names (marked “fail” in Table I) produces no usable output. The model’s internal reasoning first enters a deliberation loop, repeatedly reconsidering whether classifi-cation is possible without semantic cues. It then degenerates into emitting semantically vacuous tokens: the recurring fragment “ wheretogetherthroughwithwithou ” grows progres-sively longer with each repetition, accumulating meaningless concatenations until the output budget is exhausted. This failure mode illustrates that, under extended reasoning with-out grounding signals, Qwen 3.5-27B can collapse into self-reinforcing token repetition. 
+
+E. Feature Ablation 
+
+To determine what roles different USD-derived signals play in grounding, we run Strategy (B) on opaque names providing only a single feature subset at a time. Table II reports EMA for each condition. Hierarchy (parent paths + sibling names) is the strongest single feature across all models (21–54%), while geometry alone scores 4–17% and position alone 4–9%. Notably, Gemini 3F achieves 54% with hierarchy alone, exceeding its full-context opaque (B) score (48% in Table I), suggesting that geometric and positional features can introduce noise. The anonymization control (bottom rows) pinpoints the source: when semantic sibling names and parent paths are replaced with opaque identifiers, hierarchy-only EMA drops to 0–6% and full-context EMA to 8–25%. This confirms that the LLM exploits contextual semantic cues in the scene graph rather than geometric reasoning to infer class assignments, even when the target prim’s own name is uninformative. While prim names remain the most effective signal for grounding, the scene-graph context alone enables meaningful classification even when names are entirely absent. 
+
+F. Error Analysis 
+
+On opaque (B), Gemini 3F leads with 48% (60/125). Objects correctly identified across models tend to have distinctive bounding-box dimensions (e.g., the 5.8 m-wide room, 1.6 m-tall stove, 1.9 m-tall refrigerator) or unique geo-metric profiles (e.g., the elongated broom at 0.4 ×0.7 ×1.4 m). The most common failure mode is superclass collapse :geometrically similar objects (e.g., cups, bowls, flower pots, small bottles) are mapped to shallow superclasses such as Crockery or DesignedContainer . Among the 39 prims whose ground truth is already a superclass (e.g., FlowerPot →DesignedContainer ), models fre-quently predict a sibling subclass (e.g., Cup ), confirming that these objects are inherently ambiguous when only geometric features are available. V. D ISCUSSION AND CONCLUSION 
+
+Limitations. Our evaluation covers a single kitchen scene with 125 objects; generalization to other domains (e.g., warehouse, office) and larger-scale scenes remains to be validated. All models are evaluated with temperature 0 in a single deterministic run, so we do not report variance estimates. The opaque naming regime anonymizes only the target prim’s name while retaining semantic sibling names and parent paths; a fully anonymized scene would better iso-late geometric reasoning, though our anonymization control (Section IV-E) partially addresses this. Finally, we linearize the TBox as a flat class list; preserving the ontology hierarchy in the prompt may improve superclass selection but increase prompt length. 
+
+Conclusion. We investigated whether LLMs can automate ontology grounding for USD scenes, replacing handcrafted dictionaries with a zero-shot, training-free approach. On descriptive names, LLMs achieve 90–96% accuracy; under fully opaque naming, context-augmented prompting recov-ers up to 48% by exploiting scene-graph context. Feature ablation shows that this performance is primarily driven by semantic cues in sibling names and parent paths: anonymiz-ing these cues reduces accuracy to 0–6%, whereas geometry alone yields 4–17%. For well-named assets, LLM-based grounding can directly replace dictionary-based pipelines; for degraded names, it provides a useful prior when scene-graph context is available. Future work includes multi-modal grounding with rendered thumbnails and integration into existing pipelines with human-in-the-loop confirmation for low-confidence predictions. REFERENCES [1] M. Beetz, G. Kazhoyan, and D. Vernon, “Robot manipulation in every-day activities with the cram 2.0 cognitive architecture and generalized action plans,” Cognitive Systems Research , vol. 92, p. 101375, 2025. [2] M. Beetz, D. Beßler, A. Haidu, M. Pomarlan, A. K. Bozcuoglu, and G. Bartels, “KnowRob 2.0 – a 2nd generation knowledge processing framework for cognition-enabled robotic agents,” in Proc. IEEE Int. Conf. Robotics and Automation (ICRA) , 2018, pp. 512–519. [3] D. Beßler, R. Porzel, M. Pomarlan, A. Vyas, S. H¨ offner, M. Beetz, R. Malaka, and J. Bateman, “Foundations of the socio-physical model of activities (SOMA) for autonomous robotic agents,” in Proc. 12th Int. Conf. Formal Ontology in Information Systems (FOIS) . IOS Press, 2021, pp. 159–174. [4] E. Karabulut, S. F. Pileggi, P. Groth, and V. Degeler, “Ontologies in digital twins: A systematic literature review,” Future Generation Computer Systems , vol. 153, pp. 442–456, 2024. [5] G. H. Nguyen, D. Beßler, S. Stelter, M. Pomarlan, and M. Beetz, “Translating universal scene descriptions into knowledge graphs for robotic environment,” in 2024 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2024, pp. 9389–9395. [6] G. Nguyen, M. Pomarlan, S. Jongebloed, N. Leusmann, M. N. Vu, and M. Beetz, “Generating actionable robot knowledge bases by combining 3d scene graphs with robot ontologies,” in 2025 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) .IEEE, 2025, pp. 21 527–21 534. [7] Pixar Animation Studios, “Universal scene description (usd) documen-tation,” https://openusd.org/release/index.html, accessed: 2026-04-09. [8] M. Funk, M. Grosser, and C. Lutz, “Fitting description logic ontologies to abox and query examples,” arXiv preprint arXiv:2508.08007 , 2025. [9] N. F. Liu, K. Lin, J. Hewitt, A. Paranjape, M. Bevilacqua, F. Petroni, and P. Liang, “Lost in the middle: How language models use long contexts,” Trans. Assoc. Comput. Linguistics , vol. 12, pp. 157–173, 2024. [10] A. Yang, A. Li, B. Yang, B. Zhang, B. Hui, B. Zheng, B. Yu, C. Gao, C. Huang, C. Lv et al. , “Qwen3 technical report,” arXiv preprint arXiv:2505.09388 , 2025, qwen 3.5-27B belongs to this model family. [11] C. N. S. Jr. and A. A. Freitas, “A survey of hierarchical classification across different application domains,” Data Mining and Knowledge Discovery , vol. 22, no. 1, pp. 31–72, 2011. [12] N. Reimers and I. Gurevych, “Sentence-BERT: Sentence embeddings using siamese BERT-networks,” in Proc. Conf. Empirical Methods in Natural Language Processing (EMNLP) , 2019.

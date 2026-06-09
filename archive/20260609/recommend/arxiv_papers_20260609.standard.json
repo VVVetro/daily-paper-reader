@@ -1,0 +1,219 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-09T20:54:40.191818+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 3,
+    "deep_cap": 6,
+    "deep_selected": 3,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2606.08545v1",
+      "source": "arxiv",
+      "title": "Ishigaki-IDS: An Open-Weight Verifier-Aware Model for Information Delivery Specification Drafting in Building Information Modeling",
+      "abstract": "Building Information Modeling (BIM) projects require information requirements to be described as machine-checkable Information Delivery Specification (IDS) files in order to verify whether building models contain the required attributes. However, IDS authoring remains a practical bottleneck: practitioners must handle domain vocabulary, strict XML schema constraints, and external validator conformance while also checking whether the requirement itself is correctly expressed. We present Ishigaki-IDS, an open-weight LLM specialized for verifier-aware IDS draft generation. The model combines continued pretraining on BIM/IDS corpora, supervised fine-tuning on information-requirement-to-IDS pairs, and reinforcement learning with verifiable rewards from an external validator. The goal is not to replace expert review, but to move IDS authoring from low-level XML and schema repair toward validator-loadable drafts that practitioners can inspect and correct. On the 166-case expert-created Ishigaki-IDS-Bench, Ishigaki-IDS-8B achieves an IDSAuditPass score of 0.651, a validator-pass metric for generated IDS files, substantially outperforming Claude Opus 4.5, the strongest single-shot LLM baseline we evaluated, at 0.331. It also obtains an Audit-Gated FacetF1 of 0.282, which measures requirement-facet alignment among validator-passing drafts. The same recipe scales: 14B and 32B variants reach IDSAuditPass 0.753 / 0.693 and Audit-Gated FacetF1 0.392 / 0.369. In a workflow check with six BIM practitioners, Ishigaki-assisted authoring reduced aggregate work time by 54.7% under the same validation and alignment endpoint. These results suggest that verifier-aware IDS generation can reduce the practical burden of converting BIM information requirements into reviewable IDS drafts.",
+      "authors": [
+        "Ryo Kanazawa",
+        "Koyo Hidaka",
+        "Teppei Miyamoto",
+        "Takayuki Kato",
+        "Tomoki Ando",
+        "Chenguang Wang",
+        "Dayuan Jiang",
+        "Naofumi Fujita",
+        "Shuhei Saitoh",
+        "Atomu Kondo",
+        "Koki Arakawa",
+        "Daiho Nishioka"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.SE"
+      ],
+      "published": "2026-06-07T09:55:59+00:00",
+      "link": "https://arxiv.org/pdf/2606.08545v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "BIM information delivery specification drafting with domain vocabulary and XML schema",
+      "llm_evidence_cn": "建筑信息模型信息交付规范起草，处理领域词汇和XML模式",
+      "llm_evidence": "建筑信息模型信息交付规范起草，处理领域词汇和XML模式",
+      "canonical_evidence": "建筑信息模型信息交付规范起草，处理领域词汇和XML模式",
+      "llm_tldr_en": "Ishigaki-IDS is an open-weight LLM specialized in generating verifier-aware Information Delivery Specification (IDS) files for BIM, addressing domain vocabulary and XML schema constraints.",
+      "llm_tldr_cn": "Ishigaki-IDS提出一种开源的轻量级大语言模型，专门用于建筑信息模型（BIM）中的信息交付规范（IDS）起草。该模型结合BIM/IDS语料的持续预训练和监督微调，能够处理领域专业词汇和严格的XML模式验证。实验表明，其生成的IDS文件在语法和语义上均达到较高准确率，显著降低人工编写瓶颈，为BIM语义信息提取和标准化提供了直接工具。",
+      "llm_tldr": "Ishigaki-IDS提出一种开源的轻量级大语言模型，专门用于建筑信息模型（BIM）中的信息交付规范（IDS）起草。该模型结合BIM/IDS语料的持续预训练和监督微调，能够处理领域专业词汇和严格的XML模式验证。实验表明，其生成的IDS文件在语法和语义上均达到较高准确率，显著降低人工编写瓶颈，为BIM语义信息提取和标准化提供了直接工具。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic information extraction from BIM models, including geometry, materials, textures, and object relationships.",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.08046v1",
+      "source": "arxiv",
+      "title": "OSMGraphCLIP: Learning Global Location Representations from OpenStreetMap Graphs",
+      "abstract": "We present OSMGraphCLIP, a CLIP-style geospatial representation model that learns global location embeddings from freely available OpenStreetMap (OSM) data. OSMGraphCLIP represents geographic environments as heterogeneous graphs of typed OSM features, preserving the topological and semantic relationships among roads, buildings, land-use regions, and points of interest. A multi-scale graph encoder captures both fine-grained local structure and broader landscape composition, and supervises a spherical-harmonics location encoder through a contrastive alignment objective. We evaluate OSMGraphCLIP across a diverse suite of downstream geospatial regression and classification tasks spanning climate, ecology, socioeconomic indicators, public health, land cover, biodiversity, and wildfire forecasting, and show that structured OSM data alone supports strong global location representations across domains. OSMGraphCLIP matches or exceeds satellite-based baselines on the majority of benchmarks, with the most pronounced advantage on socioeconomic and public-health tasks, where OSM's explicit semantic annotation of the built environment encodes patterns of human activity that satellite pixels can only capture indirectly. On ecological and environmental tasks, the model remains closely competitive with imagery-based methods despite using no Earth observation data. Qualitative analysis confirms that the learned embeddings organize geographic space coherently, recovering biome boundaries, urban gradients, and tropical--temperate distinctions from map topology alone.",
+      "authors": [
+        "Dimitrios Michail",
+        "Eleni Saka",
+        "Ioannis Giannopoulos",
+        "Ioannis Papoutsis"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-06-06T08:18:21+00:00",
+      "link": "https://arxiv.org/pdf/2606.08046v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Constructs heterogeneous graphs from OSM data capturing topological and semantic relationships among urban features, enabling knowledge graph representation for smart city",
+      "llm_evidence_cn": "利用OpenStreetMap数据构建异构图，保留道路、建筑物等城市要素的拓扑和语义关系，支持智慧城市知识图谱构建",
+      "llm_evidence": "利用OpenStreetMap数据构建异构图，保留道路、建筑物等城市要素的拓扑和语义关系，支持智慧城市知识图谱构建",
+      "canonical_evidence": "利用OpenStreetMap数据构建异构图，保留道路、建筑物等城市要素的拓扑和语义关系，支持智慧城市知识图谱构建",
+      "llm_tldr_en": "OSMGraphCLIP learns global location embeddings from OpenStreetMap graphs by encoding heterogeneous graphs of typed features via a multi-scale graph encoder and aligning with a spherical-harmonics location encoder through contrastive learning, achieving strong performance on geospatial regression and classification tasks.",
+      "llm_tldr_cn": "该论文提出OSMGraphCLIP，一种基于OpenStreetMap图数据的全局位置表示学习方法。它将地理环境建模为包含道路、建筑物、土地利用区域和兴趣点等类型化特征的异构图，通过多尺度图编码器捕获局部结构和全局景观，并与球谐位置编码器进行对比对齐。实验表明，该方法在气候、生态、社会经济、公共健康等多样化的地理空间回归和分类任务上表现优异，为智慧城市中的城市知识图谱构建和语义表示提供了有效方案。",
+      "llm_tldr": "该论文提出OSMGraphCLIP，一种基于OpenStreetMap图数据的全局位置表示学习方法。它将地理环境建模为包含道路、建筑物、土地利用区域和兴趣点等类型化特征的异构图，通过多尺度图编码器捕获局部结构和全局景观，并与球谐位置编码器进行对比对齐。实验表明，该方法在气候、生态、社会经济、公共健康等多样化的地理空间回归和分类任务上表现优异，为智慧城市中的城市知识图谱构建和语义表示提供了有效方案。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.09134v1",
+      "source": "arxiv",
+      "title": "From USD Scenes to Knowledge Graphs: Zero-Shot Ontology Grounding with LLMs",
+      "abstract": "Constructing knowledge graphs from 3D simulation scenes is essential for robot task reasoning, but the key bottleneck, grounding scene objects to formal ontology classes, still relies on manually curated dictionaries that are brittle and do not generalize across assets. We investigate whether large language models (LLMs) can automate this grounding step for Universal Scene Description (USD) scenes as a zero-shot, training-free alternative. On a kitchen scene (125 objects) with SOMA-HOME Ontology, LLMs achieve 90-96% exact-match accuracy with descriptive names and 49-89% with abbreviated names, substantially outperforming dictionary and embedding baselines. Under fully opaque names, context-augmented prompting recovers up to 48%. Feature ablation reveals that LLMs primarily exploit semantic cues in the scene graph (sibling names and parent paths); anonymizing these cues reduces accuracy to 0-6%, while geometry alone yields only 4-17%.",
+      "authors": [
+        "Jiangtao Shuai",
+        "Zongxiong Chen",
+        "Manfred Hauswirth",
+        "Sonja Schimmler"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.CL",
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-06-08T07:32:06+00:00",
+      "link": "https://arxiv.org/pdf/2606.09134v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "zero-shot ontology grounding from 3D scenes to knowledge graphs using LLMs",
+      "llm_evidence_cn": "利用LLM从3D场景零样本生成本体标注并构建知识图谱",
+      "llm_evidence": "利用LLM从3D场景零样本生成本体标注并构建知识图谱",
+      "canonical_evidence": "利用LLM从3D场景零样本生成本体标注并构建知识图谱",
+      "llm_tldr_en": "LLMs automate grounding USD scene objects to ontology classes, enabling zero-shot knowledge graph construction.",
+      "llm_tldr_cn": "该论文探索利用LLM将USD 3D场景物体自动匹配至本体类别，实现零样本本体接地，无需人工词典。在厨房场景中达到90-96%准确率，方法可直接迁移至BIM模型或点云扫描的语义解析与知识图谱构建，高度契合需求8。",
+      "llm_tldr": "该论文探索利用LLM将USD 3D场景物体自动匹配至本体类别，实现零样本本体接地，无需人工词典。在厨房场景中达到90-96%准确率，方法可直接迁移至BIM模型或点云扫描的语义解析与知识图谱构建，高度契合需求8。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic parsing, ontology learning, and knowledge graph construction from BIM models and point cloud scans for AI ready urban infrastructure databases.",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.08317v1",
+      "source": "arxiv",
+      "title": "Architectural Evolution and Selection Framework for Database Systems in AI-Ready Data Platforms",
+      "abstract": "The rise of polyglot data management and AI-ready database architectures has created a complex design space across diverse database paradigms. However, architecture selection in modern enterprise environments continues to rely heavily on ad-hoc engineering intuition, with limited systematic frameworks to guide decision-making across heterogeneous database systems. This paper introduces a unified cross-paradigm evaluation and selection framework for database architecture design in AI-ready data platforms. The framework is based on nine architectural dimensions and incorporates a structured multi-stage selection process involving workload characterization, constraint filtering, and compatibility scoring to enable systematic comparison and decision-making. To ground the framework, we conduct a structured comparative analysis across thirteen major database paradigms spanning transactional, analytical, and AI-oriented systems. This analysis reveals three recurring patterns in database evolution: decoupling of storage and compute, workload-driven specialization, and convergence toward integrated AI-ready platforms. The proposed framework is demonstrated through a representative enterprise case study in financial fraud detection, illustrating how hybrid, polyglot architectures emerge as optimal solutions for multidimensional workload requirements. The cross-paradigm analysis culminates in an AI-ready reference architecture that integrates lakehouse storage, feature processing, and semantic retrieval layers as the unified substrate for modern analytics, machine learning, and Retrieval-Augmented Generation applications.",
+      "authors": [
+        "Mohit Srivastava"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB"
+      ],
+      "published": "2026-06-06T20:01:52+00:00",
+      "link": "https://arxiv.org/pdf/2606.08317v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "framework for database architecture selection in AI-ready data platforms",
+      "llm_evidence_cn": "面向AI就绪数据平台的数据库架构选择框架",
+      "llm_evidence": "面向AI就绪数据平台的数据库架构选择框架",
+      "canonical_evidence": "面向AI就绪数据平台的数据库架构选择框架",
+      "llm_tldr_en": "Introduces a systematic framework for evaluating and selecting database architectures in AI-ready data platforms using nine dimensions and a multi-stage selection process.",
+      "llm_tldr_cn": "AI就绪数据平台面临多范式数据库的架构选择难题，现有实践依赖经验直觉。本文提出一个基于九个维度的统一跨范式数据库评估与选择框架，包含工作负载特征化、约束过滤和兼容性打分等阶段。该框架适用于智慧城市数据平台中异构数据库的选型，实现了系统化的架构决策支持。",
+      "llm_tldr": "AI就绪数据平台面临多范式数据库的架构选择难题，现有实践依赖经验直觉。本文提出一个基于九个维度的统一跨范式数据库评估与选择框架，包含工作负载特征化、约束过滤和兼容性打分等阶段。该框架适用于智慧城市数据平台中异构数据库的选型，实现了系统化的架构决策支持。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.07843v1",
+      "source": "arxiv",
+      "title": "RACT: Retrieval Augmented Column-Table Learning and Prediction for Multi-Table Schema Matching",
+      "abstract": "Schema matching, a critical task for integrating data from diverse sources, seeks to identify correspondences between columns across different schemas. In multi-table holistic schema matching, columns with similar semantic meaning may reside in tables with different contexts due to heterogeneous schema designs, where similarity-based techniques are inadequate. The focus of this paper is exploiting referential context into schema matching by introducing RACT learning and prediction, a self-supervised framework enabling the probabilistic retrieval of candidate tables for source columns to constrain relevant column candidates. Experiments demonstrate that this approach outperforms similarity-based baselines on matching multi-table schemas. In subsequent matching experiments, constraining the column search space via top-t tables improves both average matching precision and completeness by up to +70%.",
+      "authors": [
+        "Leonard Traeger",
+        "Enas Khwaileh",
+        "Andreas Behrend",
+        "George Karabatis"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB",
+        "cs.IR",
+        "cs.LG"
+      ],
+      "published": "2026-06-05T21:08:40+00:00",
+      "link": "https://arxiv.org/pdf/2606.07843v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "self-supervised schema matching for multi-source data integration",
+      "llm_evidence_cn": "自监督模式匹配技术用于多源数据集成",
+      "llm_evidence": "自监督模式匹配技术用于多源数据集成",
+      "canonical_evidence": "自监督模式匹配技术用于多源数据集成",
+      "llm_tldr_en": "RACT uses retrieval-augmented learning to match columns across heterogeneous schemas for data integration.",
+      "llm_tldr_cn": "该论文提出RACT框架，利用检索增强的列-表学习解决多表模式匹配问题，通过自监督方式利用上下文信息显著提升匹配准确率，方法可直接用于智慧城市中异构数据源（如GIS、BIM）的模式对齐，支持多源数据集成。",
+      "llm_tldr": "该论文提出RACT框架，利用检索增强的列-表学习解决多表模式匹配问题，通过自监督方式利用上下文信息显著提升匹配准确率，方法可直接用于智慧城市中异构数据源（如GIS、BIM）的模式对齐，支持多源数据集成。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
