@@ -1,0 +1,211 @@
+Title: MoE Enhanced Federated Learning for Spatiotemporal Prediction
+
+URL Source: https://arxiv.org/pdf/2606.10499v1
+
+Published Time: Wed, 10 Jun 2026 00:39:10 GMT
+
+Number of Pages: 5
+
+Markdown Content:
+# MoE Enhanced Federated Learning for Spatiotemporal Prediction 
+
+## Zhehao Dai ∗1, Xiao Han ∗2+, Zhaolin Deng ∗3, Zijian Zhang †4, Xiangyu Zhao Δ5, Guojiang Shen ∗6,Xiangjie Kong ∗7
+
+> ∗
+
+Zhejiang University of Technology, Zhejiang Key Laboratory of Visual Information Intelligent Processing, Hangzhou 
+
+> †
+
+Jilin University, Jilin 
+
+> Δ
+
+City University of Hong Kong, Hong Kong SAR China 
+
+## ABSTRACT 
+
+Traffic prediction is fundamental to intelligent transportation sys-tems and urban computing, yet many cities continue to suffer from traffic data scarcity due to limited sensor deployment and uneven urban development. Cross-city knowledge transfer has thus at-tracted increasing attention, enabling data-rich cities to assist data-scarce ones. However, centralized approaches raise privacy con-cerns, while existing federated methods struggle with pronounced spatiotemporal heterogeneity across cities. To address these chal-lenges, we propose MoE-FedTP, a personalized federated cross-city spatiotemporal prediction framework based on lightweight Mixture-of-Experts (MoE) networks. MoE-FedTP first employs spatiotem-poral neural networks to extract features from both source and target cities, then introduces a set of expert networks derived from different source cities through partial parameter sharing. A gating mechanism dynamically fuses the experts to capture diverse traffic dynamics, achieving fine-grained modeling of urban heterogeneity while preserving privacy. Experiments on four real-world traffic datasets show that MoE-FedTP consistently outperforms state-of-the-art cross-city and federated learning baselines, demonstrating its effectiveness in enhancing prediction accuracy for data-scarce cities. 
+
+## CCS CONCEPTS 
+
+• Information systems → Spatial-temporal systems ; • Applied computing → Transportation .
+
+## KEYWORDS 
+
+Spatiotemporal prediction, Federated learning, Mixture of Experts (MoE) 
+
+ACM Reference Format: 
+
+Zhehao Dai ∗1, Xiao Han ∗2+, Zhaolin Deng ∗3, Zijian Zhang †4, Xiangyu Zhao Δ5, Guojiang Shen ∗6, Xiangjie Kong ∗7 . 2026. MoE Enhanced Federated Learning for Spatiotemporal Prediction. In Proceedings of ACM Conference   
+
+> +Corresponding author. Email: hahahenha@gmail.com. Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org.
+> Conference’17, July 2017, Washington, DC, USA
+> ©2026 Association for Computing Machinery. ACM ISBN 978-1-4503-XXXX-X/2018/06. . . $15.00 https://doi.org/10.1145/nnnnnnn.nnnnnnn
+
+(Conference’17). ACM, New York, NY, USA, 5 pages. https://doi.org/10.1145/ nnnnnnn.nnnnnnn 
+
+## 1 INTRODUCTION 
+
+Traffic prediction plays a crucial role in intelligent transportation systems and urban computing [ 1, 3, 4, 9, 12 , 17 ]. However, due to insufficient sensor deployment or limited urban development levels, many cities still face the challenge of traffic data scarcity. Consequently, cross-city traffic knowledge transfer [ 13 , 18 ] has gradually emerged as a research hotspot, leveraging knowledge from data-rich cities to assist data-scarce cities in improving predic-tion performance [ 11 , 20 ]. While existing centralized approaches can achieve certain effectiveness, they pose risks of privacy leakage. Personalized Federated Learning (PFL) [ 23 , 25 ], as an emerging par-adigm, tailors models or methods for each participating client and only shares model parameters rather than raw data for aggregated updates, enabling cross-city knowledge sharing while preserving privacy and providing new possibilities for collaborative predic-tion [14, 24]. However, cross-city traffic prediction still faces a prominent chal-lenge—significant spatiotemporal heterogeneity [ 5 , 6, 16 , 19 ]. To address this issue, existing methods have proposed various mit-igation strategies: for instance, pFedCTP [ 22 ] achieves effective transfer through adaptive inter-layer interpolation mechanisms, while STGP [ 7] employs a two-stage prompt learning strategy to significantly improve cross-city adaptation performance. Although these methods alleviate model drift, most still rely on unified pre-diction strategies and struggle to accommodate the inherent differ-ences among different cities in terms of spatiotemporal evolution patterns, functional area distributions, and travel patterns. To this end, this paper proposes a personalized federated cross-city spatiotemporal prediction framework based on lightweight Mixture-of-Experts networks (MoE-FedTP). Specifically, we first employ spatiotemporal neural networks to extract spatiotemporal features from both source and target cities, then introduce a light-weight Mixture-of-Experts (MoE) structure. The experts in MoE originate from various source cities and are obtained by sharing partial model parameters. Multiple expert networks model different traffic patterns respectively and are dynamically fused by a gating network, thereby achieving fine-grained characterization of urban heterogeneity. This framework preserves privacy advantages while possessing stronger representation and personalization capabilities, particularly enhancing prediction accuracy for data-scarce cities. Our key contributions are as follows:  
+
+> arXiv:2606.10499v1 [cs.LG] 9 Jun 2026 Conference’17, July 2017, Washington, DC, USA Dai et al.
+
+• We propose MoE-FedST, a personalized federated spatiotem-poral prediction framework with a lightweight MoE struc-ture to address cross-city heterogeneity. 
+
+• We design a cross-city parameter sharing mechanism that summarizes spatiotemporal patterns from source cities as expert networks and dynamically transfers them to target cities, enhancing prediction in data-scarce scenarios. 
+
+• We conduct extensive experiments on four real-world traffic datasets, demonstrating that MoE-FedST consistently out-performs state-of-the-art baselines in both accuracy and generalization. 
+
+## 2 PRELIMINARY 
+
+The sensor distribution in a city can be defined as a graph structure, represented as: 𝐺 𝑆𝑇 = (V , E, A, 𝑋 ), where V represents the set of nodes, E denotes the edge set, A is the adjacency matrix, A𝑖 𝑗 = 1
+
+indicates that a connection exists between node 𝑖 and node 𝑗 , 𝑋 is the node feature matrix evolving over time, including information such as traffic volume or speed. Based on the aforementioned spatio-temporal graph, the fore-casting task is formalized as follows: (𝑋 1: 𝑇 , 𝐺 𝑠𝑡 ) 𝑓 (·) 
+
+−→ 𝑋 1+𝑇 :𝑇 +𝑇 ′
+
+,where 𝑋 1: 𝑇 is the node feature sequence of the most recent 𝑇 time steps, the output 𝑋 1+𝑇 :𝑇 +𝑇 ′
+
+is the predicted node features for the next 𝑇 ′ time steps. Given a model pre-trained on 𝑃 source domains 𝐺 𝑆 = 𝐺 𝑆  
+
+> 1
+
+, ..., 𝐺 𝑆 𝑃 
+
+with substantial historical data spanning time period 𝑇 𝑆 , efficiently adapt this model to a new target domain 𝐺 𝑇 that has limited data over a much shorter period. 
+
+## 3 METHODOLOGY 
+
+In this section, we propose a framework named MoE-FedST for cross-city spatiotemporal forecasting. As illustrated in Figure 1, the framework comprises two stages. In the source city stage, each city is treated as an independent client with a locally deployed spatiotemporal network, enabling the learning of both shared and city-specific traffic patterns. In the target city stage, partial parame-ters from source-city predictors are shared as experts in an MoE model. The target city dynamically activates only the top-k relevant experts, ensuring lightweight computation while alleviating data scarcity and spatiotemporal heterogeneity. 
+
+## 3.1 Local Learning in Source Cities 
+
+To effectively capture spatiotemporal patterns in urban traffic data, we employ a spatiotemporal neural network during local training. As illustrated in the lower-left part of Figure 1, the network is composed of multiple components, including Graph Convolutional Network (GCN) [ 8], Graph Attention Network (GAT) [ 15 ], and At-tention modules, which jointly model the spatial dependencies and temporal dynamics of traffic data. This design enables the source cities to learn more representative features and achieve stronger predictive performance. Mathematically, for an input spatiotem-poral feature vector, the output of the spatiotemporal network is computed as: 
+
+Htemporal = MLP  Att temp 
+
+ Hgru 
+
+ ,
+
+¯H = Pooling 𝑡𝑖𝑚𝑒 (H𝑔𝑟𝑢 ),
+
+H𝑠𝑝𝑎𝑡𝑖𝑎𝑙 = GCN  GAT ( ¯H) ,
+
+(1) where Hgru ∈ R𝑇 ×𝑁 ×𝐹 is the output tensor of the Gated Recur-rent Unit (GRU) [ 2] network. Here, 𝑇 is time steps, 𝑁 represents the number of nodes, and 𝐹 denotes the feature dimensionality. 
+
+¯H ∈ R𝑁 ×𝐹 is the node-level summary feature matrix obtained by applying time-dimensional pooling to the GRU output. Finally, fuse the temporal and spatial embeddings to obtain the final output embedding: 
+
+H𝑠𝑡 = MLP (Htemporal , H𝑠𝑝𝑎𝑡𝑖𝑎𝑙 ). (2) We have designed and developed a comprehensive spatiotemporal predictor that effectively integrates temporal and spatial feature in-formation to achieve accurate traffic flow forecasting for the next 𝑇 
+
+time steps. Through the construction of an MLP-based prediction ar-chitecture, this system can deeply fuse embedding representations from both temporal and spatial dimensions, ultimately generat-ing high-precision traffic flow prediction results. 𝑌 ′ = 𝑀𝐿𝑃 (𝐻 𝑠𝑡 ),where 𝑌 ′ is the prediction result. To optimize the model parameters during training, we adopt the Mean Squared Error (MSE) as the loss function to evaluate prediction accuracy. Let 𝑌 ∈ R𝑁 ×𝑇 ′ ×𝐷 denote the ground truth traffic data, where 𝑁 represents the number of sensors, 𝑇 ′ indicates the prediction horizon, and 𝐷 is the feature dimension. The loss function for the traffic prediction model is formulated as: 
+
+L𝑝𝑟𝑒𝑑 = 1
+
+𝑇 ′ 
+
+> 𝑇 ′
+
+∑︁ 
+
+> 𝑡 =1
+
+(𝑌 𝑡 − 𝑌 ′𝑡 )2. (3) 
+
+## 3.2 Personalized Federated Learning in Target Cities 
+
+In the target city adaptation phase, we design a novel personal-ized federated adaptation mechanism based on MoE architecture. Specifically, we extract critical parameters from the pre-trained pre-diction heads of multiple source cities, sharing and retaining these parameters as expert networks, where each expert network encodes the unique spatiotemporal traffic patterns and domain knowledge of its respective source city. The gating network computes the importance weights for each expert as: 
+
+𝑔 𝑖 = exp (ℎ𝑖 (𝐻 𝑡 𝑡𝑔 )) 
+
+Í𝑗 exp (ℎ𝑗 (𝐻 𝑡 𝑡𝑔 )) , 𝑖 = 1, . . . , 𝑀, (4) where 𝑀 is the number of experts and ℎ𝑖 (·) is the gating function. To ensure efficiency, we only activate the top-k experts with the highest gating scores. Let K𝑡 ⊆ { 1, . . . , 𝑀 } denote the selected experts, then the prediction is obtained as: 𝑌 ′𝑡 𝑡𝑔 = Í𝑖 ∈ K 𝑡 𝑔 𝑖 𝐸 𝑖 (𝑋 𝑡 𝑡𝑔 ).The target city minimizes its own prediction loss: 
+
+Ltarget = 1
+
+|D 𝑞 |∑︁ (𝑋 𝑡 𝑡𝑔 ,𝑌 𝑡 𝑡𝑔 ) ∈ D 𝑞 
+
+L𝑝𝑟𝑒𝑑 (𝑌 ′𝑡 𝑡𝑔 , 𝑌 𝑡 𝑡𝑔 ), (5) where 𝐷 𝑞 indicates the size of the target city dataset. This selective activation mechanism not only effectively reduces computational complexity and resource consumption, but more MoE Enhanced Federated Learning for Spatiotemporal Prediction Conference’17, July 2017, Washington, DC, USA Spatialtemporal Net 
+
+## Client 1 
+
+## Client n 
+
+> …
+
+ST Net 
+
+ST Net  
+
+> GRU
+> Embedding Predictor
+> Attn
+> MLP
+> MLP
+> GAT
+> GCN
+
+## Source City Target City 
+
+ST Net 
+
+Router 
+
+## Mixture -of -Experts Layer 
+
+Client 1 Client n Client 2 …
+
+## Prediction 
+
+Partial 
+
+Shared 
+
+Figure 1: The framework overview of MoE-FedsT. It leverages a Spatialtemporal Net to process local spatiotemporal data and employs a MoE model to effectively transfer and integrate learned knowledge from a source city to a target city. Table 1: Statistics of datasets.                     
+
+> Dataset #Sensor #Edge Time Span Time Interval PEMS-BAY 325 2,694 52,116 5 min METR-LA 207 1,722 34,272 5 min DiDi-Chengdu 524 1,120 17,280 10 min DiDiot-Shenzhen 627 4,845 17,280 10 min
+
+importantly, ensures that the model can intelligently leverage ex-pert knowledge most suitable for the current target city’s traffic characteristics. Consequently, even under data-scarce constraints, the target city’s traffic prediction accuracy can be significantly en-hanced while preserving data privacy and effectively mitigating the challenges posed by cross-city spatiotemporal heterogeneity. 
+
+## 4 EXPERIMENTS 4.1 Experimental Setup 
+
+Datasets. We comprehensively evaluate our proposed method on real-world traffic flow datasets from four major metropolitan areas, including PEMS-BAY, METR-LA [ 10 ], DiDi-Chengdu, and DiDi-Shenzhen. The detailed statistics of these datasets are pre-sented in Table 1. In our experimental design, we adopt a rotation validation strategy: three of the datasets serve as data-rich source cities for pre-training, while the remaining fourth dataset provides only three days of traffic data to simulate a data-scarce target city scenario. 
+
+Metrics. We employ Mean Absolute Error (MAE) and Root Mean Square Error (RMSE) as the primary evaluation metrics to assess the performance of our model. 
+
+Models. We compare our MoE-FedTP against several representa-tive baseline methods: STGCN [ 21 ] as spatiotemporal graph neural network baselines that capture traffic spatiotemporal dependen-cies; ST-GFSL [ 7] as a few-shot learning approach for cross-city traffic prediction; and pFedCTP [ 22 ] as a PFL method designed for cross-city scenarios with adaptive interpolation mechanisms. These baselines represent state-of-the-art approaches across differ-ent paradigms, including spatiotemporal modeling and federated learning. 
+
+Evaluation Settings. We establish uniform experimental set-tings across all methods for fair evaluation. The temporal configu-ration includes history step 𝑇 = 12 and prediction step 𝑇 ′ = 6, with evaluation on 1, 3, and 6 step ahead predictions for short, medium, and long term forecasting. Key hyperparameters: batch size = 32, learning rate = 0.01, hidden dimensions = 64. Baseline models are trained for 100 epochs. Our MoE-FedTP employs 𝑀 = 3 experts with top-𝑘 = 2 activation. 
+
+## 4.2 Performance Evaluation 
+
+We report the comparative analysis between our model and the base-lines in Table 2. The results demonstrate that MoE-FedST achieves competitive performance across all four datasets, particularly on METR-LA and DiDi-Shenzhen. Specifically, because of the introduc-tion of the MoE network, our model has demonstrated outstanding Conference’17, July 2017, Washington, DC, USA Dai et al. 
+
+Table 2: Comparative performance of models across datasets. The optimal results are highlighted for clarity. 
+
+PEMS-BAY METR-LA DiDi-Chengdu DiDi-Shenzhen Method 5 min/15 min/30 min 5 min/15 min/30 min 10 min/30 min/60 min 10 min/30 min/60 min MAE RMSE MAE RMSE MAE RMSE MAE RMSE STGCN 2.64/2.77/3.01 4.03/4.44/5.13 4.26/4.42/4.86 6.32/6.67/7.35 2.93/2.91/3.09 4.25/4.25/4.49 2.74/2.74/2.87 3.86/3.88/4.09 ST-GFSL 1.16/1.64/2.17 1.98/3.26/4.64 2.46/3.11/3.82 4.14/5.61/6.93 2.19/2.64/ 3.00 3.15/ 3.84 /4.34 1.95/2.36/2.72 2.81/3.52/4.13 pFedCTP 1.08 /1.60/2.20 1.83 /3.21/4.58 2.33/3.01/3.81 4.08/5.68/7.07 2.14 /2.66/ 3.00 3.10 /3.90/4.39 1.89/2.34/2.70 2.75/3.52/4.12 MoE-FedST 1.20/ 1.57 /2.00 2.10/ 3.20 /4.45 2.23 /2.88 /3.47 3.94 /5.43 /6.52 2.19/ 2.63 /3.08 3.18/4.05/4.35 1.88 /2.30 /2.59 2.70 /3.31 /3.73 1.63 1.63 1.69 1.59 topk=2 topk=3 w/o MoE MoE-FedST 1.0 1.2 1.4 1.6 1.8 MAE   
+
+> (a) PEMS-BAY 2.86 2.88 2.92 2.86 topk=2 topk=3 w/o MoE MoE-FedST 2.0 2.5 3.0 MAE (b) METR-LA 2.69 2.73 2.84 2.63 topk=2 topk=3 w/o MoE MoE-FedST 0.0 0.5 1.0 1.5 2.0 2.5 3.0 MAE
+> (c) Didi-Chengdu 2.24 2.27 2.38 2.26 topk=2 topk=3 w/o MoE MoE-FedST 1.0 1.5 2.0 2.5 MAE (d) Didi-Shenzhen
+
+Figure 2: Ablation study of MoE-FedST. 
+
+performance in both long-term and short-term traffic prediction tasks. Specifically, on the METR-LA dataset, the MAE and RMSE metrics improved by 6.23% and 5.20%, respectively; while on the DiDi-Shenzhen dataset, an average performance gain of 4.68% was achieved. These results further validate the strong generalization ca-pability of our method, making it effectively applicable to different urban traffic scenarios. 
+
+## 4.3 Ablation Study 
+
+To evaluate the effectiveness of our model components, we con-ducted relevant ablation studies by varying the number of experts 
+
+𝑘 selected in the top-𝑘 mechanism, removing the expert model, and the spatiotemporal net. As illustrated by the experimental re-sults across the four datasets, we can conclude that the expert network is essential for enhancing the overall performance of the model. Specifically, as shown in Figure 2(c) and Figure 2(d), on the DiDi-Chengdu and DiDi-Shenzhen datasets, the MAE performance degrades by 7.4% and 5.0% respectively when the MoE module is removed. Furthermore, in the analysis of the k parameter in top-k expert selection, both DiDi-Chengdu and DiDi-Shenzhen datasets achieve optimal performance when k=1, indicating that for cities with distinctive traffic patterns, selecting the most relevant single expert can better capture their specific spatiotemporal patterns, while activating too many experts may introduce noise and dilute the contribution of the best expert. In contrast, as shown in Fig-ure 2(a) and Figure 2(b), the PEMS-BAY and METR-LA datasets perform best when k=2, suggesting that these cities have more com-plex and diverse traffic patterns that require combining knowledge from multiple experts to achieve optimal prediction performance. 
+
+## 5 FUTURE WORK 
+
+Despite its strong performance, MoE-FedTP has notable limitations. The partial parameter sharing mechanism may prove insufficient for cities with extreme heterogeneity in traffic patterns or when the number of source cities is limited, potentially reducing the model’s ability to generalize effectively across diverse environments. Additionally, the fixed top-k expert selection strategy may not optimally adapt to dynamic and varying traffic scenarios. Future work will address these limitations by exploring more adaptive expert selection strategies, such as reinforcement learning-based or uncertainty-aware gating approaches, to enhance the model’s flexibility in responding to changing traffic conditions. Furthermore, the framework will be extended to incorporate multi-modal urban data, integrating various transportation modes and heterogeneous sensor networks, to improve its accuracy, scalability, and robustness across a wider range of urban environments. 
+
+## 6 CONCLUSION 
+
+In this paper, we propose MoE-FedTP, a cross-city personalized fed-erated spatiotemporal prediction framework based on lightweight MoE networks. The framework tackles two major challenges in traffic prediction: pronounced spatiotemporal heterogeneity across cities and data scarcity in many urban regions. MoE-FedTP employs spatiotemporal neural networks for feature extraction, constructs expert networks via partial parameter sharing, and applies a gat-ing mechanism to dynamically select and fuse the most relevant experts, enabling fine-grained modeling of urban heterogeneity while preserving privacy. Extensive experiments on four real-world traffic datasets show that MoE-FedTP consistently outperforms state-of-the-art cross-city and federated learning baselines in both accuracy and generalization. Ablation studies further confirm the ef-fectiveness of the MoE structure and expert selection strategy under data-scarce conditions. Overall, MoE-FedTP provides an efficient and privacy-preserving solution for cross-city traffic prediction and offers promising directions for federated transfer learning in broader urban computing and spatiotemporal forecasting tasks. MoE Enhanced Federated Learning for Spatiotemporal Prediction Conference’17, July 2017, Washington, DC, USA 
+
+## REFERENCES 
+
+[1] Lingxiao Cao, Bin Wang, Guiyuan Jiang, Yanwei Yu, and Junyu Dong. 2025. Spatiotemporal-aware Trend-Seasonality Decomposition Network for Traffic Flow Forecasting. In Proceedings of the AAAI Conference on Artificial Intelligence ,Vol. 39. 11463–11471. [2] Junyoung Chung, Caglar Gulcehre, Kyunghyun Cho, and Yoshua Bengio. 2014. Empirical evaluation of gated recurrent neural networks on sequence modeling. In NIPS 2014 Workshop on Deep Learning, December 2014 .[3] Xiao Han, Guojiang Shen, Xi Yang, and Xiangjie Kong. 2020. Congestion recog-nition for hybrid urban road systems via digraph convolutional network. Trans-portation Research Part C: Emerging Technologies 121 (2020), 102877. [4] Xiao Han, Zijian Zhang, Xiangyu Zhao, Yuanshao Zhu, Guojiang Shen, Xiangjie Kong, Xuetao Wei, Liqiang Nie, and Jieping Ye. 2025. Garlic: Gpt-augmented rein-forcement learning with intelligent control for vehicle dispatching. In Proceedings of the AAAI Conference on Artificial Intelligence , Vol. 39. 255–263. [5] Xiao Han, Xiangyu Zhao, Liang Zhang, and Wanyu Wang. 2023. Mitigating action hysteresis in traffic signal control with traffic predictive reinforcement learning. In Proceedings of the 29th ACM SIGKDD conference on knowledge discovery and data mining . 673–684. [6] Xiao Han, Ding-Xuan Zhou, Guojiang Shen, Xiangjie Kong, and Yulong Zhao. 2024. Deep trajectory recovery approach of offline vehicles in the internet of vehicles. IEEE Transactions on Vehicular Technology 73, 11 (2024), 16051–16062. [7] Junfeng Hu, Xu Liu, Zhencheng Fan, Yifang Yin, Shili Xiang, Savitha Ramasamy, and Roger Zimmermann. 2024. Prompt-based spatio-temporal graph transfer learning. In Proceedings of the 33rd ACM International Conference on Information and Knowledge Management . 890–899. [8] Thomas N. Kipf and Max Welling. 2017. Semi-Supervised Classification with Graph Convolutional Networks. In Proc. of ICLR .[9] Zhenyu Lei, Yushun Dong, Jundong Li, and Chen Chen. 2025. ST-FiT: Inductive Spatial-Temporal Forecasting with Limited Training Data. In Proceedings of the AAAI Conference on Artificial Intelligence , Vol. 39. 12031–12039. [10] Yaguang Li, Rose Yu, Cyrus Shahabi, and Yan Liu. 2018. Diffusion Convolutional Recurrent Neural Network: Data-Driven Traffic Forecasting. In International Conference on Learning Representations .[11] Duanyang Liu, Longfeng Tang, Guojiang Shen, and Xiao Han. 2019. Traffic speed prediction: An attention-based method. Sensors 19, 18 (2019), 3836. [12] Xu Liu, Yutong Xia, Yuxuan Liang, Junfeng Hu, Yiwei Wang, Lei Bai, Chao Huang, Zhenguang Liu, Bryan Hooi, and Roger Zimmermann. 2023. Largest: A benchmark dataset for large-scale traffic forecasting. Advances in Neural Information Processing Systems 36 (2023), 75354–75371. [13] Bin Lu, Xiaoying Gan, Weinan Zhang, Huaxiu Yao, Luoyi Fu, and Xinbing Wang. 2022. Spatio-temporal graph few-shot learning with cross-city knowledge trans-fer. In Proceedings of the 28th ACM SIGKDD Conference on Knowledge Discovery and Data Mining . 1162–1172. [14] Chuizheng Meng, Sirisha Rambhatla, and Yan Liu. 2021. Cross-node federated graph neural network for spatio-temporal data modeling. In Proceedings of the 27th ACM SIGKDD conference on knowledge discovery & data mining . 1202–1211. [15] Veličković Petar, Cucurull Guillem, Casanova Arantxa, Romero Adriana, Lio Pietro, and B Yoshua. 2018. Graph attention networks. In Proc. of ICLR .[16] Weilin Ruan, Wenzhuo Wang, Siru Zhong, Wei Chen, Li Liu, and Yuxuan Liang. 2024. Cross space and time: A spatio-temporal unitized model for traffic flow forecasting. arXiv preprint arXiv:2411.09251 (2024). [17] Guojiang Shen, Xiao Han, KwaiSang Chin, and Xiangjie Kong. 2021. An attention-based digraph convolution network enabled framework for congestion recog-nition in three-dimensional road networks. IEEE Transactions on Intelligent Transportation Systems 23, 9 (2021), 14413–14426. [18] Yihong Tang, Ao Qu, Andy HF Chow, William HK Lam, Sze Chun Wong, and Wei Ma. 2022. Domain adversarial spatial-temporal network: A transferable framework for short-term traffic forecasting across cities. In Proceedings of the 31st ACM international conference on information & knowledge management . 1905– 1915. [19] Guangyu Wang, Yujie Chen, Ming Gao, Zhiqiao Wu, Jiafu Tang, and Jiabi Zhao. 2024. A time series is worth five experts: Heterogeneous mixture of experts for traffic flow prediction. arXiv preprint arXiv:2409.17440 (2024). [20] Leye Wang, Xu Geng, Xiaojuan Ma, Feng Liu, and Qiang Yang. 2019. Cross-City Transfer Learning for Deep Spatio-Temporal Prediction. In Proceedings of the Twenty-Eighth International Joint Conference on Artificial Intelligence . Interna-tional Joint Conferences on Artificial Intelligence Organization, 1893–1899. [21] Bing Yu, Haoteng Yin, and Zhanxing Zhu. 2018. Spatio-temporal graph convolu-tional networks: a deep learning framework for traffic forecasting. In Proceedings of the 27th International Joint Conference on Artificial Intelligence . 3634–3640. [22] Yu Zhang, Hua Lu, Ning Liu, Yonghui Xu, Qingzhong Li, and Lizhen Cui. 2024. Personalized federated learning for cross-city traffic prediction. In 33rd Interna-tional Joint Conference on Artificial Intelligence, IJCAI . 5526–5534. [23] Yan Zhang, Xiaoye Miao, Bin Li, Yangyang Wu, and Yongheng Shang. 2025. Proxy-Validated Importance-Aware Federated Sample Selection with Meta Learning. In Proceedings of the 31st ACM SIGKDD Conference on Knowledge Discovery and Data Mining V. 2 . 3855–3866. [24] Yan Zhang, Guojiang Shen, Xiao Han, Wei Wang, and Xiangjie Kong. 2022. Spatio-temporal digraph convolutional network-based taxi pickup location rec-ommendation. IEEE Transactions on Industrial Informatics 19, 1 (2022), 394–403. [25] Yudong Zhang, Xu Wang, Pengkun Wang, Binwu Wang, Zhengyang Zhou, and Yang Wang. 2024. Modeling spatio-temporal mobility across data silos via per-sonalized federated learning. IEEE Transactions on Mobile Computing (2024).

@@ -6,35 +6,46 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-09
-- 运行时间：2026-06-09 20:58:08 UTC
+- 最新运行日期：2026-06-10
+- 运行时间：2026-06-10 22:47:52 UTC
 - 运行状态：成功
-- 本次总论文数：5
-- 精读区：3
-- 速读区：2
+- 本次总论文数：8
+- 精读区：4
+- 速读区：4
 
 ### 今日简报（AI）
-今日推荐5篇论文，精读3篇聚焦建筑信息模型与地理空间表示学习。最值得关注：9分的《Ishigaki-IDS》提出BIM信息交付的开源验证感知模型，以及8分的《OSMGraphCLIP》用OpenStreetMap图学习全局位置表示。建议优先精读这两篇高分论文，其余速读可作为AI数据平台与多表匹配的补充。
-- 详情：[/202606/09/README](/202606/09/README)
+今日共推荐8篇论文，精读4篇，其中两篇获9.0高分，聚焦3D道路基础设施与遥感矢量地图。  
+最值得关注的方向：WHU-Infra3D全栈多模态3D数据集与基准，以及Vector Map as Language提出的统一遥感矢量映射方法。  
+建议优先阅读这两篇高分论文，把握多模态3D感知与遥感数据语言化表示的前沿趋势。
+- 详情：[/202606/10/README](/202606/10/README)
 
 ### 精读区论文标签
-1. [Ishigaki-IDS: An Open-Weight Verifier-Aware Model for Information Delivery Specification Drafting in Building Information Modeling](/202606/09/2606.08545v1-ishigaki-ids-an-open-weight-verifier-aware-model-for-information-delivery-specification-drafting-in-building-information-modeling)  
+1. [WHU-Infra3D: A Full-stack Multi-modal Dataset and Benchmark for 3D Roadside Infrastructure Inventory](/202606/10/2606.09882v1-whu-infra3d-a-full-stack-multi-modal-dataset-and-benchmark-for-3d-roadside-infrastructure-inventory)  
    标签：评分：9.0/10、query:smart-city
-   evidence：建筑信息模型信息交付规范起草，处理领域词汇和XML模式
-2. [OSMGraphCLIP: Learning Global Location Representations from OpenStreetMap Graphs](/202606/09/2606.08046v1-osmgraphclip-learning-global-location-representations-from-openstreetmap-graphs)  
+   evidence：包含全景图和LiDAR的多模态路边基础设施基准，直接支持数字孪生和多源数据融合
+2. [Vector Map as Language: Toward Unified Remote Sensing Vector Mapping](/202606/10/2606.10701v1-vector-map-as-language-toward-unified-remote-sensing-vector-mapping)  
+   标签：评分：9.0/10、query:smart-city
+   evidence：使用语言统一表示矢量地图元素的几何、语义和拓扑
+3. [HDSL: A Hierarchical Domain-Specific Language for Structured 3D Indoor Scene Generation and Localized Editing with LLM Agents](/202606/10/2606.09738v1-hdsl-a-hierarchical-domain-specific-language-for-structured-3d-indoor-scene-generation-and-localized-editing-with-llm-agents)  
    标签：评分：8.0/10、query:smart-city
-   evidence：利用OpenStreetMap数据构建异构图，保留道路、建筑物等城市要素的拓扑和语义关系，支持智慧城市知识图谱构建
-3. [From USD Scenes to Knowledge Graphs: Zero-Shot Ontology Grounding with LLMs](/202606/09/2606.09134v1-from-usd-scenes-to-knowledge-graphs-zero-shot-ontology-grounding-with-llms)  
+   evidence：用于3D室内场景的层次化DSL，支持几何和对象关系的结构化表示
+4. [MoE Enhanced Federated Learning for Spatiotemporal Prediction](/202606/10/2606.10499v1-moe-enhanced-federated-learning-for-spatiotemporal-prediction)  
    标签：评分：8.0/10、query:smart-city
-   evidence：利用LLM从3D场景零样本生成本体标注并构建知识图谱
+   evidence：面向智能交通的联邦时空预测，跨城市知识迁移
 
 ### 速读区论文标签
-1. [Architectural Evolution and Selection Framework for Database Systems in AI-Ready Data Platforms](/202606/09/2606.08317v1-architectural-evolution-and-selection-framework-for-database-systems-in-ai-ready-data-platforms)  
+1. [Data Architectures and their Technical Requirements (DATER)](/202606/10/2606.08811v1-data-architectures-and-their-technical-requirements-dater)  
    标签：评分：7.0/10、query:smart-city
-   evidence：面向AI就绪数据平台的数据库架构选择框架
-2. [RACT: Retrieval Augmented Column-Table Learning and Prediction for Multi-Table Schema Matching](/202606/09/2606.07843v1-ract-retrieval-augmented-column-table-learning-and-prediction-for-multi-table-schema-matching)  
+   evidence：异构数据集成架构
+2. [MM-BizRAG: Rethinking Multimodal Retrieval-Augmented Generation for General Purpose Enterprise Q&A](/202606/10/2606.04231v1-mm-bizrag-rethinking-multimodal-retrieval-augmented-generation-for-general-purpose-enterprise-qa)  
    标签：评分：6.0/10、query:smart-city
-   evidence：自监督模式匹配技术用于多源数据集成
+   evidence：结合文档结构提取的多模态检索增强生成
+3. [Towards Efficient and Evidence-grounded Mobility Prediction with LLM-Driven Agent](/202606/10/2606.05130v1-towards-efficient-and-evidence-grounded-mobility-prediction-with-llm-driven-agent)  
+   标签：评分：6.0/10、query:smart-city
+   evidence：面向城市基础设施管理的移动性预测
+4. [GMBFormer: An NDVI-Guided Global Memory Bank Transformer for Urban Green-Space Extraction from Ultra-High-Resolution Imagery](/202606/10/2606.06363v1-gmbformer-an-ndvi-guided-global-memory-bank-transformer-for-urban-green-space-extraction-from-ultra-high-resolution-imagery)  
+   标签：评分：6.0/10、query:smart-city
+   evidence：城市绿地提取，利用语义分割UHR影像，类似点云场景理解
 
 
 <div class="dpr-home-promo-card">
