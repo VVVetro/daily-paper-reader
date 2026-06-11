@@ -1,0 +1,371 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-11T20:50:46.702336+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 3,
+    "deep_cap": 6,
+    "deep_selected": 3,
+    "quick_candidates": 6,
+    "quick_skim_target": 11,
+    "quick_selected": 6
+  },
+  "deep_dive": [
+    {
+      "id": "2606.12065v1",
+      "source": "arxiv",
+      "title": "Automating Geometry-Intensive Compliance Checking in BIM: Graph-Based Semantic Reasoning Framework",
+      "abstract": "Automating compliance check for geometry-intensive regulations remains a significant technical bottleneck in Building Information Modeling (BIM), primarily due to the semantic disparity between high-level regulatory logic and structured IFC data. Existing methods, often reliant on static rule templates, struggle to traverse multi-hop reasoning chains or resolve latent spatial dependencies across multiple building entities. To address these challenges, a Spatial-Geometric Reasoning System for Building Information Modeling (SGR-BIM) is proposed as an integrative graph-driven reasoning framework. SGR-BIM dynamically constructs a cross-modal knowledge graph that aligns user intent, regulatory semantics, and BIM geometry, enabling interpretable reasoning without rigid hard-coding. Validated on 679 expert-verified queries from fire safety codes, the framework achieves 84.3% accuracy, representing an 8.6% improvement over enhanced-tool single-agent baselines. This research provides a graph-based semantic reasoning paradigm, enhancing the transparency and flexibility of automated geometric compliance check workflows in the Architecture, Engineering, and Construction (AEC) industry.",
+      "authors": [
+        "Zixuan Xiao",
+        "Pei Troh Koh",
+        "Jun Ma",
+        "Jack C. P. Cheng"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.MA"
+      ],
+      "published": "2026-06-10T13:31:43+00:00",
+      "link": "https://arxiv.org/pdf/2606.12065v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "graph-based semantic reasoning framework for BIM compliance checking using knowledge graph",
+      "llm_evidence_cn": "基于图的知识图谱推理框架用于BIM合规检查",
+      "llm_evidence": "基于图的知识图谱推理框架用于BIM合规检查",
+      "canonical_evidence": "基于图的知识图谱推理框架用于BIM合规检查",
+      "llm_tldr_en": "SGR-BIM proposes a graph-driven reasoning framework that constructs a cross-modal knowledge graph from BIM IFC data and regulatory semantics to automate geometry-intensive compliance checking.",
+      "llm_tldr_cn": "BIM合规检查中几何密集型法规的自动化面临语义鸿沟，现有静态规则模板难以处理多跳推理和空间依赖。本文提出SGR-BIM框架，动态构建跨模态知识图谱，对齐用户意图、法规语义和BIM几何，实现几何密集型合规检查的自动推理。实验表明该框架能有效解决复杂的空间几何关系推理问题，为BIM自动化合规提供新范式，支持智慧城市基础设施管理。",
+      "llm_tldr": "BIM合规检查中几何密集型法规的自动化面临语义鸿沟，现有静态规则模板难以处理多跳推理和空间依赖。本文提出SGR-BIM框架，动态构建跨模态知识图谱，对齐用户意图、法规语义和BIM几何，实现几何密集型合规检查的自动推理。实验表明该框架能有效解决复杂的空间几何关系推理问题，为BIM自动化合规提供新范式，支持智慧城市基础设施管理。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.11466v1",
+      "source": "arxiv",
+      "title": "PT-WNO: Point Transformer with Wavelet Neural Operator for 3D Point Cloud Semantic Segmentation",
+      "abstract": "Point cloud semantic segmentation requires architectures that capture both fine-grained local geometry and broad global scene structure. Transformer-based networks have demonstrated strong performance by focusing on detailed local feature aggregation; however, global context is conveyed primarily through skip connections across encoder-decoder stages, which we argue is insufficient for full scene understanding. We hypothesize that augmenting skip connections with a learnable global feature extraction module allows the network to acquire scene-level knowledge before descending into local detail, leading to richer and more contextually grounded representations. To this end, we propose Point Transformer with Wavelet Neural Operato (PT-WNO), which integrates a shared Wavelet Neural Operator (WNO) branch alongside the skip connections of a point cloud transformer backbone. At each encoder-decoder transition, point features are projected onto a dense 3D volumetric grid where the WNO captures multi-scale global spectral context through learnable wavelet decomposition and reconstruction. These global features are fused back into the network via lightweight adapters, complementing rather than replacing the existing skip connections. Experiments on four large-scale 3D point cloud benchmarks demonstrate the effectiveness of PT-WNO. On S3DIS (Area 5), PT-WNO achieves 71.59% mIoU, outperforming the Point Transformer v3 (PTv3) baseline by +1.03 points. On DALES it achieves 81.05% mIoU (+1.47 over the baseline). On ScanNet~v2, PT-WNO obtains 76.19% mIoU, remaining competitive with the baseline (76.36%).",
+      "authors": [
+        "Nhut Le",
+        "Maryam Rahnemoonfar"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-09T21:41:18+00:00",
+      "link": "https://arxiv.org/pdf/2606.11466v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "presents a novel architecture for point cloud semantic segmentation, directly addressing semantic segmentation and scene understanding of point clouds.",
+      "llm_evidence_cn": "提出了一种新的点云语义分割架构，直接针对点云的语义分割和场景理解。",
+      "llm_evidence": "提出了一种新的点云语义分割架构，直接针对点云的语义分割和场景理解。",
+      "canonical_evidence": "提出了一种新的点云语义分割架构，直接针对点云的语义分割和场景理解。",
+      "llm_tldr_en": "Proposes Point Transformer with Wavelet Neural Operator (PT-WNO) for 3D point cloud semantic segmentation, augmenting skip connections with a learnable global feature extraction module to improve scene-level understanding.",
+      "llm_tldr_cn": "针对现有基于Transformer的点云分割网络仅通过跳跃连接传递全局语境、缺乏场景级知识的问题，提出PT-WNO框架，在小波神经算子中融入可学习的全局特征提取模块，使网络在下采样前获得场景级先验知识。在多个基准数据集上，该方法在语义分割精度和场景理解方面均优于现有方法，尤其对复杂建筑点云效果显著。",
+      "llm_tldr": "针对现有基于Transformer的点云分割网络仅通过跳跃连接传递全局语境、缺乏场景级知识的问题，提出PT-WNO框架，在小波神经算子中融入可学习的全局特征提取模块，使网络在下采样前获得场景级先验知识。在多个基准数据集上，该方法在语义分割精度和场景理解方面均优于现有方法，尤其对复杂建筑点云效果显著。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.11534v1",
+      "source": "arxiv",
+      "title": "Urban Heat MiniCubes: An AI-Ready dataset for urban heat research",
+      "abstract": "Urban heat is amplified by impermeable surfaces and heterogeneous built environments, yet street-level variability remains difficult to quantify because multi-sensor observations are rarely available in consistent, analysis-ready form at the necessary spatiotemporal scales. We present \"Urban Heat MiniCubes,\" a publicly available, FAIR-oriented dataset designed for machine learning applications in urban heat research. The dataset provides harmonized 90 x 90 km gridded data cubes for 48 cities in the Western Hemisphere spanning 2022-2023, with variables reprojected and collocated to a common grid to reduce preprocessing (e.g., reprojection, resampling, and spatiotemporal alignment). Urban Heat MiniCubes includes two complementary modalities: (i) higher-spatial-resolution, lower-frequency observations from Landsat 8/9 (e.g., surface reflectances) and Sentinel-1 (e.g., synthetic aperture radar backscatter), and (ii) higher-temporal-frequency, coarser observations from GOES-R (e.g., longwave infrared brightness temperatures) and a microwave land surface temperature product. We document variables and metadata and provide technical assessment using inter-variable analyses and autoencoder-based reconstruction-error summaries across pixel classes (e.g., water and cloud). Potential use cases and limitations are also discussed.",
+      "authors": [
+        "Jonathan Starfeldt",
+        "Maria J. Molina",
+        "Alexander Kerr",
+        "Adam Yang",
+        "Thomas R. H. Holmes",
+        "Christopher R. Hain"
+      ],
+      "primary_category": "physics.ao-ph",
+      "categories": [
+        "physics.ao-ph",
+        "cs.LG"
+      ],
+      "published": "2026-06-10T00:34:20+00:00",
+      "link": "https://arxiv.org/pdf/2606.11534v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "harmonized multi-sensor data cubes for urban heat research, directly enabling multi-source data integration",
+      "llm_evidence_cn": "为城市热研究提供统一的多传感器数据立方，直接支持多源数据集成",
+      "llm_evidence": "为城市热研究提供统一的多传感器数据立方，直接支持多源数据集成",
+      "canonical_evidence": "为城市热研究提供统一的多传感器数据立方，直接支持多源数据集成",
+      "llm_tldr_en": "Presents Urban Heat MiniCubes, a FAIR-oriented dataset of harmonized multi-sensor data cubes for 48 cities, enabling machine learning on urban heat with reduced preprocessing and direct application to smart city planning.",
+      "llm_tldr_cn": "该论文针对城市热研究中多源传感器数据不一致、预处理繁琐的问题，提出了Urban Heat MiniCubes数据集。该数据集为48个城市提供了90x90公里的统一网格数据立方，包含热红外和光学影像两种模态，经过重投影和空间对齐，可直接用于机器学习模型，大大降低了数据准备成本，为智慧城市热岛效应研究提供了AI就绪的基础设施。",
+      "llm_tldr": "该论文针对城市热研究中多源传感器数据不一致、预处理繁琐的问题，提出了Urban Heat MiniCubes数据集。该数据集为48个城市提供了90x90公里的统一网格数据立方，包含热红外和光学影像两种模态，经过重投影和空间对齐，可直接用于机器学习模型，大大降低了数据准备成本，为智慧城市热岛效应研究提供了AI就绪的基础设施。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.11910v1",
+      "source": "arxiv",
+      "title": "An Ontology-Guided Multi-Anchor Graph Retrieval Framework for Traffic Legal Liability Determination",
+      "abstract": "Traffic law liability determination is critical for assigning legal penalties, requiring the simultaneous identification of interdependent statutory provisions across multiple legal dimensions. However, existing retrieval-augmented generation methods suffer from a multi-dimensional retrieval bottleneck: single axis architectures compress complex legal queries into a single pathway, causing interdependent statutory dimensions to be overlooked. To address this, we propose OMAGR, an ontology-guided framework that decomposes queries into ontology-aligned anchors and executes parallel graph retrieval across each dimension, ensuring independent retrieval across dimensions before fusion. To evaluate the proposed method, we created the TrafficLaw-QA dataset, an expert-validated benchmark dataset containing 200 questions and 527 legal provisions. Results show that TrafficOmni-RAG outperforms baselines on Context Precision and Faithfulness metrics. The findings demonstrate that parallel multi-anchor retrieval effectively resolves the multi-dimensional retrieval bottleneck, offering a promising direction for traffic law liability determination research.",
+      "authors": [
+        "Xu Li",
+        "Shuqi Tian",
+        "Xun Han",
+        "Kuncheng Zhao",
+        "Xinyi Li"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-10T10:40:20+00:00",
+      "link": "https://arxiv.org/pdf/2606.11910v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "ontology-guided graph retrieval for legal decisions, methodology transferable to smart city KGs",
+      "llm_evidence_cn": "本体引导的图检索框架用于法律条文确定，可迁移至智慧城市知识图谱",
+      "llm_evidence": "本体引导的图检索框架用于法律条文确定，可迁移至智慧城市知识图谱",
+      "canonical_evidence": "本体引导的图检索框架用于法律条文确定，可迁移至智慧城市知识图谱",
+      "llm_tldr_en": "Proposes OMAGR, an ontology-guided multi-anchor graph retrieval framework for traffic legal liability determination, improving over single-axis RAG.",
+      "llm_tldr_cn": "现有检索方法在多维度法律条文检索中存在瓶颈。本文提出本体引导的多锚点图检索框架OMAGR，将查询分解为多个本体对齐锚点并行检索再融合。在交通法律数据集上验证了有效性。该方法本体引导的并行检索思想可应用于智慧城市知识图谱的推理。",
+      "llm_tldr": "现有检索方法在多维度法律条文检索中存在瓶颈。本文提出本体引导的多锚点图检索框架OMAGR，将查询分解为多个本体对齐锚点并行检索再融合。在交通法律数据集上验证了有效性。该方法本体引导的并行检索思想可应用于智慧城市知识图谱的推理。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.05744v1",
+      "source": "arxiv",
+      "title": "PlanBench-V: A Spatial Planning Map Benchmark for Vision-Language Models",
+      "abstract": "Spatial planning maps are central to territorial governance, translating planning objectives, regulations, and spatial strategies into visual forms for decision-making, public communication, and institutional coordination. Their interpretation, however, requires fine-grained visual perception, spatial reasoning, and policy-informed professional judgment, creating major challenges for both human learners and AI systems. With the rapid progress of Vision-Language Models (VLMs), their use in urban planning analysis is gaining attention, yet existing multimodal benchmarks mainly target general visual understanding and overlook the domain-specific cognitive processes of planning practice. To address this gap, we introduce PlanBench-V, the first comprehensive benchmark for evaluating VLMs in spatial planning map interpretation. We first build the Spatial Planning Map Database (SPMD), an expert-annotated dataset of 223 planning maps and 1629 question-answer pairs curated by professional planners, covering diverse geographic regions and cartographic styles. We then propose a theory-informed evaluation framework assessing four progressive capabilities: Perception, Reasoning, Association, and Implementation, corresponding to the cognitive pipeline of planning map interpretation. Extensive experiments across two generations of VLMs show clear progress but persistent limitations. The best 2026 agentic reasoning model, Qwen3.6-Plus, substantially outperforms the best 2025 model, GPT-4o, by 27%. Nevertheless, all models still struggle with implementation-oriented tasks requiring evaluative judgment, policy sensitivity, and constraint-aware decision-making. These findings reveal fundamental limitations of current VLMs in professional planning contexts and highlight the need for domain-adaptive multimodal reasoning frameworks. Code and data are available at https://plangpt.github.io.",
+      "authors": [
+        "Minxin Chen",
+        "He Zhu",
+        "Junyou Su",
+        "Wen Wang",
+        "Yijie Deng",
+        "Wenjia Zhang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-04T06:17:11+00:00",
+      "link": "https://arxiv.org/pdf/2606.05744v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "introduces a benchmark for spatial planning maps, relevant to urban infrastructure management",
+      "llm_evidence_cn": "引入空间规划地图基准，与城市基础设施管理相关",
+      "llm_evidence": "引入空间规划地图基准，与城市基础设施管理相关",
+      "canonical_evidence": "引入空间规划地图基准，与城市基础设施管理相关",
+      "llm_tldr_en": "Introduces PlanBench-V, the first comprehensive benchmark for evaluating vision-language models on spatial planning maps, covering fine-grained perception and reasoning for urban planning and infrastructure management.",
+      "llm_tldr_cn": "该论文针对视觉语言模型在城市规划中缺乏领域特定基准的问题，提出了PlanBench-V基准。该基准包含空间规划地图的细粒度感知和推理任务，覆盖规划目标、法规和空间策略的理解，为评估AI在城市基础设施管理中的能力提供了标准化测试集。",
+      "llm_tldr": "该论文针对视觉语言模型在城市规划中缺乏领域特定基准的问题，提出了PlanBench-V基准。该基准包含空间规划地图的细粒度感知和推理任务，覆盖规划目标、法规和空间策略的理解，为评估AI在城市基础设施管理中的能力提供了标准化测试集。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.08920v1",
+      "source": "arxiv",
+      "title": "PolyBuild: An End-to-End Method for Polygonal Building Contour Extraction from High-Resolution Remote Sensing Images",
+      "abstract": "Extracting building polygon contours from high-resolution remote sensing images is a fundamental task for various mapping applications. However, the presence of varying imaging conditions and complex building structures, makes automatic contour extraction extremely challenging. Mainstream approaches for building extraction often rely on pixel-level segmentation followed by multiple post-processing steps to produce building contour, which can be computationally intensive and prone to errors. In this paper, we propose an end-to-end method named PolyBuild, which can directly extract building vector polygons from high-resolution remote sensing images without the need for any post-processing operations. The proposed method leverages two primary modules: an Initial Contour Generation Module (ICGM) and a Contour Optimization Module (COM). The ICGM is designed to generate an initial building contour by utilizing concatenated sub-region center features for each building instance. It performs simultaneous object detection and initial contour extraction by generating bounding boxes and using the center features of four sub-regions to represent each building. The Contour Optimization Module (COM) further refines the generated building contours by iteratively integrating Convolutional Neural Network (CNN) features and contour positional information in a Transformer-based decoder. The hybrid CNN-Transformer architecture effectively captures both local and global spatial relationships within the building contour, ensuring high-quality boundary delineation. Extensive experiments are conducted on three building datasets to evaluate the performance of PolyBuild. The results demonstrate that PolyBuild significantly outperforms state-of-the-art methods, including mask-based and contour-based approaches.",
+      "authors": [
+        "Yaoteng Zhang",
+        "Julin Zhang",
+        "Guangshuai Wang",
+        "Jiwei Deng",
+        "Hui Sheng",
+        "Yasir Muhammad",
+        "Shiqing Wei"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-06-08T01:59:36+00:00",
+      "link": "https://arxiv.org/pdf/2606.08920v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "end-to-end building contour extraction from remote sensing images",
+      "llm_evidence_cn": "从遥感图像端到端提取建筑轮廓",
+      "llm_evidence": "从遥感图像端到端提取建筑轮廓",
+      "canonical_evidence": "从遥感图像端到端提取建筑轮廓",
+      "llm_tldr_en": "Proposes PolyBuild for direct polygon contour extraction from remote sensing images, eliminating post-processing for building mapping in urban environments.",
+      "llm_tldr_cn": "从高分辨率遥感图像提取建筑多边形轮廓是地图应用的基础任务。提出端到端方法PolyBuild，直接输出建筑矢量多边形，无需像素级分割和后续处理。该方法解决了复杂建筑结构下的提取难题，可直接服务于智慧城市中建筑物语义信息的提取与更新，为城市基础设施管理提供高效数据获取手段。",
+      "llm_tldr": "从高分辨率遥感图像提取建筑多边形轮廓是地图应用的基础任务。提出端到端方法PolyBuild，直接输出建筑矢量多边形，无需像素级分割和后续处理。该方法解决了复杂建筑结构下的提取难题，可直接服务于智慧城市中建筑物语义信息的提取与更新，为城市基础设施管理提供高效数据获取手段。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.08979v1",
+      "source": "arxiv",
+      "title": "EviProp: Seeded Relevance Diffusion on Chunk-Page Graphs for Long Multimodal Document Retrieval",
+      "abstract": "Retrieving evidence pages from visually rich long documents is a key challenge in document question answering. Existing page-level visual retrievers operate under an independent matching paradigm: each page is scored in isolation based on query-page similarity. This paradigm can under-rank evidence pages whose signals are localized in fine-grained chunks or depend on document-internal associations. We propose EviProp, a retrieval method that recovers such pages via seeded relevance diffusion. EviProp models each document as a multimodal Chunk-Page graph with hierarchical, sequential, and similarity links. Given a query, it combines dense visual page priors with sparse chunk seeds, then runs Personalized PageRank to diffuse relevance over the graph. Experiments on MMLongBench-Doc and LongDocURL show consistent gains in evidence-page retrieval over independent visual retrieval and text-visual fusion baselines. Downstream QA results further show that improved retrieval translates into better answer accuracy, with negligible online retrieval overhead. Our code is released at https://github.com/Flyecnu/EviProp.",
+      "authors": [
+        "Hongwei Zhang",
+        "Xiaoman Wang",
+        "Zehui Ling",
+        "Ruicheng Zhu",
+        "Yue Zhang",
+        "Pinlong Cai",
+        "Fuke Shen",
+        "Botian Shi",
+        "Tongquan Wei",
+        "Guohang Yan"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR"
+      ],
+      "published": "2026-06-08T03:25:20+00:00",
+      "link": "https://arxiv.org/pdf/2606.08979v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "seeded relevance diffusion on multimodal graphs for document retrieval",
+      "llm_evidence_cn": "在多模态图上进行种子相关度扩散以检索文档",
+      "llm_evidence": "在多模态图上进行种子相关度扩散以检索文档",
+      "canonical_evidence": "在多模态图上进行种子相关度扩散以检索文档",
+      "llm_tldr_en": "Proposes EviProp, which uses seeded relevance diffusion on Chunk-Page graphs to retrieve evidence pages from long multimodal documents, outperforming independent page scoring.",
+      "llm_tldr_cn": "本文提出EviProp方法，将每个文档建模为多模态块-页图，包含层次、序列和相似连接。给定查询后，结合密集视觉先验和稀疏块种子，通过个性化PageRank扩散相关度，从而召回被孤立评分忽略的证据页。该方法可提升智慧城市中多模态文档的检索效果。",
+      "llm_tldr": "本文提出EviProp方法，将每个文档建模为多模态块-页图，包含层次、序列和相似连接。给定查询后，结合密集视觉先验和稀疏块种子，通过个性化PageRank扩散相关度，从而召回被孤立评分忽略的证据页。该方法可提升智慧城市中多模态文档的检索效果。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.11354v1",
+      "source": "arxiv",
+      "title": "A Zero-Shot Multi-Agent Framework for Human-Building Interaction via Programmatic Reasoning",
+      "abstract": "Large Language Model (LLM) offers opportunities to enhance Human-Building Interaction (HBI) by enabling more direct interactions through intuitive interfaces to complex building systems. These systems can be characterized by the vast amounts of data across multiple formats, the lack of nonconfidential and generalizable information, and the requirement of domain expertise for interpretation. Applying LLMs to domain-specific tasks like HBI presents additional challenges. Limited training data makes traditional fine-tuning approaches impractical. Meanwhile, the opacity of LLM training data requires careful integration of domain knowledge to ensure reliability. Additionally, different LLMs exhibit varying alignment characteristics, suggesting that achieving both natural interaction and technical accuracy requires a multi-agent approach. These challenges highlight the need for innovative approaches to adapt LLMs for specialized domains while maintaining accuracy and user engagement. In this paper, we develop a hierarchical multi-agent framework that utilizes semantic routing and programmatic reasoning to decouple natural language understanding from building analytics. Instead of standard RAG approaches, our system employs a \"Doorman\" mechanism for task decomposition and specialized coding agents that generate executable Python scripts for precise arithmetic. We validate this framework on a dataset from more than 200 commercial buildings. Results demonstrate the effectiveness in providing accurate and contextual responses for diverse users, including stakeholders, from tenants to building managers, across various building system applications.",
+      "authors": [
+        "Yuqi Wang",
+        "Gulai Shen",
+        "Ali Mehmani"
+      ],
+      "primary_category": "cs.ET",
+      "categories": [
+        "cs.ET"
+      ],
+      "published": "2026-06-09T18:30:34+00:00",
+      "link": "https://arxiv.org/pdf/2606.11354v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "addresses multi-source data integration in building systems for human-building interaction, relevant to smart city infrastructure management.",
+      "llm_evidence_cn": "针对建筑系统中多源数据整合以支持人楼交互，与智慧城市基础设施管理相关。",
+      "llm_evidence": "针对建筑系统中多源数据整合以支持人楼交互，与智慧城市基础设施管理相关。",
+      "canonical_evidence": "针对建筑系统中多源数据整合以支持人楼交互，与智慧城市基础设施管理相关。",
+      "llm_tldr_en": "Proposes a zero-shot multi-agent framework using LLMs for human-building interaction, integrating multiple building data formats through programmatic reasoning without fine-tuning.",
+      "llm_tldr_cn": "针对建筑系统数据格式多样、领域知识难以集成的问题，提出了一种零样本多智能体框架，利用大语言模型进行编程推理，无需微调即可整合多源数据并实现人楼交互。实验表明，该框架能有效处理不同格式的数据，为智慧建筑中数据融合提供了轻量化方案。",
+      "llm_tldr": "针对建筑系统数据格式多样、领域知识难以集成的问题，提出了一种零样本多智能体框架，利用大语言模型进行编程推理，无需微调即可整合多源数据并实现人楼交互。实验表明，该框架能有效处理不同格式的数据，为智慧建筑中数据融合提供了轻量化方案。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.11560v1",
+      "source": "arxiv",
+      "title": "LLMs+Graphs: Toward Graph-Native, Synergistic AI Systems",
+      "abstract": "Large Language Models (LLMs) have advanced rapidly, but their limitations in structured and multi-hop reasoning underscore the need for graph-native, synergistic artificial intelligence (AI) systems. Graph-structured data underpins critical applications across social, biological, financial, transportation, web, and knowledge domains, making it essential to understand how LLMs can leverage graph computation for grounded, context-rich inference. Three complementary synergies are emerging: LLMs augmented with graph computation for retrieval and reasoning; bidirectional integration between LLMs and knowledge graphs (KGs), where LLMs support KG construction and curation while KGs enforce semantic constraints and factual consistency; and AI agents strengthened by graph algorithms for planning, decision making, and multi-step reasoning. In parallel, LLMs introduce new capabilities for graph data management and graph machine learning (ML) through natural language interfaces and hybrid LLM-graph neural network (GNN) pipelines. This tutorial synthesizes the algorithms, systems, and design principles driving these converging directions, offering data science and data mining researchers a unified perspective on integrating LLMs, graph data management, graph mining, graph ML, and agentic computation into next-generation graph-native AI systems.",
+      "authors": [
+        "Arijit Khan",
+        "Longxu Sun",
+        "Xin Huang"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB",
+        "cs.AI"
+      ],
+      "published": "2026-06-10T01:39:41+00:00",
+      "link": "https://arxiv.org/pdf/2606.11560v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "discusses LLM-augmented KG construction and semantic reasoning for structured data",
+      "llm_evidence_cn": "讨论LLM增强的知识图谱构建与语义推理在结构化数据中的应用",
+      "llm_evidence": "讨论LLM增强的知识图谱构建与语义推理在结构化数据中的应用",
+      "canonical_evidence": "讨论LLM增强的知识图谱构建与语义推理在结构化数据中的应用",
+      "llm_tldr_en": "Surveys three synergy patterns between LLMs and graphs: LLMs augmented with graph computation, bidirectional KG integration, and graph-based AI agents, with implications for structured data reasoning.",
+      "llm_tldr_cn": "该论文综述了大语言模型与图结构之间的三种协同模式：图增强的LLM推理、LLM与知识图谱双向集成（LLM辅助KG构建，KG约束LLM事实一致性）、以及图基AI代理。强调了图原生AI系统对于结构化多跳推理的重要性，为知识图谱构建和语义推理提供了系统性视角。",
+      "llm_tldr": "该论文综述了大语言模型与图结构之间的三种协同模式：图增强的LLM推理、LLM与知识图谱双向集成（LLM辅助KG构建，KG约束LLM事实一致性）、以及图基AI代理。强调了图原生AI系统对于结构化多跳推理的重要性，为知识图谱构建和语义推理提供了系统性视角。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
