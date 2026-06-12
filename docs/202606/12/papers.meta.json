@@ -1,0 +1,54 @@
+{
+  "label": "2026-06-12",
+  "date": "2026-06-12",
+  "generated_at": "2026-06-12T22:00:01",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202606/12/2606.09195v1-symbolic-and-abstractive-reasoning-with-complex-visual-queries",
+      "section": "quick",
+      "title_en": "Symbolic and Abstractive Reasoning with Complex Visual Queries",
+      "authors": "Yichi Zhang, Jingdian Lu, Zhuo Chen, Lingbing Guo, Jun Xu, Wen Zhang, Huajun Chen",
+      "date": "2026-06-08",
+      "pdf": "https://arxiv.org/pdf/2606.09195v1",
+      "score": "7.0",
+      "evidence": "多模态知识图谱构建与逻辑推理",
+      "tldr": "当前多模态大语言模型对抽象视觉内容的理解与推理仍具挑战。本文聚焦复杂视觉查询(CVQ)这一新型抽象数据类型，从数据×范式×探索三维度进行系统探究：提出可扩展的合成管道，基于大规模多模态知识图谱生成涵盖14种查询类型的多样化数据集，通过系统化组合一阶逻辑运算符实现；同时引入两阶段训练框架逐步增强模型推理能力。实验全面评估了CVQ推理、跨任务及跨场景泛化能力，验证了方法的有效性。该工作为推进MLLM的符号与抽象推理开辟了新视角。",
+      "tags": "query:smart-city",
+      "abstract_en": "Understanding and reasoning over abstract visual content remains a challenge for current multi-modal large language models (MLLMs). In this paper, we explore a novel abstract data type termed complex visual query (CVQ), designed to probe symbolic and abstractive reasoning, which is a critical yet underexplored dimension of human-like neuro-symbolic reasoning for MLLMs. We present a comprehensive investigation from three perspectives: \\textbf{Data $\\times$ Paradigm $\\times$ Exploration}. Specifically, we propose a scalable pipeline for synthesizing CVQs grounded in large-scale multi-modal knowledge graphs, generating a diverse dataset encompassing 14 distinct query types via systematic combinations of first-order logic operators. We further introduce a two-stage training framework that progressively equips MLLMs with robust visual reasoning capabilities. We conduct extensive experiments to rigorously evaluate MLLMs across multiple dimensions, including reasoning performance on CVQs, as well as cross-task and cross-scenario generalization. We believe our work opens new perspectives and avenues for advancing the reasoning frontiers of MLLMs.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/12/2606.06786v1-federated-foundation-models-over-vehicular-networks",
+      "section": "quick",
+      "title_en": "Federated Foundation Models over Vehicular Networks",
+      "authors": "Kasra Borazjani, Fardis Nadimi, Payam Abdisarabshali, Owen Palinski, Allan Salihovic, Dinh Nguyen, Minghui Liwang, Seyyedali Hosseinalipour",
+      "date": "2026-06-05",
+      "pdf": "https://arxiv.org/pdf/2606.06786v1",
+      "score": "6.0",
+      "evidence": "面向车载网络的多模态多任务联邦基础模型",
+      "tldr": "针对车辆网络中多模态多任务联邦基础模型（M3T FedFMs）集成问题，本文提出将多模态多任务基础模型的强大表达能力与联邦学习的隐私保护分布式学习能力相结合的前瞻性框架。介绍了训练/微调原理，讨论了多个车辆网络用例，识别了车辆环境的关键约束并给出研究方向。在Waymo数据集上的案例研究表明该方案的有效性，并开源代码以促进可重复研究。",
+      "tags": "query:smart-city",
+      "abstract_en": "This paper presents a forward-looking vision for integrating the emerging multi-modal multi-task federated foundation models (M3T FedFMs) into vehicular networks, with the goal of unifying the expressive power of multi-modal multi-task foundation models (M3T FMs) with the privacy-preserving and distributed learning capabilities of federated learning (FL). Given the largely underexplored nature of this research direction, we first introduce the fundamental training/fine-tuning principles of M3T FedFMs. We then discuss a range of their representative use cases in vehicular networks, illustrating the significant potential of M3T FedFMs to enable next-generation vehicular intelligence. Afterwards, we identify key constraints inherent to vehicular environments that challenge the practical deployment of M3T FedFMs, and articulate a set of forward-looking research directions to address these challenges. Furthermore, through a case study conducted on a real-world vehicular dataset (i.e., Waymo Open Dataset), we demonstrate the promise of M3T FedFMs for vehicular networks and release our implementation to facilitate reproducibility and stimulate research in this emerging area (repository: https://github.com/KasraBorazjani/vehicular-fedfm)",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/12/2606.11749v1-fast-mel-a-fast-accurate-and-storage-efficient-solution-for-multimodal-entity-linking",
+      "section": "quick",
+      "title_en": "FAST-MEL: A Fast, Accurate, and Storage Efficient Solution for Multimodal Entity Linking",
+      "authors": "Derrien Thomas, Laurent Amsaleg, Pascale Sébillot",
+      "date": "2026-06-10",
+      "pdf": "https://arxiv.org/pdf/2606.11749v1",
+      "score": "6.0",
+      "evidence": "多模态实体链接，可应用于智慧城市多源数据融合",
+      "tldr": "多模态实体链接需要高准确率、计算效率和存储效率，现有系统无法兼顾。本文提出FAST-MEL，使用轻量编码器生成紧凑固定大小的向量表示文本和视觉信息。该方法在匹配最佳准确率的同时，速度快三个数量级，存储少一个数量级，实现了三方面需求的平衡。",
+      "tags": "query:smart-city",
+      "abstract_en": "Multimodal entity linking (MEL) is the task that consists of matching textual and visual mentions of entities in unstructured data to their corresponding entities in a knowledge base (KB). To be effective in large-scale practical settings, MEL systems must meet three objectives: high linking accuracy, computational efficiency, and storage efficiency, i.e., a compact yet efficient index of the KB. In this paper, we highlight that state-of-the-art systems fail to simultaneously satisfy these 3 requirements. To meet this three-fold objective, we propose FAST-MEL, a lightweight encoder-based MEL solution that relies on a novel and compact fixed-size vectorized representation of both the textual and visual information of each entity or mention. It matches the accuracy of the best systems but performs three orders of magnitude faster. It also consumes one order of magnitude less storage than the fastest systems.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

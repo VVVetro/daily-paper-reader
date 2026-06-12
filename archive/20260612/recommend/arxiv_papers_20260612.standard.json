@@ -1,0 +1,138 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-12T21:58:43.644300+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.09195v1",
+      "source": "arxiv",
+      "title": "Symbolic and Abstractive Reasoning with Complex Visual Queries",
+      "abstract": "Understanding and reasoning over abstract visual content remains a challenge for current multi-modal large language models (MLLMs). In this paper, we explore a novel abstract data type termed complex visual query (CVQ), designed to probe symbolic and abstractive reasoning, which is a critical yet underexplored dimension of human-like neuro-symbolic reasoning for MLLMs. We present a comprehensive investigation from three perspectives: \\textbf{Data $\\times$ Paradigm $\\times$ Exploration}. Specifically, we propose a scalable pipeline for synthesizing CVQs grounded in large-scale multi-modal knowledge graphs, generating a diverse dataset encompassing 14 distinct query types via systematic combinations of first-order logic operators. We further introduce a two-stage training framework that progressively equips MLLMs with robust visual reasoning capabilities. We conduct extensive experiments to rigorously evaluate MLLMs across multiple dimensions, including reasoning performance on CVQs, as well as cross-task and cross-scenario generalization. We believe our work opens new perspectives and avenues for advancing the reasoning frontiers of MLLMs.",
+      "authors": [
+        "Yichi Zhang",
+        "Jingdian Lu",
+        "Zhuo Chen",
+        "Lingbing Guo",
+        "Jun Xu",
+        "Wen Zhang",
+        "Huajun Chen"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-08T08:30:51+00:00",
+      "link": "https://arxiv.org/pdf/2606.09195v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "multi-modal knowledge graph construction and logic reasoning",
+      "llm_evidence_cn": "多模态知识图谱构建与逻辑推理",
+      "llm_evidence": "多模态知识图谱构建与逻辑推理",
+      "canonical_evidence": "多模态知识图谱构建与逻辑推理",
+      "llm_tldr_en": "Proposes complex visual queries grounded in multi-modal knowledge graphs using first-order logic operators for symbolic and abstractive reasoning, enabling structured reasoning over visual content.",
+      "llm_tldr_cn": "当前多模态大模型在抽象视觉推理方面存在不足。本文提出复杂视觉查询（CVQ）概念，基于大规模多模态知识图谱合成数据集，结合一阶逻辑算子生成多样查询类型。采用两阶段方法实现符号化与抽象推理。实验表明该方法能有效提升视觉推理的准确性和可解释性，为知识图谱驱动的视觉推理提供了新范式。",
+      "llm_tldr": "当前多模态大模型在抽象视觉推理方面存在不足。本文提出复杂视觉查询（CVQ）概念，基于大规模多模态知识图谱合成数据集，结合一阶逻辑算子生成多样查询类型。采用两阶段方法实现符号化与抽象推理。实验表明该方法能有效提升视觉推理的准确性和可解释性，为知识图谱驱动的视觉推理提供了新范式。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.06786v1",
+      "source": "arxiv",
+      "title": "Federated Foundation Models over Vehicular Networks",
+      "abstract": "This paper presents a forward-looking vision for integrating the emerging multi-modal multi-task federated foundation models (M3T FedFMs) into vehicular networks, with the goal of unifying the expressive power of multi-modal multi-task foundation models (M3T FMs) with the privacy-preserving and distributed learning capabilities of federated learning (FL). Given the largely underexplored nature of this research direction, we first introduce the fundamental training/fine-tuning principles of M3T FedFMs. We then discuss a range of their representative use cases in vehicular networks, illustrating the significant potential of M3T FedFMs to enable next-generation vehicular intelligence. Afterwards, we identify key constraints inherent to vehicular environments that challenge the practical deployment of M3T FedFMs, and articulate a set of forward-looking research directions to address these challenges. Furthermore, through a case study conducted on a real-world vehicular dataset (i.e., Waymo Open Dataset), we demonstrate the promise of M3T FedFMs for vehicular networks and release our implementation to facilitate reproducibility and stimulate research in this emerging area (repository: https://github.com/KasraBorazjani/vehicular-fedfm)",
+      "authors": [
+        "Kasra Borazjani",
+        "Fardis Nadimi",
+        "Payam Abdisarabshali",
+        "Owen Palinski",
+        "Allan Salihovic",
+        "Dinh Nguyen",
+        "Minghui Liwang",
+        "Seyyedali Hosseinalipour"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.NI"
+      ],
+      "published": "2026-06-05T00:08:22+00:00",
+      "link": "https://arxiv.org/pdf/2606.06786v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Multi-modal multi-task federated foundation models for vehicular networks",
+      "llm_evidence_cn": "面向车载网络的多模态多任务联邦基础模型",
+      "llm_evidence": "面向车载网络的多模态多任务联邦基础模型",
+      "canonical_evidence": "面向车载网络的多模态多任务联邦基础模型",
+      "llm_tldr_en": "The paper proposes M3T FedFMs, integrating multi-modal foundation models with federated learning for vehicular networks, enabling distributed intelligence.",
+      "llm_tldr_cn": "该论文提出将多模态多任务联邦基础模型（M3T FedFMs）集成到车载网络中，以结合多模态基础模型的表达能力与联邦学习的隐私保护能力。文中介绍了训练/微调原理，并讨论了在车辆环境中的多个代表性用例，展示了该框架实现下一代车辆智能的潜力。这为智慧城市中多模态传感器数据融合提供了可借鉴的分布式学习范式。",
+      "llm_tldr": "该论文提出将多模态多任务联邦基础模型（M3T FedFMs）集成到车载网络中，以结合多模态基础模型的表达能力与联邦学习的隐私保护能力。文中介绍了训练/微调原理，并讨论了在车辆环境中的多个代表性用例，展示了该框架实现下一代车辆智能的潜力。这为智慧城市中多模态传感器数据融合提供了可借鉴的分布式学习范式。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.11749v1",
+      "source": "arxiv",
+      "title": "FAST-MEL: A Fast, Accurate, and Storage Efficient Solution for Multimodal Entity Linking",
+      "abstract": "Multimodal entity linking (MEL) is the task that consists of matching textual and visual mentions of entities in unstructured data to their corresponding entities in a knowledge base (KB). To be effective in large-scale practical settings, MEL systems must meet three objectives: high linking accuracy, computational efficiency, and storage efficiency, i.e., a compact yet efficient index of the KB. In this paper, we highlight that state-of-the-art systems fail to simultaneously satisfy these 3 requirements. To meet this three-fold objective, we propose FAST-MEL, a lightweight encoder-based MEL solution that relies on a novel and compact fixed-size vectorized representation of both the textual and visual information of each entity or mention. It matches the accuracy of the best systems but performs three orders of magnitude faster. It also consumes one order of magnitude less storage than the fastest systems.",
+      "authors": [
+        "Derrien Thomas",
+        "Laurent Amsaleg",
+        "Pascale Sébillot"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR"
+      ],
+      "published": "2026-06-10T07:24:52+00:00",
+      "link": "https://arxiv.org/pdf/2606.11749v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multimodal entity linking for unstructured data",
+      "llm_evidence_cn": "多模态实体链接，可应用于智慧城市多源数据融合",
+      "llm_evidence": "多模态实体链接，可应用于智慧城市多源数据融合",
+      "canonical_evidence": "多模态实体链接，可应用于智慧城市多源数据融合",
+      "llm_tldr_en": "Proposes FAST-MEL, a lightweight encoder for multimodal entity linking that achieves high accuracy, speed, and storage efficiency.",
+      "llm_tldr_cn": "本文针对多模态实体链接在准确率、计算效率和存储效率上的矛盾，提出FAST-MEL方法。该方法通过紧凑的固定尺寸向量表示文本和视觉信息，实现轻量化编码器。实验表明其在多个基准上同时达到高精度与资源效率。这项技术可直接应用于智慧城市中异构数据（如文档、图像、传感器记录）的实体对齐与融合。",
+      "llm_tldr": "本文针对多模态实体链接在准确率、计算效率和存储效率上的矛盾，提出FAST-MEL方法。该方法通过紧凑的固定尺寸向量表示文本和视觉信息，实现轻量化编码器。实验表明其在多个基准上同时达到高精度与资源效率。这项技术可直接应用于智慧城市中异构数据（如文档、图像、传感器记录）的实体对齐与融合。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
