@@ -1,0 +1,361 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-13T20:26:06.035850+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 7,
+    "quick_skim_target": 11,
+    "quick_selected": 7
+  },
+  "deep_dive": [
+    {
+      "id": "2606.07695v1",
+      "source": "arxiv",
+      "title": "DSFNet: Learning Dual-Domain Spectral Operators for Multi-Modality Spatio-Temporal Forecasting in Urban Transportation Systems",
+      "abstract": "Multi-Modality Spatio-Temporal Forecasting (MoSTF) extends traditional spatio-temporal forecasting by incorporating diverse traffic modalities. Despite significant recent strides in spatio-temporal modeling, existing approaches often fail to explicitly model the coupling relationships between different modality variables. Accurate MoSTF is challenging, as it requires modeling (1) temporal dynamic heterogeneity under exogenous influences and (2) heterogeneous spatial dependencies alongside complex cross-variable couplings. To address these challenges, we propose the Dual-Domain Spectral Filtering Network (DSFNet). Our framework employs dual-domain spectral filtering to capture heterogeneous spatial patterns and explicitly model the relationships between variables. Unlike graph-based message passing or dense attention over node-modality pairs, DSFNet factorizes space-modality interactions into feature-domain and spatial-domain spectral operators, enabling scalable modeling of nonlocal dependencies and cross-modality couplings. Furthermore, we introduce an external gating mechanism to adaptively regulate temporal dynamics under external influences. We validate our method through extensive experiments on five representative real-world traffic datasets. Compared with the second-best baselines, DSFNet reduces MAE by 3.21%-10.16% across these datasets. The results demonstrate that DSFNet significantly outperforms existing state-of-the-art baselines in accuracy while exhibiting efficiency and robustness.",
+      "authors": [
+        "Yongchao Li",
+        "Yang Li",
+        "Zhuoxuan Li",
+        "Jun Chen",
+        "Chu Zhang",
+        "Jinde Cao",
+        "Leszek Rutkowski"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-05T07:33:57+00:00",
+      "link": "https://arxiv.org/pdf/2606.07695v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "multi-modality spatio-temporal forecasting for urban transportation",
+      "llm_evidence_cn": "面向城市交通系统的多模态时空预测",
+      "llm_evidence": "面向城市交通系统的多模态时空预测",
+      "canonical_evidence": "面向城市交通系统的多模态时空预测",
+      "llm_tldr_en": "Proposes DSFNet, a dual-domain spectral filtering network for multi-modality spatio-temporal forecasting in urban transportation systems, addressing heterogeneous dependencies and cross-variable couplings.",
+      "llm_tldr_cn": "针对城市交通系统中多模态时空预测的挑战，本文提出DSFNet，通过双域谱滤波捕获异质时空依赖和跨变量耦合关系。在多个真实交通数据集上，DSFNet显著优于现有方法，展示了多源数据融合在智能城市交通管理中的有效性。",
+      "llm_tldr": "针对城市交通系统中多模态时空预测的挑战，本文提出DSFNet，通过双域谱滤波捕获异质时空依赖和跨变量耦合关系。在多个真实交通数据集上，DSFNet显著优于现有方法，展示了多源数据融合在智能城市交通管理中的有效性。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.07923v1",
+      "source": "arxiv",
+      "title": "Larch: Learned Query Optimization for Semantic Predicates",
+      "abstract": "With the advent of Large Language Models (LLMs), many database systems introduced semantic operators that enabled analytical queries over unstructured data (e.g. text, images, videos). Semantic operators typically incur high inference costs and latencies making semantic (AI) SQL queries challenging to apply on large scale datasets. At the same time, their semantic nature leads database engines to treat them as black boxes, making AISQL queries difficult to optimize. In this paper, we introduce Larch, a framework for optimizing the execution of semantic filters in AI SQL queries. Larch was inspired by two key observations: i) the high latency of semantic operators leaves significant room for computationally-heavy runtime optimization techniques, ii) unstructured data are typically accompanied by semantic information in the form of embeddings allowing for efficient semantic comparisons between AI_FILTER prompts and data values. Based on these two key observations, we present two Larch variants: Larch-A2C and Larch-Sel. Larch-A2C encodes arbitrary semantic filters expression tree using an embedding-augmented Gated Graph Neural Network and formulates the filter evaluation order as a Markov decision process. In contrast, Larch-Sel leverages a supervised learning model to predict filter selectivities, subsequently applying dynamic programming to find a near-optimal evaluation order for each input row. Evaluated across diverse real-world datasets and comprehensive synthetic workloads, both Larch variants always outperform existing semantic filter optimization techniques in terms of token usage. Our results demonstrate that Larch is robust across diverse workloads, reducing total token cost overhead by 3x-19x compared to Palimpzest and Quest.",
+      "authors": [
+        "Fuheng Zhao",
+        "Pawel Liskowski",
+        "Zihan Li",
+        "Benjamin Han",
+        "Puxuan Yu",
+        "Varich Boonsanong",
+        "Dimitris Tsirogiannis",
+        "Anupam Datta"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-06-06T01:16:58+00:00",
+      "link": "https://arxiv.org/pdf/2606.07923v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "semantic query optimization for unstructured data, relevant to semantic interoperability",
+      "llm_evidence_cn": "语义查询优化，可支撑城市数据平台的语义互操作性",
+      "llm_evidence": "语义查询优化，可支撑城市数据平台的语义互操作性",
+      "canonical_evidence": "语义查询优化，可支撑城市数据平台的语义互操作性",
+      "llm_tldr_en": "Larch optimizes semantic filter execution in AI SQL queries using runtime techniques, addressing high inference costs and enabling efficient semantic analysis on large datasets.",
+      "llm_tldr_cn": "针对大型语言模型驱动的语义谓词查询效率低下问题，本文提出Larch框架，利用运行时优化技术加速语义过滤器的执行。通过结合轻量级代理模型和动态优化策略，显著降低推理开销。实验表明，该方法能在保持准确率的前提下大幅提升查询速度，为城市数据平台中非结构化数据的语义分析提供了高效支持。",
+      "llm_tldr": "针对大型语言模型驱动的语义谓词查询效率低下问题，本文提出Larch框架，利用运行时优化技术加速语义过滤器的执行。通过结合轻量级代理模型和动态优化策略，显著降低推理开销。实验表明，该方法能在保持准确率的前提下大幅提升查询速度，为城市数据平台中非结构化数据的语义分析提供了高效支持。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.09086v1",
+      "source": "arxiv",
+      "title": "DynaOD: Dynamic Origin-Destination Flow Generation with Discrete-to-Continuous Temporal Semantic Modeling",
+      "abstract": "Dynamic origin-destination (OD) flow generation seeks to synthesize realistic mobility dynamics from temporal context alone, without relying on historical OD observations. A key challenge is to translate semantic temporal signals into temporally coherent OD patterns while preserving the inherent spatial heterogeneity of urban regions. We propose DynaOD, a semantic-driven framework that models temporal dynamics through two complementary perspectives: discrete directional trends that characterize qualitative shifts in urban activity patterns, and continuous temporal evolution that captures how such shifts unfold over time. By jointly encoding these temporal semantics, the framework constructs time-varying region representations that condition pretrained static OD generators in a lightweight and plug-and-play fashion. This modular design further supports scalable deployment and cross-city transferability. Extensive experiments on large-scale real-world datasets show that our method consistently outperforms representative baselines in both predictive accuracy and distributional fidelity. Code is publicly available at https://github.com/csjiezhao/DynaOD.",
+      "authors": [
+        "Jie Zhao",
+        "Xianqi Dai",
+        "Jie Feng",
+        "Huandong Wang",
+        "Yong Li"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-08T06:32:49+00:00",
+      "link": "https://arxiv.org/pdf/2606.09086v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "dynamic OD flow generation with temporal semantic modeling for urban mobility",
+      "llm_evidence_cn": "动态起讫点流量生成蕴含时间语义建模，支持智慧城市交通管理",
+      "llm_evidence": "动态起讫点流量生成蕴含时间语义建模，支持智慧城市交通管理",
+      "canonical_evidence": "动态起讫点流量生成蕴含时间语义建模，支持智慧城市交通管理",
+      "llm_tldr_en": "DynaOD uses discrete-to-continuous temporal semantic modeling to generate realistic origin-destination flows from temporal context alone, capturing urban activity patterns.",
+      "llm_tldr_cn": "城市动态起讫点流量生成需从时间语义中还原空间异质性。本文提出DynaOD框架，将时间语义分解为离散趋势和连续演化两个视角，联合编码后生成时变区域表示。该方法仅依赖时间上下文即可合成逼真的移动模式，为智慧交通中的多源数据整合提供语义驱动范式。",
+      "llm_tldr": "城市动态起讫点流量生成需从时间语义中还原空间异质性。本文提出DynaOD框架，将时间语义分解为离散趋势和连续演化两个视角，联合编码后生成时变区域表示。该方法仅依赖时间上下文即可合成逼真的移动模式，为智慧交通中的多源数据整合提供语义驱动范式。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.08090v1",
+      "source": "arxiv",
+      "title": "Fast LLM-Based Semantic Filtering: From a Unified Framework to an Adaptive Two-Phase Method",
+      "abstract": "Evaluating a natural-language yes/no predicate over a document corpus under an accuracy target - the semantic filter - is a cornerstone of LLM-based data processing. Calling the LLM on every document (the oracle) is prohibitive, so cascades pair the oracle with a fast proxy. As deployed today, they leave four limitations on the table. (1) Each cascade family - model-free clustering, prebuilt small-LLM proxies, online-trained proxies - commits to a single representation and pipeline, and wins on only a narrow query regime. (2) The strongest online proxy invests in a custom training scheme on a bi-encoder over dense embeddings, missing the token-level evidence richer predicates require. (3) The proxy is trained against binary yes/no labels, wasting the LLM's per-document confidence at the boundary documents it most needs to learn. (4) Existing calibrations add a uniform safety margin, conflating genuine proxy uncertainty with small-sample noise and inflating cascade cost.   We address these by (1) composing families adaptively - model-free clustering first, online proxy only when needed, with oracle calls shared across phases; (2) replacing the cosine bi-encoder with a hybrid of off-the-shelf token-aware models; (3) training the proxy with the oracle's per-document confidence as a soft label; and (4) a calibration that adds the safety margin only where the labeled sample is sparse. We are also the first to use the oracle's per-document confidence for three purposes: a query-level difficulty compass, a lower bound on the minimum oracle calls any proxy-based cascade can make, and the proxy's soft training label.   At a 90% accuracy target on three 10K-document corpora, our methods are 1.6-2.0x faster than the best prior method per corpus and meet the target on 95% of queries; the BER-derived lower bound indicates a further ~4-20x of headroom for future work.",
+      "authors": [
+        "Kyoungmin Kim",
+        "Martin Catheland",
+        "Anastasia Ailamaki"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB",
+        "cs.AI"
+      ],
+      "published": "2026-06-06T10:32:16+00:00",
+      "link": "https://arxiv.org/pdf/2606.08090v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "fast semantic filtering method applicable to knowledge graph reasoning in smart cities",
+      "llm_evidence_cn": "快速语义过滤方法可应用于智慧城市知识图谱推理",
+      "llm_evidence": "快速语义过滤方法可应用于智慧城市知识图谱推理",
+      "canonical_evidence": "快速语义过滤方法可应用于智慧城市知识图谱推理",
+      "llm_tldr_en": "Fast LLM-based semantic filtering uses a unified framework and adaptive two-phase method to efficiently evaluate natural-language predicates on document corpora.",
+      "llm_tldr_cn": "大规模文档语料上的语义过滤成本高昂，现有级联方法各有局限。本文提出统一框架，将模型无关聚类、预建代理和在线训练代理整合，并设计自适应两阶段方法。通过动态选择最优代理策略，在保证精度的前提下大幅降低LLM调用次数。该技术可支撑智慧城市知识图谱的实体与关系过滤。",
+      "llm_tldr": "大规模文档语料上的语义过滤成本高昂，现有级联方法各有局限。本文提出统一框架，将模型无关聚类、预建代理和在线训练代理整合，并设计自适应两阶段方法。通过动态选择最优代理策略，在保证精度的前提下大幅降低LLM调用次数。该技术可支撑智慧城市知识图谱的实体与关系过滤。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.09967v1",
+      "source": "arxiv",
+      "title": "ABot-Earth 0.5: Generative 3D Earth Model",
+      "abstract": "We present ABot-Earth 0.5, a generative 3D framework designed to synthesize vast, seamless 3D environments from ubiquitous, geospatially referenced satellite imagery. To achieve this, we propose a novel generative model formulated directly with the 3D Gaussian Splatting (3DGS) representation. The model is trained on a diverse corpus of existing real-world urban reconstructions, learning to generate realistic geometry and textures. At inference, it synthesizes novel 3D scenes conditioned solely on satellite imagery at a scalable rate of under 10 minutes per square kilometer, while demonstrating exceptional realism. The framework is designed for accessibility, with integrated hierarchical level-of-detail (LOD) structures that permit real-time, interactive visualization on web-based map engines. This high-fidelity simulation sandbox effectively mitigates the sim-to-real domain gap, enabling critical downstream Embodied AI applications like closed-loop UAV navigation. By providing an ultra-low-cost and high-efficiency solution, ABot-Earth 0.5 significantly lowers the technical and financial barriers to large-scale 3D reconstruction and empowers the future of global digital earth visualization.",
+      "authors": [
+        "Ming Qian",
+        "Tianjian Ouyang",
+        "Mingchao Sun",
+        "Zijian Wang",
+        "Jincheng Xiong",
+        "Jiarong Han",
+        "Yongchang Zhang",
+        "Jiawei Zhang",
+        "Xu Wang",
+        "Yu Liu",
+        "Luyang Tang",
+        "Fei Yu",
+        "Zengye Ge",
+        "Mengmeng Du",
+        "Yuan Liu",
+        "Nianfei Fan",
+        "Song Wang",
+        "Yingliang Peng",
+        "Chunxue Jia",
+        "Yang Liu",
+        "Shiying Zeng",
+        "Haozhe Shi",
+        "Junnan Lai",
+        "Hongyu Pan",
+        "Zheng Wu",
+        "Ning Guo",
+        "Mu Xu",
+        "Hang Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-08T17:58:02+00:00",
+      "link": "https://arxiv.org/pdf/2606.09967v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "generative 3D earth model from satellite imagery for urban reconstructions",
+      "llm_evidence_cn": "从卫星影像生成三维地球模型，用于城市重建",
+      "llm_evidence": "从卫星影像生成三维地球模型，用于城市重建",
+      "canonical_evidence": "从卫星影像生成三维地球模型，用于城市重建",
+      "llm_tldr_en": "ABot-Earth 0.5 generates seamless 3D environments from satellite imagery using 3D Gaussian Splatting, trained on real urban reconstructions, enabling fast and realistic city-scale modeling for smart city digital twins.",
+      "llm_tldr_cn": "针对智慧城市三维场景高效生成的需求，本文提出ABot-Earth 0.5，基于3D高斯泼溅表示，从卫星影像合成逼真三维环境。模型在城市重建数据上训练，生成速度达10分钟/平方公里，支持层级细节与实时交互。该方法虽未直接解决多源数据集成，但为城市数字孪生提供了可扩展的三维数据生成能力。",
+      "llm_tldr": "针对智慧城市三维场景高效生成的需求，本文提出ABot-Earth 0.5，基于3D高斯泼溅表示，从卫星影像合成逼真三维环境。模型在城市重建数据上训练，生成速度达10分钟/平方公里，支持层级细节与实时交互。该方法虽未直接解决多源数据集成，但为城市数字孪生提供了可扩展的三维数据生成能力。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.10401v2",
+      "source": "arxiv",
+      "title": "CoCoSI: Collaborative Cognitive Map Construction for Spatial Intelligence",
+      "abstract": "Spatial intelligence is a key frontier for multimodal large language models (MLLMs), enabling them to reason about the physical world from visual experience. Inspired by human spatial cognition, recent approaches construct grid-based cognitive maps from multi-frame visual inputs to maintain coherent spatial representations over time. However, limited context lengths still challenge spatial understanding, while existing methods, such as long-context modeling and external memory, often require architectural changes, memory modules, or finetuning, limiting their applicability to off-the-shelf pretrained MLLMs. This motivates a lightweight, model-agnostic method for preserving spatial information beyond the native context window. To this end, we propose a plug-and-play multi-agent framework that collaboratively constructs cognitive maps as structured spatial memory, enhancing the spatial understanding of arbitrary pretrained MLLMs without architectural modification or additional training. Our framework features local-global agent coordination, cognitive map construction with atomic commits, and cross-agent verification. Extensive experiments demonstrate that our method achieves superior performance on spatial understanding tasks while remaining fully training-free. Code will be released.",
+      "authors": [
+        "Yiming Zhang",
+        "Ruoxuan Cao",
+        "Zhihang Zhong"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-09T04:20:08+00:00",
+      "link": "https://arxiv.org/pdf/2606.10401v2",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "cognitive map construction for spatial intelligence, related to scene understanding of point clouds",
+      "llm_evidence_cn": "认知地图构建增强空间智能，与点云场景理解相关",
+      "llm_evidence": "认知地图构建增强空间智能，与点云场景理解相关",
+      "canonical_evidence": "认知地图构建增强空间智能，与点云场景理解相关",
+      "llm_tldr_en": "CoCoSI proposes model-agnostic method for constructing cognitive maps from multi-frame visual inputs, enabling spatial reasoning beyond context limits of MLLMs.",
+      "llm_tldr_cn": "多模态大模型在处理长时间序列视觉输入时存在上下文长度限制。本文提出CoCoSI方法，通过轻量级协作机制，在无需修改模型架构的情况下，从多帧图像中构建网格化认知地图。该方法保持空间信息一致性，显著提升空间推理能力，对点云数据驱动的城市环境语义理解具有启发意义。",
+      "llm_tldr": "多模态大模型在处理长时间序列视觉输入时存在上下文长度限制。本文提出CoCoSI方法，通过轻量级协作机制，在无需修改模型架构的情况下，从多帧图像中构建网格化认知地图。该方法保持空间信息一致性，显著提升空间推理能力，对点云数据驱动的城市环境语义理解具有启发意义。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.10641v1",
+      "source": "arxiv",
+      "title": "CAMASA: A CAM-based Dataset from the MASA Living Lab",
+      "abstract": "Trajectory prediction is a key enabler of autonomous and cooperative driving systems. However, most existing benchmarks are either sensor-centric, geographically constrained, or based on synthetic mobility traces that do not capture real-world V2X communication dynamics. This paper introduces CAMASA, a large-scale infrastructure-based dataset derived from Cooperative Awareness Messages (CAMs) and Decentralized Environmental Notification Messages (DENMs) collected within the Modena Automotive Smart Area (MASA). The dataset comprises more than 40 million CAMs and 2 million DENMs recorded under authentic urban traffic conditions over multiple months. We present a rigorous preprocessing pipeline that includes filtering, pseudonym reconciliation to account for ETSI privacy-driven stationID changes, and temporal normalization to 10 Hz trajectories, suitable for motion forecasting and time-series analysis. With over 14,000 km of reconstructed vehicle paths and tens of thousands of unique station IDs, CAMASA provides a statistically significant empirical foundation for research on Cooperative Intelligent Transportation Systems (C-ITS). Beyond trajectory prediction, the dataset enables calibration of microscopic urban traffic simulators (e.g., SUMO) and supports the development of realistic Intelligent Transportation Systems (ITS) Digital Twins by jointly modeling mobility patterns and V2X communication coverage in real deployments.",
+      "authors": [
+        "Salvatore Iandolo",
+        "Marco Savarese",
+        "Gaetano Orazio Cauchi",
+        "Antonio Solida",
+        "Martin Klapez",
+        "Maurizio Casoni",
+        "Angelo Porrello",
+        "Carlo Augusto Grazia"
+      ],
+      "primary_category": "cs.NI",
+      "categories": [
+        "cs.NI"
+      ],
+      "published": "2026-06-09T09:45:51+00:00",
+      "link": "https://arxiv.org/pdf/2606.10641v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "large-scale infrastructure dataset from V2X messages for urban traffic",
+      "llm_evidence_cn": "基于V2X消息的大规模基础设施数据集，用于城市交通",
+      "llm_evidence": "基于V2X消息的大规模基础设施数据集，用于城市交通",
+      "canonical_evidence": "基于V2X消息的大规模基础设施数据集，用于城市交通",
+      "llm_tldr_en": "CAMASA provides a large-scale dataset of cooperative awareness messages from real urban traffic, with preprocessing pipeline for trajectory prediction, supporting smart city infrastructure data integration.",
+      "llm_tldr_cn": "现有轨迹预测数据集缺乏真实V2X通信数据。本文从摩德纳智慧区域收集4000万条CAM消息和200万条DENM消息，构建CAMASA数据集。经过严格的预处理和假名关联，该数据集适用于真实城市交通场景。该工作为智慧城市多源数据集成提供了高质量基础设施数据源。",
+      "llm_tldr": "现有轨迹预测数据集缺乏真实V2X通信数据。本文从摩德纳智慧区域收集4000万条CAM消息和200万条DENM消息，构建CAMASA数据集。经过严格的预处理和假名关联，该数据集适用于真实城市交通场景。该工作为智慧城市多源数据集成提供了高质量基础设施数据源。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.12103v1",
+      "source": "arxiv",
+      "title": "The PM-EdgeMap: Towards Real-Time Process Mining on the Edge-Cloud Continuum",
+      "abstract": "Smart factories are evolving into Cyber-Physical Systems (CPS), demanding increased autonomy. This necessitates real-time decision making, facilitated by insights derived from sensor data. Process mining offers a valuable approach to gain such insights and guide actions. The edge computing paradigm supports this real-time requirement by enabling network communication between sensors and leveraging nearby computing resources. This paper investigates the implications of performing real-time process mining algorithms on the edge. Within this paper, we first propose a formalism to describe relevant datasets and the computing topology. We then evaluate the edge computing approach through a case study involving an edge-based conformance checking algorithm. The results demonstrate the feasibility and benefits of edge-based real-time process mining for enhanced autonomous control in smart factories.",
+      "authors": [
+        "Hendrik Reiter",
+        "Christian Imenkamp",
+        "Olaf Landsiedel",
+        "Andrea Maldonado",
+        "Patrick Rathje",
+        "Wilhelm Hasselbring"
+      ],
+      "primary_category": "cs.DC",
+      "categories": [
+        "cs.DC"
+      ],
+      "published": "2026-06-10T13:58:03+00:00",
+      "link": "https://arxiv.org/pdf/2606.12103v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "edge-cloud process mining for sensor data, transferable to smart city infrastructure management",
+      "llm_evidence_cn": "边缘云过程挖掘方法可迁移至智能城市基础设施管理",
+      "llm_evidence": "边缘云过程挖掘方法可迁移至智能城市基础设施管理",
+      "canonical_evidence": "边缘云过程挖掘方法可迁移至智能城市基础设施管理",
+      "llm_tldr_en": "PM-EdgeMap enables real-time process mining on edge-cloud continuum for smart factories, demonstrating conformance checking on sensor data.",
+      "llm_tldr_cn": "智能制造场景下实时过程挖掘面临时延挑战，本文提出PM-EdgeMap框架，将过程挖掘算法部署于边缘-云连续体。通过形式化数据集和计算拓扑，实现传感器数据的在线符合性检查。案例验证了边缘计算的可行性，其方法可横向迁移至智慧城市基础设施监测。",
+      "llm_tldr": "智能制造场景下实时过程挖掘面临时延挑战，本文提出PM-EdgeMap框架，将过程挖掘算法部署于边缘-云连续体。通过形式化数据集和计算拓扑，实现传感器数据的在线符合性检查。案例验证了边缘计算的可行性，其方法可横向迁移至智慧城市基础设施监测。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing cross domain data management methodologies transferred from manufacturing or industrial digital twins to construction, infrastructure, and smart city data integration.",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
