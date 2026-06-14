@@ -1,0 +1,300 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-14T21:10:19.747649+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2606.10153v1",
+      "source": "arxiv",
+      "title": "Compositional Generative Modeling from Decentralized Data",
+      "abstract": "Learning the compositional nature of the physical world requires joint observation of interacting factors. However, because practical data is often decentralized, these factors are fragmented across isolated silos. Existing decentralized generative approaches focus only on modeling the union of siloed data, overlooking novel combinations implied by the collective whole. To bridge this gap, we introduce Decentralized Compositional Flow Matching (DCFM), a framework that enforces structural constraints across the global set of generative factors, without exchanging any raw data. DCFM enables novel combinations to emerge through peer interactions, even when no single data source can independently support the composition. Empirically, DCFM substantially outperforms federated learning and mixture-of-experts baselines across conditional image generation, robotic spatial planning, and medical attribute co-occurrence modeling.",
+      "authors": [
+        "Mashrur M. Morshed",
+        "Vishnu Naresh Boddeti"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-08T20:32:35+00:00",
+      "link": "https://arxiv.org/pdf/2606.10153v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Compositional generative model from decentralized data for data silo integration",
+      "llm_evidence_cn": "基于组合流匹配的去中心化数据集成方法",
+      "llm_evidence": "基于组合流匹配的去中心化数据集成方法",
+      "canonical_evidence": "基于组合流匹配的去中心化数据集成方法",
+      "llm_tldr_en": "Proposes Decentralized Compositional Flow Matching (DCFM) that enables novel combinations of fragmented data sources without exchanging raw data, outperforming federated approaches.",
+      "llm_tldr_cn": "针对实际数据分散在不同数据孤岛的问题，提出去中心化组合流匹配(DCFM)框架，通过全局结构约束实现新颖数据组合而无需交换原始数据。实验表明DCFM显著优于联邦学习方法，为多源数据集成提供了通用方案。",
+      "llm_tldr": "针对实际数据分散在不同数据孤岛的问题，提出去中心化组合流匹配(DCFM)框架，通过全局结构约束实现新颖数据组合而无需交换原始数据。实验表明DCFM显著优于联邦学习方法，为多源数据集成提供了通用方案。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.12595v1",
+      "source": "arxiv",
+      "title": "Emerging Flexible Designs for Geospatial Multimodal Foundation Models",
+      "abstract": "Foundation models are rapidly transforming Earth observation by enabling scalable pretraining across diverse unlabeled geospatial modalities. However, their architectural diversity ranging from encoder-only to encoder-decoder and masked autoencoding paradigms makes it challenging to assess performance trade offs in a consistent manner. In this work, we present an apples-to-apples comparison of leading FM architectures designed for geospatial multimodal reasoning, with a particular focus on flexibility across varied spectral band configurations. We standardize pretraining using identical self supervised learning objectives and training datasets, and evaluate all models under consistent parameterization on the GEOBench benchmark across classification and segmentation tasks. Our results offer new insights into the design trade-offs between model flexibility, modality alignment, and downstream task performance. By highlighting architectural strengths and limitations under controlled conditions, this study provides practical guidance for building next generation geospatial foundation models capable of robust multimodal reasoning.",
+      "authors": [
+        "Philipe Dias",
+        "Waqwoya Abebe",
+        "Abhishek Potnis",
+        "Aristeidis Tsaris",
+        "Dan Lu",
+        "Xiao Wang",
+        "Dalton Lunga"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CV"
+      ],
+      "published": "2026-06-10T18:46:10+00:00",
+      "link": "https://arxiv.org/pdf/2606.12595v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "geospatial multimodal foundation models for urban data fusion",
+      "llm_evidence_cn": "面向城市数据融合的地理空间多模态基础模型",
+      "llm_evidence": "面向城市数据融合的地理空间多模态基础模型",
+      "canonical_evidence": "面向城市数据融合的地理空间多模态基础模型",
+      "llm_tldr_en": "Provides an apples-to-apples comparison of geospatial multimodal foundation models for Earth observation.",
+      "llm_tldr_cn": "该文对主流地理空间多模态基础模型架构进行统一比较，标准化预训练目标和数据集，并在GEOBench基准上评估分类与语义分割性能。研究揭示了不同架构在灵活性与性能间的权衡，为地理空间多模态推理模型的选择提供了重要参考，可应用于智慧城市多源数据融合。",
+      "llm_tldr": "该文对主流地理空间多模态基础模型架构进行统一比较，标准化预训练目标和数据集，并在GEOBench基准上评估分类与语义分割性能。研究揭示了不同架构在灵活性与性能间的权衡，为地理空间多模态推理模型的选择提供了重要参考，可应用于智慧城市多源数据融合。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.09301v1",
+      "source": "arxiv",
+      "title": "PRISM: Topology-Aware Cross-Modal Imputation for Modality-Deficient Federated Graph Learning",
+      "abstract": "Multimodal federated graph learning (MM-FGL) aims to collaboratively learn from decentralized graphs with text and images. However, real-world clients may not share a common modality basis: a visual-search client may contain image--interaction graphs but no seller descriptions, while a catalog client may provide text but no product images. We refer to this practical setting as client-level modality deficiency. Unlike random instance-wise missingness, a deficient client lacks the local semantic basis needed to reconstruct the absent modality. More importantly, in graph learning, incomplete representations initialize message passing, so imputation errors can be filtered, mixed, and amplified by the receiving topology. To address this gap, we propose \\textbf{PRISM} (\\textbf{P}roactive \\textbf{R}etrieval and \\textbf{I}mputation via \\textbf{S}tructural \\textbf{M}eta-prompting), a topology-aware federated cross-modal imputation framework. Rather than reconstructing the missing modality solely from local observations, PRISM recovers missing-modality semantics from the federation and introduces them into local graph propagation under topology-aware control. Experiments on six multimodal graph datasets across graph-centric and modality-centric tasks show that PRISM consistently improves modality-deficient clients, outperforming state-of-the-art baselines by \\textbf{4.48}\\% on average.",
+      "authors": [
+        "Zekai Chen",
+        "Miao Zhang",
+        "Jiayang Xing",
+        "Xunkai Li",
+        "Xun Wu",
+        "Rong-Hua Li",
+        "Guoren Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-08T10:08:52+00:00",
+      "link": "https://arxiv.org/pdf/2606.09301v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "cross-modal imputation for multimodal federated graph learning",
+      "llm_evidence_cn": "多模态联邦图学习中的跨模态插补方法",
+      "llm_evidence": "多模态联邦图学习中的跨模态插补方法",
+      "canonical_evidence": "多模态联邦图学习中的跨模态插补方法",
+      "llm_tldr_en": "PRISM addresses client-level modality deficiency in federated graph learning via topology-aware cross-modal imputation, applicable to multimodal data fusion scenarios.",
+      "llm_tldr_cn": "针对多模态联邦图学习中客户可能缺失某模态的问题（如图片客户端缺少文本），本文提出拓扑感知的跨模态插补方法PRISM。该方法在消息传递过程中利用图拓扑结构来控制插补误差的传播与放大，从而在多种实际缺失设置下提升性能。该工作为多模态数据融合提供了新颖的解决方案，可迁移至智慧城市中的文档、图像、传感器等多模态数据整合场景。",
+      "llm_tldr": "针对多模态联邦图学习中客户可能缺失某模态的问题（如图片客户端缺少文本），本文提出拓扑感知的跨模态插补方法PRISM。该方法在消息传递过程中利用图拓扑结构来控制插补误差的传播与放大，从而在多种实际缺失设置下提升性能。该工作为多模态数据融合提供了新颖的解决方案，可迁移至智慧城市中的文档、图像、传感器等多模态数据整合场景。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.11678v1",
+      "source": "arxiv",
+      "title": "Can AI Reason Like an Urban Planner? Benchmarking Large Language Models Against Professional Judgment",
+      "abstract": "Problem, Research Strategy, and Findings: The rise of large language models (LLMs) raises a key question for urban planning: which forms of professional planning knowledge can AI replicate, and which still require human judgment? Although AI tools are increasingly used in planning practice, there is still no systematic framework for testing whether they can reason with the contextual sensitivity, value awareness, and institutional literacy central to planning expertise. This paper introduces Urban Planning Bench (UPBench), a domain-specific evaluation framework that assesses LLM reasoning through a 4x5 matrix of four knowledge pillars and five cognitive levels adapted from Bloom's revised taxonomy. Evaluating 25 LLMs with automated scoring and expert review, we find a non-monotonic cognitive curve: models perform better on higher-order analytical tasks than on factual recall and integrative judgment. This suggests that planning knowledge often treated as lower-order is deeply shaped by institutional, jurisdictional, and temporal context, making it hard for LLMs to generalize. We summarize these limits as four epistemic diagnostics: regulatory hallucination, conceptual conflation, wickedness paralysis, and phronetic deficit.   Takeaway for Practice: The findings support differential delegation in planning. LLMs can assist with cross-disciplinary synthesis, literature review, scenario generation, and preliminary policy analysis. However, they remain unreliable for jurisdiction-specific regulation, normative conflict resolution, and context-sensitive procedure. Agencies should require verification for AI-assisted regulatory analysis, while planning education should emphasize institutional literacy, normative judgment, and contextual sensitivity.",
+      "authors": [
+        "Yijie Deng",
+        "He Zhu",
+        "Wen Wang",
+        "Junyou Su",
+        "Minxin Chen",
+        "Wenjia Zhang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-10T05:42:36+00:00",
+      "link": "https://arxiv.org/pdf/2606.11678v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "introduces UPBench, a benchmark for evaluating LLM reasoning in urban planning, relevant to smart city AI applications and knowledge representation",
+      "llm_evidence_cn": "提出UPBench，用于评估大语言模型在城市规划中的推理能力，与智慧城市AI应用和知识表示相关",
+      "llm_evidence": "提出UPBench，用于评估大语言模型在城市规划中的推理能力，与智慧城市AI应用和知识表示相关",
+      "canonical_evidence": "提出UPBench，用于评估大语言模型在城市规划中的推理能力，与智慧城市AI应用和知识表示相关",
+      "llm_tldr_en": "This paper introduces Urban Planning Bench (UPBench), a framework to evaluate LLM reasoning across four knowledge pillars and five cognitive levels, testing 25 models on professional planning judgment, revealing limitations of current AI in contextual sensitivity and institutional literacy.",
+      "llm_tldr_cn": "该论文针对城市规划领域提出了UPBench评估框架，通过一个4x5矩阵（四个知识支柱×五个认知层次）系统地测试大语言模型在规划专业知识、情境敏感性、价值意识和制度素养上的表现。评估了25个模型，发现当前模型在处理复杂规划判断时仍有明显不足。该工作为智慧城市建设中AI的可靠性提供了重要基准，有助于指导未来模型在规划与数据集成中的改进。",
+      "llm_tldr": "该论文针对城市规划领域提出了UPBench评估框架，通过一个4x5矩阵（四个知识支柱×五个认知层次）系统地测试大语言模型在规划专业知识、情境敏感性、价值意识和制度素养上的表现。评估了25个模型，发现当前模型在处理复杂规划判断时仍有明显不足。该工作为智慧城市建设中AI的可靠性提供了重要基准，有助于指导未来模型在规划与数据集成中的改进。",
+      "llm_tags": [
+        "query:smart-city:composite"
+      ],
+      "matched_query_tag": "query:smart-city:composite",
+      "matched_query_text": "Papers central to 智慧城市建设中的数据整合与语义化处理, especially work that connects or combines: Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.; Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.; Find research papers describing semantic information extraction from BIM models, including geometry, materials, textures, and object relationships.; Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.; Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.; Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.; Find research papers describing unified data standards and semantic data models for integrating heterogeneous smart city construction data, including BIM, GIS, documents, images, videos, point clouds, and structured databases.; Find research papers describing semantic parsing, ontology learning, and knowledge graph construction from BIM models and point cloud scans for AI ready urban infrastructure databases.; Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.; Find research papers describing cross domain data management methodologies transferred from manufacturing or industrial digital twins to construction, infrastructure, and smart city data integration..",
+      "matched_requirement_id": "req-composite-smart-city",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.11946v1",
+      "source": "arxiv",
+      "title": "Neuro-Relational Programs: Unifying Queries and Neural Computation over Structured Data",
+      "abstract": "The conventional approach to deep learning over relational databases applies neural models, such as Graph Neural Networks (GNNs), to a graph representation of the database. Recent approaches instead operate on databases directly, associating tuples with embeddings and extending query mechanisms to jointly process embeddings and relational content. Inspired by these developments, we introduce Neuro-Relational Programs (NRPs), a declarative query language for relational databases whose facts carry numeric vector embeddings. NRPs extend Datalog-style rules with operations that combine, aggregate, and transform embeddings, thereby interleaving relational reasoning and learnable neural components within a single formalism. This yields a general approach to neural computation over relational data: an NRP can be read both as a query plan with trainable components and as a neural architecture with relational structure built in.   Natural syntactic fragments of NRPs recover existing architectures and query formalisms. Zero-ary NRPs correspond to non-adaptive query algorithms; monadic NRPs generalize GNN-style message passing and precisely capture Deep Homomorphism Networks, a connection that we extend to frontier-guarded NRPs over databases with row-ids. We characterize the expressive power of unrestricted NRPs with ReLU-FFN transformations by FOCQ, an extension of first-order logic with counting interpreted over real-weighted structures, yielding a precise connection with uniform TC$^0$ over ordered databases. Together, these results establish NRPs as a broad declarative framework for querying and neural computation over relational data.",
+      "authors": [
+        "Arie Soeteman",
+        "Balder ten Cate",
+        "Maurice Funk",
+        "Benny Kimelfeld",
+        "Carsten Lutz",
+        "Moritz Schönherr"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB",
+        "cs.CC",
+        "cs.LG",
+        "cs.LO"
+      ],
+      "published": "2026-06-10T11:16:36+00:00",
+      "link": "https://arxiv.org/pdf/2606.11946v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "declarative query language unifying neural and relational computation",
+      "llm_evidence_cn": "统一神经与关系计算的声明式查询语言",
+      "llm_evidence": "统一神经与关系计算的声明式查询语言",
+      "canonical_evidence": "统一神经与关系计算的声明式查询语言",
+      "llm_tldr_en": "Introduces Neuro-Relational Programs (NRPs), a declarative language for relational databases with embeddings, interleaving reasoning and neural computation.",
+      "llm_tldr_cn": "该文提出神经关系程序（NRP），一种扩展Datalog的声明式查询语言，支持嵌入操作和神经网络组件，实现关系推理与可学习计算的交织。该方法为异构结构化数据的统一语义查询提供了新范式，可应用于智慧城市数据平台中的统一数据模型与查询。",
+      "llm_tldr": "该文提出神经关系程序（NRP），一种扩展Datalog的声明式查询语言，支持嵌入操作和神经网络组件，实现关系推理与可学习计算的交织。该方法为异构结构化数据的统一语义查询提供了新范式，可应用于智慧城市数据平台中的统一数据模型与查询。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing unified data standards and semantic data models for integrating heterogeneous smart city construction data, including BIM, GIS, documents, images, videos, point clouds, and structured databases.",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.12849v1",
+      "source": "arxiv",
+      "title": "SemanticXR: Low Power and Real-time Queryable Semantic Mapping with an Object-Level Device-Cloud Architecture",
+      "abstract": "Semantic mapping is a core service that enables grounded interactions in emerging Extended Reality (XR) applications such as AI assistants and spatial object search. Deploying this capability on mobile XR devices requires a system that is open-vocabulary, real-time, and low-power. Existing approaches are compute-intensive and assume server-class resources. Cloud offloading offers a practical path, but no existing system splits semantic mapping across the device-cloud boundary or manages its communication, execution, and memory footprint.   We present SemanticXR, the first device-cloud system for real-time, open-vocabulary semantic mapping and querying under XR power, bandwidth, and memory constraints. Our key insight is to elevate semantically identifiable objects to first-class units of communication, execution, and memory across the device and server. On the server, object-level parallelism and geometry downsampling improve mapping latency, while object-level depth-mapping co-design reduces upstream bandwidth. On the device, an object-level sparse local map with incremental updates and update prioritization enables network-robust querying with bounded memory and downstream bandwidth. Object-level configurable resource usage vs. quality trade-offs let applications and the system adapt mapping to application requirements and operating conditions, respectively.   Against a device-cloud baseline with the same perception models, object-level organization improves server-side mapping latency by 2.2X at equal semantic quality. Depth-mapping co-design maintains upstream bandwidth under 2.5 Mbps. On the device, SemanticXR sustains sub-100 ms query latency for up to 10,000 objects even under network drops, supports tens of thousands of objects within 500 MB, and scales downstream bandwidth with map changes, not total scene size. The system adds only 2% device power during normal operation.",
+      "authors": [
+        "Rahul Singh",
+        "Devdeep Ray",
+        "Connor Smith",
+        "Sarita Adve"
+      ],
+      "primary_category": "cs.DC",
+      "categories": [
+        "cs.DC",
+        "cs.CV",
+        "cs.RO"
+      ],
+      "published": "2026-06-11T03:24:05+00:00",
+      "link": "https://arxiv.org/pdf/2606.12849v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "semantic mapping for XR, device-cloud architecture, real-time queryable",
+      "llm_evidence_cn": "面向XR的语义映射，设备-云端架构，实时可查询",
+      "llm_evidence": "面向XR的语义映射，设备-云端架构，实时可查询",
+      "canonical_evidence": "面向XR的语义映射，设备-云端架构，实时可查询",
+      "llm_tldr_en": "SemanticXR is the first device-cloud system for real-time open-vocabulary semantic mapping under XR constraints, applicable to urban digital twin semantic interoperability.",
+      "llm_tldr_cn": "针对扩展现实（XR）设备上语义映射部署的开源词汇、实时和低功耗需求，本文提出SemanticXR系统，首次将语义映射拆分为设备端和云端，并管理通信、执行和内存占用。该系统在功率、带宽和内存约束下实现实时、开放词汇的语义映射与查询。其设备-云端架构和实时查询能力与城市数字孪生中的语义互操作需求高度一致，可支持城市级数据平台的实时语义查询。",
+      "llm_tldr": "针对扩展现实（XR）设备上语义映射部署的开源词汇、实时和低功耗需求，本文提出SemanticXR系统，首次将语义映射拆分为设备端和云端，并管理通信、执行和内存占用。该系统在功率、带宽和内存约束下实现实时、开放词汇的语义映射与查询。其设备-云端架构和实时查询能力与城市数字孪生中的语义互操作需求高度一致，可支持城市级数据平台的实时语义查询。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.12867v1",
+      "source": "arxiv",
+      "title": "SMGFM: Spectral Multimodal Graph Pretraining for Multimodal-Attributed Graphs",
+      "abstract": "Multimodal-attributed graphs (MAGs) couple graph topology with node semantics from text, images, and other modalities. Traditional graph learning contextualizes node semantics by coupling topology with node features. However, this coupling design becomes troublesome in MAGs, where structure-induced and modality-intrinsic semantics may contribute differently to downstream tasks. Structure-induced semantics promote relational consistency through smooth topological variation, whereas modality-intrinsic semantics often encode local, fine-grained distinctions that should not be uniformly smoothed or aligned. Therefore, the key challenge is to identify semantic roles before cross-modal fusion. To this end, we leverage graph-frequency variation as a prior, where low-frequency components capture topology-consistent semantics and high-frequency components preserve modality-specific semantics. Based on this intuition, we propose SMGFM, a spectral multimodal graph pretraining framework that decomposes each modality-specific node signal into graph-frequency bands and assigns band-level semantic roles before cross-modal interaction. Concretely, SMGFM constructs frequency-resolved modality tokens with scalable Chebyshev filters, estimates their coupling reliability through topology-conditioned routing, and performs band-modality interaction before fusion. Its frequency-routed objectives align smooth consensus routes while preserving modality-specific routes, mitigating spatial-domain entanglement and uniform cross-modal alignment. Extensive experiments conducted on the MAG datasets demonstrate that SMGFM achieves state-of-the-art performance across graph-level and modality-level tasks.",
+      "authors": [
+        "Zhengyu Wu",
+        "Xu Wang",
+        "Hongchao Qin",
+        "Xunkai Li",
+        "Guang Zeng",
+        "Rong-Hua Li",
+        "Guoren Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-11T03:54:35+00:00",
+      "link": "https://arxiv.org/pdf/2606.12867v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multimodal graph fusion method",
+      "llm_evidence_cn": "多模态图融合方法",
+      "llm_evidence": "多模态图融合方法",
+      "canonical_evidence": "多模态图融合方法",
+      "llm_tldr_en": "SMGFM proposes a spectral multimodal graph pretraining method that separates structure-induced and modality-intrinsic semantics before fusion, applicable to smart city multimodal data.",
+      "llm_tldr_cn": "该论文针对多模态属性图中结构语义与模态内在语义的冲突，提出频谱多模态图预训练方法，利用图频率变化区分语义角色后再进行跨模态融合。方法可迁移至智慧城市中BIM、GIS、文档、图像、传感器等多模态数据的知识图谱构建与融合任务。",
+      "llm_tldr": "该论文针对多模态属性图中结构语义与模态内在语义的冲突，提出频谱多模态图预训练方法，利用图频率变化区分语义角色后再进行跨模态融合。方法可迁移至智慧城市中BIM、GIS、文档、图像、传感器等多模态数据的知识图谱构建与融合任务。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
