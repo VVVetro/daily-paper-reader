@@ -1,0 +1,54 @@
+{
+  "label": "2026-06-15",
+  "date": "2026-06-15",
+  "generated_at": "2026-06-15T22:50:48",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202606/15/2606.11350v1-when-more-documents-hurt-rag-mitigating-vector-search-dilution-with-domain-scoped-model-agnostic-retrieval",
+      "section": "quick",
+      "title_en": "When More Documents Hurt RAG: Mitigating Vector Search Dilution with Domain-Scoped, Model-Agnostic Retrieval",
+      "authors": "Nabaraj Subedi, Ahmed Abdelaty, Shivanand Venkanna Sheshappanavar",
+      "date": "2026-06-09",
+      "pdf": "https://arxiv.org/pdf/2606.11350v1",
+      "score": "6.0",
+      "evidence": "面向交通基础设施的多源文档检索",
+      "tldr": "检索增强生成在处理大规模异构文档时会出现向量搜索稀释问题，导致密集相似度区分力下降，Top-K检索返回语义相似但上下文错误的片段。本文提出MASDR-RAG，利用组织元数据进行领域限定，并研究多智能体编排的配置依赖性。在六个语料库、五个大语言模型上的实验表明，领域限定显著提升P@10从0.77到0.86（p<0.05）。实际建议是先限定领域再单次合成，仅在真正多领域语料库且使用原生工具调用的骨干时才使用完整多智能体编排。",
+      "tags": "query:smart-city",
+      "abstract_en": "Retrieval-augmented generation degrades when scaled to large, heterogeneous document collections, where dense similarity loses discriminative power, and top-k retrieval increasingly returns semantically similar but contextually incorrect chunks. We refer to this failure mode as vector search dilution. Even when using hybrid dense+sparse retrieval, we observed this firsthand in a deployed Wyoming Department of Transportation corpus, where scaling from 54 to 1,128 documents (88,907 chunks) reduced accuracy from 75% to below 40%. To address this dilution, we propose MASDR-RAG ( Multi-Agent Scoped Domain Retrieval for RAG) and evaluate it on 200 expert-validated queries across five LLM backbones, six corpora, and two index stacks. Our results indicate that domain scoping using organizational metadata is the key fix, significantly improving P@10 from 0.77 to 0.86 ($p < 0.05$). Furthermore, our investigation of multi-agent orchestration revealed that a high degree of configuration dependence results --creating what we call the precision-faithfulness paradox. Based on these varied outcomes, our practical recommendation is simple: scope first, then perform a single synthesis call, reserving full multi-agent orchestration for genuinely multi-domain corpora paired with native-tool-call backbones. Code and Data will be made public upon acceptance.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/15/2606.12225v1-bridging-the-smart-city-cybersecurity-data-gap-through-ai-driven-synthetic-dataset-generation",
+      "section": "quick",
+      "title_en": "Bridging the Smart City Cybersecurity Data Gap Through AI-Driven Synthetic Dataset Generation",
+      "authors": "Stephanie Polczynski, John D. Hastings, Varghese Vaidyan, Kyle Korman",
+      "date": "2026-06-10",
+      "pdf": "https://arxiv.org/pdf/2606.12225v1",
+      "score": "6.0",
+      "evidence": "智慧城市多源数据整合用于网络安全",
+      "tldr": "智慧城市依赖物联网与AI系统，面临数据集稀缺、隐私受限等挑战。提出基于生成式AI的合成数据框架，模拟设备行为、网络交互与攻击场景。实验验证合成数据在协议标准、统计相似性及安全工具中的有效性。为智慧城市网络安全研究提供高质量数据支撑。",
+      "tags": "query:smart-city",
+      "abstract_en": "Smart cities rely on interconnected cyber-physical systems that integrate sensors, IoT devices, cloud platforms, and AI-driven services and decision-making. While these systems enhance city services, they also introduce complex cybersecurity challenges due to their large attack surfaces, heterogeneous data flows, and evolving threat vectors. Developing and validating cybersecurity tools for smart cities requires high-quality datasets that accurately represent real operational conditions. However, real-world datasets are often incomplete, contain privacy-sensitive data, are difficult to access, or lack sufficient malicious activity to support tool development. This research addresses this critical gap by proposing an AI-based synthetic data generation (SDG) framework designed specifically for smart city cybersecurity research. The proposed framework leverages generative artificial intelligence models to produce high-fidelity synthetic cybersecurity datasets that replicate realistic device behaviors, network interactions, and cyber-attack scenarios. The synthetic datasets are evaluated for conformity to protocol standards, statistical similarity to original datasets, and utility in common security tools. The resulting synthetic data generation framework and evaluation metrics are expected to advance smart city cybersecurity by enabling researchers to model threats more effectively and evaluate defensive techniques more comprehensively to better protect critical smart city infrastructures.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/15/2606.14325v1-achieving-precise-text-to-cypher-via-grounded-knowledge-graph-data-generation",
+      "section": "quick",
+      "title_en": "Achieving Precise Text-To-Cypher Via Grounded Knowledge Graph Data Generation",
+      "authors": "Francesco Cazzaro, Jessica Lennon, Ariadna Quattoni",
+      "date": "2026-06-12",
+      "pdf": "https://arxiv.org/pdf/2606.14325v1",
+      "score": "6.0",
+      "evidence": "为Text-To-Cypher生成合成数据，支持知识图谱查询",
+      "tldr": "属性图数据库的普及要求精准的Text-to-Cypher解析器以构建对话接口。本文提出一种自动合成数据生成方法，用于微调小型语言模型。实验表明，该方法能显著提升小模型性能，使其与大型专有模型竞争，同时保证数据主权且无需昂贵的标注成本。",
+      "tags": "query:smart-city",
+      "abstract_en": "Property Graphs are rapidly being adopted as database frameworks for representing heterogeneous data sources. To enable precise access to the information contained in them we need conversational interfaces based on Text-To-Cypher (Text2Cypher) parsers. This paper presents an automatic synthetic data generation method that can be leveraged to fine-tune small LLMs for this task. We conduct experiments on all the major Text-To-Cypher benchmarks, demonstrating that with our synthetic data generation approach we can significantly increase the performance of small LLMs, allowing them to compete with much larger proprietary models. This means that in settings in which models must be locally deployed we can ensure data-sovereignty without sacrificing accuracy and without costly annotation campaigns.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

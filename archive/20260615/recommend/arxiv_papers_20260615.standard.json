@@ -1,0 +1,131 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-15T22:48:55.094647+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.11350v1",
+      "source": "arxiv",
+      "title": "When More Documents Hurt RAG: Mitigating Vector Search Dilution with Domain-Scoped, Model-Agnostic Retrieval",
+      "abstract": "Retrieval-augmented generation degrades when scaled to large, heterogeneous document collections, where dense similarity loses discriminative power, and top-k retrieval increasingly returns semantically similar but contextually incorrect chunks. We refer to this failure mode as vector search dilution. Even when using hybrid dense+sparse retrieval, we observed this firsthand in a deployed Wyoming Department of Transportation corpus, where scaling from 54 to 1,128 documents (88,907 chunks) reduced accuracy from 75% to below 40%. To address this dilution, we propose MASDR-RAG ( Multi-Agent Scoped Domain Retrieval for RAG) and evaluate it on 200 expert-validated queries across five LLM backbones, six corpora, and two index stacks. Our results indicate that domain scoping using organizational metadata is the key fix, significantly improving P@10 from 0.77 to 0.86 ($p < 0.05$). Furthermore, our investigation of multi-agent orchestration revealed that a high degree of configuration dependence results --creating what we call the precision-faithfulness paradox. Based on these varied outcomes, our practical recommendation is simple: scope first, then perform a single synthesis call, reserving full multi-agent orchestration for genuinely multi-domain corpora paired with native-tool-call backbones. Code and Data will be made public upon acceptance.",
+      "authors": [
+        "Nabaraj Subedi",
+        "Ahmed Abdelaty",
+        "Shivanand Venkanna Sheshappanavar"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.IR"
+      ],
+      "published": "2026-06-09T18:26:24+00:00",
+      "link": "https://arxiv.org/pdf/2606.11350v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multi-source document retrieval for transportation infrastructure",
+      "llm_evidence_cn": "面向交通基础设施的多源文档检索",
+      "llm_evidence": "面向交通基础设施的多源文档检索",
+      "canonical_evidence": "面向交通基础设施的多源文档检索",
+      "llm_tldr_en": "Addresses vector search dilution in large heterogeneous document collections with a multi-agent scoped domain retrieval method, tested on Wyoming Department of Transportation data.",
+      "llm_tldr_cn": "针对大规模异构文档集中的向量搜索稀释问题，提出多智能体作用域检索方法，并在怀俄明州交通部门数据上验证。",
+      "llm_tldr": "针对大规模异构文档集中的向量搜索稀释问题，提出多智能体作用域检索方法，并在怀俄明州交通部门数据上验证。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.12225v1",
+      "source": "arxiv",
+      "title": "Bridging the Smart City Cybersecurity Data Gap Through AI-Driven Synthetic Dataset Generation",
+      "abstract": "Smart cities rely on interconnected cyber-physical systems that integrate sensors, IoT devices, cloud platforms, and AI-driven services and decision-making. While these systems enhance city services, they also introduce complex cybersecurity challenges due to their large attack surfaces, heterogeneous data flows, and evolving threat vectors. Developing and validating cybersecurity tools for smart cities requires high-quality datasets that accurately represent real operational conditions. However, real-world datasets are often incomplete, contain privacy-sensitive data, are difficult to access, or lack sufficient malicious activity to support tool development. This research addresses this critical gap by proposing an AI-based synthetic data generation (SDG) framework designed specifically for smart city cybersecurity research. The proposed framework leverages generative artificial intelligence models to produce high-fidelity synthetic cybersecurity datasets that replicate realistic device behaviors, network interactions, and cyber-attack scenarios. The synthetic datasets are evaluated for conformity to protocol standards, statistical similarity to original datasets, and utility in common security tools. The resulting synthetic data generation framework and evaluation metrics are expected to advance smart city cybersecurity by enabling researchers to model threats more effectively and evaluate defensive techniques more comprehensively to better protect critical smart city infrastructures.",
+      "authors": [
+        "Stephanie Polczynski",
+        "John D. Hastings",
+        "Varghese Vaidyan",
+        "Kyle Korman"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-06-10T15:36:31+00:00",
+      "link": "https://arxiv.org/pdf/2606.12225v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "smart city data integration for cybersecurity",
+      "llm_evidence_cn": "智慧城市多源数据整合用于网络安全",
+      "llm_evidence": "智慧城市多源数据整合用于网络安全",
+      "canonical_evidence": "智慧城市多源数据整合用于网络安全",
+      "llm_tldr_en": "Proposes AI-based synthetic dataset generation to address data gaps in smart city cybersecurity, enabling better tool development for heterogeneous data flows.",
+      "llm_tldr_cn": "智慧城市依赖于集成了传感器、物联网设备、云平台和AI的复杂网络物理系统，但实际数据往往不完整或缺乏恶意活动。本文提出一种基于AI的合成数据集生成方法，填补了智慧城市网络安全数据的空白。该方法能够生成代表真实运行条件的高质量数据，支持网络安全工具的开发和验证。工作在智慧城市多源数据整合中具有重要应用价值。",
+      "llm_tldr": "智慧城市依赖于集成了传感器、物联网设备、云平台和AI的复杂网络物理系统，但实际数据往往不完整或缺乏恶意活动。本文提出一种基于AI的合成数据集生成方法，填补了智慧城市网络安全数据的空白。该方法能够生成代表真实运行条件的高质量数据，支持网络安全工具的开发和验证。工作在智慧城市多源数据整合中具有重要应用价值。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.14325v1",
+      "source": "arxiv",
+      "title": "Achieving Precise Text-To-Cypher Via Grounded Knowledge Graph Data Generation",
+      "abstract": "Property Graphs are rapidly being adopted as database frameworks for representing heterogeneous data sources. To enable precise access to the information contained in them we need conversational interfaces based on Text-To-Cypher (Text2Cypher) parsers. This paper presents an automatic synthetic data generation method that can be leveraged to fine-tune small LLMs for this task. We conduct experiments on all the major Text-To-Cypher benchmarks, demonstrating that with our synthetic data generation approach we can significantly increase the performance of small LLMs, allowing them to compete with much larger proprietary models. This means that in settings in which models must be locally deployed we can ensure data-sovereignty without sacrificing accuracy and without costly annotation campaigns.",
+      "authors": [
+        "Francesco Cazzaro",
+        "Jessica Lennon",
+        "Ariadna Quattoni"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-06-12T10:08:20+00:00",
+      "link": "https://arxiv.org/pdf/2606.14325v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "synthetic data generation for Text-To-Cypher, enabling KG query",
+      "llm_evidence_cn": "为Text-To-Cypher生成合成数据，支持知识图谱查询",
+      "llm_evidence": "为Text-To-Cypher生成合成数据，支持知识图谱查询",
+      "canonical_evidence": "为Text-To-Cypher生成合成数据，支持知识图谱查询",
+      "llm_tldr_en": "Presents automatic synthetic data generation to fine-tune LLMs for Text-To-Cypher, enabling precise querying of property graphs (KGs) with small models.",
+      "llm_tldr_cn": "针对属性图查询中Text-To-Cypher解析器的精确性问题，提出一种自动合成数据生成方法，用于微调小规模语言模型。实验表明，该方法使小模型在多个Text2Cypher基准上性能显著提升，可与大型专有模型竞争。该技术可直接服务于智慧城市知识图谱的语义查询与推理，支持本地部署保证数据主权。",
+      "llm_tldr": "针对属性图查询中Text-To-Cypher解析器的精确性问题，提出一种自动合成数据生成方法，用于微调小规模语言模型。实验表明，该方法使小模型在多个Text2Cypher基准上性能显著提升，可与大型专有模型竞争。该技术可直接服务于智慧城市知识图谱的语义查询与推理，支持本地部署保证数据主权。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
