@@ -1,0 +1,394 @@
+Title: Distributed Acoustic Sensing for Urban Monitoring: Coverage Thresholds and Percolation
+
+URL Source: https://arxiv.org/pdf/2606.17018v1
+
+Published Time: Tue, 16 Jun 2026 02:43:34 GMT
+
+Number of Pages: 23
+
+Markdown Content:
+# Distributed Acoustic Sensing for Urban Monitoring: Coverage Thresholds and Percolation 
+
+## Khen Cohen 1 and Ariel Lellouch 2
+
+1The School of Physics and Astronomy, Tel-Aviv University, Haim Levanon, Tel Aviv, 69978, Israel. 
+
+2Department of Geophysics, Tel-Aviv University, Haim Levanon, Tel Aviv, 69978, Israel. 
+
+Abstract 
+
+Distributed Acoustic Sensing (DAS) enables the repurposing of existing fiber-optic networks as ultra-dense, long-range seismic arrays for urban monitoring. However, constraints imposed by real-world fiber infrastructure topology and components limit its use for city-scale applications. Recent technological devel-opments have paved the way for short-range, on-chip DAS. Assuming their availability, and based on a Graph Theory framework, we show that monitor-ing applications fall along a coverage spectrum with two critical thresholds that define three distinct regimes. Low coverage ( < 10% ) can, with optimal design, resolve earthquake early warning, groundwater monitoring, geological mapping, and urban activity tracking. A percolation transition occurs at ≈ 51 .6% cov-erage, beyond which the city effectively becomes fully covered and statistical traffic monitoring is possible. Only for effectively complete coverage, infrastruc-ture monitoring, individual vehicle tracking, and pedestrian movement analysis become possible. Thus, privacy-related risks remain very low. We show and exem-plify how, for metropolises around the world, an optimal sensing network can be designed for earthquake early warning, traffic monitoring, and urban activity tracking. This framework provides a near-future roadmap for deploying urban DAS networks as a backbone of smart city sensing. 
+
+Keywords: Distributed Acoustic Sensing (DAS), Smart Cities, Percolation Theory, Urban Mobility, Seismic Resilience, Privacy-Preserving Sensing 
+
+1
+
+> arXiv:2606.17018v1 [cond-mat.stat-mech] 15 Jun 2026
+
+# 1 Introduction 
+
+Urban science utilizes quantitative, data-driven approaches to support rapid urban-ization by informing policy makers, promoting sustainability, and improving citizens’ quality-of-life and safety using a cross-disciplinary view [1, 2]. Traditionally, mea-surements are obtained primarily from dedicated point sensors that target different components of urban life, such as mobility, water quality, and energy usage [3]. However, deploying such sensors on a city scale incurs significant deployment and maintenance efforts and is thus inherently limited in the achievable spatial resolution. Furthermore, privacy concerns associated with video surveillance increasingly limit the deployment of visual monitoring systems [4, 5]. Recently, seismic signals have been shown to contain valuable information [6] that can be used to cost-effectively monitor urban environments while maintaining privacy. Among others, they can be used to follow traffic patterns [7, 8], monitor infrastructure health [9], detect shallow subsurface changes [10, 11] and groundwater variations [12], and track levels of urban activity [13, 14]. Among seismic sensors, Distributed Fiber Optic Sensing (DFOS) and in particular Distributed Acoustic Sensing (DAS) have been shown to be highly effective in urban environments [14]. DAS interrogators utilize Rayleigh backscattered light to infer the strain or strain-rate along the fiber [15]. It offers quasi-continuous spatial measurements for distances of tens of kilometers or more, allows leveraging existing telecommunication infrastructure without additional deployments, and is sensitive enough to detect signals as faint as human footsteps and rats in optical conduits [16, 17]. However, the relationship between urban fiber-network topology and optimal DAS architecture has remained largely unexplored, and used fiber routes are generally driven by access and logistical considerations. For the past decade, developments in DAS have improved signal-to-noise ratio, increased sensing range, and lowered interrogator costs [18–23]. Nonetheless, to lever-age these improvements, DAS requires long uninterrupted fiber-optic cables. The topology of existing urban telecommunications networks typically has the oppo-site structure, with frequent filtering, switching, and routing nodes that disturb the backscattered light required for DAS [24]. Therefore, it is practically challenging to create a continuous fiber route in an urban environment, and doing so requires many optical modifications that operators generally wish to avoid such as fiber splicing or optical cabinet alterations. In addition, the eventual purpose of fiber-optic networks is to reach individual buildings or homes (Fiber To The Home - FTTH). This lends their design to a tree-like structure at the access network, or last-mile, level [25]. As a direct consequence, creating continuous fiber routes for urban sensing becomes impractical as it requires going back and forth along the same route after optical modifications at multiple end points. Therefore, long-range DAS interrogators are, in fact, suboptimal for urban sensing. During the last years, however, significant progress has been made in the realm of miniaturized DAS sensing [26–28]. This technological direction offers low-cost, on-chip DAS measurements. Whereas their expected signal quality and range is lower than existing interrogators, they have the benefit of being potentially deployed along selected segments of the urban fiber-optic network without requiring optical modifi-cations to create a long contiguous optical route. Here, we show that the topology of 2urban fiber-optic networks fundamentally favors distributed short-range DAS archi-tectures. Using a Graph Theory framework and percolation theory, we analyze the potential of a distributed network of DAS (DDAS) for a variety of applications such as earthquake early warning, traffic monitoring, and urban activity tracking. We also show and exemplify how the DDAS network can be optimized for different tasks in major cities across the world. We show that even under low coverage conditions ( ≈ 10% or less), optimal design of DDAS can lead to substantial benefits. d
+
+c
+
+b
+
+> Distributed Acoustic
+> Sensor
+> Standard
+> Telecommunication Fiber
+
+a
+
+Fig. 1 Distributed Acoustic Sensor at city scale . a Schematic of the urban sensing principle. A standard telecommunication fiber (active or passive) is interrogated by a laser unit, converting the cable into a dense array of strain sensors. The system detects geophysical signals from seismic events and can monitor both traffic and seismic activity. b Optical fiber coverage in the Tel Aviv municipality (see Supplementary Materials for the full analysis) supports the conclusion that the fiber infrastructure covers most of the city streets. c The urban street map (top) is modeled as a planar graph G(V, E ) (bottom), where road junctions form nodes V and street segments form edges 
+
+E. Fiber-optic routes are represented as a subset e ⊆ E (orange edges). d DAS recording in Tel Aviv along Ibn Gvirol St. (orange line), showing simultaneous earthquake detection and traffic monitoring. 
+
+# 2 Results 
+
+## 2.1 Mapping and Representing the Topology of Urban Fiber Optic Networks 
+
+Generally, the exact structure and layout of optical networks is not shared by telecommunication operators. Large-scale studies [29, 30] estimate coverage of between 40 − 75% of all homes in major countries (UK, Germany, USA, Canada). These val-ues are typically higher in dense urban areas and lower in rural environments. It is possible, nonetheless, to verify whether a certain address is connected to fiber using customer websites. Thus, to exemplify typical coverage in dense urban environments, 3Urban Activity Tracking (3 -8)     
+
+> Individual Vehicle Tracking / Pedestrian Monitoring (0 -0.05)
+> Infrastructure Monitoring (0 -0.1)
+> Groundwater Monitoring (5 -10)
+> Earthquake Early Warning (10 -25)
+> Geological Units Mapping (7 -12)
+> City Scale Monitoring ( 𝑐 >𝑐 ⋆)
+> Transition Point
+
+Fig. 2 Critical distance as a function of the coverage ratio , according to eq. 3, with success probability of Psuccess = 90%. The city coverage phase transition point (red circle) at c⋆ ≈ 51 .6%. This curve establishes the connection between the coverage ratio and the distance length, for a typical urban area. The units of d are in topological distance, and it is derived from the km-units distance as shown in the Methods. 
+
+we map fiber access in the Tel Aviv-Jaffa metropolitan area using queries on telecom-munication operators’ websites. Figure 1 illustrates mapped fiber access areas. We find that the majority of streets are covered by fiber on at least one of their side. Uncovered streets fall into two categories: narrow streets that are non-residential or sparsely populated, and large roads with no immediate neighboring population. We emphasize that this map is the worst case scenario as it represents private customer access only. It is possible, for instance, that the fiber infrastructure runs along major roads with no adjacent residential areas, and therefore service is not offered despite existing fiber. This analysis shows that we can reasonably assume that every street in a city is covered by fiber. Therefore, we can use random Planar Graphs to represent the topology of fiber-optic networks directly from road maps (see Methods for justification). Each street segment is an edge and each junction is a node. We also assume that advances in short-range DAS will allow us to choose any subset of edges from the graph to record data over. Under this framework, we analyze and optimize the recording network for different applications that DFOS has been shown valuable for. For generalization, we present statistics of urban areas worldwide (See Supplementary Materials) indicating that a typical city has from several thousand to a million streets, with an average of approximately N = 17 ,000 junctions, a value we use for the percolation analysis. 42.2 Critical Distance and Percolation Analysis 
+
+We analyze the planar graph representing every city with respect to the order param-eter c, the coverage ratio , which is defined as the ratio between the number of streets (edges) with DAS sensing to the total number of streets. Assuming mean field approximation with some constant density, the probability that we can find another interrogated fiber in an area with surface ∝ d2 is referred as the critical distance , and is given by d =
+
+q 12 log 1−c(1 − Psuccess ). We assume that Psuccess , which represents the average success probability of each application, is set to 90%, and show the required coverage ratio to achieve different values of d. Scaling between d, a dimensionless num-ber, and physical distance depends on average ratio between the number of streets and the city total area (which was evaluated based on the dataset we used). We use this value to estimate the required values for different applications (See Methods) and summarize the results in Figure 2. We observe three different regimes. The first is a low-coverage scenario ( c ≤ 0.1), which is sufficient for large-scale processes that do not require spatial sensing conti-nuity (earthquake early warning, groundwater monitoring, geological mapping, urban activity monitoring). The second is street-level coverage ( c → 1), which is relevant to applications for which the DAS fiber needs to be very close to the target. In between, we have a transition regime. For c⋆ ≈ 0.516, the percolation threshold is reached, and the DAS network becomes a Giant Connected Component (GCC), as also verified numerically in the Supplementary Materials. Under these conditions, we can claim that the city-scale coverage is attained by the DAS, and we can apply any type of city-wide monitoring, such as statistical traffic estimation, without the need to track individual vehicles nor cover every road in the city. 
+
+## 2.3 Optimization of DDAS networks 
+
+For practical purposes, the number of available DAS interrogators imposes a stronger limitation than fiber coverage. Assuming short-range DAS interrogators that can be placed anywhere along the network, we present optimization approaches for three use-cases: traffic flow, earthquake early warning, and activity monitoring. These opti-mizations are tailored to specific cities worldwide, based only on street-map data and population density. They account for a budget B that limits the total DAS deploy-ment, assuming each interrogator covers a single street up to a maximal sensing range of 500 m, which is more restrictive than typical real-world scenarios. For traffic flow optimization, we assume that DAS can only record traffic on the street it is installed in. The optimization in Eq. (4) reduces to a knapsack problem in which each edge has value proportional to its traffic volume Cij and costs ⌈lij /t ⌉
+
+interrogators, where lij is the length of the street. A greedy algorithm ranks edges by their traffic-per-DAS efficiency and selects in decreasing order until the budget is exhausted (Figure 3). In addition to prioritizing short, busy streets, this approach favors multi-lane roads as we assume that a single DAS fiber on either side of the road can record traffic in all lanes. For earthquake early warning, we optimize DAS placement to minimize earthquake detection time. This requires P-wave arrivals at T different DAS segments, which 5Normalized Marginal Reward 
+
+𝒄 ≈ 2. 7%
+
+San Francisco Berlin Singapore 
+
+𝐜 ≈ 13.5 %a
+
+bFig. 3 Traffic-optimal DAS placement for San Francisco, Berlin, and Singapore . a Cov-erage ratio of c ≈ 13 .5%, translated to a fiber length budget of 250 km, 816 km, and 611 km for the three cities, respectively. b Coverage ratio of c ≈ 2.7%, for a fiber length budget of 50 km, 163 km, and 122 km for the three cities, respectively. The streets color represents each street’s marginal contribution to the optimization reward. Earthquake Early Warning (EEW) in Mexico City    
+
+> 46810
+> Number of
+> Interrogators
+> Population Density
+> 𝑡 ! − 𝑡 !
+> "#$
+> 𝑡 !
+> "#$  %
+
+a
+
+b
+
+Fig. 4 Earthquake early warning in Mexico City . The optimization is for T = 4 , 6, 8, 10 interrogators with 5 km minimum spacing, and M = 4. a Optimal DAS placement, with the colorbar indicating population density. b Detection delay ratio η (%) at each potential epicentre (depth h =20 km), indicating detection time reduction. 
+
+6Population Density                 
+
+> (Number of Interrogators ,Population Covered )
+> Activity Monitoring in Paris
+> 6,14 .8% 4,10 .6% 8,18 .9%
+> 12 ,26 .1% 38 ,64 .7% 74 ,91 .5% Fig. 5 Activity monitoring in Paris . Coverage disks ( R= 600 m) are shown for T= 4 to T= 74 interrogators, achieving 10 .6% to 91 .5% population coverage respectively.
+
+we force to be at least D = 5 km apart to avoid false triggers from localized noise sources [31, 32]. In practice, assuming no prior knowledge of earthquake distribution, and for any potential epicentre, we minimize the P-wave arrival time at the closest 
+
+M = 4 segments (Eq. (6)). We linearly weigh the delay by the population density, to maximize response time in dense areas. We assume given vP km /s, and an earthquake depth of 20 km for the calculations. In Figure 4a, we show the optimal placement of DAS interrogators in Mexico City, overlaid over population density. Figure 4b shows the delay, in percentage, relative to the theoretically possible earliest warning time, which occurs at the arrival of the P-wave to the surface point directly above the source. This analysis shows that a relatively limited number of synchronized DAS segments can serve as a highly effective early warning network. For urban activity monitoring, each DAS interrogator is modeled with a 600 m sensing radius, and the optimization maximizes the fraction of the population within the sensing area (Eq. (7)). Figure 5 shows results for Paris: with only T = 4 inter-rogators approximately 10 .6% of the city’s population is covered, whereas T = 74 interrogators suffices to reach 91 .5% coverage. The rapid initial growth reflects the high concentration of population in the city centre, where a single well-placed sensor covers a disproportionately large share of residents. 
+
+# 3 Discussion 
+
+Currently, DAS interrogators are not fit for large-scale urban sensing due to the structure and topology of urban fiber networks. We describe a roadmap for when short-range, on-chip DAS is available and can replace traditional interrogators, thus allowing significantly more flexibility in designing an urban DDAS array that can be leveraged for different applications. We assume that every street can be interrogated 7by such short-range DAS. This assumption is supported by the high fiber coverage typ-ically observed in dense urban areas. As exemplified by Tel-Aviv Jaffa, there is above 91% coverage for direct customer access, and probably higher overall if we take into account governmental/municipal fibers and existing telecommunication infrastructure that does not serve non-residential areas. In addition, fiber coverage is only expected to grow with time. We thus conclude that fiber coverage will not be a limiting factor. A second assumption is that it will be possible to connect short-range DAS at every location. The exact limitations encountered in real-world deployments will depend on the design of such DAS systems, but will most likely depend on access and electrical power. In any case, the network optimization we describe here is readily adapted to a subset graph that only includes fiber-instrumented streets in which short-range DAS interrogators can be installed. The length of each sensing segment controls the beamforming power of the DAS array and its mitigation of noise. For subsurface imaging tasks, it also limits the depth and resolution of subsurface imaging targets. The trajectory of the fiber may also be a limiting factor for such purposes as most studies favor straight segments, which are not necessarily the case in urban environments. In our analysis, we assumed that the array length was not a limiting factor, and that perfect sensing could be achieved while recording over a single street of any length. In practice, DAS recording over several contiguous streets might be necessary to overcome low signal-to-noise conditions and better resolve subsurface structures. The exact deployment and connection strategy will depend on the capabilities of short-range DAS and the topology and components of the existing fiber network. For these reasons, certain modifications to our proposed approach will be required to guide real-world network design, but they are not expected to fundamentally change the results. Even under the simplified scenario we study, the link between coverage ratio and achievable spatial resolution is not obvious. Our analysis shows that sensing applica-tions typically fall into one of two regimes - low-coverage (less than 10% of the streets) or effectively complete coverage ( c → 100%). In between, there is a phase transition in coverage, with a critical point at c⋆ = 51 .6%. This value marks the transition from street/neighborhood-scale coverage to city-scale coverage, where the DDAS network becomes fully connected. Under this regime, traffic monitoring becomes possible, as vehicles can be detected along DAS-instrumented street as well as junctions crossing them. Pedestrian activity tracking, although more challenging, can also be conducted statistically. Crossing the percolation threshold may, in general, open the path for new applications that require aggregate sensing across an entire city. Our analysis shows that covering less than 10% of the streets with DAS can yield significant benefits in earthquake early warning, geological mapping, groundwater monitoring, and urban activity tracking. These approaches leverage two complemen-tary strengths of the proposed DDAS network. First, it has a locally high (meter-scale) resolution over instrumented segments, which can be used for seismic array processing. Second, it allows an optimal distribution of sensing segments without being forced to create a contiguous optical path that requires large modifications to the fiber infras-tructure. This indicates that there is immediate value in implementing DDAS networks within a timeframe of 5-10 years, depending on the rate of development of short-range DAS. 8In this study, we show particular cases that exemplify optimal network designs for a specific task. However, these are only projections of a generalized network optimiza-tion problem that takes into account the relative importance of different applications and designs the best possible network. Naturally, the end user will be required to define this weighting based on the needs of the city. In addition, our optimization approach can utilize existing a priori information about the targets of DAS sensing. For exam-ple, mapped faults, existing seismological stations, geological knowledge, hydrological measurement points and urban areas of special interest can be taken into account using appropriate weighting that indicates whether a certain area is more or less inter-esting for one of the applications. On the other hand, in applications for which there is no prior knowledge, the random models we analyzed will coincide with the actual network design. Even taking into account the current performance of DAS, which is expected to deteriorate for on-chip designs, the risk for privacy-invading applications is extremely low. Pedestrian monitoring and individual vehicle tracking require effectively full cov-erage with success probability which scales as O δ2 ln( 1 
+
+> ε
+
+), for coverage of 1 − ε, and distance d = δ ≪ 1, which indicates a significant jump in the error for any coverage reduction ε. Achieving such high coverage is not expected in the near future. In a more distant future, designing optimal networks that still maintain privacy may become a question that will require addressing. The existing issues in accessing the urban fiber-optic network are expected to remain and potentially worsen. Fiber ownership is fragmented between different com-mercial operators as well as governmental organizations. Mapping can be highly inaccurate, especially for older installations. Concerns about data privacy, although DAS does not interfere nor can it analyze standard optical telemetry, often limit col-laboration potential. For DDAS to become one, if not the backbone, of the sensing tools of the smart cities of the future, stakeholders must collectively share access, data, and information, potentially under a governmental or regulatory framework. Operat-ing in conjunction with long-range DAS interrogators in specific segments can greatly improve performance, especially for traffic monitoring. 
+
+# 4 Methods 
+
+## 4.1 Urban Street Network Model 
+
+We represent each city’s street network as a planar graph G(V, E ), where nodes V are street junctions and edges E are street segments. This representation is constructed from OpenStreetMap data using OSMnx [33], retaining only drivable roads. The planar graph approximation is justified by the structural properties of urban street networks [34, 35] which exhibit an average node degree of ⟨k⟩ ≈ 4 and are well-described by Gabriel graph statistics. Specifically, a Gabriel graph is defined as a subgraph of the Delaunay triangulation where an edge ( u, v ) exists if and only if the closed disk with diameter uv contains no other nodes [36]. This construction mimics the economic logic of urban planning — direct connections between neighbors, without redundant shortcuts — and has been shown to reproduce the statistical properties of real urban street networks[35]. 9The monitored fiber subgraph g(V, e ) shares the same node set, where e ⊆ E
+
+represents the subset of streets instrumented with DAS. The coverage ratio c is defined as: 
+
+c = |e||E| ∈ [0 , 1] . (1) We assume that, to the first order, an optical fiber is present along every street, consistent with our survey of Tel Aviv-Jaffa. Under this assumption, c reduces to the fraction of streets on which a DAS interrogator is installed. We note that typically 
+
+N = |V |, the number of nodes in the graph, is very large in urban areas, ranging from a few thousand to even millions (see Supplementary Materials). This point is important for the analysis introduced next, as percolation theory is valid under the thermodynamic limit, where N → ∞ .
+
+## 4.2 Percolation and coverage analysis 
+
+We analyze the sensing capability of g as a function of c using two complementary percolation models: 
+
+4.2.1 City-scale connectivity 
+
+The emergence of a Giant Connected Component (GCC) in g marks the transition from fragmented, neighborhood-scale coverage to city-wide sensing. Based on bond percolation theory on Gabriel graphs, the size of the largest cluster Smax scales with the number of nodes N according to distinct phases governed by the critical bond per-colation threshold c⋆ [37]. For Gabriel graphs, this threshold has been established at 
+
+c⋆ ≈ 0.516 [38]. Below c⋆, the largest connected sensing cluster grows only logarith-mically with N . Above c⋆, it grows as ( c − c⋆) 536 N , enabling macroscopic city-wide coverage. The full scaling behavior, along with additional derivation details, are given in the Supplementary Materials. 
+
+4.2.2 Sparse sensing 
+
+For applications that do not require network-wide connectivity, and instead require a sensing fiber to exist within a distance d of any target location, we derive the required coverage as follows. Assuming edges of g are distributed uniformly across G, the probability of not encountering any such edge within a given neighborhood volume 
+
+V(d) is given by (1 − c)V(d). The volume element V(d) represents the expected number of edges within d hops. In planar graphs with ⟨k⟩ ≈ 4, this neighborhood volume cannot grow too fast, and it scales quadratically: V(d) ≈ αd 2, with some topological expansion coefficient, α, which dictates the local mesh density of the planar graph. α
+
+can be analytically approximated as half the average node degree: α ≈ ⟨ k⟩/2 [35]. Thus, the probability P (d) of having at least one monitored fiber inside the sensing neighborhood is given by 1 minus the probability that this entire volume contains no fibers: 
+
+P (d) = 1 − (1 − c)2d2
+
+. (2) 10 Inverting this relation allows us to evaluate the effective sensing resolution d for a given existing coverage c:
+
+d(c) = 
+
+q 12 log 1−c(1 − Psuccess ) . (3) where we replace P (d) with Psuccess , the success probability of an algorithm for a given application. 
+
+## 4.3 Required Resolution for Sensing Applications 
+
+The above formulation measures sensing distance as a function of d, which is a dimensionless parameter. However, we are often interested in physical distances for application in which we know the sensing range of the fiber or are interested in spatial resolution. Conversion from the dimensionless hop distance d to a physical distance 
+
+r is given by the relation ρπr 2 = V(d), where the density parameter ρ measures the number of street edges per square kilometer. This parameter is approximated by the total number of edges divided by the total city area. In this study, ρ ≈ 99 .8 km −2,as was estimated based on 25 cities in the dataset. Therefore, ρπr 2 ≈ 2d2 and 
+
+r =
+
+q 2 
+
+> π·99 .8
+
+d ≈ 0.08 d, or 80 m as the typical distance added per unit of d. It should be noted that ρ varies significantly between cities, with a typical standard deviation of about 55 .8 km −2. This suggests that it is preferable to estimate ρ separately for each city to improve precision, although here we present the average case.. Based on existing literature, we estimate the required d for different applications, converting between physical distance and graph parameter d. We emphasize that these are broad estimates that are meant to convey a general classification rather than strong con-straints. These values are highly dependent on geological structure, DAS quality, noise characteristics, and others. 
+
+• Earthquake early warning - existing broadband or accelerometer networks have typical distances of at least several kilometers between stations, even in remote areas, hence d = 10 − 25 is sufficient to outperform them [39, 40]. 
+
+• Geological units mapping - whereas this value varies greatly, it typically changes on the scale of a kilometer. Therefore, d ≈ 7 − 12 is sufficient to detect shallow large-scale structural changes [10, 41]. 
+
+• Urban activity tracking - a single DAS interrogator has been shown to capture activity over a range of approximately 300-1000 m, depending on the type of activity (traffic, construction, industrial activity, school-related). Therefore, d ≈ 3 − 8 is sufficient for a full city coverage [42]. 
+
+• Groundwater monitoring - large-scale behavior changes are on the scale of 500 m and above, especially dependent on whether groundwater is stored in shallow surficial or deep aquifer and infiltration rates that depends on surface conditions. Therefore, we assume d ≈ 5 − 10[12, 43–45]. 
+
+• Traffic monitoring - Detecting vehicles is generally possible only for the street the fiber is installed on. However, it can be conducted on both sides of the street and can detect vehicle crossings at junctions [7, 8]. Therefore, d ≈ 0.1 − 0.9 is sufficient 11 for a full coverage of the city, because even if a street is not covered, vehicles can potentially be detected at its intersections. 
+
+• Individual vehicle tracking - To track an individual vehicle, fiber along the entire route is required and hence d ≈ 0 − 0.05. 
+
+• Infrastructure monitoring - possible only if the fiber is directly installed on the monitoring target or very close to it, so d ≈ 0 − 0.1 [46–48]. 
+
+• Pedestrian monitoring - has a significantly lower sensing range than for vehicles, thus d ≈ 0 − 0.05 [17]. 
+
+## 4.4 DDAS Network Optimization 
+
+In this section, we describe the optimal design of a graph g for a given urban area, for which we know the street map and population density, under a constraint on the number of interrogators. We present three particular cases: traffic monitoring, earthquake early warning, and urban activity tracking. 
+
+4.4.1 Traffic Monitoring 
+
+For the case of traffic management, the optimal routing monitors as many vehicles per unit time as possible. We define Cij as the traffic flow (vehicles per unit time) from junction i to junction j. We assume its a priori knowledge from road type mapping (as we did in this study, see Supplementary Materials) or mobility/camera data which would be a better choice if possible. The cost of DAS interrogation can be defined in different ways that ultimately depend on the design of short-range DAS sensing and available fiber-optic network. In this study, we assume that each DAS interrogator has a finite sensing range t = 500 m; a street of length lij therefore requires ⌈lij /t ⌉ inter-rogators to be monitored. The cost function we use is the total number of interrogators. Nonetheless, other cost metrics such as total monitored length, number of needed access points, or any combination of those can be used with the same framework. The budget B imposes an upper bound Price( g) ≤ B.
+
+L = max 
+
+> g
+
+X
+
+> e(ij )∈g
+
+Cij s.t. Price( g) ≤ B . (4) This problem is a variant of the 0-1 knapsack problem: each edge has value Cij and its cost, the number of interrogators. We solve it with a greedy algorithm that ranks edges by their efficiency ηij = Cij   
+
+> ⌈lij /t ⌉
+
+and selects in decreasing order until the budget is exhausted. This naturally favors short, high-traffic streets. The ability of DAS to detect vehicles on multiple lanes and over both driving directions pulls the solution towards wider roads. 
+
+4.4.2 Earthquake Early Warning (EEW) 
+
+For earthquake early warning, the objective is to position DAS interrogators such that any earthquake source can be rapidly detected by multiple, spatially separated sensing segments. This is important to avoid false alarms, provide an initial location 12 of the earthquake, and reliably estimate its magnitude [40]. We assume an earthquake with surface epicentre q and hypocentral depth h. The P-wave propagates at velocity 
+
+vP and reaches sensor located at si after traveling the three-dimensional hypocentral distance 
+
+δi(q) = p∥si − q∥2 + h2 . (5) Assuming a constant P-wave velocity. Reliable detection requires the P-wave to reach at least M segments, among T , the total number of segments, and the detection time is therefore governed by δ(M )(q), the M -smallest hypocentral distance among all selected sensors. We assume M = 4, a fixed depth of h = 20 km , and enforce a minimal distance D = 5 km between any two segments. These are typical values that can be changed based on the local seismic hazard assessment and known noise sources. The optimization then aims to minimize the earthquake detection time: 
+
+L = min  
+
+> s
+
+Eq∼ρ(q)
+
+
+
+δ(M )(q, s)
+
+
+
+s.t. ∥si − sj ∥ ≥ D ∀ i̸ = j, Price( g) ≤ B . (6) We quantify detection quality by the detection delay ratio , η(q) = δ(M )(q) 
+
+> h
+
+. It equals 100% at the time that the earthquake first reaches the surface, which is the theoretically possible earliest detection time ignoring signal-to-noise ratio, ambiguity, and the need for location and magnitude estimation. The optimal sensor placement minimizes the worst-case Mth-nearest-sensor hypocentral distance over all possible epi-centres. Since the epicentre location is unknown a priori, possible earthquake locations are sampled from a probability density function ρ(q), which matches the normalized population density, thereby prioritizing coverage in densely populated areas. 
+
+4.4.3 Activity Monitoring 
+
+In urban activity monitoring, each DAS segment is modeled as having a certain range, measured by Euclidean surface distance, in which it can detect activity. We model it as a radius of coverage R around the midpoint of each selected edge. In practice, the type of activity, fiber coupling, and noise levels control R, but we assume it is constant over the entire graph g. The objective is to select edges that collectively cover as large a fraction of the urban population (known from WorldPop density data [49]) as possible: 
+
+L = max 
+
+> s
+
+Z
+
+> B
+
+ρ(x) d x s.t. Price( g) ≤ B , (7) where B ≡ S 
+
+> i
+
+B(si, R ), and B(si, R ) = {x ∈ R2 : ∥x−si∥ ≤ R} is the coverage disk of sensor si, and ρ is the population density. This is a variant of the maximum coverage problem. We precompute a coverage matrix whose entry ( i, j ) is unity whenever ∥si −
+
+sj ∥ ≤ R, then apply a greedy algorithm that iteratively selects the edge whose coverage disk captures the largest uncovered population. The algorithm could be extended to include a range-dependent sensing probability as well as handling different types of activities with different sensing ranges. 13 Declarations 
+
+Funding K.C. gratefully acknowledges the Milner Foundation, and the VATAT (PBC) Fellowship for Outstanding PhD Students in Data Science. This research was sup-ported by the Israeli Ministry of Science, Technology, and Space under grant no 1001953425, the Blavatnik Artificial Intelligence and Data Science Fund, and the Shlomo Shmeltzer Institute for Smart Transportation at Tel Aviv University. 
+
+Conflict of interest The authors declare no competing interests. 
+
+Ethics approval Not applicable. This study utilizes pre-existing infrastructure and does not involve direct interaction with human subjects. 
+
+Consent for publication Not applicable. 
+
+Data availability All underlying data used in this study are publicly available and are cited from OpenStreetMap [50], WorldPop [49], and Urban Street Networks [51]. 
+
+Code availability The custom Python code implementing the optimizations, together with the urban street-network and population datasets used in this study, is available in the GitHub repository [52]. 
+
+Author contribution K.C. and A.L. contributed equally to all aspects of this work. 
+
+# References 
+
+[1] Acuto, M., Parnell, S., Seto, K.C.: Building a global urban science. Nature Sustainability 1(1), 2–4 (2018) [2] Bettencourt, L.M.: Introduction to Urban Science: Evidence and Theory of Cities as Complex Systems. MIT press, Cambridge, Massachusetts (2021) [3] Ram´ ırez-Moreno, M.A., Keshtkar, S., Padilla-Reyes, D.A., Ramos-L´ opez, E., Garc´ ıa-Mart´ ınez, M., Hern´ andez-Luna, M.C., Mogro, A.E., Mahlknecht, J., Huer-tas, J.I., Peimbert-Garc´ ıa, R.E., et al. : Sensors for sustainable smart cities: A review. Applied sciences 11 (17), 8198 (2021) [4] Guerrero-Ib´ a˜ nez, J., Zeadally, S., Contreras-Castillo, J.: Sensor technologies for intelligent transportation systems. Sensors 18 (4), 1212 (2018) [5] Kitchin, R.: The ethics of smart cities and urban science. Philosophical trans-actions of the royal society A: Mathematical, physical and engineering sciences 
+
+374 (2083) (2016) [6] D´ ıaz, J., Ruiz, M., S´ anchez-Pastor, P.S., Romero, P.: Urban seismology: On the origin of earth vibrations within a city. Scientific reports 7(1), 15296 (2017) [7] Lindsey, N.J., Yuan, S., Lellouch, A., Gualtieri, L., Lecocq, T., Biondi, B.: City-scale dark fiber das measurements of infrastructure use during the covid-19 pandemic. Geophysical research letters 47 (16), 2020–089931 (2020) [8] Cohen, K., Hen, L., Lellouch, A.: A fiber-optic traffic monitoring network trained with video inputs. Scientific Reports 15 (1), 28954 (2025) 14 [9] Zhu, H.-H., Liu, W., Wang, T., Su, J.-W., Shi, B.: Distributed acoustic sensing for monitoring linear infrastructures: Current status and trends. Sensors 22 (19), 7550 (2022) [10] Yuan, S., Liu, J., Noh, H.Y., Clapp, R., Biondi, B.: Using vehicle-induced das signals for near-surface characterization with high spatiotemporal resolution. Journal of Geophysical Research: Solid Earth 129 (4), 2023–028033 (2024) [11] Fang, G., Li, Y.E., Zhao, Y., Martin, E.R.: Urban near-surface seismic monitoring using distributed acoustic sensing. Geophysical Research Letters 47 (6), 2019– 086115 (2020) [12] Li, H., Liu, J., Mao, S., Yuan, S., Clapp, R.G., Biondi, B.L.: Fiber-optic seismic full waveform monitoring of groundwater dynamics. Geophysical Research Letters 
+
+52 (20), 2025–117610 (2025) [13] Lecocq, T., Hicks, S.P., Van Noten, K., Van Wijk, K., Koelemeijer, P., De Plaen, R.S., Massin, F., Hillers, G., Anthony, R.E., Apoloner, M.-T., et al. : Global quiet-ing of high-frequency seismic noise due to covid-19 pandemic lockdown measures. Science 369 (6509), 1338–1343 (2020) [14] Liu, J., Li, H., Li, J., Hwang, D., Aggarwal, J., Biondi, B., Noh, H.Y.: Urban mon-itoring using pre-existing telecommunication fiber-optic networks for distributed acoustic sensing: A review. IEEE Sensors Journal (2025) [15] Hartog, A.H.: An Introduction to Distributed Optical Fibre Sensors. CRC press, Boca Raton, Florida (2017) [16] Wang, Z., Zhang, C.-C., Le Maho, Y., Zhang, Z., Habold, C., Courtecuisse, J., Shi, B.: Distributed acoustic sensing reveals urban rat dynamics through envi-ronmental intelligence of dark fiber. Communications Earth & Environment 6(1), 956 (2025) [17] Luckie, T.W., Porritt, R.W., Baker, M.G.: Characterizing footstep detection thresholds with distributed acoustic sensing. Seismological Research Letters 
+
+96 (4), 2463–2476 (2025) [18] Chen, D., Liu, Q., He, Z.: 108-km distributed acoustic sensor with 220-p ε/ √
+
+hz strain resolution and 5-m spatial resolution. Journal of Lightwave Technology 
+
+37 (18), 4462–4468 (2019) [19] Fern´ andez-Ruiz, M.R., Martins, H.F., Williams, E.F., Becerril, C., Magalh˜ aes, R., Costa, L., Martin-Lopez, S., Jia, Z., Zhan, Z., Gonz´ alez-Herr´ aez, M.: Seismic monitoring with distributed acoustic sensing from the near-surface to the deep oceans. Journal of Lightwave Technology 40 (5), 1453–1463 (2022) [20] He, Z., Liu, Q.: Optical fiber distributed acoustic sensors: A review. Journal of 15 Lightwave Technology 39 (12), 3671–3686 (2021) [21] Waagaard, O.H., Rønnekleiv, E., Haukanes, A., Stabo-Eeg, F., Thingbø, D., For-bord, S., Aasen, S.E., Brenne, J.K.: Real-time low noise distributed acoustic sensing in 171 km low loss fiber. OSA continuum 4(2), 688–701 (2021) [22] Fan, C., Li, H., Zhang, K., Liu, H., Sun, Y., Liu, H., Yan, B., Yan, Z., Liu, D., Shum, P.P., et al. : 300 km ultralong fiber optic das system based on optimally designed bidirectional edfa relays. Photonics Research 11 (6), 968–977 (2023) [23] Markom, A.M., Saharudin, S., Hisham, M.H.: Systematic review of fiber-optic distributed acoustic sensing: advancements, applications, and challenges. Optical Fiber Technology 94 , 104293 (2025) [24] Simmons, J.M.: Optical Network Design and Planning. Springer, Berlin, Germany (2014) [25] Ramaswami, R., Sivarajan, K.: Optical Networks: a Practical Perspective. Elsevier, Amsterdam, Netherlands (2001) [26] Jin, Z., Chen, J., Chang, Y., Liu, Q., He, Z.: Silicon photonic integrated inter-rogator for fiber-optic distributed acoustic sensing. Photonics Research 12 (3), 465–473 (2024) [27] Cheng, Z., Shu, X., Ma, L., Chen, B., Li, C., Sun, C., Wei, M., Yu, S., Li, L., Lin, H., et al. : On-chip silicon electro-optical modulator with ultra-high extinction ratio for fiber-optic distributed acoustic sensing. Nature Communications 14 (1), 7409 (2023) [28] Wu, H., Liu, Z., Wei, F., Gao, K., Pi, H., Sun, Y., Chen, C., Su, Q., Ye, Q., Yan, Y., et al. : High-sensitivity compact fiber-optic coherent micro-vibration sensing system based on silicon photonics integrated optical phase detection. Journal of Lightwave Technology 43 (16), 7964–7972 (2025) [29] Adib, M.M.H., Matalla, P., F¨ ullner, C., Li, S., Giacoumidis, E., Raack, C., Menne, U., Straub, M., Saier, T., Schweikert, C., et al. : Optical-access networks for smart sustainable cities: from network architecture to fiber deployment. Journal of Optical Communications and Networking 17 (3), 221–232 (2025) [30] Federal Communications Commission: Internet access services: Status as of june 30, 2025. Technical Report DOC-421557A1, Industry Analysis Division, Office of Economics and Analytics, Federal Communications Commission, Washington, DC (May 2026). https://docs.fcc.gov/public/attachments/DOC-421557A1.pdf [31] Farghal, N.S., Saunders, J.K., Parker, G.A.: The potential of using fiber optic dis-tributed acoustic sensing (das) in earthquake early warning applications. Bulletin of the Seismological Society of America 112 (3), 1416–1435 (2022) 16 [32] Biondi, E., Tepp, G., Yu, E., Saunders, J.K., Yartsev, V., Black, M., Watkins, M., Bhaskaran, A., Bhadha, R., Zhan, Z., Husker, A.L.: Real-time process-ing of distributed acoustic sensing data for earthquake monitoring operations. Seismological Research Letters (2026) [33] Boeing, G.: Osmnx: New methods for acquiring, constructing, analyzing, and visualizing complex street networks. Computers, environment and urban systems 
+
+65 , 126–139 (2017) [34] Cardillo, A., Scellato, S., Latora, V., Porta, S.: Structural properties of planar graphs of urban street patterns. Physical Review E—Statistical, Nonlinear, and Soft Matter Physics 73 (6), 066107 (2006) [35] Barth´ elemy, M.: Spatial networks. Physics reports 499 (1-3), 1–101 (2011) [36] Gabriel, K.R., Sokal, R.R.: A new statistical approach to geographic variation analysis. Systematic zoology 18 (3), 259–278 (1969) [37] Bertin, E., Billiot, J.-M., Drouilhet, R.: Continuum percolation in the gabriel graph. Advances in Applied Probability 34 (4), 689–701 (2002) [38] Norrenbrock, C.: Percolation threshold on planar euclidean gabriel graphs. The European Physical Journal B 89 (5), 111 (2016) [39] Anderson, S., Cunningham, E., Barford, P., Fratta, D., Nissen-Meyer, T., Wang, H.: Assessing the expansion of ground-motion sensing capability in smart cities via internet fiber-optic infrastructure. Seismological Research Letters 95 (6), 3633– 3651 (2024) [40] McGuire, J.J., Barbour, A.J., Spica, Z.J., Rodr´ ıguez Tribaldos, V., Zhan, Z., Lipovsky, B.P., Mellors, R.J., Biondi, E., Yoon, C., Karrenbach, M., et al.: Fiber-optic sensing for earthquake hazards research, monitoring, and early warning. Seismological Research Letters (2025) [41] Mirzanejad, M., Seylabi, E.: Subsurface imaging in urban environments: Utilizing distributed acoustic sensing in downtown reno, nevada. The Seismic Record 5(3), 250–259 (2025) [42] Liu, J., Li, H., Noh, H.Y., Santi, P., Biondi, B., Ratti, C.: Urban sensing using existing fiber-optic networks. Nature Communications 16 (1), 3091 (2025) [43] Rodr´ ıguez Tribaldos, V., Ajo-Franklin, J.B.: Aquifer monitoring using ambient seismic noise recorded with distributed acoustic sensing (das) deployed on dark fiber. Journal of Geophysical Research: Solid Earth 126 (4), 2020–021004 (2021) [44] Shen, J., Zhu, T.: Constraining water dynamics through unsaturated and satu-rated zones using fiber-optic seismic sensing data. Earth and Planetary Science 17 Letters 666 , 119507 (2025) [45] Shen, Z., Yang, Y., Fu, X., Adams, K.H., Biondi, E., Zhan, Z.: Fiber-optic seismic sensing of vadose zone soil moisture dynamics. Nature Communications 15 (1), 6432 (2024) [46] Ghazali, M.F., Mohamad, H., Nasir, M.Y.M., Hamzh, A., Abdullah, M.A., Abd Aziz, N.F., Thansirichaisree, P., Zan, M.S.D.: State-of-the-art application and challenges of optical fibre distributed acoustic sensing in civil engineering. Optical Fiber Technology 87 , 103911 (2024) [47] Rodet, J., Tauzin, B., Amin Panah, M., Gu´ eguen, P., Nziengui Bˆ a, D., Coutant, O., Brˆ ul´ e, S.: Urban dark fiber distributed acoustic sensing for bridge monitoring. Structural Health Monitoring 24 (1), 636–653 (2025) [48] Liu, J., Yuan, S., Luo, B., Biondi, B., Noh, H.Y.: Turning telecommunication fiber-optic cables into distributed acoustic sensors for vibration-based bridge health monitoring. Structural Control and Health Monitoring 2023 (1), 3902306 (2023) [49] WorldPop: Global High Resolution Population Denominators Project. University of Southampton. https://www.worldpop.org/ (2018). https://doi.org/10.5258/ SOTON/WP00645 [50] OpenStreetMap contributors: OpenStreetMap. OpenStreetMap Foundation. Data available under the Open Database License (ODbL), https://www. openstreetmap.org (2024) [51] Boeing, G.: Street network models and indicators for every urban area in the world. Geographical Analysis 54 (3), 519–535 (2022) https://doi.org/10.1111/ gean.12281 https://onlinelibrary.wiley.com/doi/pdf/10.1111/gean.12281 [52] Cohen, K.: DAS-for-Urban-Monitoring: Optimal DAS interrogator placement on urban fiber-optic networks. GitHub. GitHub repository (2026) 18 A City size statistics 
+
+Figure 6 shows the distribution of street network sizes across over 8 , 900 urban areas worldwide, based on the Boeing global street network dataset [33]. Both the number of junctions (nodes) and street segments (edges) follow a heavy-tailed distribution spanning several orders of magnitude, from small towns with fewer than ten junctions to mega-cities with millions of street segments. The average city has approximately 17,660 junctions, while the largest networks exceed 10 6.For the traffic-monitoring optimisation, each street segment is assigned a surrogate traffic weight based on its OpenStreetMap highway tag (Table 1). The weights follow a roughly geometric progression that mirrors the functional road hierarchy: higher-class roads (motorways, trunks) serve regional through-traffic and carry substantially higher volumes, whereas residential and service streets primarily provide local access. Because the greedy knapsack ranking depends only on the relative ordering of edge efficiencies, the optimization result is invariant to any positive rescaling of the weight vector; accordingly, the specific magnitudes serve as ordinal proxies rather than calibrated vehicle counts. 
+
+# B Tel Aviv Municipality Fibers Coverage 
+
+To validate that urban fiber-optic coverage is sufficiently dense to support our anal-ysis, we conducted a survey of 433 randomly sampled addresses in Tel Aviv, Israel (Table 2). For each address, fiber availability was determined via the Israeli telecom-munication companies’ broadband coverage portal. Addresses were geocoded using the OpenStreetMap Nominatim service and filtered to retain only those falling within the Tel Aviv municipal boundary. Of the 410 addresses successfully geolocated within the city, 373 (91.0%) were found to have at least one fiber-optic provider, confirming that fiber infrastructure in Tel Aviv is sufficiently pervasive for the percolation-based analysis presented in this work.  
+
+> Fig. 6 Probability density of urban street network sizes (log–log scale) for over 8,900 cities worldwide . Left: number of junctions (nodes). Right: number of street segments (edges). Both distributions are heavy-tailed, indicating that most cities have small networks while a few mega-cities contain orders of magnitude more streets.
+
+19 Table 1 Surrogate traffic weights assigned to street segments by OpenStreetMap highway classification. Values decrease roughly geometrically with functional road class, reflecting the well-documented correlation between road hierarchy and traffic volume. Link types inherit the weight of the parent class (or a fraction thereof). 
+
+Highway tag Road function Weight 
+
+motorway Controlled-access highway 2000 
+
+trunk Major national/regional road 1500 
+
+primary Primary urban arterial 1000 
+
+secondary Secondary arterial 500 
+
+tertiary Tertiary / collector street 250 
+
+unclassified Minor through-road 100 
+
+residential Local residential access 50 
+
+living street Shared-space / traffic-calmed 20 
+
+service Parking, alleys, driveways 10 
+
+motorway link Motorway on/off ramp 1000 
+
+trunk link Trunk on/off ramp 750 
+
+primary link Primary intersection link 500 
+
+secondary link Secondary intersection link 300 
+
+tertiary link Tertiary intersection link 150 
+
+road Unknown classification 50 
+
+Table 2 Summary of the fiber-optic availability survey across 433 randomly sampled addresses in Tel Aviv, Israel. Fiber availability was determined by querying each address on the Israeli telecommunication companies’ broadband coverage portal. Count Percentage Addresses surveyed 433 Successfully geocoded 424 Within Tel Aviv municipality 410 Fiber available 373 91.0% No fiber 37 9.0% 
+
+# C Additional Mathematical derivations 
+
+The Percolation Model 
+
+As c describes the average coverage along the city’s streets, it is clear that too small a value is not sufficient to provide large-scale monitoring. Therefore, we expect a universal threshold that models the transition from localized to city-wide monitoring, and this threshold corresponds to the emergence of a Giant Connected Component (GCC) in the fiber subgraph. Based on bond percolation theory on planar graphs, the size of the largest con-nected cluster, Smax , scales with the total number of network nodes N according to 20 distinct structural phases. These phases are governed by the critical percolation thresh-old c⋆ [37]. For Euclidean Gabriel graphs, which belong to the standard 2D percolation universality class, this threshold is numerically established at c⋆ ≈ 0.5167 [38]. The scaling behavior of the largest cluster is dictated by the critical exponents 
+
+β = 5 /36 and ν = 4 /3, yielding: 
+
+Smax (c) ∼
+
+
+
+ln N c < c⋆ (subcritical) 
+
+N 91 /96 c ≈ c⋆ (critical) (c − c⋆)5/36 N c > c⋆ (supercritical) 
+
+. (8) The critical transition is further characterized by the divergence of the correlation length ξ and the order parameter fluctuations χ. Measuring ξ strictly via topological distance (edge hops) accurately captures the true structural connectivity of the net-work as it approaches criticality. As the bond coverage approaches c⋆, these quantities scale according to their respective universal exponents: 
+
+ξ(c) ∼ | c − c⋆|−ν , χ(c) ∼ | c − c⋆|−γ . (9) where γ = 43 /18. Numerical finite-size scaling analyses on Gabriel graphs verify this universal behavior, yielding ν ≈ 1.33 and γ ≈ 2.39 [38]. At the critical point c ≈ c⋆, the structural volatility χ of the finite clusters reaches a sharp maximum, mathematically marking the exact boundary where localized, finite components rapidly amalgamate into the macroscopic spanning graph. Figure 7 shows a percolation example for the Gabriel Graph, the model we chose to represent urban cities. The figure clearly illustrates how the system exhibits a sharp, continuous phase transition: below the threshold, the network fragments into disconnected clusters, while above it, a system-spanning component emerges. 
+
+Individual Vehicle Tracking 
+
+While tracking a single vehicle along an optical fiber has already been demonstrated and shown to work well, continuous tracking at a city scale is a much more complicated task, since it requires switching between different optical fibers. Here, we assume that a tracking algorithm along a single optical fiber exists and works well, and that the tracking algorithm can switch between interrogators to track vehicles along different streets. For this model, we analyze the connectivity along the shortest path SAB between two random nodes A and B. A tracking failure occurs when the vehicle traverses an edge that is not in the subgraph g. We define the number of tracking gaps (jumps) J as 
+
+J = {s | s ∈ SAB and s / ∈ g} . (10) Intuitively, for a single path on the graph between A and B, J counts how many streets are not covered by the DAS-based tracker. For a path of length |SAB | (the number of edges between A and B), the probability of encountering exactly J gaps follows a binomial distribution B(|SAB |, 1 − c). The 21 0 10 20 30 40 50 60 70 80 90 100    
+
+> Coverage Ratio (%)
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> Giant Component Fraction  P∞
+> Gabriel N = 17,000
+> ⟨k⟩ = 3.95
+> c*
+> bond = 0.516
+
+Fig. 7 Bond percolation on a Gabriel-graph model of an urban street network. A Gabriel graph is generated on N = 17 ,000 points, yielding a mean degree ⟨k⟩ = 3 .95. Each edge is inde-pendently retained with probability c (the fiber-coverage ratio), and the giant connected component fraction P∞ is plotted against c, averaged over 15 independent percolation realizations. The red dashed line marks the theoretical bond-percolation threshold c∗ 
+
+> bond
+
+= 0 .516. 
+
+probability of successful tracking with at most K allowed gaps is 
+
+P (J ≤ K) = 
+
+> K
+
+X
+
+> i=0
+
+|SAB |
+
+i
+
+
+
+(1 − c)ic|SAB |− i. (11) For sufficiently large graphs, the shortest path length in a Gabriel graph scales as 
+
+|SAB | ≈ τ √N , where τ is a normalization factor. The expected number of gaps is clearly EA,B [J] = |SAB |(1 −c), where the expectation is taken over all pairs of random points A and B.We introduce a tolerance threshold K, which intuitively represents, for a single trajectory between point A and point B, how many streets along the way we can afford to lose tracking on. In the large-graph limit, a sharp phase transition for tracking occurs when the expected number of gaps exceeds the tolerance threshold K. Substituting the scaling relation, we obtain the critical coverage ctrack required for near-continuous tracking: 
+
+ctrack ≈ 1 − Kτ √N . (12) Figure 8 shows a few simulation results for different K.22 Fig. 8 Tracking probability percolation for different values of K. The dots show simulation results on a random Gabriel graph with N = 17 ,000 nodes, while the dashed lines represent the theoretical relation predicted by Eq. 11. 
+
+23

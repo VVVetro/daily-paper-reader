@@ -6,30 +6,48 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-15
-- 运行时间：2026-06-15 22:50:42 UTC
+- 最新运行日期：2026-06-16
+- 运行时间：2026-06-16 22:54:35 UTC
 - 运行状态：成功
-- 本次总论文数：3
-- 精读区：0
-- 速读区：3
+- 本次总论文数：8
+- 精读区：2
+- 速读区：6
 
 ### 今日简报（AI）
-今日速读三篇论文，聚焦RAG检索优化、合成数据生成与知识图谱查询。最值得关注的是多文档拖累RAG的缓解方法，以及AI驱动合成数据集填补智慧城市网络安全数据缺口。建议深入了解向量搜索稀释问题的解决方案，为后续实验提供参考。
-- 详情：[/202606/15/README](/202606/15/README)
+今日聚焦地理空间智能检索与城市福祉分析，精读两篇高分论文。
+
+最值得关注的是I-GUIDE平台的多模态地理知识发现（9.0分）和UrbanWell时空城市福祉基准（8.0分），前者在推理框架上创新显著。
+
+建议普通读者从UrbanWell入手，了解多模态大模型如何分析城市居民幸福感，实用性强。
+- 详情：[/202606/16/README](/202606/16/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [Intelligent Multimodal Retrieval and Reasoning for Geospatial Knowledge Discovery on the I-GUIDE Platform](/202606/16/2606.15838v1-intelligent-multimodal-retrieval-and-reasoning-for-geospatial-knowledge-discovery-on-the-i-guide-platform)  
+   标签：评分：9.0/10、query:smart-city
+   evidence：结合知识图谱和RAG的多模态地理空间检索与推理
+2. [UrbanWell: Benchmarking Multimodal Large Language Models for Spatio-Temporal Urban Wellbeing Analytics](/202606/16/2606.15890v1-urbanwell-benchmarking-multimodal-large-language-models-for-spatio-temporal-urban-wellbeing-analytics)  
+   标签：评分：8.0/10、query:smart-city
+   evidence：多模态城市数据融合基准
 
 ### 速读区论文标签
-1. [When More Documents Hurt RAG: Mitigating Vector Search Dilution with Domain-Scoped, Model-Agnostic Retrieval](/202606/15/2606.11350v1-when-more-documents-hurt-rag-mitigating-vector-search-dilution-with-domain-scoped-model-agnostic-retrieval)  
+1. [Can AI Reason Like an Urban Planner? Benchmarking Large Language Models Against Professional Judgment](/202606/16/2606.11678v1-can-ai-reason-like-an-urban-planner-benchmarking-large-language-models-against-professional-judgment)  
+   标签：评分：7.0/10、query:smart-city
+   evidence：基于LLM的城市规划推理基准测试，直接关联智慧城市
+2. [Risk-Aware LLM Agents for Geospatial Data Retrieval: Design and Preliminary Adversarial Evaluation](/202606/16/2606.15077v1-risk-aware-llm-agents-for-geospatial-data-retrieval-design-and-preliminary-adversarial-evaluation)  
+   标签：评分：7.0/10、query:smart-city
+   evidence：基于LLM的语义地理空间数据检索
+3. [Distributed Acoustic Sensing for Urban Monitoring: Coverage Thresholds and Percolation](/202606/16/2606.17018v1-distributed-acoustic-sensing-for-urban-monitoring-coverage-thresholds-and-percolation)  
+   标签：评分：7.0/10、query:smart-city
+   evidence：基于分布式声学传感的城市监测，利用光纤网络
+4. [Trustworthy Smart Fabs via Professional Proxies: Scaling Safe and Sustainable by Design (SSbD) through Industrial Data Spaces](/202606/16/2606.09227v1-trustworthy-smart-fabs-via-professional-proxies-scaling-safe-and-sustainable-by-design-ssbd-through-industrial-data-spaces)  
    标签：评分：6.0/10、query:smart-city
-   evidence：面向交通基础设施的多源文档检索
-2. [Bridging the Smart City Cybersecurity Data Gap Through AI-Driven Synthetic Dataset Generation](/202606/15/2606.12225v1-bridging-the-smart-city-cybersecurity-data-gap-through-ai-driven-synthetic-dataset-generation)  
+   evidence：智能制造的工业数据空间框架，可迁移至智慧城市数据集成
+5. [When Plausible Is Not Realistic: Evaluating Human Mobility in LLM-Based Urban Simulation](/202606/16/2606.13835v1-when-plausible-is-not-realistic-evaluating-human-mobility-in-llm-based-urban-simulation)  
    标签：评分：6.0/10、query:smart-city
-   evidence：智慧城市多源数据整合用于网络安全
-3. [Achieving Precise Text-To-Cypher Via Grounded Knowledge Graph Data Generation](/202606/15/2606.14325v1-achieving-precise-text-to-cypher-via-grounded-knowledge-graph-data-generation)  
+   evidence：评估基于LLM的城市模拟器的人类移动真实性
+6. [Knowledge Graph Enhanced Memory-Augmented Retrieval for Long Context Modeling](/202606/16/2606.14047v1-knowledge-graph-enhanced-memory-augmented-retrieval-for-long-context-modeling)  
    标签：评分：6.0/10、query:smart-city
-   evidence：为Text-To-Cypher生成合成数据，支持知识图谱查询
+   evidence：动态知识图谱构建用于检索
 
 
 <div class="dpr-home-promo-card">
