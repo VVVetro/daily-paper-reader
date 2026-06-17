@@ -1,0 +1,764 @@
+Title: Bridging Geographic Bias in Urban Streetscape Inference via Lifelong Learning with Visual-Semantic Pivoting
+
+URL Source: https://arxiv.org/pdf/2606.15055v1
+
+Published Time: Tue, 16 Jun 2026 00:26:50 GMT
+
+Number of Pages: 29
+
+Markdown Content:
+## Bridging Geographic Bias in Urban Streetscape Inference via Lifelong Learning with Visual–Semantic Pivoting 
+
+Xinze Zhang a, ∗
+
+> aUniversity of Southern California, Los Angeles, CA 90007, USA
+
+Abstract 
+
+Visual perception of urban streetscapes underpins evidence-based decisions in landscape planning, public health, and place-making. Yet models trained on a few well-photographed metropolises systematically misjudge underrep-resented districts, propagating geographic bias into downstream policy. We address this gap with HVSP-LL, a lifelong learning framework that couples a stratified visual–semantic pivoting module with an equity-aware rehearsal mechanism. The pivoting module organises landscape concepts along a three-tier ontology (macro structure, meso composition, micro element) and aligns image features to learnable semantic anchors at each tier, providing trans-ferable representations that resist distributional drift. The lifelong adapta-tion component sequentially absorbs new urban regions while constraining inter-region perception gaps through a worst-region sample-reweighting ob-jective and a structurally-aware exemplar buffer. We evaluate HVSP-LL on a panoramic streetscape benchmark assembled from twelve cities across four continents and seven perceptual dimensions. The framework attains 0.834 Spearman correlation on the held-out city sequence, an absolute 6.1 point improvement over the strongest continual baseline, and shrinks the inter-city perception gap to 0.094—a 38% reduction relative to the strongest continual baseline (0.151) and a 57% reduction relative to a representative regular-isation baseline (0.218). Ablations confirm that each tier of the pivoting hierarchy contributes monotonically, and the equity-aware rehearsal converts mean backward transfer from −0.038 (without retention) to +0 .013 , elimi-  
+
+> ∗Corresponding author.
+> Email address: zhangxinze00@outlook.com (Xinze Zhang)
+> arXiv:2606.15055v1 [cs.CV] 13 Jun 2026
+
+nating catastrophic forgetting on the held-out sequence. Our results indicate that hierarchical anchoring is a practical pathway toward geographically eq-uitable streetscape inference at city scale. 
+
+Keywords: streetscape perception, continual learning, urban computing, distributional equity, semantic anchoring, street-view imagery 
+
+1. Introduction 
+
+Cities are uneven landscapes of opportunity, and the visual environments residents inhabit shape mental health, mobility, and a sense of belonging in measurable ways (Chen et al., 2026a; Yu et al., 2026a; Hu et al., 2026; Li et al., 2026b). Street-view imagery has emerged as the dominant lens for studying these visual environments at scale (Biljecki and Ito, 2021; Yu et al., 2026b; Chen et al., 2025, 2026b): it is dense in coverage, repeatedly refreshed, and amenable to deep visual recognition pipelines (Sarkar et al., 2025; Yu et al., 2025a; Li et al., 2025i, 2026d). The resulting body of work has populated maps of perceived safety, beauty, vitality, and walkability for hundreds of cities, providing a quantitative substrate for landscape planning and public health research (Yu et al., 2025b; Xie et al., 2025; Ito et al., 2024; Fu et al., 2026). Equity, however, has not kept pace. Three structural problems repeat-edly surface when streetscape perception models are deployed beyond the cities they were trained on. First, panoramic image collections are them-selves geographically uneven: dense urban cores in North America, Western Europe, and East Asian megacities dominate every major benchmark, while peri-urban and Global South neighbourhoods are systematically underrep-resented (Xie et al., 2026a; Xie, 2026; Xie et al., 2026b; Li et al., 2026c). Second, perceptual labels obtained through pairwise crowdsourcing inherit the cultural priors of their annotators, producing miscalibrated targets when transported across regions (Ramírez et al., 2021; Rossetti et al., 2019; Zhao et al., 2025). Third, the dominant single-pass training paradigm assumes a static world, whereas urban environments evolve, new cities arrive, and label conventions are revised (Biljecki and Ito, 2021; Ma et al., 2021; Jia et al., 2026; Li et al., 2025g); retraining from scratch each time is computationally prohibitive and erodes hard-won knowledge of earlier regions. These obstacles are an instance of a broader concern about distributional fairness in visual recognition (Mehrabi et al., 2021; Wang et al., 2020; Ra-2maswamy et al., 2021). Distributionally robust optimisation (Sagawa et al., 2020), dataset rebalancing (Cui et al., 2019; Li et al., 2026a; Gu et al., 2025), and domain generalisation (Gulrajani and Lopez-Paz, 2021; Wang et al., 2022a; Li et al., 2025f) all offer partial relief, but they presuppose a closed set of regions known at training time. Continual or lifelong learning pro-vides a more natural model for the streaming nature of city growth (Parisi et al., 2019; De Lange et al., 2021; Wang et al., 2024): regions arrive se-quentially, the learner must integrate them without revisiting all prior data, and the deployed model must remain coherent across the union of seen en-vironments. Memory-based approaches such as iCaRL (Rebuffi et al., 2017), GEM (Lopez-Paz and Ranzato, 2017), and dark experience replay (Buzzega et al., 2020), regularisation methods such as EWC (Kirkpatrick et al., 2017), SI (Zenke et al., 2017), and MAS (Aljundi et al., 2018; Jia and Li, 2024), and prompt-based schemes such as L2P and DualPrompt (Wang et al., 2022c,b) have all reduced catastrophic forgetting in benchmark settings, but they are blind to the equity dimension that is the defining concern in urban percep-tion. A model that retains accuracy on prior cities yet still over-rates affluent districts and under-rates marginalised ones is, from a planning perspective, no improvement at all. This paper develops HVSP-LL, a framework that takes equity as a first-class objective in lifelong streetscape perception. The central observation is that perceptual judgements of urban scenes decompose naturally along a hierarchy of semantic granularities. At the macro tier, a streetscape is characterised by its dominant land-use signature (residential, commercial, industrial, green, transit). At the meso tier, it is the composition of build-ing, vegetation, sky, and roadway that gives the scene its character. At the micro tier, fine-grained elements—street furniture, pedestrians, bicycles, sig-nage, and vehicles—modulate perceived safety and liveliness. Models that operate only on global features mix these tiers and absorb spurious city-specific shortcuts; we instead align image features to a small set of learnable semantic anchors at each tier, producing representations that transfer across regions because the anchors describe what is present rather than where the picture was taken. We pair this hierarchical anchoring with two equity-aware lifelong compo-nents. First, a worst-region sample reweighting objective penalises the model when its predictions on the lowest-performing region in the current memory window deviate from human perceptual labels, in the spirit of distributionally robust learning but adapted to the open-ended sequence of arriving cities. 3Second, a structurally-aware exemplar buffer retains panoramas in propor-tion to a region’s marginal contribution to the macro and meso tier coverage, rather than uniformly; this prevents the buffer from being colonised by vi-sually homogeneous regions. The combination yields a model that absorbs new cities without forgetting and without amplifying perceptual gaps. We evaluate HVSP-LL on a panoramic streetscape benchmark of 184,000 images drawn from twelve cities spanning North America, Europe, East Asia, and South America, covering seven canonical perceptual dimensions follow-ing the Place Pulse tradition (Ke et al., 2025; Xiao et al., 2025; Liu et al., 2024). Against six representative baselines—a single-task ResNet (He et al., 2016), a Swin-B perception predictor (Liu et al., 2021), EWC (Kirkpatrick et al., 2017), iCaRL (Rebuffi et al., 2017), DER++ (Buzzega et al., 2020), and DualPrompt (Wang et al., 2022b)—HVSP-LL improves Spearman cor-relation by 6.1 points on average and lowers the inter-city perception gap by more than half. Ablations isolate the contribution of each tier of the pivot-ing hierarchy and of the equity-aware rehearsal scheme. Cross-continent and noise-perturbation experiments demonstrate that the gains transfer to the most underrepresented sub-populations. The contributions of this paper are threefold. First, we formalise equi-table lifelong streetscape inference as a constrained sequential learning prob-lem with explicit inter-region disparity terms. Second, we introduce strat-ified visual–semantic pivoting, a representation scheme that anchors image features to a tiered urban ontology and yields measurable gains in both for-ward transfer and equity. Third, we provide a controlled empirical evaluation across twelve cities, seven perceptual dimensions, and four equity diagnostics, and we release the experimental protocol so that future work can compare against equity, not only accuracy. 
+
+2. Related Work 
+
+2.1. Streetscape perception from urban imagery 
+
+The Place Pulse line of work established crowdsourced pairwise compar-isons as the de facto labelling protocol for perceived safety, liveliness, beauty, and related dimensions (Li et al., 2025h; Liao et al., 2025; Jiang et al., 2025; Li et al., 2025a). Convolutional architectures trained on these labels have been applied to visual quality (Ouyang et al., 2025; Ito et al., 2024), walkabil-ity (Zhao et al., 2026; Li et al., 2025d), mental wellbeing (Wang et al., 2019a; Li et al., 2025c,b), and explanatory analyses of subjective perception (Lee 4et al., 2025; Larkin et al., 2021; Ramírez et al., 2021). A recurring caveat in these studies is the limited geographic spread of training data: Biljecki and Ito (2021) and Ma et al. (2021) document the dominance of high-income cities in the available imagery, and Kang et al. (2020) report systematic biases in public-health applications that rest on the same data. The hierarchical organisation of urban functional zones from multi-source geospatial data (Li et al., 2025e) is closest in spirit to our pivoting design but operates at the parcel level rather than the panorama level. Our work is, to our knowledge, the first to combine perceptual modelling with continual adaptation across cities. 
+
+2.2. Continual and lifelong learning 
+
+Continual learning seeks to acquire new tasks without forgetting old ones (Parisi et al., 2019; De Lange et al., 2021; Wang et al., 2024). Three families dominate the literature. Regularisation methods constrain the parameters most responsible for prior performance: EWC (Kirkpatrick et al., 2017), Synaptic Intelligence (Zenke et al., 2017), and Memory Aware Synapses (Aljundi et al., 2018). Replay methods retain or generate exemplars from past tasks: iCaRL (Rebuffi et al., 2017), GEM (Lopez-Paz and Ranzato, 2017), and DER++ (Buzzega et al., 2020). Prompt-based methods preserve a frozen backbone and learn small task-conditioned tokens, as in L2P (Wang et al., 2022c) and DualPrompt (Wang et al., 2022b). Recent benchmark-ing work highlights how forgetting interacts with selective retention. The dominant evaluation protocols, however, focus on accuracy retention; equity across populations or regions is rarely surfaced. 
+
+2.3. Bias and fairness in visual recognition 
+
+Dataset bias has been quantified in classical recognition since Torralba and Efros (2011) and Khosla et al. (2012). More recent work proposes group-distributionally robust optimisation (Sagawa et al., 2020), latent-space debi-asing (Ramaswamy et al., 2021), and balanced loss formulations (Cui et al., 2019). Wang et al. (2020) and Kim et al. (2019) compare several bias-mitigation strategies for visual recognition, and Mehrabi et al. (2021) sur-veys fairness in machine learning broadly. Closer to our setting, the WILDS benchmark (Koh et al., 2021) formalises in-the-wild distribution shifts, and theoretical bounds for cross-domain generalisation (Ben-David et al., 2010; 5Quiñonero-Candela et al., 2008; Wang et al., 2022a) provide tools to rea-son about cross-city transfer. None of these works integrate distributional fairness with the sequential nature of city-by-city deployment. 
+
+2.4. Hierarchical and prototype representations for transfer 
+
+Hierarchical representations have repeatedly proven effective for trans-fer. Prototypical networks (Snell et al., 2017) ground few-shot classification on class prototypes; supervised contrastive learning (Khosla et al., 2020) pulls samples toward class means. Self-supervised foundation models such as MoCo (He et al., 2020), DINO (Caron et al., 2021), and DINOv2 (Oquab et al., 2024) learn anchor-friendly features without labels, and recent quanti-tative remote-sensing work shows the value of multi-task hierarchies grounded on such backbones (Yu et al., 2026a, 2025b). CLIP-style vision–language models (Radford et al., 2021) provide an additional channel for semantic anchoring. Our pivoting module is consistent with this tradition but is the first to apply it to the three-tier urban ontology that streetscape research has implicitly relied on for two decades. 
+
+2.5. Modular and attention-based context modelling 
+
+Our framework borrows architectural ideas from work on modular reason-ing, multi-view aggregation, and attention-based feature pivoting in adjacent domains. Recent text–video and text–image retrieval work (Xie et al., 2025, 2026a,b; Xie, 2026) demonstrates that hierarchical attention can shift the representational focus across granularities; composed motion understanding (Li et al., 2025g, 2026a; Jia et al., 2026; Gu et al., 2025; Li et al., 2025f; Jia and Li, 2024; Liu et al., 2024) shows that anchoring intermediate features to interpretable concepts improves cross-instance transfer. Multi-modal seg-mentation work (Li et al., 2025d,e,a,b,c) provides design patterns for fusing complementary cues across heterogeneous inputs, while 3D urban scene syn-thesis (Lee et al., 2025) and Gaussian-based rendering (Jiang et al., 2025; Liao et al., 2025; Li et al., 2025h; Zhao et al., 2026) have begun to sur-face the geometric priors that an urban perception model can draw on. Vi-sual storytelling for environmental change and explainability surveys (Sarkar et al., 2025) motivate the interpretability dimension of our pivoting design. Approaches to imperfection-aware generation and modular text editing fur-ther informed our buffering strategy. Spectral graph reasoning under global correlations (Ouyang et al., 2025), multi-source temporal warning models 6Figure 1: The overview of algorithm. 
+
+(Ke et al., 2025), long-tailed cooperative learning (Xiao et al., 2025), multi-modal sentiment disentanglement, and generalised filtering of long-correlated network signals (Zhao et al., 2025) are conceptually adjacent treatments of distributional heterogeneity that we reference in our equity formulation. 
+
+3. Method 
+
+3.1. Problem formulation 
+
+Let R = {R1, R 2, . . . , R T } denote a stream of urban regions presented sequentially. Each region Rt is a finite set of panoramic images {xt,i }Nt
+
+> i=1
+
+with paired perceptual annotations {yt,i } ∈ [0 , 1] K on K = 7 dimensions: 
+
+safe , lively , beautiful , wealthy , depressing , boring , and walkable . A learner 
+
+fθ : X → [0 , 1] K visits each region once, after which Rt is no longer accessible except through a small exemplar buffer Bt ⊂ S 
+
+> s≤t
+
+Rs of fixed cardinality 
+
+|B| = M .We adopt three evaluation criteria. (i) Average accuracy measures Spear-man correlation between predicted and human-perceived scores, averaged over all regions seen so far. (ii) Backward transfer measures the change in performance on prior regions after each new region is integrated; negative values indicate forgetting. (iii) Inter-region perception gap is the standard 7deviation of per-region accuracy across the union of seen regions; lower is more equitable. The learning objective combines an empirical loss with an explicit equity term and a regularisation term: 
+
+θ⋆ = arg min  
+
+> θ
+
+E(x,y )∈Rt∪B t [ℓ(fθ(x), y )] 
+
+| {z }
+
+> empirical
+
++λe Φe(fθ; Bt)
+
+| {z }
+
+> equity
+
++λr Ω( θ; θt−1)
+
+| {z }
+
+> retention
+
+, (1) where Φe penalises inter-region disparities and Ω guards against parameter drift relative to the previous checkpoint θt−1. The two trade-off coefficients 
+
+λe, λ r are estimated on a development split. 
+
+3.2. Stratified visual–semantic pivoting 
+
+The encoder is split into a frozen self-supervised backbone gϕ (DINOv2-Base in our default configuration (Oquab et al., 2024; Caron et al., 2021)) and a trainable pivoting head hψ that maps visual tokens onto three tiers of learnable anchors. Let z = gϕ(x) ∈ Rn×d be the patch tokens of an input panorama. We define anchor banks A(ℓ) ∈ RCℓ×d for tiers ℓ ∈ { 1, 2, 3}
+
+corresponding to macro structure ( C1=5 ), meso composition ( C2=9 ), and micro element ( C3=21 ). At each tier, the pivoting head computes scaled dot-product attention between every visual token and the anchor bank, 
+
+α(ℓ) 
+
+> i,c
+
+= exp  ⟨W (ℓ) 
+
+> q
+
+zi, W (ℓ) 
+
+> k
+
+a(ℓ) 
+
+> c
+
+⟩/√dP 
+
+> c′
+
+exp  ⟨W (ℓ) 
+
+> q
+
+zi, W (ℓ) 
+
+> k
+
+a(ℓ) 
+
+> c′
+
+⟩/√d, (2) which yields a soft assignment α(ℓ) ∈ Rn×Cℓ . The tier-ℓ representation of the panorama is the anchor-weighted aggregation 
+
+ρ(ℓ) = 1
+
+n
+
+> n
+
+X
+
+> i=1
+> Cℓ
+
+X
+
+> c=1
+
+α(ℓ) 
+
+> i,c
+
+W (ℓ) 
+
+> v
+
+a(ℓ) 
+
+> c
+
+. (3) The three tier representations are concatenated, projected, and passed through a lightweight regression head rξ to produce the perceptual prediction ˆy =
+
+rξ([ ρ(1) ; ρ(2) ; ρ(3) ]) . The anchor banks are initialised by clustering DINOv2 features on a small held-out subset and refined by backpropagation through the regression loss. Because the backbone is frozen, only the pivoting head, the anchors, and the regression head accrue gradients across regions, drasti-cally reducing the parameter count exposed to forgetting. 83.3. Equity-aware lifelong adaptation 
+
+Regularising for equity is a question of how the loss is weighted across the buffer. Let Bt be partitioned by region of origin, and let ¯sr denote the model’s mean Spearman score on the subset originating from region r. We define the worst-region indicator r⋆ = arg min r ¯sr, and an equity penalty 
+
+Φe(fθ; Bt) = 1
+
+|B (r⋆) 
+
+> t
+
+|
+
+X
+
+> (x,y )∈B (r⋆)
+> t
+
+ℓ(fθ(x), y ) + β  ¯smax − ¯smin 
+
+, (4) which combines a focused loss on the worst-performing region with a smooth penalty on the spread of region-level scores. The coefficient β is set to 0.3
+
+by validation; sensitivity analyses are reported in Section 4.6. The retention term takes the dark-experience form (Buzzega et al., 2020), 
+
+Ω( θ; θt−1) = 1
+
+|B t|
+
+X
+
+> (x, ˆyold )∈B t
+
+∥fθ(x) − ˆyold ∥22, (5) where ˆyold are the soft predictions cached at the time the panorama entered the buffer, providing a knowledge-distillation signal that does not require storing teacher logits across all of training. 
+
+3.4. Structurally-aware exemplar buffer 
+
+Rather than reservoir sampling, we maintain Bt by greedy maximisation of the macro–meso coverage of the buffer. For each candidate panorama x
+
+we compute its tier-1 and tier-2 soft assignments and evaluate the marginal increase in coverage, 
+
+∆( x; B) = X
+
+> ℓ∈{ 1,2}
+
+h
+
+H ¯α(ℓ)
+
+> B∪{ x}
+
+ − H ¯α(ℓ)
+
+> B
+
+i
+
+, (6) where H denotes Shannon entropy of the buffer-averaged anchor distribution. New panoramas displace existing buffer members of the same region when-ever the swap raises ∆, ensuring that visually homogeneous regions cannot crowd out diverse but underrepresented neighbourhoods. The buffer size is fixed at M = 2 ,000 across all experiments, matching the memory budget of comparable continual baselines. 9Algorithm 1 HVSP-LL: Lifelong Adaptation for Equitable Streetscape Per-ception 
+
+Require: Region stream {Rt}Tt=1 , frozen backbone gϕ, trainable head hψ, regres-sion head rξ, anchor banks {A(ℓ)}, buffer B ← ∅  
+
+> 1:
+
+for t = 1 , . . . , T do  
+
+> 2:
+
+Sample mini-batches Dt ⊂ Rt ∪ B  
+
+> 3:
+
+for each batch (X, Y ) ∼ D t do  
+
+> 4:
+
+Z ← gϕ(X), ˆY ← rξ(hψ(Z; {A(ℓ)}))  
+
+> 5:
+
+Compute empirical loss Le = MSE( ˆY , Y ) + γ RankLoss( ˆY , Y ) 
+
+> 6:
+
+Compute equity penalty Φe on worst-region subset of B 
+
+> 7:
+
+Compute retention term Ω on B using cached soft labels  
+
+> 8:
+
+L ← L e + λeΦe + λrΩ 
+
+> 9:
+
+Update (ψ, ξ, {A(ℓ)}) by AdamW on L 
+
+> 10:
+
+end for  
+
+> 11:
+
+Update B by greedy coverage maximisation over Rt 
+
+> 12:
+
+Cache soft predictions for newly admitted exemplars  
+
+> 13:
+
+end for 
+
+3.5. Training algorithm 
+
+Algorithm 1 summarises the full procedure. Each iteration touches only the trainable head and anchors; the backbone gradient is never computed. The two losses Le combine a mean squared error with a pairwise ranking term that respects the ordinal nature of perceptual judgements, weighted by 
+
+γ = 0 .4. Training proceeds with AdamW at learning rate 5 × 10 −4 on the head and 1×10 −4 on the anchors, with cosine annealing across the per-region budget of 30 epochs. 
+
+3.6. Theoretical motivation 
+
+We briefly note why hierarchical anchoring is well-suited to the equity objective. Let Fℓ denote the hypothesis class spanned by the tier-ℓ anchor bank. Ben-David et al. (2010) bound the cross-domain risk by the source risk plus the F-divergence between source and target. In our setting the source is the union of seen regions and the target is a held-out region; reducing the per-tier divergence, 
+
+dFℓ (μS , μ T ) ≤ sup  
+
+> f∈F ℓ
+
+EμS [f ] − EμT [f ] , (7) contracts the bound at every tier. Anchoring image features to a small, shared set of concepts at each tier limits the expressive capacity that can 10 absorb city-specific shortcuts, yielding tighter divergence terms. A formal extension to streaming sequences in the spirit of Lopez-Paz and Ranzato (2017) is beyond the scope of this paper but motivates the empirical findings in Section 4.4. 
+
+4. Experiments 
+
+4.1. Datasets and protocol 
+
+We assemble a panoramic streetscape benchmark of 184,000 images sam-pled uniformly along walkable street segments in twelve cities: New York, Chicago, San Francisco, London, Paris, Berlin, Tokyo, Seoul, Singapore, São Paulo, Mexico City, and Lagos. Cities are selected to span four continents, three climate regimes, and an order-of-magnitude range in nominal GDP per capita, reflecting the demographic spread that practical deployments must accommodate. Perceptual labels for the seven canonical dimensions are ob-tained by aggregating Place Pulse-style pairwise comparisons (Salesses et al., 2013; Dubey et al., 2016) into TrueSkill scores normalised to [0 , 1] , with at least 1,600 unique annotators per city to mitigate cultural over-fitting follow-ing Ramírez et al. (2021). Each city contributes between 12,000 and 18,000 panoramas, and we hold out 15% of every city as the test split. The continual stream presents the twelve cities in chronological order of the year their imagery was first crowdsourced, mimicking a realistic deploy-ment in which a model is incrementally extended. Following the comprehen-sive continual-learning protocol of Wang et al. (2024); De Lange et al. (2021), we compute average accuracy after the final region, average backward trans-fer over the sequence, and the inter-region perception gap. All numbers are mean and standard deviation of five independent runs with different random seeds. We compare HVSP-LL to: (i) ResNet-50 (He et al., 2016) fine-tuned per region with no continual mechanism; (ii) Swin-B (Liu et al., 2021) with per-region heads; (iii) EWC (Kirkpatrick et al., 2017); (iv) iCaRL (Rebuffi et al., 2017); (v) DER++ (Buzzega et al., 2020); and (vi) DualPrompt 
+
+(Wang et al., 2022b). Because perceptual targets are continuous, classifica-tion baselines are adapted to regression by replacing the softmax head with a sigmoid output and the cross-entropy loss with the same MSE-plus-ranking loss used by HVSP-LL. All methods share the DINOv2-Base backbone for fairness. We report Spearman correlation ρS , mean absolute error MAE, backward transfer BWT, and inter-region gap ∆R.11 Table 1: Main results on the twelve-city panoramic streetscape benchmark after the full continual sequence. Mean ±SD over five seeds. Best in bold, second best underlined. Higher is better for ρS and BWT; lower is better for MAE and ∆R.                                    
+
+> Method ρS↑MAE ↓BWT ↑∆R↓
+> ResNet-50 (He et al., 2016) 0.621 ±0.018 0.137 ±0.006 −0.094 ±0.011 0.243 ±0.014 Swin-B (Liu et al., 2021) 0.683 ±0.014 0.121 ±0.005 −0.082 ±0.009 0.226 ±0.012 EWC (Kirkpatrick et al., 2017) 0.720 ±0.012 0.108 ±0.005 −0.046 ±0.008 0.218 ±0.011 iCaRL (Rebuffi et al., 2017) 0.751 ±0.011 0.099 ±0.004 −0.029 ±0.007 0.187 ±0.010 DER++ (Buzzega et al., 2020) 0.773 ±0.010 0.092 ±0.004 −0.018 ±0.006 0.164 ±0.009 DualPrompt (Wang et al., 2022b) 0.762 ±0.013 0.095 ±0.005 −0.011 ±0.005 0.151 ±0.011
+> HVSP-LL (ours) 0.834 ±0.009 0.078 ±0.003 +0.013 ±0.005 0.094 ±0.007
+
+4.2. Main results 
+
+Table 1 summarises the comparison after the full twelve-region sequence. HVSP-LL attains a Spearman correlation of 0.834 averaged across all seven perceptual dimensions, a 6.1-point absolute improvement over DER++ and an 11.4-point improvement over EWC. The inter-region perception gap drops to 0.094, a 38% reduction relative to DualPrompt (0.151) and a 57% re-duction relative to EWC (0.218), without sacrificing accuracy. Backward transfer is positive ( +0 .013 ), indicating that integrating later regions actu-ally improves predictions on earlier ones—a hallmark of the shared anchor-ing mechanism. The single-task ResNet baseline collapses on the sequence: although it achieves competitive accuracy on the most recent region, its av-erage accuracy across cities is the lowest of the seven methods because no mechanism prevents catastrophic forgetting. Figure 2 visualises performance across the seven perceptual dimensions as a radar chart, including a noise-perturbed evaluation in which 30% of test images are corrupted with motion blur and exposure shifts (a common artefact in real-world panoramic capture). HVSP-LL maintains the largest area in both clean and noisy regimes, and the gap to the next-best baseline widens under perturbation, suggesting that hierarchical anchoring confers robustness as well as equity. 
+
+4.3. Ablation study 
+
+Table 2 reports component-level ablations. Removing any tier of the piv-oting hierarchy degrades all four metrics, with the macro tier contributing the largest single drop in inter-region equity (from 0.094 to 0.151). The reten-tion term is the most important continual-learning ingredient, as expected; 12 Safe     
+
+> Lively
+> Beautiful
+> Wealthy Depressing
+> Boring
+> Walkable
+> 0.5
+> 0.6
+> 0.7
+> 0.8
+> 0.9
+> Clean evaluation Safe
+> Lively
+> Beautiful
+> Wealthy Depressing
+> Boring
+> Walkable
+> 0.5
+> 0.6
+> 0.7
+> 0.8
+> 0.9
+> 30% noise-perturbed evaluation
+> EWC DER++ DualPrompt HVSP-LL
+
+Figure 2: Per-dimension Spearman correlation across the seven Place Pulse-style percep-tual axes. The shaded region denotes the noise-perturbed evaluation. HVSP-LL retains a substantial margin under perturbation, with notable robustness on the walkable and 
+
+depressing dimensions where panoramic occlusions are common. 
+
+without it, the model loses 6.6 points of average accuracy and incurs strongly negative backward transfer. The equity penalty, meanwhile, is principally re-sponsible for the equity reduction: removing it preserves accuracy but raises the inter-region gap by 87% in relative terms. The structurally-aware cov-erage buffer delivers an additional 3.7-point Spearman gain over reservoir sampling, confirming that diversity-aware exemplar selection is well worth the negligible computational overhead. Figure 3 presents a complementary visual breakdown that decomposes the contribution of each component to both accuracy and equity. The Pareto front formed by the various configurations highlights the joint nature of the trade-off and the position of HVSP-LL near its upper-left corner. 
+
+4.4. Cross-city generalisation 
+
+We assess generalisation to held-out cities not present in the training stream. Three target cities (Lagos, Mexico City, São Paulo) are removed from the training stream and used purely for evaluation; the remaining nine cities are used as the continual training sequence. Table 3 reports the re-sult. HVSP-LL maintains its lead on every held-out target, with the largest margins on Lagos and Mexico City—two cities historically underrepresented in panoramic streetscape benchmarks. The cross-city heatmap in Figure 4 13 Table 2: Ablation of HVSP-LL components on the held-out twelve-city sequence. Each row removes the indicated component; “Coverage buffer” is replaced by reservoir sampling, and “Equity penalty” by uniform weighting. 
+
+Configuration ρS ↑ MAE ↓ BWT ↑ ∆R ↓
+
+Full HVSP-LL 0.834 ±0.009 0.078 ±0.003 +0.013 ±0.005 0.094 ±0.007 
+
+w/o Tier-3 (micro) anchors 0.812 ±0.011 0.085 ±0.004 +0.006 ±0.005 0.119 ±0.009 w/o Tier-2 (meso) anchors 0.793 ±0.012 0.090 ±0.005 −0.004 ±0.006 0.137 ±0.010 w/o Tier-1 (macro) anchors 0.781 ±0.013 0.094 ±0.005 −0.011 ±0.006 0.151 ±0.011 w/o Coverage buffer 0.797 ±0.012 0.089 ±0.005 −0.008 ±0.006 0.142 ±0.010 w/o Equity penalty 0.819 ±0.010 0.082 ±0.004 +0.009 ±0.005 0.176 ±0.012 w/o Retention term 0.768 ±0.013 0.097 ±0.005 −0.038 ±0.008 0.162 ±0.012 Frozen anchors 0.804 ±0.011 0.087 ±0.005 −0.001 ±0.005 0.131 ±0.010 
+
+Table 3: Spearman correlation on cities held out from the continual training stream. Bold indicates the best result per column.                         
+
+> Method Lagos Mexico City São Paulo Average
+> ResNet-50 (He et al., 2016) 0.471 ±0.022 0.534 ±0.018 0.582 ±0.016 0.529 ±0.019 EWC (Kirkpatrick et al., 2017) 0.583 ±0.018 0.628 ±0.015 0.661 ±0.014 0.624 ±0.016 DER++ (Buzzega et al., 2020) 0.642 ±0.014 0.687 ±0.013 0.716 ±0.012 0.682 ±0.013 DualPrompt (Wang et al., 2022b) 0.659 ±0.013 0.701 ±0.012 0.728 ±0.011 0.696 ±0.012
+> HVSP-LL (ours) 0.748 ±0.011 0.776 ±0.010 0.799 ±0.009 0.774 ±0.010
+
+shows that the source-target accuracy matrix is markedly more uniform un-der HVSP-LL than under DER++, providing visual evidence for the equity claim. 
+
+4.5. Equity diagnostics 
+
+We report four complementary equity diagnostics in Figure 5. (a) The per-city Spearman distribution shows that HVSP-LL collapses the long lower tail observed for non-equitable baselines, with the city-to-city range contract-ing from 0.133 (ResNet-50) to 0.037 (HVSP-LL) and the standard deviation falling from 0.035 to 0.012. (b) The MAE conditional on socio-economic decile, derived from publicly available city-level GDP indicators, has its decile-to-decile spread reduced from 0.080 (ResNet-50) to 0.029 (HVSP-LL), indicating that prediction error is no longer concentrated on the lowest deciles. (c) The worst-case city Spearman improves from 0.535 (ResNet-50) to 0.819 (HVSP-LL), a 53% relative gain. (d) The mean pairwise inter-city Wasserstein distance between predicted-score distributions falls from 0.241 (ResNet-50) to 0.079 (HVSP-LL), a 67% reduction overall and 47% relative 14 Full HVSP-LL w/o        
+
+> Tier-3 (micro)
+> w/o
+> Tier-2 (meso)
+> w/o
+> Tier-1 (macro)
+> w/o
+> Coverage buffer
+> w/o
+> Equity penalty
+> w/o
+> Retention term
+> Frozen anchors
+> 0.74
+> 0.76
+> 0.78
+> 0.80
+> 0.82
+> 0.84
+> 0.86
+> Spearman correlation  S
+> Per-component ablation
+> S(accuracy)
+> R(inter-region gap)
+> 0.06
+> 0.08
+> 0.10
+> 0.12
+> 0.14
+> 0.16
+> 0.18
+> 0.20
+> Inter-region gap  R
+> 0.76 0.78 0.80 0.82 0.84
+> Spearman S
+> 0.10
+> 0.12
+> 0.14
+> 0.16
+> 0.18
+> Inter-region gap  R
+> Full HVSP-LL
+> w/o Tier-3 (micro)
+> w/o Tier-2 (meso)
+> w/o Tier-1 (macro)
+> w/o Coverage buffer
+> w/o Equity penalty
+> Frozen anchors
+> Accuracy--equity Pareto plot
+> Empirical Pareto front
+
+Figure 3: Ablation visualisation. Left: per-component contribution to Spearman corre-lation and inter-region gap. Right: configurations placed in the (accuracy, equity) plane; the dotted curve marks the empirical Pareto front. Components compose super-additively in the equity dimension. 
+
+to the strongest continual baseline (DER++), reflecting better alignment of the perceptual scale across regions. 
+
+4.6. Sensitivity and efficiency 
+
+The two trade-off coefficients λe and λr are central to the equity–accuracy trade-off. Figure 6 maps both coefficients on a log grid. The accuracy surface is broad, with a wide plateau around (λe, λ r) = (0 .5, 1.0) ; the equity surface is steeper, falling sharply outside the corner (λe, λ r) ∈ [0 .3, 1.0] × [0 .5, 2.0] .We adopt (0 .6, 1.2) as the default, which lies within the joint optimum. Efficiency is competitive with the lighter continual baselines. HVSP-LL adds 4.7M trainable parameters over the frozen DINOv2-Base backbone (3.1% relative), the same order of magnitude as DualPrompt and substan-tially smaller than DER++ which fine-tunes the entire backbone. End-to-end training over the twelve-region sequence takes 9.2 hours on a single A100 GPU compared with 14.6 hours for DER++ and 7.1 hours for DualPrompt; inference is real-time at 31 frames per second on the same hardware. 
+
+4.7. Qualitative analysis 
+
+Figure 7 shows three representative panoramas with the tier-by-tier an-chor distributions estimated by HVSP-LL alongside human and predicted scores. The macro tier identifies dominant land use; the meso tier captures 15 New York 
+
+> Chicago
+> San Francisco
+> London
+> Paris
+> Berlin
+> Tokyo
+> Seoul
+> Singapore
+> Sao Paulo
+> Mexico City
+> Lagos
+
+Evaluation city                                                                                                    
+
+> New York
+> Chicago
+> San Francisco
+> London
+> Paris
+> Berlin
+> Tokyo
+> Seoul
+> Singapore
+> Training stream city
+> 0.77 0.68 0.71 0.60 0.62 0.62 0.61 0.63 0.59 0.43 0.45 0.45
+> 0.73 0.78 0.70 0.61 0.60 0.65 0.62 0.60 0.62 0.44 0.45 0.44
+> 0.71 0.72 0.80 0.66 0.63 0.63 0.62 0.63 0.63 0.44 0.44 0.44
+> 0.63 0.60 0.64 0.78 0.72 0.71 0.59 0.61 0.62 0.43 0.43 0.42
+> 0.61 0.62 0.62 0.71 0.77 0.69 0.59 0.61 0.61 0.44 0.44 0.42
+> 0.63 0.63 0.63 0.70 0.69 0.78 0.64 0.64 0.63 0.44 0.42 0.42
+> 0.61 0.64 0.62 0.61 0.62 0.61 0.77 0.74 0.69 0.44 0.42 0.44
+> 0.61 0.61 0.60 0.65 0.60 0.64 0.69 0.79 0.71 0.41 0.47 0.46
+> 0.61 0.62 0.63 0.64 0.62 0.60 0.69 0.70 0.76 0.43 0.43 0.43
+
+DER++ 
+
+> New York
+> Chicago
+> San Francisco
+> London
+> Paris
+> Berlin
+> Tokyo
+> Seoul
+> Singapore
+> Sao Paulo
+> Mexico City
+> Lagos
+
+Evaluation city                                                                                                    
+
+> New York
+> Chicago
+> San Francisco
+> London
+> Paris
+> Berlin
+> Tokyo
+> Seoul
+> Singapore
+> Training stream city
+> 0.82 0.79 0.80 0.79 0.79 0.80 0.80 0.81 0.79 0.72 0.73 0.74
+> 0.78 0.81 0.79 0.79 0.79 0.78 0.79 0.78 0.77 0.74 0.75 0.73
+> 0.82 0.79 0.83 0.80 0.78 0.76 0.78 0.80 0.79 0.72 0.75 0.73
+> 0.79 0.79 0.78 0.84 0.81 0.76 0.79 0.78 0.81 0.76 0.75 0.71
+> 0.81 0.77 0.79 0.78 0.82 0.79 0.77 0.80 0.81 0.74 0.73 0.74
+> 0.77 0.80 0.79 0.77 0.76 0.84 0.78 0.79 0.76 0.75 0.72 0.73
+> 0.77 0.79 0.80 0.79 0.78 0.80 0.83 0.80 0.77 0.73 0.72 0.73
+> 0.80 0.78 0.79 0.78 0.78 0.81 0.80 0.82 0.79 0.73 0.72 0.74
+> 0.78 0.80 0.79 0.79 0.79 0.78 0.80 0.79 0.82 0.74 0.73 0.73
+
+HVSP-LL (ours) 
+
+0.55 
+
+0.60 
+
+0.65 
+
+0.70 
+
+0.75 
+
+0.80 
+
+0.85 
+
+> Spearman correlation
+
+Figure 4: Cross-city Spearman matrices for DER++ (left) and HVSP-LL (right). Rows are training cities, columns are evaluation cities. Lighter cells denote stronger generalisation; the right matrix is visibly more uniform, indicating reduced geographic disparity. 
+
+the building/vegetation/sky composition that drives the bulk of perceptual variance; the micro tier surfaces the elements that explain residual disagree-ments. For an underrepresented Lagos panorama (right), the macro and meso tiers transfer cleanly while the micro tier requires the most adapta-tion, consistent with the ablation finding that micro anchors are the smallest contributor. 
+
+5. Discussion 
+
+The results suggest that hierarchical anchoring is a productive substrate for equitable urban perception, but they also surface limitations and open questions. The most important caveat concerns the choice of perceptual dimensions: we follow the Place Pulse tradition for comparability, yet there is growing evidence that culturally local perceptual axes may better capture the lived experience of underrepresented neighbourhoods (Ramírez et al., 2021; Rossetti et al., 2019). Extending the framework to a culturally adaptive label space, in which each region contributes new anchors and dimensions, is a natural next step. A second limitation is that our equity metric measures aggregate inter-region disparity; intra-region disparities, particularly those that align with socio-economic gradients within a single city (Kang et al., 2020; Wang et al., 2019a), are equally important and require neighbourhood-level rather than city-level audits. A third concerns label provenance: even 16 ResNet-50 EWC DER++ HVSP-LL                
+
+> 0.5
+> 0.6
+> 0.7
+> 0.8
+> 0.9
+> Per-city Spearman  S
+> (a) City-level accuracy distribution
+> 12345678910
+> Socio-economic decile (1=lowest)
+> 0.06
+> 0.08
+> 0.10
+> 0.12
+> 0.14
+> 0.16
+> 0.18
+> Mean absolute error
+> (b) MAE conditional on socio-economic decile
+> ResNet-50
+> EWC
+> DER++
+> HVSP-LL
+> ResNet-50 EWC DER++ HVSP-LL
+> 0.45
+> 0.50
+> 0.55
+> 0.60
+> 0.65
+> 0.70
+> 0.75
+> 0.80
+> 0.85
+> Worst-case city Spearman
+> 0.535
+> 0.685
+> 0.750
+> 0.819
+> (c) Worst-case city accuracy
+> ResNet-50 EWC DER++ HVSP-LL
+> 0.00
+> 0.05
+> 0.10
+> 0.15
+> 0.20
+> 0.25
+> 0.30
+> Inter-city Wasserstein distance  0.241
+> 0.187
+> 0.149
+> 0.079
+> (d) Pairwise distribution distance
+
+Figure 5: Equity diagnostics. (a) Per-city Spearman distribution: HVSP-LL eliminates the long lower tail. (b) Conditional MAE across socio-economic deciles. (c) Worst-case city accuracy. (d) Pairwise inter-city Wasserstein distance between predicted score distri-butions. All four diagnostics improve simultaneously under HVSP-LL. 
+
+with culturally diverse annotators, pairwise comparisons inherit photographic and sampling artefacts that no architectural intervention can fully neutralise. The hierarchical pivoting design is amenable to several extensions that we have not pursued in depth. The macro and meso anchors could be initialised from multimodal vision–language priors (Radford et al., 2021), allowing zero-shot transfer to entirely novel land-use categories. The micro tier is a natural locus for incorporating object-level attributes and could be combined with semantic segmentation evidence (Xie et al., 2021; Long et al., 2015; Zhao et al., 2017; Cordts et al., 2016) for finer-grained explanations. Recent work on hierarchical visual perception in retrieval (Xie et al., 2026b, 2025) and modular reasoning over composed inputs (Li et al., 2025d,a,e) indicates that the same pivoting principle generalises across visual tasks. Looking further afield, structural geometric priors emerging from urban scene synthesis (Lee et al., 2025; Jiang et al., 2025; Liao et al., 2025; Li et al., 2025h; Zhao et al., 17 1.00 0.75 0.50 0.25 0.00 0.25 0.50 0.75              
+
+> log 10 r(retention)
+> 1.25
+> 1.00
+> 0.75
+> 0.50
+> 0.25
+> 0.00
+> 0.25
+> 0.50
+> log 10  e (equity)
+> Spearman S
+> 1.00 0.75 0.50 0.25 0.00 0.25 0.50 0.75
+> log 10 r(retention)
+> 1.25
+> 1.00
+> 0.75
+> 0.50
+> 0.25
+> 0.00
+> 0.25
+> 0.50
+> log 10  e (equity)
+> Inter-region gap R
+> 0.76
+> 0.77
+> 0.78
+> 0.79
+> 0.80
+> 0.81
+> 0.82
+> 0.83
+> S
+> 0.10
+> 0.12
+> 0.14
+> 0.16
+> 0.18
+> R
+
+Figure 6: Sensitivity to the two trade-off coefficients. Left: average Spearman correlation surface. Right: inter-region perception gap. The starred point marks the chosen default; the joint optimum is broad along λr and sharper along λe.
+
+2026) could provide an additional anchor stream that accounts for the three-dimensional structure of the streetscape, while time-aware extensions (Yu et al., 2026b; Zhao et al., 2025) would enable the framework to track percep-tual changes as cities evolve. Comparable continual-learning developments suggest several refinements. Prompt-based methods (Wang et al., 2022c,b) could be combined with our anchor banks to yield region-conditioned prompts that further reduce inter-region drift. Selective forgetting in the spirit is interesting in the urban con-text because some neighbourhoods change drastically between captures and outdated panoramas should not be retained indefinitely. Long-tail learning approaches (Xiao et al., 2025; Cui et al., 2019) can address class imbalance within perceptual axes, and graph-based reasoning over global correlations (Ouyang et al., 2025) could exploit the geographic adjacency of cities in the training stream. Multimodal sentiment work that disentangles latent sub-spaces is conceptually adjacent to our pivoting design and provides additional grounding for the choice of three tiers. From a deployment standpoint, equitable streetscape inference is one ingredient in a broader pipeline of evidence-based urban planning. The framework’s outputs feed naturally into greenness assessments (Wang et al., 2019a), walkability audits (Wang et al., 2019b), and visual quality dashboards (Ye et al., 2019; Ito et al., 2024). A practical recommendation arising from our experiments is that equity audits should be reported alongside accuracy in any benchmark intended to inform policy: the inter-region gap, worst-18 Human: safe 0.71 lively 0.66 beauty 0.74   
+
+> HVSP-LL: 0.69 0.67 0.73
+
+Berlin (in-stream)   
+
+> Human: safe 0.78 lively 0.81 beauty 0.69
+> HVSP-LL: 0.79 0.80 0.71
+
+Singapore (in-stream)   
+
+> Human: safe 0.42 lively 0.61 beauty 0.48
+> HVSP-LL: 0.46 0.59 0.51
+
+Lagos (held-out) 
+
+> Resid.
+> Comm.
+> Indust.
+> Green
+> Transit
+> 0.00
+> 0.25
+> 0.50
+> Tier-1 (macro)
+> Bldg.
+> Veg.
+> Sky
+> Road
+> Sidewalk
+> Vehicle
+> Sign
+> Wall
+> Person
+> 0.0
+> 0.2
+> Tier-2 (meso)
+> Tree
+> Bench
+> Fence
+> Lamp
+> Bicycle
+> Pole
+> Marking
+> Stair
+> Trash
+> Hydrant
+> Wire
+> Window
+> 0.0
+> 0.1
+> 0.2
+> Tier-3 (micro)
+> Resid.
+> Comm.
+> Indust.
+> Green
+> Transit
+> 0.0
+> 0.2
+> 0.4
+> Tier-1 (macro)
+> Bldg.
+> Veg.
+> Sky
+> Road
+> Sidewalk
+> Vehicle
+> Sign
+> Wall
+> Person
+> 0.0
+> 0.2
+> Tier-2 (meso)
+> Tree
+> Bench
+> Fence
+> Lamp
+> Bicycle
+> Pole
+> Marking
+> Stair
+> Trash
+> Hydrant
+> Wire
+> Window
+> 0.0
+> 0.1
+> 0.2
+> Tier-3 (micro)
+> Resid.
+> Comm.
+> Indust.
+> Green
+> Transit
+> 0.0
+> 0.2
+> 0.4
+> Tier-1 (macro)
+> Bldg.
+> Veg.
+> Sky
+> Road
+> Sidewalk
+> Vehicle
+> Sign
+> Wall
+> Person
+> 0.0
+> 0.2
+> Tier-2 (meso)
+> Tree
+> Bench
+> Fence
+> Lamp
+> Bicycle
+> Pole
+> Marking
+> Stair
+> Trash
+> Hydrant
+> Wire
+> Window
+> 0.0
+> 0.1
+> 0.2
+> Tier-3 (micro)
+
+Figure 7: Qualitative examples with tier-by-tier anchor distributions. Numbers below each panel report the human Spearman score and HVSP-LL prediction on the seven perceptual dimensions. Anchor weights are normalised per tier; the most active anchors are labelled. 
+
+case city accuracy, and decile-conditional MAE we report are inexpensive to compute and provide a defensible accountability signal. 
+
+6. Conclusion 
+
+We presented HVSP-LL, a lifelong learning framework that integrates stratified visual–semantic pivoting with an equity-aware rehearsal mechanism for urban streetscape perception. The framework attains state-of-the-art ac-curacy on a twelve-city panoramic benchmark while halving the inter-city perception gap, with positive backward transfer and competitive computa-tional cost. Ablations confirm that the three tiers of the pivoting hierarchy contribute complementarily and that the equity penalty is principally re-sponsible for the equity gains. Cross-city experiments and equity diagnostics demonstrate that the gains transfer to underrepresented regions, suggest-ing that hierarchical anchoring is a practical pathway toward geographically equitable streetscape inference at city scale. We hope the experimental pro-19 tocol, including the per-region equity diagnostics, encourages the community to evaluate against equity rather than only aggregate accuracy. 
+
+References 
+
+Aljundi, R., Babiloni, F., Elhoseiny, M., Rohrbach, M., Tuytelaars, T., 2018. Memory aware synapses: Learning what (not) to forget, in: European Conference on Computer Vision (ECCV), pp. 139–154. Ben-David, S., Blitzer, J., Crammer, K., Kulesza, A., Pereira, F., Vaughan, J.W., 2010. A theory of learning from different domains, in: Machine Learning, Springer. pp. 151–175. Biljecki, F., Ito, K., 2021. Street view imagery in urban analytics and gis: A review. Landscape and Urban Planning 215, 104217. Buzzega, P., Boschini, M., Porrello, A., Abati, D., Calderara, S., 2020. Dark experience for general continual learning: A strong, simple baseline, in: Advances in Neural Information Processing Systems (NeurIPS), pp. 15920– 15930. Caron, M., Touvron, H., Misra, I., Jégou, H., Mairal, J., Bojanowski, P., Joulin, A., 2021. Emerging properties in self-supervised vision transform-ers, in: IEEE/CVF International Conference on Computer Vision (ICCV), pp. 9650–9660. Chen, Z., Hu, Y., Fu, Z., Li, Z., Huang, J., Huang, Q., Wei, Y., 2026a. Intent: Invariance and discrimination-aware noise mitigation for robust composed image retrieval, in: Proceedings of the AAAI Conference on Artificial Intelligence (AAAI), pp. 20463–20471. Chen, Z., Hu, Y., Fu, Z., Li, Z., Huang, J., Huang, Q., Wei, Y., 2026b. Intent: Invariance and discrimination-aware noise mitigation for robust composed image retrieval, in: Proceedings of the AAAI Conference on Artificial Intelligence. Chen, Z., Hu, Y., Li, Z., Fu, Z., Wen, H., Guan, W., 2025. Hud: Hi-erarchical uncertainty-aware disambiguation network for composed video retrieval, in: Proceedings of the ACM International Conference on Multi-media (ACM MM), pp. 6143–6152. 20 Cordts, M., Omran, M., Ramos, S., Rehfeld, T., Enzweiler, M., Benenson, R., Franke, U., Roth, S., Schiele, B., 2016. The cityscapes dataset for semantic urban scene understanding, in: IEEE Conference on Computer Vision and Pattern Recognition (CVPR), pp. 3213–3223. Cui, Y., Jia, M., Lin, T.Y., Song, Y., Belongie, S., 2019. Class-balanced loss based on effective number of samples, in: IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), pp. 9268–9277. De Lange, M., Aljundi, R., Masana, M., Parisot, S., Jia, X., Leonardis, A., Slabaugh, G., Tuytelaars, T., 2021. A continual learning survey: Defying forgetting in classification tasks. IEEE Transactions on Pattern Analysis and Machine Intelligence 44, 3366–3385. Dubey, A., Naik, N., Parikh, D., Raskar, R., Hidalgo, C.A., 2016. Deep learn-ing the city: Quantifying urban perception at a global scale, in: European Conference on Computer Vision (ECCV), Springer. pp. 196–212. Fu, Z., Hu, Y., Yang, Q., Zhang, S., Chen, Z., Li, Z., 2026. Air-know: Arbiter-calibrated knowledge-internalizing robust network for composed image retrieval, in: Proceedings of the IEEE/CVF Conference on Com-puter Vision and Pattern Recognition (CVPR). Gu, R., Jia, S., Ma, Y., Zhong, J., Hwang, J.N., Li, L., 2025. Mocount: Motion-based repetitive action counting, in: Proceedings of the ACM In-ternational Conference on Multimedia (ACM MM), pp. 9026–9034. Gulrajani, I., Lopez-Paz, D., 2021. In search of lost domain generalization, in: International Conference on Learning Representations (ICLR). He, K., Fan, H., Wu, Y., Xie, S., Girshick, R., 2020. Momentum contrast for unsupervised visual representation learning, in: IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), pp. 9729–9738. He, K., Zhang, X., Ren, S., Sun, J., 2016. Deep residual learning for im-age recognition, in: IEEE Conference on Computer Vision and Pattern Recognition (CVPR), pp. 770–778. Hu, Y., Li, Z., Chen, Z., Huang, Q., Fu, Z., Xu, M., Nie, L., 2026. Refine: Composed video retrieval via shared and differential semantics enhance-ment. ACM Transactions on Multimedia Computing, Communications and Applications . 21 Ito, K., Kang, Y., Zhang, Y., Zhang, F., Biljecki, F., 2024. Understand-ing urban perception with visual data: A systematic review. Cities 152, 105169. Jia, S., Li, L., 2024. Adaptive masking enhances visual grounding. arXiv preprint arXiv:2410.03161 . Jia, S., Zhu, N., Zhong, J., Zhou, J., Zhang, H., Hwang, J.N., Li, L., 2026. Ram: Recover any 3d human motion in-the-wild. arXiv preprint arXiv:2603.19929 . Jiang, G., Zhang, T., Li, D., Zhao, Z., Li, H., Li, M., Wang, H., 2025. Stg-avatar: Animatable human avatars via spacetime gaussian, in: Pro-ceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), pp. 20058–20065. Kang, Y., Zhang, F., Gao, S., Lin, H., Liu, Y., 2020. A review of urban physical environment sensing using street view imagery in public health studies. Annals of GIS 26, 261–275. Ke, Z., Cao, Y., Chen, Z., Yin, Y., He, S., Cheng, Y., 2025. Early warning of cryptocurrency reversal risks via multi-source data. Finance Research Letters , 107890. Khosla, A., Zhou, T., Malisiewicz, T., Efros, A.A., Torralba, A., 2012. Un-doing the damage of dataset bias, in: European Conference on Computer Vision (ECCV), pp. 158–171. Khosla, P., Teterwak, P., Wang, C., Sarna, A., Tian, Y., Isola, P., Maschinot, A., Liu, C., Krishnan, D., 2020. Supervised contrastive learning, in: Ad-vances in Neural Information Processing Systems (NeurIPS), pp. 18661– 18673. Kim, B., Kim, H., Kim, K., Kim, S., Kim, J., 2019. Learning not to learn: Training deep neural networks with biased data, in: IEEE/CVF Confer-ence on Computer Vision and Pattern Recognition (CVPR), pp. 9012– 9020. Kirkpatrick, J., Pascanu, R., Rabinowitz, N., Veness, J., Desjardins, G., Rusu, A.A., Milan, K., Quan, J., Ramalho, T., Grabska-Barwinska, A., 22 et al., 2017. Overcoming catastrophic forgetting in neural networks. Pro-ceedings of the National Academy of Sciences 114, 3521–3526. Koh, P.W., Sagawa, S., Marklund, H., Xie, S.M., Zhang, M., Balsubramani, A., Hu, W., Yasunaga, M., Phillips, R.L., Gao, I., Lee, T., David, E., Stavness, I., Guo, W., Earnshaw, B.A., Haque, I.S., Beery, S., Leskovec, J., Kundaje, A., Pierson, E., Wang, S., Mackey, L., Liang, P., 2021. Wilds: A benchmark of in-the-wild distribution shifts, in: International Conference on Machine Learning (ICML), pp. 5637–5664. Larkin, A., Gu, X., Chen, L., Hystad, P., 2021. Predicting perceptions of the built environment using gis, satellite and street view image approaches. Landscape and Urban Planning 216, 104257. Lee, J.Y., Liu, Y.R., Tsai, S.R., Chang, W.C., Wu, C.H., Chan, J., Zhao, Z., Lin, C.H., Liu, Y.L., 2025. Skyfall-gs: Synthesizing immersive 3d urban scenes from satellite imagery. arXiv preprint arXiv:2510.15869 . Li, B., Dong, H., Zhang, D., Zhao, Z., Gao, J., Li, X., 2025a. Exploring effi-cient open-vocabulary segmentation in the remote sensing. arXiv preprint arXiv:2509.12040 . Li, B., Huo, T., Zhang, D., Zhao, Z., Gao, J., Li, X., 2025b. Exploring the underwater world segmentation without extra training. arXiv preprint arXiv:2511.07923 . Li, B., Wang, F., Zhang, D., Zhao, Z., Gao, J., Li, X., 2025c. Maris: Marine open-vocabulary instance segmentation with geometric enhancement and semantic alignment. arXiv preprint arXiv:2510.15398 . Li, B., Zhang, D., Zhao, Z., Gao, J., Li, X., 2025d. Stitchfusion: Weaving any visual modalities to enhance multimodal semantic segmentation, in: Proceedings of the ACM International Conference on Multimedia (ACM MM), pp. 1308–1317. Li, B., Zhang, D., Zhao, Z., Gao, J., Li, X., 2025e. U3m: Unbiased multi-scale modal fusion model for multimodal semantic segmentation. Pattern Recognition 168, 111801. 23 Li, L., Jia, S., Hwang, J.N., 2026a. Multiple human motion understanding, in: Proceedings of the AAAI Conference on Artificial Intelligence, pp. 6297–6305. Li, L., Jia, S., Wang, J., An, Z., Li, J., Hwang, J.N., Belongie, S., 2025f. Chatmotion: A multimodal multi-agent for human motion analysis. arXiv preprint arXiv:2502.18180 . Li, L., Jia, S., Wang, J., Jiang, Z., Zhou, F., Dai, J., Zhang, T., Wu, Z., Hwang, J.N., 2025g. Human motion instruction tuning, in: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR). Li, M., Li, D., Hu, S., Wang, K., Zhao, Z., Wang, H., 2025h. Slam-x: Generalizable dynamic removal for nerf and gaussian splatting slam, in: Proceedings of the ACM International Conference on Multimedia (ACM MM), pp. 1132–1140. Li, Z., Chen, Z., Wen, H., Fu, Z., Hu, Y., Guan, W., 2025i. Encoder: Entity mining and modification relation binding for composed image retrieval, in: Proceedings of the AAAI Conference on Artificial Intelligence (AAAI), pp. 5101–5109. Li, Z., Hu, Y., Chen, Z., Huang, Q., Qiu, G., Fu, Z., Liu, M., 2026b. Re-track: Evidence-driven dual-stream directional anchor calibration network for composed video retrieval, in: Proceedings of the AAAI Conference on Artificial Intelligence. Li, Z., Hu, Y., Chen, Z., Zhang, M., Fu, Z., Nie, L., 2026c. Conesep: Cone-based robust noise-unlearning compositional network for composed image retrieval, in: Proceedings of the IEEE/CVF Conference on Computer Vi-sion and Pattern Recognition (CVPR). Li, Z., Hu, Y., Chen, Z., Zhang, S., Huang, Q., Fu, Z., Wei, Y., 2026d. Habit: Chrono-synergia robust progressive learning framework for composed im-age retrieval, in: Proceedings of the AAAI Conference on Artificial Intel-ligence. Liao, B., Zhao, Z., Li, H., Zhou, Y., Zeng, Y., Li, H., Liu, P., 2025. Con-vex relaxation for robust vanishing point estimation in manhattan world, 24 in: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), pp. 15823–15832. Liu, L., Chen, S., Jia, S., Shi, J., Jiang, Z., Jin, C., Wu, Z., Hwang, J.N., Li, L., 2024. Graph canvas for controllable 3d scene generation. arXiv preprint arXiv:2412.00091 . Liu, Z., Lin, Y., Cao, Y., Hu, H., Wei, Y., Zhang, Z., Lin, S., Guo, B., 2021. Swin transformer: Hierarchical vision transformer using shifted windows, in: IEEE/CVF International Conference on Computer Vision (ICCV), pp. 10012–10022. Long, J., Shelhamer, E., Darrell, T., 2015. Fully convolutional networks for semantic segmentation, in: IEEE Conference on Computer Vision and Pattern Recognition (CVPR), pp. 3431–3440. Lopez-Paz, D., Ranzato, M., 2017. Gradient episodic memory for con-tinual learning, in: Advances in Neural Information Processing Systems (NeurIPS), pp. 6470–6479. Ma, X., Ma, C., Wu, C., Xi, Y., Yang, R., Peng, N., Zhang, C., Ren, F., 2021. Measuring human perceptions of streetscapes to better inform urban renewal: A perspective of scene semantic parsing. Cities 110, 103086. Mehrabi, N., Morstatter, F., Saxena, N., Lerman, K., Galstyan, A., 2021. A survey on bias and fairness in machine learning. ACM Computing Surveys (CSUR) 54, 1–35. Oquab, M., Darcet, T., Moutakanni, T., Vo, H., Szafraniec, M., Khalidov, V., Fernandez, P., Haziza, D., Massa, F., El-Nouby, A., et al., 2024. Dinov2: Learning robust visual features without supervision, in: Transactions on Machine Learning Research. Ouyang, K., Ke, Z., Fu, S., Liu, L., Zhao, P., Hu, D., 2025. Learn from global correlations: Enhancing evolutionary algorithm via spectral gnn, in: Proceedings of the AAAI Conference on Artificial Intelligence. Parisi, G.I., Kemker, R., Part, J.L., Kanan, C., Wermter, S., 2019. Continual lifelong learning with neural networks: A review. Neural Networks 113, 54–71. 25 Quiñonero-Candela, J., Sugiyama, M., Schwaighofer, A., Lawrence, N.D., 2008. Dataset shift in machine learning. The MIT Press . Radford, A., Kim, J.W., Hallacy, C., Ramesh, A., Goh, G., Agarwal, S., Sas-try, G., Askell, A., Mishkin, P., Clark, J., Krueger, G., Sutskever, I., 2021. Learning transferable visual models from natural language supervision, in: International Conference on Machine Learning (ICML), pp. 8748–8763. Ramaswamy, V.V., Kim, S.S.Y., Russakovsky, O., 2021. Fair attribute clas-sification through latent space de-biasing, in: IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), pp. 9301–9310. Ramírez, T., Hurtubia, R., Lobel, H., Rossetti, T., 2021. Measuring heteroge-neous perception of urban space with massive data and machine learning: An application to safety. Landscape and Urban Planning 208, 104002. Rebuffi, S.A., Kolesnikov, A., Sperl, G., Lampert, C.H., 2017. icarl: In-cremental classifier and representation learning, in: IEEE Conference on Computer Vision and Pattern Recognition (CVPR), pp. 2001–2010. Rossetti, T., Lobel, H., Rocco, V., Hurtubia, R., 2019. Explaining subjective perceptions of public spaces as a function of the built environment: Amassive data approach. Landscape and Urban Planning 181, 169–178. Sagawa, S., Koh, P.W., Hashimoto, T.B., Liang, P., 2020. Distributionally robust neural networks, in: International Conference on Learning Repre-sentations (ICLR). Salesses, P., Schechtner, K., Hidalgo, C.A., 2013. The collaborative image of the city: Mapping the inequality of urban perception. PLOS ONE 8, e68400. Sarkar, A., Idris, M.Y.I., Yu, Z., 2025. Reasoning in computer vision: Taxon-omy, models, tasks, and methodologies. arXiv preprint arXiv:2508.10523 .Snell, J., Swersky, K., Zemel, R., 2017. Prototypical networks for few-shot learning, in: Advances in Neural Information Processing Systems (NeurIPS), pp. 4077–4087. 26 Torralba, A., Efros, A.A., 2011. Unbiased look at dataset bias. IEEE Confer-ence on Computer Vision and Pattern Recognition (CVPR) , 1521–1528. Wang, J., Lan, C., Liu, C., Ouyang, Y., Qin, T., Lu, W., Chen, Y., Zeng, W., Yu, P.S., 2022a. Generalizing to unseen domains: A survey on domain generalization. IEEE Transactions on Knowledge and Data Engineering . Wang, L., Zhang, X., Su, H., Zhu, J., 2024. A comprehensive survey of continual learning: Theory, method and application. IEEE Transactions on Pattern Analysis and Machine Intelligence . Wang, R., Helbich, M., Yao, Y., Zhang, J., Liu, P., Yuan, Y., Liu, Y., 2019a. Urban greenery and mental wellbeing in adults: Cross-sectional mediation analyses on multiple pathways across different greenery measures. Envi-ronmental Research 176, 108535. Wang, R., Liu, Y., Lu, Y., Zhang, J., Liu, P., Yao, Y., Grekousis, G., 2019b. The relationship between visual enclosure for neighbourhood street walka-bility and elders’ mental health in china: Using street view images. Journal of Transport & Health 13, 90–102. Wang, Z., Qinami, K., Karakozis, I.C., Genova, K., Nair, P., Hata, K., Rus-sakovsky, O., 2020. Towards fairness in visual recognition: Effective strate-gies for bias mitigation, in: IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), pp. 8919–8928. Wang, Z., Zhang, Z., Ebrahimi, S., Sun, R., Zhang, H., Lee, C.Y., Ren, X., Su, G., Perot, V., Dy, J., et al., 2022b. Dualprompt: Complementary prompting for rehearsal-free continual learning, in: European Conference on Computer Vision (ECCV), pp. 631–648. Wang, Z., Zhang, Z., Lee, C.Y., Zhang, H., Sun, R., Ren, X., Su, G., Perot, V., Dy, J., Pfister, T., 2022c. Learning to prompt for continual learning, in: IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), pp. 139–149. Xiao, C., Zhao, C., Ke, Z., Shen, F., 2025. Curiosity-driven cooperation for long-tailed multi-label learning. SSRN Electronic Journal . Xie, E., Wang, W., Yu, Z., Anandkumar, A., Alvarez, J.M., Luo, P., 2021. Segformer: Simple and efficient design for semantic segmentation with 27 transformers, in: Advances in Neural Information Processing Systems (NeurIPS), pp. 12077–12090. Xie, Z., 2026. Conquer: Context-aware representation with query enhance-ment for text-based person search. arXiv preprint arXiv:2601.18625 . Xie, Z., Liu, X., Zhang, B., Lin, Y., Cai, S., Jin, T., 2026a. Hvd: Human vision-driven video representation learning for text-video retrieval. arXiv preprint arXiv:2601.16155 . Xie, Z., Wang, C., Wang, Y., Cai, S., Wang, S., Jin, T., 2025. Chat-driven text generation and interaction for person retrieval, in: Proceedings of the Conference on Empirical Methods in Natural Language Processing (EMNLP), pp. 5259–5270. Xie, Z., Zhang, B., Lin, Y., Jin, T., 2026b. Delving deeper: Hierar-chical visual perception for robust video-text retrieval. arXiv preprint arXiv:2601.12768 . Ye, Y., Zeng, W., Shen, Q., Zhang, X., Lu, Y., 2019. The visual quality of streets: A human-centred continuous measurement based on machine learning algorithms and street view images. Environment and Planning B: Urban Analytics and City Science 46, 1439–1457. Yu, Z., Idris, M.Y.I., Wang, H., Wang, P., Chen, J., Wang, K., 2025a. From physics to foundation models: A review of ai-driven quantitative remote sensing inversion. arXiv preprint arXiv:2507.09081 . Yu, Z., Idris, M.Y.I., Wang, P., Qureshi, R., 2026a. Dinov3-powered multi-task foundation model for quantitative remote sensing estimation (student abstract), in: Proceedings of the AAAI Conference on Artificial Intelli-gence, pp. 41455–41456. Yu, Z., Jiang, H., Wang, P., Lin, Z., Xiang, Y., 2026b. Spatiotemporal alignment for remote sensing image recovery via terrain-aware diffusion, in: ICASSP 2026-2026 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), IEEE. pp. 11257–11261. Yu, Z., Wang, J., Chen, H., Idris, M.Y.I., 2025b. Qrs-trs: Style transfer-based image-to-image translation for carbon stock estimation in quantitative re-mote sensing. IEEE Access . 28 Zenke, F., Poole, B., Ganguli, S., 2017. Continual learning through synaptic intelligence, in: International Conference on Machine Learning (ICML), pp. 3987–3995. Zhao, H., Shi, J., Qi, X., Wang, X., Jia, J., 2017. Pyramid scene parsing network. IEEE Conference on Computer Vision and Pattern Recognition (CVPR) , 2881–2890. Zhao, H., Yan, L., Hou, Z., Lin, J., Zhao, Y., Ji, Z., Wang, Y., 2025. Error analysis strategy for long-term correlated network systems: Generalized nonlinear stochastic processes and dual-layer filtering architecture. IEEE Internet of Things Journal . Zhao, Z., Yang, H., Liao, B., Zeng, Y., Yan, S., Gu, Y., Liu, P., Zhou, Y., Li, H., Civera, J., 2026. Advances in global solvers for 3d vision. arXiv preprint arXiv:2602.14662 . 29

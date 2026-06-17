@@ -1,0 +1,424 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-17T21:23:59.545302+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 8,
+    "quick_skim_target": 11,
+    "quick_selected": 8
+  },
+  "deep_dive": [
+    {
+      "id": "2606.13727v1",
+      "source": "arxiv",
+      "title": "Occupancy-Grounded Room Segmentation for Hierarchical 3D Scene Graphs",
+      "abstract": "Hierarchical 3D scene graphs (3DSGs) for indoor robots organize geometric and semantic information across spatial scales, with a room layer that connects object-level perception to room-scale reasoning. Existing systems construct this layer from different spatial substrates (\\eg{} place clusters, wall planes, or segmentation outputs), and as a result, room nodes are not evaluated on a common geometric criterion. We present an occupancy-grounded 3DSG pipeline in which room nodes are anchored to tracked free-space regions derived from occupancy decomposition, giving each room an explicit polygonal footprint. We evaluate the pipeline on 12 Matterport3D scenes by matching predicted room polygons to annotated room instances and compare against Hydra, a representative state-of-the-art place-connectivity baseline. The results show that occupancy-grounded anchoring recovers substantially more room instances than place-connectivity construction, at the cost of lower precision, and that wall-accurate room boundaries remain an open problem for both methods. Code is available at https://github.com/crcz25/OccuSG.",
+      "authors": [
+        "Carlos Cueto Zumaya",
+        "Iacopo Catalano",
+        "Jorge Peña-Queralta",
+        "Wallace Moreira Bessa"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-11T09:36:15+00:00",
+      "link": "https://arxiv.org/pdf/2606.13727v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "occupancy-grounded room segmentation for hierarchical 3D scene graphs from point clouds",
+      "llm_evidence_cn": "基于占用率的房间分割用于点云三维场景图",
+      "llm_evidence": "基于占用率的房间分割用于点云三维场景图",
+      "canonical_evidence": "基于占用率的房间分割用于点云三维场景图",
+      "llm_tldr_en": "Proposes occupancy-grounded pipeline for hierarchical 3D scene graphs, anchoring room nodes to free-space regions from point cloud occupancy decomposition, evaluated on Matterport3D scenes.",
+      "llm_tldr_cn": "该论文针对室内机器人分层3D场景图中房间层构建缺乏统一几何标准的问题，提出了一种基于占用率的3D场景图构建流水线。该方法通过占用分解将房间节点锚定到跟踪的自由空间区域，为每个房间赋予显式多边形足迹。在12个Matterport3D场景上的评估表明，该方法能够有效匹配预测的房间多边形与标注实例。这项研究为建筑室内空间的语义理解和场景图构建提供了新思路，可应用于智能建筑和城市基础设施管理。",
+      "llm_tldr": "该论文针对室内机器人分层3D场景图中房间层构建缺乏统一几何标准的问题，提出了一种基于占用率的3D场景图构建流水线。该方法通过占用分解将房间节点锚定到跟踪的自由空间区域，为每个房间赋予显式多边形足迹。在12个Matterport3D场景上的评估表明，该方法能够有效匹配预测的房间多边形与标注实例。这项研究为建筑室内空间的语义理解和场景图构建提供了新思路，可应用于智能建筑和城市基础设施管理。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.17637v1",
+      "source": "arxiv",
+      "title": "Brick-DICL: Dynamic In-Context Learning for Automated Brick Schema Classification",
+      "abstract": "Building Management Systems (BMS) are essential for optimizing energy efficiency and operational performance in modern buildings. However, the lack of standardization across BMS points from different manufacturers creates significant barriers to integration and data utilization. While the Brick schema offers a standardized ontology for building systems, mapping BMS points to appropriate Brick classes presents three critical challenges: (i) the extensive number of Brick classes (936 in the latest version), (ii) limited domain-specific knowledge in large language models (LLMs), and (iii) substantial manual effort required for verification. To address these challenges, we propose Brick-DICL, a two-stage dynamic in-context learning framework for automated Brick schema classification. Brick-DICL consists of two primary components: metadata-RAG, which retrieves relevant examples to enhance LLMs' domain knowledge, and class-RAG, which narrows down potential Brick classes to address the large classification space. Additionally, we implement a multi-LLM filtering mechanism that compares predictions across multiple models, flagging low-confidence classifications for human review. As a result: (i) General: Brick-DICL is applicable to any building management system regardless of manufacturer or metadata format; (ii) Novel and Powerful: as the first dynamic in-context learning approach for Brick schema classification, Brick-DICL achieves significant classification accuracy improvements on building datasets, outperforming existing methods; (iii) Efficient: our multi-LLM filtering strategy reduces manual verification effort, enabling rapid digital building onboarding. Extensive experiments demonstrate Brick-DICL's effectiveness across diverse building datasets, accelerating the path toward standardized, interoperable building management systems.",
+      "authors": [
+        "Yiyue Qian",
+        "Shinan Zhang",
+        "Huan Song",
+        "Negin Sokhandan",
+        "Hannah Marlowe",
+        "Diego Socolinsky"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-16T07:46:51+00:00",
+      "link": "https://arxiv.org/pdf/2606.17637v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Brick schema ontology for building management system semantic interoperability",
+      "llm_evidence_cn": "Brick模式本体用于建筑管理系统语义互操作",
+      "llm_evidence": "Brick模式本体用于建筑管理系统语义互操作",
+      "canonical_evidence": "Brick模式本体用于建筑管理系统语义互操作",
+      "llm_tldr_en": "Brick-DICL uses dynamic in-context learning to automatically classify BMS points into Brick ontology classes, addressing standardization and integration barriers in building systems.",
+      "llm_tldr_cn": "建筑管理系统（BMS）中不同制造商的点数据缺乏标准化，Brick模式提供了统一本体但分类困难。本文提出Brick-DICL，一种两阶段动态上下文学习框架，利用少量样本将BMS点自动映射到Brick类，无需大量人工标注。实验表明该方法大幅提升分类精度，为建筑语义互操作和智慧城市数据集成提供了高效方案。",
+      "llm_tldr": "建筑管理系统（BMS）中不同制造商的点数据缺乏标准化，Brick模式提供了统一本体但分类困难。本文提出Brick-DICL，一种两阶段动态上下文学习框架，利用少量样本将BMS点自动映射到Brick类，无需大量人工标注。实验表明该方法大幅提升分类精度，为建筑语义互操作和智慧城市数据集成提供了高效方案。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.12867v2",
+      "source": "arxiv",
+      "title": "SMGFM: Spectral Multimodal Graph Pretraining for Multimodal-Attributed Graphs",
+      "abstract": "Multimodal-attributed graphs (MAGs) couple graph topology with node semantics from text, images, and other modalities. Traditional graph learning contextualizes node semantics by coupling topology with node features. However, this coupling design becomes troublesome in MAGs, where structure-induced and modality-intrinsic semantics may contribute differently to downstream tasks. Structure-induced semantics promote relational consistency through smooth topological variation, whereas modality-intrinsic semantics often encode local, fine-grained distinctions that should not be uniformly smoothed or aligned. Therefore, the key challenge is to identify semantic roles before cross-modal fusion. To this end, we leverage graph-frequency variation as a prior, where low-frequency components capture topology-consistent semantics and high-frequency components preserve modality-specific semantics. Based on this intuition, we propose SMGFM, a spectral multimodal graph pretraining framework that decomposes each modality-specific node signal into graph-frequency bands and assigns band-level semantic roles before cross-modal interaction. Concretely, SMGFM constructs frequency-resolved modality tokens with scalable Chebyshev filters, estimates their coupling reliability through topology-conditioned routing, and performs band-modality interaction before fusion. Its frequency-routed objectives align smooth consensus routes while preserving modality-specific routes, mitigating spatial-domain entanglement and uniform cross-modal alignment. Extensive experiments conducted on the MAG datasets demonstrate that SMGFM achieves state-of-the-art performance across graph-level and modality-level tasks.",
+      "authors": [
+        "Zhengyu Wu",
+        "Xu Wang",
+        "Hongchao Qin",
+        "Xunkai Li",
+        "Guang Zeng",
+        "Rong-Hua Li",
+        "Guoren Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-11T03:54:35+00:00",
+      "link": "https://arxiv.org/pdf/2606.12867v2",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "proposes graph pretraining fusing multimodal node attributes, applicable to smart city multimodal data fusion",
+      "llm_evidence_cn": "提出融合多模态节点属性的图预训练方法，可应用于智慧城市多模态数据融合",
+      "llm_evidence": "提出融合多模态节点属性的图预训练方法，可应用于智慧城市多模态数据融合",
+      "canonical_evidence": "提出融合多模态节点属性的图预训练方法，可应用于智慧城市多模态数据融合",
+      "llm_tldr_en": "Proposes SMGFM, a spectral multimodal graph pretraining method that distinguishes structure-induced and modality-intrinsic semantics before fusion, improving multimodal-attributed graph learning.",
+      "llm_tldr_cn": "多模态属性图中结构与模态语义贡献不同，直接融合效果差。本文提出SMGFM，利用图频谱变化区分语义角色，在跨模态融合前识别结构诱导语义与模态固有语义。方法在图预训练任务上表现优异，可应用于智慧城市中BIM、GIS、图像等多模态数据的图建模。",
+      "llm_tldr": "多模态属性图中结构与模态语义贡献不同，直接融合效果差。本文提出SMGFM，利用图频谱变化区分语义角色，在跨模态融合前识别结构诱导语义与模态固有语义。方法在图预训练任务上表现优异，可应用于智慧城市中BIM、GIS、图像等多模态数据的图建模。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.15055v1",
+      "source": "arxiv",
+      "title": "Bridging Geographic Bias in Urban Streetscape Inference via Lifelong Learning with Visual-Semantic Pivoting",
+      "abstract": "Visual perception of urban streetscapes underpins evidence-based decisions in landscape planning, public health, and place-making. Yet models trained on a few well-photographed metropolises systematically misjudge underrepresented districts, propagating geographic bias into downstream policy. We address this gap with HVSP-LL, a lifelong learning framework that couples a stratified visual-semantic pivoting module with an equity-aware rehearsal mechanism. The pivoting module organises landscape concepts along a three-tier ontology (macro structure, meso composition, micro element) and aligns image features to learnable semantic anchors at each tier, providing transferable representations that resist distributional drift. The lifelong adaptation component sequentially absorbs new urban regions while constraining inter-region perception gaps through a worst-region sample-reweighting objective and a structurally-aware exemplar buffer. We evaluate HVSP-LL on a panoramic streetscape benchmark assembled from twelve cities across four continents and seven perceptual dimensions. The framework attains 0.834 Spearman correlation on the held-out city sequence, an absolute 6.1 point improvement over the strongest continual baseline, and shrinks the inter-city perception gap to 0.094 -- a 38% reduction relative to the strongest continual baseline (0.151) and a 57% reduction relative to a representative regularisation baseline (0.218). Ablations confirm that each tier of the pivoting hierarchy contributes monotonically, and the equity-aware rehearsal converts mean backward transfer from -0.038 (without retention) to +0.013, eliminating catastrophic forgetting on the held-out sequence. Our results indicate that hierarchical anchoring is a practical pathway toward geographically equitable streetscape inference at city scale.",
+      "authors": [
+        "Xinze Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-06-13T01:52:03+00:00",
+      "link": "https://arxiv.org/pdf/2606.15055v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "urban streetscape inference with visual-semantic pivoting and lifelong learning, addressing geographic bias",
+      "llm_evidence_cn": "城市街景推断，利用视觉语义锚点和终身学习，解决地理偏差",
+      "llm_evidence": "城市街景推断，利用视觉语义锚点和终身学习，解决地理偏差",
+      "canonical_evidence": "城市街景推断，利用视觉语义锚点和终身学习，解决地理偏差",
+      "llm_tldr_en": "Proposes HVSP-LL, a lifelong learning framework with visual-semantic pivoting for geographic bias mitigation in urban streetscape inference.",
+      "llm_tldr_cn": "该论文提出HVSP-LL终身学习框架，通过分层视觉语义锚点模块和公平感知重放机制，解决城市街景推断中的地理偏差问题。框架将景观概念按宏观、中观、微观三级本体组织，并利用语义锚点对齐图像特征，实现跨地区迁移。这项工作为城市环境理解中的语义表示学习提供了新方法。",
+      "llm_tldr": "该论文提出HVSP-LL终身学习框架，通过分层视觉语义锚点模块和公平感知重放机制，解决城市街景推断中的地理偏差问题。框架将景观概念按宏观、中观、微观三级本体组织，并利用语义锚点对齐图像特征，实现跨地区迁移。这项工作为城市环境理解中的语义表示学习提供了新方法。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.13460v1",
+      "source": "arxiv",
+      "title": "VISA: VLM-Guided Instance Semantic Auditing for 3D Occupancy World Models",
+      "abstract": "Semantic 3D occupancy provides a voxelized world state for autonomous driving and robot decision making, but object and rare-class errors can affect free-space interpretation, collision checking, and temporal state propagation. We show that a common VLM strategy, aligning 3D voxel or object features with crop-caption embeddings, improves text-space similarity without reliably improving closed-set occupancy mIoU. Motivated by this mismatch, we propose VISA, a training-time semantic auditing approach for existing occupancy world models. VISA queries an offline VLM on a representative crop of each physical object instance, obtains a structured audit with class hypotheses, plausible confusions, reliability, attributes, and evidence, and propagates it along the object track. The audit is grounded to matched 3D object voxels and distilled into semantic logits through reliability-weighted taxonomy, attribute-factor, and scene-level audit graph losses, while inference remains unchanged and requires no VLM. On nuScenes, averaged across three runs, VISA improves OccWorld from 19.06 to 20.05 mIoU and GaussianWorld from 21.36 to 21.91 mIoU; on GaussianWorld, object mIoU improves from 18.18 to 19.16 and rare-class mIoU from 15.60 to 16.79. These results suggest that VLMs are better suited to closed-set occupancy as reliability-aware semantic auditors than as generic caption-embedding targets.",
+      "authors": [
+        "Ruiqi Xian",
+        "Yuehan Xian",
+        "Jing Liang",
+        "Xuewei Qi",
+        "Dinesh Manocha"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-11T15:15:34+00:00",
+      "link": "https://arxiv.org/pdf/2606.13460v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "semantic auditing of 3D occupancy for urban autonomous driving",
+      "llm_evidence_cn": "面向城市自动驾驶的3D占用语义审计",
+      "llm_evidence": "面向城市自动驾驶的3D占用语义审计",
+      "canonical_evidence": "面向城市自动驾驶的3D占用语义审计",
+      "llm_tldr_en": "VISA proposes a VLM-guided semantic auditing approach for 3D occupancy world models, improving scene understanding for autonomous driving in urban environments.",
+      "llm_tldr_cn": "本文针对自动驾驶中3D占用世界模型的语义错误问题，提出VISA方法，利用视觉语言模型对每个物理对象实例进行结构化语义审计，包括类别假设、混淆分析、属性证据等，提升城市场景中自由空间解释和碰撞检测的可靠性。实验表明该方法能有效修正稀有类错误，增强3D场景理解的鲁棒性，对城市基础设施感知具有实用价值。",
+      "llm_tldr": "本文针对自动驾驶中3D占用世界模型的语义错误问题，提出VISA方法，利用视觉语言模型对每个物理对象实例进行结构化语义审计，包括类别假设、混淆分析、属性证据等，提升城市场景中自由空间解释和碰撞检测的可靠性。实验表明该方法能有效修正稀有类错误，增强3D场景理解的鲁棒性，对城市基础设施感知具有实用价值。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.17073v1",
+      "source": "arxiv",
+      "title": "Extracting Semantics: LLM-Guided Automatic Population of Robot Ontology from URDF",
+      "abstract": "While commonsense knowledge may suffice for virtual agents, embodied robots interacting with humans require grounded and semantically rich representations of both their environment and their own physical embodiment. In cognitive robotics, ontologies are effective for integrating such heterogeneous knowledge to enable explainable reasoning, even during continuous knowledge updates. Yet, their manual construction remains a bottleneck. We present a preliminary approach for the automatic generation of robot semantic abstractions by transforming Unified Robot Description Format (URDF) models into populated ontologies. Although URDF files provide structural and kinematic descriptions, their identifiers often require commonsense interpretation to recover meaningful semantics, a task at which Large Language Models (LLMs) excel. Our pipeline leverages LLMs to infer semantic relationships by prompting them with concepts from an existing ontology, ensuring the final classification remains aligned with the formal model. To improve reliability, the pipeline combines majority voting across multiple LLM queries along with syntactic and schema-level validation to ensure that generated outputs conform to the expected representation format and ontology constraints. We evaluate the approach on multiple robot descriptions and discuss the generated abstractions. Initial results indicate that the proposed method can effectively bridge the gap between low-level robot descriptions and the structured, grounded knowledge representations required for human-robot interaction.",
+      "authors": [
+        "Bastien Dussard",
+        "Guillaume Sarthou"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-10T08:08:37+00:00",
+      "link": "https://arxiv.org/pdf/2606.17073v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "automatic ontology population from structured descriptions using LLM, transferable to BIM semantic extraction",
+      "llm_evidence_cn": "从结构化描述自动填充本体的方法，可迁移到BIM语义提取",
+      "llm_evidence": "从结构化描述自动填充本体的方法，可迁移到BIM语义提取",
+      "canonical_evidence": "从结构化描述自动填充本体的方法，可迁移到BIM语义提取",
+      "llm_tldr_en": "Presents an LLM-guided approach to automatically populate robot ontologies from URDF files, extracting semantic abstractions from kinematic descriptions, demonstrating potential for semantic parsing in other domains like BIM.",
+      "llm_tldr_cn": "机器人领域本体构建依赖人工，效率低。本文提出用LLM从URDF文件自动提取语义并填充本体，解决了标识符需常识解释的问题。初步实验验证了可行性。该方法可推广到建筑领域的BIM模型语义解析，为智慧城市基础设施数据库提供自动化本体学习工具。",
+      "llm_tldr": "机器人领域本体构建依赖人工，效率低。本文提出用LLM从URDF文件自动提取语义并填充本体，解决了标识符需常识解释的问题。初步实验验证了可行性。该方法可推广到建筑领域的BIM模型语义解析，为智慧城市基础设施数据库提供自动化本体学习工具。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic parsing, ontology learning, and knowledge graph construction from BIM models and point cloud scans for AI ready urban infrastructure databases.",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.13669v1",
+      "source": "arxiv",
+      "title": "Agents-K1: Towards Agent-native Knowledge Orchestration",
+      "abstract": "Current LLM-based research agents have advanced through agent orchestration, yet largely overlook scientific knowledge orchestration. Existing works often reduce papers to abstracts, surface mentions, and flat \\texttt{cites} edges, omitting key entities, claims, evidence, mechanisms, and method lineages essential for scientific reasoning. To this end, we introduce \\textbf{Agents-K1}, an end-to-end knowledge orchestration pipeline that converts raw documents into agent-native scientific knowledge graphs. Agents-K1 integrates three components under a unifying theoretical foundation: a multimodal parser whose five-module schema captures entities, multimodal evidence, citations, and typed inter-entity relations across the full paper rather than abstracts alone; a 4B information-extraction backbone trained with GRPO under a rule-based reward; and a graphanything CLI, a tri-source agent interface that unifies web search, multimodal graph retrieval, and cross-document traversal. On top of this, we process 2.46 million scientific papers across six subjects to produce \\textbf{Scholar-KG}, of which we release a one-million-paper subset, and the full Scholar-KG is accessible via the SCP link below. The same pipeline can be extended to general-domain corpora and to schema-conformant data synthesis. Extensive experiments demonstrate that Agents-K1 achieves superior performance in scientific information extraction, knowledge graph construction, and multi-hop scientific reasoning.",
+      "authors": [
+        "Zongsheng Cao",
+        "Bihao Zhan",
+        "Jinxin Shi",
+        "Jiong Wang",
+        "Fangchen Yu",
+        "Zhijie Zhong",
+        "Zijie Guo",
+        "Tianshuo Peng",
+        "Zhuo Liu",
+        "Yi Xie",
+        "Xiang Zhuang",
+        "Yue Fan",
+        "Runmin Ma",
+        "Shiyang Feng",
+        "Xiangchao Yan",
+        "Anran Liu",
+        "Peng Ye",
+        "Wenlong Zhang",
+        "Shufei Zhang",
+        "Chunfeng Song",
+        "Fenghua Ling",
+        "Jie Zhou",
+        "Liang He",
+        "Bo Zhang",
+        "Lei Bai"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-11T17:58:35+00:00",
+      "link": "https://arxiv.org/pdf/2606.13669v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "end-to-end knowledge graph construction from scientific documents",
+      "llm_evidence_cn": "从科学文档中端到端构建知识图谱",
+      "llm_evidence": "从科学文档中端到端构建知识图谱",
+      "canonical_evidence": "从科学文档中端到端构建知识图谱",
+      "llm_tldr_en": "Agents-K1 pipelines raw documents into agent-native knowledge graphs via multimodal parsing, extracting entities, evidence, and relations. Transferable to smart city BIM/GIS knowledge graph construction.",
+      "llm_tldr_cn": "该论文提出Agents-K1管线，将原始文档转换为面向智能体的科学知识图谱，包含多模态解析器与实体关系抽取。虽然面向科学文献，但其端到端的语义解析与知识图谱构建方法论可迁移至智慧城市中BIM模型、GIS数据的知识化处理。",
+      "llm_tldr": "该论文提出Agents-K1管线，将原始文档转换为面向智能体的科学知识图谱，包含多模态解析器与实体关系抽取。虽然面向科学文献，但其端到端的语义解析与知识图谱构建方法论可迁移至智慧城市中BIM模型、GIS数据的知识化处理。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.17915v1",
+      "source": "arxiv",
+      "title": "Trustworthy Self-Composable Big-Data-as-a-Service: An LLM-Orchestrated Multi-Agent Framework for Automated Data Engineering, AutoML, MLOps Deployment, and Drift-Aware Lifecycle Optimization",
+      "abstract": "Big-Data-as-a-Service (BDaaS) platforms require re liable automation across data ingestion, cleaning, feature engi neering, model development, deployment, and post-deployment monitoring. However, existing LLM-based data science agents and AutoML systems mainly focus on isolated workflow stages, leaving limited support for lifecycle-level orchestration, artifact governance, human oversight, and drift-aware adaptation. This paper proposes a trustworthy self-composable BDaaS frame work based on LLM-orchestrated multi-agent collaboration. The proposed architecture decomposes the BDaaS lifecycle into specialized agents for data ingestion, data cleaning, feature engineering, AutoML training, model evaluation, MLOps de ployment, monitoring, and drift detection. A central LLM or chestration layer coordinates agent execution, validates interme diate outputs, manages workflow context, and enables dynamic workflow composition. The framework also incorporates shared artifact governance, reproducibility support, human-in-the-loop checkpoints, and drift-aware feedback loops. A prototype-based evaluation is conducted using controlled tabular benchmark datasets with missing values, categorical variables, outliers, class imbalance, and simulated covariate drift. Compared with manual ML, AutoML-only, and single-agent LLM baselines, the pro posed multi-agent BDaaS pipeline achieves competitive predictive performance while improving lifecycle-level reliability, including workflow completion, artifact traceability, deployment readiness, reproducibility, and drift recovery. The results suggest that LLM-orchestrated multi-agent systems can extend conventional AutoML toward trustworthy, adaptive, and production-oriented BDaaS lifecycle automation.",
+      "authors": [
+        "Aueaphum Aueawatthanaphisut",
+        "Badri Raj Lamichhane"
+      ],
+      "primary_category": "cs.MA",
+      "categories": [
+        "cs.MA",
+        "cs.AI",
+        "cs.DB",
+        "cs.SE"
+      ],
+      "published": "2026-06-16T13:34:27+00:00",
+      "link": "https://arxiv.org/pdf/2606.17915v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "LLM-orchestrated multi-agent framework for automated data integration and lifecycle management",
+      "llm_evidence_cn": "LLM编排的多智能体框架用于自动化数据集成和生命周期管理",
+      "llm_evidence": "LLM编排的多智能体框架用于自动化数据集成和生命周期管理",
+      "canonical_evidence": "LLM编排的多智能体框架用于自动化数据集成和生命周期管理",
+      "llm_tldr_en": "Proposes a self-composable BDaaS framework using LLM orchestrated multi-agent collaboration to automate data ingestion, cleaning, feature engineering, model deployment, and drift monitoring across the big data lifecycle.",
+      "llm_tldr_cn": "该论文针对现有LLM数据科学代理和AutoML系统仅关注孤立工作流阶段的问题，提出了一个可信赖的自组合大数据即服务框架。该框架利用LLM编排的多智能体协作，将BDaaS生命周期分解为数据摄入、清洗、特征工程、模型开发、部署和漂移监测等专门代理。实现了从数据工程到MLOps的全流程自动化与生命周期级编排。该框架为智慧城市中的多源数据集成与自动化治理提供了可迁移的解决方案。",
+      "llm_tldr": "该论文针对现有LLM数据科学代理和AutoML系统仅关注孤立工作流阶段的问题，提出了一个可信赖的自组合大数据即服务框架。该框架利用LLM编排的多智能体协作，将BDaaS生命周期分解为数据摄入、清洗、特征工程、模型开发、部署和漂移监测等专门代理。实现了从数据工程到MLOps的全流程自动化与生命周期级编排。该框架为智慧城市中的多源数据集成与自动化治理提供了可迁移的解决方案。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.13854v1",
+      "source": "arxiv",
+      "title": "SpheriCity: Designing Trustworthy Conversational AI for Sustainability Decision Support",
+      "abstract": "We present SpheriCity, an expert-grounded conversational prototype designed to support trustworthy knowledge sensemaking from sustainability reports. City-level circularity assessment reports contain rich information about materials, infrastructure, and policy interventions, yet their length and heterogeneous structure make cross-document synthesis and comparison difficult for practitioners and researchers working on circular economy initiatives. While large language models (LLM) promise faster knowledge access and synthesis, their opaque reasoning, hallucinations, and lack of source transparency introduce risks for trust and interpretability, and require verification in high-stakes sustainability contexts. SpheriCity addresses these challenges through a provenance-first conversational agent that foregrounds evidence traceability, structured synthesis, and interaction scaffolds to support exploratory querying and cross-document synthesis across sustainability reports. We conducted a formative expert review with six sustainability experts using representative queries spanning cross-city comparison, policy summarization, and recommendation-oriented tasks. Experts evaluated responses across dimensions and provided qualitative reflections on the system's usefulness for sustainability knowledge work. Our results reveal that transparent sourcing, contextual explanation, interpretability, and alignment with expert workflow strongly shape expert trust and judgments of system usefulness. This work contributes (1) a conversational prototype for sustainability knowledge sensemaking, (2) an expert-grounded evaluation framework for assessing AI responses in high-stakes knowledge domains, and (3) design insights into how provenance, uncertainty communication, and integration in workflow influence expert users' trust in AI assistance for sustainability decision support.",
+      "authors": [
+        "Ahmed Qayyum",
+        "Madison Werner",
+        "Kathryn Youngblood",
+        "Jenna R. Jambeck",
+        "Tahiya Chowdhury"
+      ],
+      "primary_category": "cs.HC",
+      "categories": [
+        "cs.HC",
+        "cs.AI"
+      ],
+      "published": "2026-06-11T19:32:42+00:00",
+      "link": "https://arxiv.org/pdf/2606.13854v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "conversational AI for integrating city-level circularity report data",
+      "llm_evidence_cn": "面向城市循环经济报告数据整合的对话式AI",
+      "llm_evidence": "面向城市循环经济报告数据整合的对话式AI",
+      "canonical_evidence": "面向城市循环经济报告数据整合的对话式AI",
+      "llm_tldr_en": "SpheriCity is a conversational AI prototype that integrates heterogeneous city-level sustainability reports to support decision-making for circular economy initiatives.",
+      "llm_tldr_cn": "本文针对城市循环经济报告数据异质性强、跨文档综合困难的问题，设计了SpheriCity对话原型。它利用大型语言模型实现多源报告的知识获取与综合，同时通过专家约束和源透明性机制增强可信度。该系统在材料、基础设施和政策干预等领域提供决策支持，为智慧城市中多源数据整合提供了可借鉴的方法。",
+      "llm_tldr": "本文针对城市循环经济报告数据异质性强、跨文档综合困难的问题，设计了SpheriCity对话原型。它利用大型语言模型实现多源报告的知识获取与综合，同时通过专家约束和源透明性机制增强可信度。该系统在材料、基础设施和政策干预等领域提供决策支持，为智慧城市中多源数据整合提供了可借鉴的方法。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.17856v1",
+      "source": "arxiv",
+      "title": "FlowRAG: Synergizing Explicit Reasoning via Frequency-Aware Multi-Granularity Graph Flow",
+      "abstract": "Graph-based retrieval-augmented generation (GraphRAG) is effective for knowledge-intensive and multi-hop query tasks; however, many existing methods primarily seed entity-based graphs and rely on implicit semantic relevance propagation. This often (i) under-retrieves when user queries are abstract and semantically sparse at the entity level, and (ii) suffers from brittle multi-hop reasoning, where noisy activations can derail entity-to-entity transitions and corrupt the inferred relation chain, yielding unreliable conclusions. To this end, we propose \\texttt{FlowRAG}, a semantic-aware retrieval framework that improves both semantic recall and explicit reasoning. Specifically, \\texttt{FlowRAG} constructs a quad-level heterogeneous graph over passages, summaries, sentences, and entities, where summary nodes serve as a coarse semantic hub. At retrieval time, a dual-granularity activation module combines summary--query alignment with sentence-level matching to activate relevant entities under paraphrase and abstraction robustly. We then introduce a frequency-aware weighted flow module that routes relevance through entity--passage links weighted by within-passage term frequency, pruning noisy connections and extracting high-confidence reasoning paths as an explicit logic skeleton for generation. Extensive experiments show that \\texttt{FlowRAG} obtains state-of-the-art performance on complex reasoning benchmarks.",
+      "authors": [
+        "Bihao Zhan",
+        "Zongsheng Cao",
+        "Jie Zhou",
+        "Bo Zhang",
+        "Liang He"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-16T12:28:14+00:00",
+      "link": "https://arxiv.org/pdf/2606.17856v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "graph-based retrieval augmented reasoning with multi-granularity graph",
+      "llm_evidence_cn": "基于图的多粒度检索增强推理",
+      "llm_evidence": "基于图的多粒度检索增强推理",
+      "canonical_evidence": "基于图的多粒度检索增强推理",
+      "llm_tldr_en": "FlowRAG constructs a quad-level heterogeneous graph for robust multi-hop reasoning, improving semantic recall and explicit reasoning in knowledge-intensive queries.",
+      "llm_tldr_cn": "现有图检索增强生成（GraphRAG）在抽象查询和多跳推理中易丢失语义。本文提出FlowRAG，构建四层异构语义图，结合频率感知多粒度流机制，实现显式推理链。实验证明其在多跳问答任务上显著优于基线，可推广至知识图谱驱动的智能城市应用中的复杂查询。",
+      "llm_tldr": "现有图检索增强生成（GraphRAG）在抽象查询和多跳推理中易丢失语义。本文提出FlowRAG，构建四层异构语义图，结合频率感知多粒度流机制，实现显式推理链。实验证明其在多跳问答任务上显著优于基线，可推广至知识图谱驱动的智能城市应用中的复杂查询。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

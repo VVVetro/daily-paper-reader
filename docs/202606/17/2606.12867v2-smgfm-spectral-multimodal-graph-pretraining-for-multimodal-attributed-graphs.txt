@@ -1,0 +1,763 @@
+Title: SMGFM: Spectral Multimodal Graph Pretraining for Multimodal-Attributed Graphs
+
+URL Source: https://arxiv.org/pdf/2606.12867v2
+
+Published Time: Wed, 17 Jun 2026 01:12:58 GMT
+
+Number of Pages: 10
+
+Markdown Content:
+# SMGFM: Spectral Multimodal Graph Pretraining for Multimodal-Attributed Graphs 
+
+Zhengyu Wu, Xu Wang, Hongchao Qin, Xunkai Li, Guang Zeng, Rong-Hua Li, Guoren Wang 
+
+Abstract —Multimodal-attributed graphs (MAGs) couple graph topology with node semantics from text, images, and other modalities, making them important for real-world applications. Traditional graph learning contextualizes node semantics by coupling topology with node features. However, this coupling design becomes troublesome in MAGs, where structure-induced and modality-intrinsic semantics may contribute differently to downstream tasks. Structure-induced semantics promote rela-tional consistency through smooth topological variation, whereas modality-intrinsic semantics often encode local, fine-grained dis-tinctions that should not be uniformly smoothed or aligned. Existing multimodal graph encoders typically fuse topology and modalities in a shared spatial representation space, delaying semantic role identification until after interaction and thereby entangling semantics that require different treatments. There-fore, the key challenge is to identify semantic roles before cross-modal fusion. To this end, we leverage graph-frequency variation as a prior, where low-frequency components capture topology-consistent semantics and high-frequency components preserve modality-specific semantics. Based on this intuition, we propose SMGFM , a spectral multimodal graph pretraining framework that decomposes each modality-specific node signal into graph-frequency bands and assigns band-level semantic roles before cross-modal interaction. Concretely, SMGFM constructs frequency-resolved modality tokens with scalable Chebyshev filters, estimates their coupling reliability through topology-conditioned routing, and performs band-modality interaction before fusion. Its frequency-routed objectives align smooth con-sensus routes while preserving modality-specific routes, mitigat-ing spatial-domain entanglement and uniform cross-modal align-ment. Extensive experiments conducted on the MAG datasets demonstrate that SMGFM achieves state-of-the-art performance across graph-level and modality-level tasks. 
+
+Index Terms —multimodal-attributed graphs, graph signal pro-cessing, spectral graph learning, multimodal alignment 
+
+I. I NTRODUCTION 
+
+Multimodal-Attributed Graphs (MAGs) [1]–[4] couple graph topology with node attributes from text, images, and other modalities, and have attracted growing attention in recent years for information retrieval, recommendation, social analy-sis, and scientific discovery [5]–[8]. Across these domains, topology and multimodal attributes provide complementary but non-equivalent sources of information. On the one hand, topology implicitly encodes relational interactions among nodes; on the other hand, multimodal attributes offer diversi-fied node-intrinsic semantics. This dual evidence source makes MAGs a natural testbed for reusable graph pretraining, where Graph Foundation Models (GFMs) aim to support transferable graph representations and recent Multimodal Graph Founda-tion Models (MGFMs) further seek unified interfaces across topology, modalities, and tasks [9]–[14]. However, foundation-style MAG pretraining is more difficult than attaching a graph encoder to a shared multimodal space, because the same graph signal may provide useful relational consensus for one task while disrupting modality-specific evidence for another. Tra-ditional graph learning methods commonly couple topology with node features through neighborhood aggregation, so that node semantics are contextualized by relational structures. In the context of reusable MAG encoders, directly coupling topology with all modality features can obscure whether the learned representation reflects structure-induced semantics or modality-intrinsic semantics. Despite their notable advances, existing MAG studies expose a central challenge in semantic coupling, since structure-induced semantics and modality-intrinsic semantics are not equally useful across downstream objectives. Structure-induced smoothness can propagate relational and higher-order semantics across neighborhoods, but excessive smoothing may suppress modality-specific details and cross-modal discrep-ancies needed for fine-grained discrimination. Conversely, preserving modality-intrinsic semantics without structural co-ordination may benefit retrieval-sensitive representations, yet it can weaken the relational consistency required for graph-level inference. For foundation-style pretraining, this tension is amplified: a unified representation must remain useful across graph-centric and modality-centric tasks, but a uniform coupling rule may induce negative transfer between smooth structural consensus and private modality evidence. Therefore, the key difficulty is not merely how to combine topology and modalities, but how to decide which semantics should be coupled, preserved, or separated before representation learning becomes irreversible. L1. Spatial-domain entangle-ment. Most multimodal graph models instantiate semantic coupling through operations performed directly on the graph structure, causing the role of each semantic component to be determined only after topology and modalities have already interacted [15]–[18]. This is especially restrictive for reusable encoders, because downstream heads can adapt only to the entangled representation they receive. L2. Uniform cross-modal alignment. Optimizing different modalities toward a shared representation objective may over-align modality-private information and obscure semantic distinctions that should remain modality-specific [10], [13], [19]–[21]. Taken together, these limitations show that the key bottle-neck of MAG pretraining lies in when semantic roles are iden-tified. Once structure-induced semantics and modality-intrinsic semantics have been fused into a spatial representation, down-stream encoders can only adapt to an already entangled embed-
+
+> arXiv:2606.12867v2 [cs.LG] 16 Jun 2026
+
+ding rather than recover the semantic distinctions required by different tasks. This motivates the research question studied in this paper, how can we pretrain a reusable MAG encoder that separates graph-smooth semantic consensus from modality-intrinsic semantics before cross-modal interaction? Address-ing this question requires the encoder to first expose how each modality varies over the graph, and then apply role-dependent objectives so that shared smooth semantics are aligned while modality-specific semantics remain discriminative. To this end, we propose SMGFM , a spectral multimodal graph pretraining framework for MAGs. Our key insight is that graph frequency provides a pre-interaction prior for foundation-style MAG pretraining: (1) smooth frequency components are more likely to encode topology-consistent semantic consensus, while (2) rapidly varying components often contain modality-intrinsic semantics that should not be suppressed. SMGFM implements this idea by using scalable Chebyshev filters [22] to transform each modality into band-specific tokens, so semantic coupling is performed at a frequency-resolved level rather than in a single spatial representation. A topology-conditioned router then evaluates token reliability from graph smoothness, spec-tral energy, cross-modal agreement, and modality availability, allowing role-constrained interaction to exchange semantics only when the corresponding frequency bands are reliable for coupling. During pretraining, SMGFM aligns smooth consen-sus routes while preserving modality-specific routes, thereby avoiding the uniform alignment pressure that may erase dis-criminative modality semantics. Experiments provide evidence from controlled text-image binding, matched-protocol real-data graph tasks, spectral diagnostics, ablations, sensitivity analysis, and boundary tests under missing modalities, het-erophily, and efficiency constraints. 
+
+Our Contributions are as follows: (1) Foundation-aware Perspective: We identify semantic role identification as a missing prerequisite for reusable MAG pretraining, showing that structure-induced semantics and modality-intrinsic semantics should not be uniformly coupled. This perspective connects MGFM motivation with frequency-aware treatment of graph-smooth consensus and modality-private evidence. 
+
+(2) New Paradigm: We propose SMGFM , a spectral multi-modal graph pretraining paradigm that decomposes modality semantics into graph-frequency bands and performs topology-conditioned role routing before interaction. SMGFM aligns smooth semantic consensus while preserving modality-specific semantics through frequency-routed objectives. 
+
+(3) Evidence-backed Validation: Experiments demonstrate controlled cross-modal binding and matched-protocol graph-task utility under fixed experimental settings. Ablation studies, spectral diagnostics, sensitivity analysis, and boundary checks further verify the effectiveness and limits of frequency-aware semantic role modeling. II. R ELATED WORK 
+
+A. Multimodal Graph Learning and Pretraining 
+
+Multimodal graph learning combines topology with text, im-ages, audio, tabular attributes, and other node evidence. Task-oriented models usually project modalities into a shared space and then apply graph convolution, graph attention, modality attention, or local-global graph modeling for recommendation, classification, retrieval, and clustering [1]–[4], [15]. Recent MAG benchmarks broaden this view by evaluating multiple tasks and modalities under common protocols [6], [8], [23]. Graph self-supervised learning, graph foundation models, and multimodal graph pretraining further pursue reusable encoders through contrastive objectives, masked reconstruction, unified embedding spaces, and topology-aware semantic binding [12]– [14], [16], [17], [19]. These works motivate reusable MAG en-coders, but most apply fusion or alignment after topology and modalities have already been mixed in a spatial representation. Consequently, they mainly address how to combine graph and modality evidence after a shared representation exists, while Limitation One asks whether that representation has already entangled graph-smooth consensus with modality-private cues. SMGFM changes the interaction point by decomposing each modality into graph-frequency bands before alignment and fusion. 
+
+B. Spectral Graph Learning 
+
+Spectral graph learning separates smooth and rapidly vary-ing graph signals through the Laplacian eigenbasis and Dirich-let energy [24], [25]. ChebNet made this view practical by replacing eigendecomposition with localized Chebyshev fil-ters [22], while propagation and polynomial models simplify or deepen frequency-sensitive filtering [26]–[30]. Adaptive spectral models then learn flexible responses for homophily, heterophily, expressive filtering, and graph transformers [31]– [39]. Heterophily-oriented designs show that useful graph evidence is not always smooth [18], [40], [41]. These methods make non-smooth graph evidence visible, but they mainly study single-view features or representation-level spectral responses. They therefore do not specify whether a high-frequency text or image cue should be treated as conflict, com-plementary private evidence, or noise in a MAG encoder. In MAGs, a high-frequency component may be useful modality-private evidence, so SMGFM uses spectral filtering as the first stage of multimodal routing. 
+
+C. Cross-modal Alignment 
+
+Cross-modal alignment learns compatible representations across modalities and is central to modern text-image represen-tation learning [42]–[44]. Graph contrastive learning similarly uses positive and negative views to improve transferable graph encoders [19], [20], [45], [46]. For MAGs, uniform alignment may over-smooth or over-align private node ev-idence. SMGFM therefore aligns low-frequency consensus while preserving high-frequency modality-private evidence, treating compatibility as a role-specific objective rather than a uniform fusion rule. III. P RELIMINARIES 
+
+This section defines the notation, graph-frequency operators, and task interfaces used by SMGFM. The goal is to make the later frequency-first tokenization, topology-conditioned routing, and frequency-routed objectives precise without in-troducing additional assumptions.                                 
+
+> TABLE I NOTATION USED THROUGHOUT PRELIMINARIES AND METHOD .Symbol Meaning
+> G,V,E,A,DMAG, nodes, edges, adjacency, and degree matrices
+> ˜A,I,L,¯Lnormalized adjacency, identity, Laplacian, and scaled Laplacian
+> X(m),H(m)0encoded and projected signal of modality m
+> H(m)
+> b,˜H(m)
+> bpre- and post-mixer band-bmodality-mtokens
+> Zi,Z(m)
+> i,Zefused node, modality-specific node, and edge embeddings
+> BC,BP,BUconsensus, private, and uncertain band sets
+> ρ(m)
+> i, r (m)
+> i,b , ω modality availability, routing score, and route weight
+
+A. Problem Formulation 
+
+Consider a Multimodal-Attributed Graph (MAG) G =(V, E, A), where V is the node set, E is the edge set, 
+
+A ∈ Rn×n is the adjacency matrix, n = |V| , and D is the degree matrix. Each node vi can contain raw modality attributes {r(m) 
+
+> i
+
+: m ∈ M} , where M may include text, image, audio, tabular, or other modalities. After modality-specific encoding, these raw attributes become modality graph signals X(m) ∈ Rn×dm ; optional edge attributes X(e) ∈
+
+R|E|× de can support edge reconstruction or link prediction. For supervised node tasks, Y ∈ Rn×C denotes labels over 
+
+C classes, with labeled, validation, and test subsets fixed before adaptation. For incomplete MAGs, ρ(m) 
+
+> i
+
+∈ [0 , 1] records whether modality m is observed and usable for node vi. The pretrained encoder is denoted by fθ (G, {X(m)}m∈M , X(e))
+
+and returns fused node embeddings Zi, modality-specific node embeddings Z(m) 
+
+> i
+
+, and optional edge embeddings Ze.
+
+B. Graph-Frequency Operators and Band Roles 
+
+SMGFM treats each modality matrix as a graph signal and measures frequency by edge-wise variation. The topology operators are the normalized adjacency and its Laplacian: 
+
+˜A = D−1/2AD −1/2, L = I − ˜A. (1) Here ˜A supports degree-balanced propagation, while L mea-sures departures from graph smoothness [24], [25]. Signal variation is quantified by Dirichlet energy: 
+
+EL(X) = tr( X⊤LX ).
+
+A low-frequency signal has small EL and changes smoothly along edges; a high-frequency signal has larger energy and changes sharply across connected nodes, motivating the sepa-ration between consensus and modality-private evidence. For scalable Chebyshev filtering, SMGFM rescales the Laplacian as 
+
+¯L = 2
+
+λmax 
+
+L − I,
+
+placing the spectrum in the Chebyshev operating range. Rather than using the exact but costly eigendecomposition 
+
+L = U ΛU ⊤, polynomial filters approximate graph-frequency bands without explicitly computing eigenvectors [22], [26], [29], [34], [35], [47]. The b-th band filter is written as 
+
+gb(L) = 
+
+> K
+
+X
+
+> k=0
+
+αb,k Tk( ¯L),
+
+where Tk is the Chebyshev basis and αb,k is a learnable coefficient. Applying gb(L) to X(m) produces band tokens 
+
+H(m) 
+
+> b
+
+, the evidence units later used for routing, interaction, fusion, and frequency-specific losses. We use BC , BP , and 
+
+BU for consensus, private, and uncertain band sets: low bands provide graph-smooth consensus candidates, high bands preserve modality-private evidence, and uncertain bands are assigned by topology-conditioned routing. 
+
+C. Pretraining and Evaluation Interfaces 
+
+SMGFM separates reusable pretraining outputs from the lightweight heads used for evaluation. Graph-centric interfaces use fused graph-aware representations: node classification applies a linear or MLP head to Zi, link prediction scores candidate edges from endpoint embeddings and Ze when available, node clustering groups Zi without label supervision, and heterophily stress tests probe behavior under edge conflict. Modality-centric interfaces use modality-specific or paired representations: text-image retrieval compares Z(m) 
+
+> i
+
+across paired modalities, and missing-modality stress tests vary ρ(m)
+
+> i
+
+to measure how incomplete evidence affects the same encoder. In the implemented experiments, raw modality encoders are frozen and all methods receive the same RoBERTa/CLIP or synthetic features [42], [48]–[50]. Few-shot adaptation, missing-modality completion, and graph-conditioned genera-tion remain future-validation interfaces rather than completed evidence in this draft. These definitions hand Method a fixed contract: spectral tokenization constructs H(m) 
+
+> b
+
+, routing es-timates r(m) 
+
+> i,b
+
+from topology and availability, interaction and fusion produce Zi, and routed losses act on disjoint evidence roles. IV. M ETHOD 
+
+A. Overview 
+
+SMGFM follows one design principle where graph-frequency roles are separated before multimodal semantics can interact. This rule directly targets the two limitations identi-fied in the Introduction. For Limitation One , frequency-first tokenization prevents graph-smooth consensus and modality-private evidence from being mixed by a uniform spatial interaction layer. For Limitation Two , routed supervision applies different objectives to different evidence roles instead of forcing every modality pair and frequency band into the same alignment target. As shown in Fig. 1, the method has three coupled mod-ules. Frequency-first modality tokenization converts each Old spatial fusion  
+
+> mix first mixed vector
+> smooth + private
+
+# ! problem: 
+
+> private details are
+> smoothed away
+> SMGFM idea
+> low
+> mid
+> high
+
+SMGFM: frequency -first multimodal graph pretraining          
+
+> 1.MAG Input: topology + multimodal attributes 2.Spectral Split: graph -frequency prism
+> 3.Gate & Mixer: reliable band -modality interaction 4.Routed Objectives →Universal Embeddings
+> node ×feature
+> raw X(t), X(i), edge attr
+> text
+> image
+> shared hidden H ₀
+> low
+> mid
+> high
+> L = I −D-1/2 AD -1/2
+> Chebyshev filter bank
+
+γ       
+
+> energy smoothness
+> band ×modality
+> attention mixer
+> each token asks:
+> who should I listen to?
+> attention over (band, modality)
+> align only LOW
+> Z node / edge
+> NC
+> LP
+> retrieve
+> L_low: pull consensus
+> L_high: keep private evidence
+> fused but not flattened
+> z
+> LOW smooth consensus
+> z
+> MID relation pattern s
+> z
+> HIGH private evidence
+> z
+> LOW smooth consensus
+> z
+> MID relation pattern s
+> z
+> HIGH private evidence
+> reliable -gate
+> align only
+> on consensus
+> preserve
+> private evidence
+> preserve HIGH
+> Pretrained encoders
+> + shared hidden projection
+> H0^(m) = LN(X^(m) Wp)
+
+Fig. 1. SMGFM architecture. SMGFM projects raw modalities to graph signals, constructs band-modality role tokens with Chebyshev filters, routes tokens by topology-conditioned reliability, performs role-constrained interaction and route fusion, and pretrains with frequency-routed objectives. 
+
+modality into low-, uncertain-, and high-frequency tokens. 
+
+Topology-conditioned role routing and interaction estimates which tokens should act as consensus, private, or uncer-tain evidence before cross-modal attention. Frequency-routed pretraining aligns consensus routes, preserves private routes, separates their fused representations, and anchors the encoder to observed features and topology. The result is an encoder that produces node representations Zi while retaining modality-specific representations Z(m)
+
+i for modality-centric evaluation. 
+
+B. Frequency-First Modality Tokenization via Chebyshev Fil-ters 
+
+Modality projection. For a raw modality object r(m)
+
+i ,SMGFM first obtains a frozen modality feature and projects it to a shared graph-signal space: 
+
+X(m)
+
+i = Enc m(r(m)
+
+i ), H(m)0,i = LN 
+
+
+
+X(m)
+
+i W (m)
+
+p + b(m)
+
+p
+
+
+
+.
+
+(2) Here Enc m may be RoBERTa, CLIP, or a synthetic encoder depending on the dataset, and unavailable modalities are repre-sented by learned mask tokens with availability indicator ρ(m)
+
+i .This step standardizes heterogeneous modality dimensions without making raw encoders part of the reported training budget. 
+
+Polynomial filter bank. SMGFM then constructs a Chebyshev filter bank on the scaled Laplacian ¯L:
+
+T (m)0 = H(m)0 , T (m)1 = ¯LH (m)0 ,
+
+T (m)
+
+k = 2 ¯LT (m)
+
+k−1 − T (m)
+
+k−2, 2 ≤ k ≤ K, 
+
+H(m)
+
+b =
+
+KX
+
+k=0 
+
+αb,k T (m)
+
+k .
+
+(3) The coefficients αb,k are learned per band b. For the normal-ized Laplacian, we use λmax ≈ 2, so ¯L = 2 L/λ max − I
+
+matches the Preliminaries definition and can be applied by sparse graph multiplications [22]. Thus the method obtains band tokens without eigendecomposition. Bands are assigned to BC , BP , and BU : low-frequency tokens are consensus candidates, high-frequency tokens retain modality-private evi-dence, and uncertain middle bands are resolved by the router. 
+
+C. Topology-Conditioned Role Routing 
+
+Routing cues. Tokenization exposes frequency roles, but graph frequency alone does not determine whether a token is reliable for a specific node. For node i, band b, and modality m,SMGFM computes topology and modality cues: 
+
+e(m) 
+
+> i,b
+
+= ∥H(m) 
+
+> i,b
+
+∥22,s(m) 
+
+> i,b
+
+= X 
+
+> j∈N (i)
+
+Aij ∥H(m) 
+
+> i,b
+
+− H(m) 
+
+> j,b
+
+∥22,κ(m) 
+
+> i,b
+
+= 1
+
+|M| − 1
+
+X 
+
+> m′̸=m
+
+cos( H(m) 
+
+> i,b
+
+, H(m′) 
+
+> i,b
+
+),
+
+c(m) 
+
+> i,b
+
+= [¯ e(m) 
+
+> i,b
+
+, ¯s(m) 
+
+> i,b
+
+, ρ (m) 
+
+> i
+
+, ¯di, ¯κ(m) 
+
+> i,b
+
+],r(m) 
+
+> i,b
+
+= σ
+
+
+
+ψθ (c(m) 
+
+> i,b
+
+)
+
+
+
+.
+
+(4) Here e measures filter response, s measures local smooth-ness, ρ marks modality availability, di is node degree, and 
+
+κ measures cross-modal agreement or conflict. Bars denote normalized cues within a batch or sampled subgraph. The score r(m) 
+
+> i,b
+
+is a reliability route used before token interaction; it is not a generic modality weight. Reported instantiations may use a cue subset when a dataset does not expose every cue, but the method principle is to decide token reliability before modalities are mixed. 
+
+Why routing precedes interaction. Low-frequency agree-ment can be harmful when it comes from noisy popularity or label-irrelevant homophily, while high-frequency disagreement can be useful when it carries private text or image evidence. Routing before interaction lets the model suppress unreliable consensus tokens, retain private tokens with strong local evidence, and defer ambiguous BU tokens to the fusion layer instead of aligning them prematurely. 
+
+D. Role-Constrained Band-Modality Interaction and Fusion 
+
+Band-modality interaction. For token u = ( b, m ), define the reliability-weighted input xi,u = r(m) 
+
+> i,b
+
+H(m) 
+
+> i,b
+
+and the role map 
+
+τ (b) ∈ { C, P, U }. SMGFM performs attention over the B|M| 
+
+tokens attached to node i:
+
+qi,u = xi,u W Q, ki,u = xi,u W K , vi,u = xi,u W V ,ℓi,u,v = qi,u k⊤
+
+> i,v
+
+√dh
+
++ ητ (b),τ (b′) + μm,m ′ + log( r(m′) 
+
+> i,b ′
+
++ ϵ),ai,u →v = softmax v (ℓi,u,v ), ˜hi,u = X
+
+> v
+
+ai,u →v vi,v .
+
+(5) Here v = ( b′, m ′). The role bias η learns which role transi-tions are useful, the modality bias μ calibrates modality-pair compatibility, and the reliability term downweights tokens that the router judged unavailable or noisy. Stacking ˜hi, (b,m ) over nodes gives ˜H(m) 
+
+> b
+
+. We reserve interaction for this attention over band-modality tokens. 
+
+Route fusion. Fusion pools interacted tokens by route and then forms the task representation: 
+
+zCi = X
+
+> b∈B C
+
+X
+
+> m∈M
+
+ω(m) 
+
+> i,b
+
+˜hi, (b,m ),
+
+zPi = X
+
+> b∈B P
+
+X
+
+> m∈M
+
+ω(m) 
+
+> i,b
+
+˜hi, (b,m ),
+
+zUi = X
+
+> b∈B U
+
+X
+
+> m∈M
+
+ω(m) 
+
+> i,b
+
+˜hi, (b,m ),
+
+Zi = MLP  zCi ∥zPi ∥zUi
+
+ .
+
+(6) Here ω(m) 
+
+> i,b
+
+is a route-wise softmax. Consensus fusion sup-ports graph-smooth node and edge decisions; private fusion preserves local modality evidence for retrieval-sensitive and heterophily-sensitive behavior; uncertain fusion lets the model use mid-band evidence without assigning it a fixed role in advance. 
+
+E. Frequency-Routed Pretraining 
+
+Consensus alignment. Consensus routes should agree across modalities only where graph frequency already suggests shared semantics. Therefore SMGFM applies InfoNCE on BC and does not globally align all tokens [42], [51]: 
+
+LC = X
+
+> b∈B C
+
+X
+
+> m̸=m′
+
+InfoNCE( H(m) 
+
+> b
+
+, H(m′) 
+
+> b
+
+). (7) 
+
+Private-evidence preservation. Private routes should not be collapsed by consensus alignment. Let ˜H(m) 
+
+> b
+
+be the post-interaction token and EL(X) = tr( X⊤LX ). SMGFM pre-serves both Dirichlet energy and feature direction: 
+
+LEP = X
+
+> b∈B P
+
+X
+
+> m∈M
+
+EL(H(m) 
+
+> b
+
+) − E L( ˜H(m) 
+
+> b
+
+) ,
+
+LP = LEP + βP
+
+X
+
+> b∈B P
+
+X
+
+> m∈M
+
+
+
+1 − cos(sg( H(m) 
+
+> b
+
+), ˜H(m) 
+
+> b
+
+)
+
+
+
+.
+
+(8) Eq. (8) separates the preservation objective into an energy-drift term and a direction-preservation term: LEP controls graph-frequency drift, while the stop-gradient direction term prevents a high-frequency token from matching only in total energy. 
+
+Role separation. To reduce re-entanglement after fusion, SMGFM penalizes consensus/private correlation: 
+
+LR = (ZC )⊤ZP
+
+∥ZC ∥F ∥ZP ∥F + ϵ
+
+> 2
+> F
+
+, Zτ = [ zτ 
+
+> 1
+
+; . . . ; zτ
+
+> |V|
+
+]. (9) 
+
+Reconstruction anchors. Masked modality reconstruction 
+
+Lmask predicts held-out modality features from Zi, and edge reconstruction Ledge scores sampled positive/negative edges from endpoint embeddings. These anchors prevent role routing from becoming a purely contrastive shortcut and keep the encoder tied to both feature and topology evidence. 
+
+Full objective and direct token-level routing. The final pretraining loss is 
+
+Lcore = Lmask + λC LC + λP LP + λRLR + λE Ledge . (10) Because LC and LP are applied to disjoint band supports, 
+
+∂LC
+
+∂H(m)
+
+> b
+
+= 0 , b / ∈ B C ,∂LP
+
+∂H(m)
+
+> b
+
+= 0 , b / ∈ B P , BC ∩ B P = ∅.
+
+(11) This is direct token-level routing of losses, not full gradient independence: projections, filters, router, mixer, and fusion parameters remain shared and are trained end to end. 
+
+Algorithm 1. SMGFM P RETRAIN (G, {X(m)}m∈M )                                
+
+> 1Input. MAG G= ( V,E,A), modality features {X(m)},K, B, p m, and
+> λC, λ P, λ R, λ E
+> 2Output. Pretrained encoder fθ
+> 3Initialize projections, Chebyshev filters, router, mixer, fusion module, and reconstruction heads; construct Land ¯L
+> 4for each training epoch do
+> 5Sample Gs, modality masks, edge pairs, and low-route modality pairs
+> 6Project each available modality with Eq. (2); replace missing modalities by mask tokens
+> 7Build Chebyshev bases and band tokens with Eq. (3)
+> 8Compute routing scores r(m)
+> i,b with Eq. (4)
+> 9Interact tokens and fuse routes with Eqs. (5)–(6)
+> 10 Compute Eq. (10) and update θ
+> 11 return fθ
+
+F. Downstream Adaptation and Reported Instantiations 
+
+After pretraining, SMGFM uses lightweight heads rather than retraining raw modality encoders. Node classification applies an MLP probe to Zi, link prediction scores end-point pairs from fused embeddings, node clustering runs k-means on frozen Zi, and retrieval compares modality-specific representations Z(m) 
+
+> i
+
+. Controlled mechanism tests instantiate the neural pipeline above. For the public real-data subsets, 
+
+SMGFM-Expert is reported as a matched-protocol spectral expert bank: it builds raw, low-pass, high-pass, and cross-modal agreement/disagreement experts, then selects or gates experts on validation data for each local task. This instantiation provides frequency-aware evidence under the matched local protocol; it is not presented as a new full benchmark-scale pretraining run. 
+
+G. Theoretical Analysis and Complexity 
+
+We give sufficient-condition support for low-band align-ment, high-band preservation, and reliability-weighted fusion; this is not a global optimality or convergence proof. Let 
+
+L = U ΛU ⊤ and define 
+
+cX = U ⊤X, EL(X) = X
+
+> r
+
+λr ∥cXr ∥22,gb(λ) = 
+
+> K
+
+X
+
+> k=0
+
+αb,k Tk(2 λ/λ max − 1) .
+
+(12) Assume the diagnostic model H(m)0 = S + P (m) + N (m),where S is low-frequency shared evidence, P (m) is modality-private evidence, and N (m) is residual noisy evidence. 
+
+Proposition 1 (Consensus leakage control) . For b ∈ B C , let 
+
+ϵHb = sup λ∈[λc,2] |gb(λ)|. If P (m) + N (m) is supported on 
+
+[λc, 2] , then ∥gb(L)( P (m) +N (m))∥2 ≤ ϵHb ∥P (m) +N (m)∥2.Proof sketch and takeaway. This formalizes the intuition that low-band alignment is reliable only when the selected filter has small high-frequency gain. By the spectral theorem, gb(L) = 
+
+U gb(Λ)U ⊤ has induced norm at most ϵHb on [λc, 2] , so LC is well targeted only when non-consensus leakage is suppressed, as Q2 probes through low-band agreement. 
+
+Proposition 2 (Private-route preservation and disjoint super-vision) . For b ∈ B P , let ϵLb = sup λ∈[0 ,λ c] |gb(λ)|. If S is supported on [0 , λ c], then ∥gb(L)S∥2 ≤ ϵLb ∥S∥2. Moreover, when BC ∩ B P = ∅, Eq. (11) applies LC and LP to disjoint band tokens while shared modules remain end-to-end trainable. Proof sketch and takeaway. The same spectral-norm argument bounds smooth leakage, while Eq. (11) gives zero direct loss derivatives outside each assigned band set. Thus high-band preservation prevents private evidence from collapsing into smooth consensus; when Eq. (8) is small, its energy and direction terms limit high-route drift, motivating the Q2/Q3 NoPres diagnostics. 
+
+Proposition 3 (Reliability-weighted fusion) . Let each inter-acted token estimate a target route signal as yu = y⋆ + ξu,where token errors are zero-mean, mutually uncorrelated, and 
+
+E∥ξu∥22 ≤ σ2
+
+> u
+
+. For nonnegative fusion weights P 
+
+> u
+
+ωu = 1 ,
+
+E∥ P 
+
+> u
+
+ωuyu − y⋆∥22 ≤ P 
+
+> u
+
+ω2
+
+> u
+
+σ2
+
+> u
+
+.Proof sketch and takeaway. Expanding the squared error cancels cross terms by zero mean and uncorrelated errors. Reliability-weighted fusion is useful only when larger routing weights favor lower-error tokens; Q4 treats this correlation as a boundary condition, not an arbitrary-shift claim. 
+
+Complexity. Let n = |V| , e = |E| , M = |M| , d be hidden width, L propagation layers, K Chebyshev order, and 
+
+B frequency bands. Let γ = BM denote the number of band-modality routes per node. Because the efficiency ques-tion concerns multimodal graph encoders, Table IV compares multimodal GNN baselines and the spatial-fusion control used in Sec. V-A.                            
+
+> TABLE IV COMPLEXITY OF MULTIMODAL GRAPH ENCODERS .Method Inference Efficiency Memory Size MMGCN O(M L (ed +nd 2)) O(M Lnd +e)
+> MGAT O(M Led )O(M L (nd +e))
+> SMGFM-Spatial O(M ed +nM 2d)O(M nd +e)
+> SMGFM O(MKed +MBKnd +nγ2d)O(γnd +e)
+
+The table should be read as a route-level accounting rather than a claim that SMGFM is cost-free relative to spatial fusion. The term M Ked comes from applying K-order sparse Chebyshev recursions to each modality, and M BKnd ac-counts for band-wise projection and route construction. The only quadratic term is nγ 2d: it compares the γ = BM band-modality routes attached to the same node. Thus, when B, K,and M are fixed design constants, SMGFM scales as O(e+n)
+
+with graph size under feature inference process, while avoiding dense node-pair interaction such as O(n2d).TABLE II EXPERIMENTAL DATASET STATISTICS AND EVIDENCE ROLES . C ONTROLLED MAG SUPPORTS MECHANISM DIAGNOSTICS , PUBLIC REAL -DATA SUBSETS SUPPORT MATCHED GRAPH -TASK VALIDATION AFTER LOCAL 6K-NODE PREPROCESSING , AND GOODREADS -C OVER IS A PILOT SANITY CHECK .Dataset #Nodes #Edges Modality Features Train/Val/Test Task Description Controlled MAG 500 generated 2×128 60%/20%/20% Diagnostic synthetic mechanism test Movies 6,000 21,216 RoBERTa, CLIP 60%/20%/20% Transductive product graph subset Grocery 6,000 17,925 RoBERTa, CLIP 60%/20%/20% Transductive product graph subset Toys 6,000 9,500 RoBERTa, CLIP 60%/20%/20% Transductive product graph subset Reddit-S 6,000 41,413 RoBERTa, CLIP 60%/20%/20% Transductive social graph subset Reddit-M 6,000 2,220 RoBERTa, CLIP 60%/20%/20% Transductive social graph subset Goodreads-Cover 600 542 directed metadata, cover 60%/20%/20% Pilot book graph sanity check TABLE III FINE -TUNING AND EVALUATION PROTOCOLS AFTER SMGFM                 
+
+> PRETRAINING . R AW MODALITY ENCODERS STAY FROZEN ,AND ONLY TASK HEADS ,LIGHT PROJECTIONS ,OR CLUSTERING ASSIGNMENTS ARE FITTED .Task Input Trainable and frozen parts Metrics and split Node classification
+> ZiMLP probe or adapter; raw encoders frozen Acc., Macro-F1 on train/val/test split Link prediction (Zi,Zj)Edge decoder; raw encoders frozen MRR, Hits@3, AUC, AP on edge split Node clustering Zik-means only; all encoder modules frozen NMI, ARI with labels for evaluation only Retrieval Zti,ZviNo head or light projection; graph encoder frozen R@K, MRR on paired nodes
+
+This comparison also explains where SMGFM spends com-putation. Compared with MMGCN and MGAT, it replaces repeated modality-wise graph propagation or edge interaction with sparse spectral tokenization followed by local route in-teraction. Compared with SMGFM-Spatial, it pays explicit B
+
+and K factors so that graph-smooth consensus and modality-private evidence are separated before interaction. This is the intended trade-off: the additional route budget is not an incidental overhead, but the mechanism that makes frequency-routed alignment and preservation testable in Q2 and Q3. Training follows the same forward-order terms plus lightweight objective costs on selected routes. Low-band align-ment acts only on BC tokens, high-band preservation acts only on BP tokens, and reconstruction uses the retained route representations; these losses add route-linear costs dominated by tokenization and interaction when B and M are small. The memory expression O(γnd + e) stores band-modality tokens and sparse graph structure, while mini-batch or subgraph execution replaces n, e with the active batch statistics. Conse-quently, the efficiency claim is a complexity-level scalability argument under fixed features and controlled route counts, not a measured speedup claim. V. E XPERIMENTS 
+
+In this section, we provide the detailed experimental eval-uation on SMGFM using the publicly available datasets. This section answers four questions: Q1 : Does SMGFM provide matched graph-task utility and controlled retrieval-sensitive binding? Q2 : Do spectral diagnostics show that routed objec-tives affect their intended frequency roles? Q3 : Which modules and hyperparameters are necessary? Q4 : What boundaries appear under missing modalities, heterophily, and efficiency constraints? 
+
+A. Experimental Setups 
+
+Datasets. We evaluate SMGFM on real-world multimodal-attributed graph datasets and the detailed statistics of datasets is presented in Table reftab:dataset-details. Specifically, the controlled datasets refers on several table refers to those that are designed to assess whether the model can distin-guish graph-smooth semantics from modality-specific high-frequency information under heterophily and missing-modality settings [18], [52]–[54]. For real-world evaluation, we use public multimodal graph subsets, include Movies, Grocery, Toys, Reddit-S, and Reddit-M, where node attributes are represented by RoBERTa and CLIP features [6], [8], [23], [42], [48]. All datasets used in this study are publicly available, and the implementation of SMGFM is released at https: //anonymous.4open.science/r/SMGFM-4749. 
+
+Baselines and probes. Controlled variants isolate mech-anisms: SMGFM-Spatial removes frequency tokenization, 
+
+SMGFM-NoAlign removes low-band alignment, SMGFM-NoPres removes high-band preservation, SMGFM-Uni re-moves cross-modal binding, and SMGFM-Global uses global alignment. 
+
+B. Performance Comparison 
+
+To answer Q1 , Table V and Fig. 2 separate matched graph-task utility from controlled cross-modal binding. 
+
+Matched real-data graph tasks. Table V shows a consis-tent matched-protocol pattern: under the same experimental settings, SMGFM-Expert takes the leading position on the reported product-graph node-classification tasks and gives the clearest advantage on the Grocery link-prediction task. This Clean Binding Graph Retrieval Map   
+
+> Missing Modality
+> Missing Rate
+> Node Accuracy
+> Heterophily
+> Heterophily Ratio Fig. 2. Controlled benchmark and stress tests. Clean binding shows higher text-image retrieval than spatial fusion, the graph-retrieval map shows the trade-off against smooth-label accuracy, missing-modality stress exposes a current weakness, and heterophily stress shows stable retrieval under edge conflict.
+
+pattern is important because the comparison does not change the input encoders or evaluation protocol; the difference comes from how spectral experts expose graph-smooth and modality-dependent evidence to the downstream probe. The clustering columns add a useful boundary rather than a contradiction. When frozen RoBERTa/CLIP features already form strong semantic clusters, SMGFM preserves that structure and ties the strongest raw-feature behavior instead of forcing an un-necessary spectral reshaping. Thus Table V supports matched real-data graph-task utility under the reported local protocol, not a full benchmark leaderboard claim. 
+
+Controlled retrieval-sensitive binding. Fig. 2 gives the mechanism counterpart: on the clean controlled graph, SMGFM clearly separates from spatial fusion and the uni-modal variant on text-image retrieval. The separation indicates that retrieval-sensitive binding benefits when topology and modalities are routed before fusion, because cross-modal evi-dence can interact after its graph-frequency role has been iden-tified. The boundary is equally important: spatial smoothing remains stronger for highly graph-smooth node/link probes, so Q1 supports controlled cross-modal binding rather than dominance on every smooth-label task. 
+
+C. Spectral Diagnostic Analysis 
+
+To answer Q2 , Fig. 3 and Table VI test whether routed objectives leave the intended spectral fingerprints. Low-band cosine measures smooth-channel agreement; high-band drift measures private-frequency energy change after interaction and fusion. 
+
+Low-band alignment. Removing low-band alignment nearly erases the smooth-channel agreement pattern in Fig. 3. Because LC acts only on low-frequency tokens, the diagnos-tic supports graph-smooth consensus alignment rather than generic representation similarity. 
+
+High-band preservation. The preservation diagnostic ex-plains why the strongest clean retrieval entry is not automati-cally the best mechanism. NoPres obtains the most aggressive retrieval behavior in the clean setting, but Table VI shows that it also produces the largest high-band drift. SMGFM keeps retrieval strong while avoiding that drift-heavy shortcut, which is the behavior expected when private high-frequency evidence is preserved instead of rewritten during interaction and fusion. Overall, Q2 supports separate roles for low-band consensus and high-band private evidence, but remains a mechanism diagnostic rather than a robustness guarantee. Low -Band Alignment High -Band Drift                  
+
+> Fig. 3. Frequency-mechanism diagnostics. Low-band alignment reports paired text-image cosine in the smooth channel, while high-band drift reports the change in private high-frequency Dirichlet energy after fusion. TABLE VI RETRIEVAL AND HIGH -BAND STABILITY ON THE CONTROLLED CLEAN SETTING . T HE STRONGEST CLEAN -RETRIEVAL VARIANT ALSO HAS THE LARGEST DRIFT .Variant Recall@1 Drift Interpretation SMGFM 0.923 ±0.01 24 .0±0.7balanced retrieval with controlled drift Spatial 0.648 ±0.03 61 .6±3.8weak binding after spatial fusion NoAlign 0.911 ±0.01 23 .6±0.7stable but weak low-band consensus NoPres 0.963 ±0.01 69 .6±3.2highest retrieval with largest drift
+
+D. Ablation and Sensitivity Analysis 
+
+To answer Q3 , Fig. 4 tests whether each module controls the evidence role assigned to it, and whether sensitivity curves reveal stability trade-offs rather than monotonic gains. 
+
+Core ablations. The core ablations follow the expected method ordering. Removing spectral decomposition makes the model behave much closer to the spatial-fusion variant, identifying frequency-first tokenization as the main binding control. NoAlign primarily weakens the consensus diagnostic, whereas NoPres primarily weakens the stability diagnostic. This division matters because each failure mode maps back to a specific design choice: low-band supervision organizes graph-smooth agreement, while high-band preservation pre-vents private evidence from being overwritten. SMGFM-Global shows that broad alignment can still produce strong retrieval, but routed supervision is more interpretable because each diagnostic maps back to a specific frequency role. 
+
+Sensitivity. The sensitivity panels show that more spec-tral capacity is not automatically better. Using more bands fragments the controlled graph signal and raises memory use, indicating that a small graph can become harder to route when spectral capacity is over-partitioned. Changing Chebyshev order and loss weights similarly moves retrieval, agreement, and drift in different directions rather than along a single dominant axis. The useful pattern is a retrieval-stability balance, not a monotonic capacity story. TABLE V PERFORMANCE COMPARISON ON REAL -D ATA MULTIMODAL DATASETS . B OLD INDICATE THE BEST PERFORMANCE .Method Movies Acc. Movies F1 Grocery Acc. Grocery F1 Movies MRR Movies H@3 Grocery MRR Grocery H@3 Toys NMI/ARI Reddit-M NMI/ARI MLP 46 .11 ±0.39 39 .59 ±1.85 74 .97 ±0.26 66 .71 ±0.25 26 .71 ±3.50 29 .65 ±1.23 15 .90 ±2.22 21 .65 ±1.56 28 .76 ±0.19 /14 .28 ±0.20 65 .26 ±0.31 /42 .19 ±1.30                       
+
+> GPR-GNN 47 .69 ±1.01 42 .93 ±1.38 77 .47 ±0.41 69 .98 ±1.14 61 .34 ±6.04 82 .41 ±4.59 50 .02 ±4.49 71 .87 ±4.64 27 .25 ±0.41 /5.35 ±0.24 47 .24 ±0.70 /15 .65 ±0.45
+> SMGFM-Expert 49 .72 ±0.99 44 .08 ±0.83 78 .22 ±0.64 70 .03 ±1.81 62 .42 ±10 .00 88 .96 ±4.24 74 .77 ±14 .94 77 .40 ±15 .62 28 .76 ±0.19 /14 .28 ±0.20 65 .26 ±0.31 /42 .19 ±1.30 Core Retrieval Core Drift
+> Parameter Value
+> Band/order Sensitivity
+> Loss Weight
+> Loss -weight Sensitivity
+
+Fig. 4. Ablation and sensitivity suite. Core panels test spectral decomposi-tion, low-band alignment, and high-band preservation; sensitivity panels show retrieval-stability trade-offs. 
+
+E. Stress and Efficiency Boundaries 
+
+To answer Q4 , we treat missing modalities, heterophily, and efficiency as boundary checks, not broad deployment or robustness claims. 
+
+Missing modalities. The missing-modality test exposes a current weakness: retrieval degrades sharply as paired evidence is removed. This suggests that routed objectives need enough paired modality evidence to form compatible consensus and private routes; future completion should add frequency-aware imputation or stronger modality dropout. 
+
+Heterophily. Under controlled heterophily, SMGFM stays stable across the tested edge-conflict settings, while SMGFM-Spatial remains lower at matched settings. This supports con-trolled retrieval stability under edge conflict, not full spectral invariance across graph regimes. 
+
+Efficiency, pilot boundary, and reproducibility. SMGFM uses B Chebyshev filters of order K, giving O(BK |E| d)
+
+sparse multiplication cost per modality and avoiding O(|V| 3)
+
+eigendecomposition. Because runs use uniform modality features and lightweight probes, the evidence supports complexity-level efficiency rather than measured speedup. The strongest supported conclusion is mechanism-centered: SMGFM shows controlled binding and matched graph-task utility under the reported evidence chain, while missing evi-dence and full-scale validation remain boundaries. VI. C ONCLUSION 
+
+In this paper, we identify frequency-blind mixing as a central obstacle for Multimodal-Attributed Graph (MAG) pretraining, where graph-smooth consensus and modality-private evidence can be entangled before the encoder decides how each signal should be used. To address this issue, we propose SMGFM , a spectral multimodal graph pretraining framework that performs frequency-first modality tokeniza-tion, topology-guided spectral fusion, and frequency-routed pretraining. SMGFM aligns low-frequency bands to capture graph-smooth cross-modal consensus and preserves high-frequency bands to retain modality-private evidence, making the roles of alignment and preservation directly testable. Experiments show stronger controlled text-image binding than spatial fusion, matched-protocol gains on public real-data node classification and link prediction, and diagnostic evidence from low-band alignment, high-band drift, and ablation analyses. Overall, SMGFM offers a mechanism-centered step toward frequency-aware multimodal graph pretraining, where topol-ogy and multimodal semantics are routed according to their graph-frequency roles. REFERENCES [1] Y. Wei, X. Wang, L. Nie, X. He, R. Hong, and T.-S. Chua, “Mmgcn: Multi-modal graph convolution network for personalized recommenda-tion of micro-video,” in Proceedings of the 27th ACM International Conference on Multimedia , 2019, pp. 1437–1445. [2] Z. Tao, Y. Wei, X. Wang, X. He, X. Huang, and T.-S. Chua, “Mgat: Multimodal graph attention network for recommendation,” Information Processing and Management , vol. 57, no. 5, p. 102277, 2020. [3] Z. Guo, J. Li, G. Li, C. Wang, S. Shi, and B. Ruan, “Lgmrec: Local and global graph learning for multimodal recommendation,” in Proceedings of the AAAI Conference on Artificial Intelligence , 2024, pp. 8454–8462. [4] J. Hu, B. Hooi, B. He, and Y. Wei, “Modality-independent graph neural networks with global transformers for multimodal recommendation,” in 
+
+Proceedings of the AAAI Conference on Artificial Intelligence , 2025, pp. 11 790–11 798. [5] Y. Ektefaie, G. Dasoulas, A. Noori, M. Farhat, and M. Zitnik, “Multi-modal learning with graphs,” Nature Machine Intelligence , vol. 5, no. 4, pp. 340–350, 2023. [6] J. Zhu, Y. Zhou, S. Qian, Z. He, T. Zhao, N. Shah, and D. Koutra, “Mo-saic of modalities: A comprehensive benchmark for multimodal graph learning,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2025, pp. 14 215–14 224. [7] Z. Fang, G. Yang, W. Lyu, and e. a. Hong, “ Cellular Infrastructure Sharing for Network Robustness: A Citywide Empirical Study ,” IEEE Transactions on Mobile Computing , vol. 24, no. 11, pp. 11 386–11 400, Nov. 2025. [Online]. Available: https://doi.ieeecomputersociety.org/10. 1109/TMC.2025.3580605 [8] C. Wan, X. Li, Y. Zuo, H. Deng, S. Li, B. Fan, H. Qin, R. Li, and G. Wang, “Openmag: A comprehensive benchmark for multimodal-attributed graph,” arXiv preprint arXiv:2602.05576 , 2026. [9] J. Yang, L. Yang, Z. Guo, J. Gao, J. Wu, T. Chai, H. Huang, C. Yang, and C. Shi, “Benchmarking graph foundation models,” in Proceedings of the 31st ACM SIGKDD Conference on Knowledge Discovery and Data Mining , 2025, pp. 5866–5875. [10] Y. He, Y. Sui, X. He, and B. Hooi, “Unigraph: Learning a unified cross-domain foundation model for text-attributed graphs,” in Proceedings of the 31st ACM SIGKDD Conference on Knowledge Discovery and Data Mining , 2025, pp. 448–459. [11] Y. Zhu, H. Shi, X. Wang, Y. Liu, Y. Wang, B. Peng, C. Hong, and S. Tang, “Graphclip: Enhancing transferability in graph foundation models for text-attributed graphs,” in Proceedings of the ACM on Web Conference , 2025, pp. 2183–2197. [12] Z. Wang, Z. Zhang, N. V. Chawla, C. Zhang, and Y. Ye, “Gft: Graph foundation model with transferable tree vocabulary,” in Advances in Neural Information Processing Systems , vol. 37, 2024, pp. 107 403– 107 443. [13] Y. He, Y. Sui, X. He, Y. Liu, Y. Sun, and B. Hooi, “Unigraph2: Learning a unified embedding space to bind multimodal graphs,” Proceedings of the ACM on the Web Conference 2025 , pp. 1759–1770, 2025. [14] S. Liu, X. Li, D. Su, R. Zhang, H. Qin, R. Li, and G. Wang, “Toward effective multimodal graph foundation model: A divide-and-conquer based approach,” arXiv preprint arXiv:2602.04116 , 2026. [15] X. Jia, M. Jiang, Y. Dong, F. Zhu, H. Lin, Y. Xin, and H. Chen, “Multimodal heterogeneous graph attention network,” Neural Computing and Applications , vol. 35, no. 4, pp. 3357–3372, 2023. [16] X. Ning, D. Fu, T. Wei, W. Xu, and J. He, “Graph4mm: Weaving multi-modal learning with structural information,” in International Conference on Machine Learning , 2025. [17] Y. Fang, B. Jin, J. Shen, S. Ding, Q. Tan, and J. Han, “Graphgpt-o: Synergistic multimodal comprehension and generation on graphs,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2025, pp. 19 467–19 476. [18] J. Zhu, Y. Yan, L. Zhao, M. Heimann, L. Akoglu, and D. Koutra, “Beyond homophily in graph neural networks: Current limitations and effective designs,” in Advances in Neural Information Processing Sys-tems , 2020. [19] Y. You, T. Chen, Y. Sui, T. Chen, Z. Wang, and Y. Shen, “Graph con-trastive learning with augmentations,” in Advances in Neural Information Processing Systems , 2020. [20] J. Qiu, Q. Chen, Y. Dong, J. Zhang, H. Yang, M. Ding, K. Wang, and J. Tang, “Gcc: Graph contrastive coding for graph neural network pre-training,” in Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining , 2020, pp. 1150– 1160. [21] Z. Hou, Y. He, Y. Cen, X. Liu, Y. Dong, E. Kharlamov, and J. Tang, “Graphmae2: A decoding-enhanced masked self-supervised graph learner,” in Proceedings of the ACM Web Conference , 2023. [22] M. Defferrard, X. Bresson, and P. Vandergheynst, “Convolutional neural networks on graphs with fast localized spectral filtering,” in Advances in Neural Information Processing Systems , 2016. [23] H. Yan, C. Li, J. Yin, Z. Yu, W. Han, M. Li, Z. Zeng, H. Sun, and S. Wang, “When graph meets multimodal: Benchmarking and meditating on multimodal attributed graphs learning,” arXiv preprint arXiv:2410.09132 , 2024. [24] D. I. Shuman, S. K. Narang, P. Frossard, A. Ortega, and P. Van-dergheynst, “The emerging field of signal processing on graphs: Ex-tending high-dimensional data analysis to networks and other irregular domains,” IEEE Signal Processing Magazine , vol. 30, no. 3, pp. 83–98, 2013. [25] U. von Luxburg, “A tutorial on spectral clustering,” Statistics and Computing , vol. 17, no. 4, pp. 395–416, 2007. [26] F. Wu, A. Souza, T. Zhang, C. Fifty, T. Yu, and K. Weinberger, “Sim-plifying graph convolutional networks,” in International Conference on Machine Learning , 2019. [27] J. Klicpera, A. Bojchevski, and S. G¨ unnemann, “Predict then propagate: Graph neural networks meet personalized pagerank,” in International Conference on Learning Representations , 2019. [28] M. Chen, Z. Wei, Z. Huang, B. Ding, and Y. Li, “Simple and deep graph convolutional networks,” in International Conference on Machine Learning , 2020. [29] H. Zhu and P. Koniusz, “Simple spectral graph convolution,” in Inter-national Conference on Learning Representations , 2021. [30] W. Zhang, Z. Sheng, M. Yang, Y. Li, Y. Shen, Z. Yang, and B. Cui, “Nafs: A simple yet tough-to-beat baseline for graph representation learning,” in International Conference on Machine Learning , 2022, pp. 26 467–26 483. [31] E. Chien, J. Peng, P. Li, and O. Milenkovic, “Adaptive universal generalized pagerank graph neural network,” in International Conference on Learning Representations , 2021. [32] M. He, Z. Wei, Z. Huang, and H. Xu, “Bernnet: Learning arbitrary graph spectral filters via bernstein approximation,” in Advances in Neural Information Processing Systems , 2021. [33] Y. Dong, K. Ding, B. Jalaian, S. Ji, and J. Li, “Adagnn: Graph neural networks with adaptive frequency response filter,” in Proceedings of the 30th ACM International Conference on Information and Knowledge Management , 2021. [34] X. Wang and M. Zhang, “How powerful are spectral graph neural networks,” in International Conference on Machine Learning , 2022. [35] Y. Guo and Z. Wei, “Graph neural networks with learnable and optimal polynomial bases,” in International Conference on Machine Learning ,2023. [36] S. Zheng, Z. Zhu, Z. Liu, Y. Li, and Y. Zhao, “Node-oriented spectral filtering for graph neural networks,” IEEE Transactions on Pattern Analysis and Machine Intelligence , 2023. [37] D. Bo, C. Shi, L. Wang, and R. Liao, “Specformer: Spectral graph neural networks meet transformers,” in International Conference on Learning Representations , 2023. [38] D. Kreuzer, D. Beaini, W. Hamilton, V. L´ etourneau, and P. Tossou, “Rethinking graph transformers with spectral attention,” in Advances in Neural Information Processing Systems , 2021. [39] L. Ramp´ aˇ sek, M. Galkin, V. P. Dwivedi, A. T. Luu, G. Wolf, and D. Beaini, “Recipe for a general, powerful, scalable graph transformer,” in Advances in Neural Information Processing Systems , 2022. [40] L. Du, X. Shi, Q. Fu, X. Ma, H. Liu, S. Han, and D. Zhang, “Gbk-gnn: Gated bi-kernel graph neural networks for modeling both homophily and heterophily,” in Proceedings of the ACM Web Conference , 2022, pp. 1550–1558. [41] Y. Song, C. Zhou, X. Wang, and Z. Lin, “Ordered gnn: Ordering message passing to deal with heterophily and over-smoothing,” in International Conference on Learning Representations , 2023. [42] A. Radford, J. W. Kim, C. Hallacy, A. Ramesh, G. Goh, S. Agarwal, G. Sastry, A. Askell, P. Mishkin, J. Clark, G. Krueger, and I. Sutskever, “Learning transferable visual models from natural language supervi-sion,” in International Conference on Machine Learning , 2021. [43] R. Girdhar, A. El-Nouby, Z. Liu, M. Singh, K. V. Alwala, A. Joulin, and I. Misra, “Imagebind: One embedding space to bind them all,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2023, pp. 15 180–15 190. [44] C. Liu, Z. Mao, T. Zhang, H. Xie, B. Wang, and Y. Zhang, “Graph structured network for image-text matching,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,2020, pp. 10 918–10 927. [45] N. Liu, X. Wang, D. Bo, C. Shi, and J. Pei, “Revisiting graph contrastive learning from the perspective of graph spectrum,” in Advances in Neural Information Processing Systems , 2022. [46] Y. Mo, L. Peng, J. Xu, X. Shi, and X. Zhu, “Simple unsupervised graph representation learning,” in AAAI Conference on Artificial Intelligence ,2022. [47] D. K. Hammond, P. Vandergheynst, and R. Gribonval, “Wavelets on graphs via spectral graph theory,” Applied and Computational Harmonic Analysis , vol. 30, no. 2, pp. 129–150, 2011. [48] Y. Liu, M. Ott, N. Goyal, J. Du, M. Joshi, D. Chen, O. Levy, M. Lewis, L. Zettlemoyer, and V. Stoyanov, “Roberta: A robustly optimized bert pretraining approach,” 2019. [49] W. L. Hamilton, R. Ying, and J. Leskovec, “Inductive representation learning on large graphs,” in Advances in Neural Information Processing Systems , 2017. [50] P. Veliˇ ckovi´ c, G. Cucurull, A. Casanova, A. Romero, P. Li` o, and Y. Bengio, “Graph attention networks,” in International Conference on Learning Representations , 2018. [51] A. v. d. Oord, Y. Li, and O. Vinyals, “Representation learning with contrastive predictive coding,” arXiv preprint arXiv:1807.03748 , 2018. [52] M. Ma, J. Ren, L. Zhao, S. Tulyakov, C. Wu, and X. Peng, “Smil: Multimodal learning with severely missing modality,” in Proceedings of the AAAI Conference on Artificial Intelligence , vol. 35, no. 3, 2021, pp. 2302–2310. [53] M. Ma, J. Ren, L. Zhao, D. Testuggine, and X. Peng, “Are multi-modal transformers robust to missing modality?” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,2022, pp. 18 177–18 186. [54] H. Wang, Y. Chen, C. Ma, J. Avery, L. Hull, and G. Carneiro, “Multi-modal learning with missing modality via shared-specific feature modelling,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2023, pp. 15 878–15 887.

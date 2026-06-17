@@ -6,48 +6,52 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-16
-- 运行时间：2026-06-16 22:54:35 UTC
+- 最新运行日期：2026-06-17
+- 运行时间：2026-06-17 21:30:28 UTC
 - 运行状态：成功
-- 本次总论文数：8
+- 本次总论文数：10
 - 精读区：2
-- 速读区：6
+- 速读区：8
 
 ### 今日简报（AI）
-今日聚焦地理空间智能检索与城市福祉分析，精读两篇高分论文。
-
-最值得关注的是I-GUIDE平台的多模态地理知识发现（9.0分）和UrbanWell时空城市福祉基准（8.0分），前者在推理框架上创新显著。
-
-建议普通读者从UrbanWell入手，了解多模态大模型如何分析城市居民幸福感，实用性强。
-- 详情：[/202606/16/README](/202606/16/README)
+1) 今日精读两篇高评分工作，分别聚焦3D场景图分层房间分割与动态上下文学习模式分类，速读覆盖多模态图预训练、3D占用世界模型及智能体知识编排。
+2) 最值得关注的是场景结构化表示方向（Occupancy-Grounded Room Segmentation）与动态上下文学习（Brick-DICL），两者均为8.0分且方法创新。
+3) 建议普通读者优先通读精读论文的摘要与结论，可尝试将3D场景图与知识编排思路结合到自身任务中。
+- 详情：[/202606/17/README](/202606/17/README)
 
 ### 精读区论文标签
-1. [Intelligent Multimodal Retrieval and Reasoning for Geospatial Knowledge Discovery on the I-GUIDE Platform](/202606/16/2606.15838v1-intelligent-multimodal-retrieval-and-reasoning-for-geospatial-knowledge-discovery-on-the-i-guide-platform)  
-   标签：评分：9.0/10、query:smart-city
-   evidence：结合知识图谱和RAG的多模态地理空间检索与推理
-2. [UrbanWell: Benchmarking Multimodal Large Language Models for Spatio-Temporal Urban Wellbeing Analytics](/202606/16/2606.15890v1-urbanwell-benchmarking-multimodal-large-language-models-for-spatio-temporal-urban-wellbeing-analytics)  
+1. [Occupancy-Grounded Room Segmentation for Hierarchical 3D Scene Graphs](/202606/17/2606.13727v1-occupancy-grounded-room-segmentation-for-hierarchical-3d-scene-graphs)  
    标签：评分：8.0/10、query:smart-city
-   evidence：多模态城市数据融合基准
+   evidence：基于占用率的房间分割用于点云三维场景图
+2. [Brick-DICL: Dynamic In-Context Learning for Automated Brick Schema Classification](/202606/17/2606.17637v1-brick-dicl-dynamic-in-context-learning-for-automated-brick-schema-classification)  
+   标签：评分：8.0/10、query:smart-city
+   evidence：Brick模式本体用于建筑管理系统语义互操作
 
 ### 速读区论文标签
-1. [Can AI Reason Like an Urban Planner? Benchmarking Large Language Models Against Professional Judgment](/202606/16/2606.11678v1-can-ai-reason-like-an-urban-planner-benchmarking-large-language-models-against-professional-judgment)  
+1. [SMGFM: Spectral Multimodal Graph Pretraining for Multimodal-Attributed Graphs](/202606/17/2606.12867v2-smgfm-spectral-multimodal-graph-pretraining-for-multimodal-attributed-graphs)  
    标签：评分：7.0/10、query:smart-city
-   evidence：基于LLM的城市规划推理基准测试，直接关联智慧城市
-2. [Risk-Aware LLM Agents for Geospatial Data Retrieval: Design and Preliminary Adversarial Evaluation](/202606/16/2606.15077v1-risk-aware-llm-agents-for-geospatial-data-retrieval-design-and-preliminary-adversarial-evaluation)  
+   evidence：提出融合多模态节点属性的图预训练方法，可应用于智慧城市多模态数据融合
+2. [VISA: VLM-Guided Instance Semantic Auditing for 3D Occupancy World Models](/202606/17/2606.13460v1-visa-vlm-guided-instance-semantic-auditing-for-3d-occupancy-world-models)  
    标签：评分：7.0/10、query:smart-city
-   evidence：基于LLM的语义地理空间数据检索
-3. [Distributed Acoustic Sensing for Urban Monitoring: Coverage Thresholds and Percolation](/202606/16/2606.17018v1-distributed-acoustic-sensing-for-urban-monitoring-coverage-thresholds-and-percolation)  
+   evidence：面向城市自动驾驶的3D占用语义审计
+3. [Agents-K1: Towards Agent-native Knowledge Orchestration](/202606/17/2606.13669v1-agents-k1-towards-agent-native-knowledge-orchestration)  
    标签：评分：7.0/10、query:smart-city
-   evidence：基于分布式声学传感的城市监测，利用光纤网络
-4. [Trustworthy Smart Fabs via Professional Proxies: Scaling Safe and Sustainable by Design (SSbD) through Industrial Data Spaces](/202606/16/2606.09227v1-trustworthy-smart-fabs-via-professional-proxies-scaling-safe-and-sustainable-by-design-ssbd-through-industrial-data-spaces)  
+   evidence：从科学文档中端到端构建知识图谱
+4. [SpheriCity: Designing Trustworthy Conversational AI for Sustainability Decision Support](/202606/17/2606.13854v1-sphericity-designing-trustworthy-conversational-ai-for-sustainability-decision-support)  
+   标签：评分：7.0/10、query:smart-city
+   evidence：面向城市循环经济报告数据整合的对话式AI
+5. [FlowRAG: Synergizing Explicit Reasoning via Frequency-Aware Multi-Granularity Graph Flow](/202606/17/2606.17856v1-flowrag-synergizing-explicit-reasoning-via-frequency-aware-multi-granularity-graph-flow)  
+   标签：评分：7.0/10、query:smart-city
+   evidence：基于图的多粒度检索增强推理
+6. [Bridging Geographic Bias in Urban Streetscape Inference via Lifelong Learning with Visual-Semantic Pivoting](/202606/17/2606.15055v1-bridging-geographic-bias-in-urban-streetscape-inference-via-lifelong-learning-with-visual-semantic-pivoting)  
    标签：评分：6.0/10、query:smart-city
-   evidence：智能制造的工业数据空间框架，可迁移至智慧城市数据集成
-5. [When Plausible Is Not Realistic: Evaluating Human Mobility in LLM-Based Urban Simulation](/202606/16/2606.13835v1-when-plausible-is-not-realistic-evaluating-human-mobility-in-llm-based-urban-simulation)  
+   evidence：城市街景推断，利用视觉语义锚点和终身学习，解决地理偏差
+7. [Extracting Semantics: LLM-Guided Automatic Population of Robot Ontology from URDF](/202606/17/2606.17073v1-extracting-semantics-llm-guided-automatic-population-of-robot-ontology-from-urdf)  
    标签：评分：6.0/10、query:smart-city
-   evidence：评估基于LLM的城市模拟器的人类移动真实性
-6. [Knowledge Graph Enhanced Memory-Augmented Retrieval for Long Context Modeling](/202606/16/2606.14047v1-knowledge-graph-enhanced-memory-augmented-retrieval-for-long-context-modeling)  
+   evidence：从结构化描述自动填充本体的方法，可迁移到BIM语义提取
+8. [Trustworthy Self-Composable Big-Data-as-a-Service: An LLM-Orchestrated Multi-Agent Framework for Automated Data Engineering, AutoML, MLOps Deployment, and Drift-Aware Lifecycle Optimization](/202606/17/2606.17915v1-trustworthy-self-composable-big-data-as-a-service-an-llm-orchestrated-multi-agent-framework-for-automated-data-engineering-automl-mlops-deployment-and-drift-aware-lifecycle-optimization)  
    标签：评分：6.0/10、query:smart-city
-   evidence：动态知识图谱构建用于检索
+   evidence：LLM编排的多智能体框架用于自动化数据集成和生命周期管理
 
 
 <div class="dpr-home-promo-card">
