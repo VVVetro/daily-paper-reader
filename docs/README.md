@@ -6,52 +6,46 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-17
-- 运行时间：2026-06-17 21:30:28 UTC
+- 最新运行日期：2026-06-18
+- 运行时间：2026-06-18 21:43:57 UTC
 - 运行状态：成功
-- 本次总论文数：10
-- 精读区：2
-- 速读区：8
+- 本次总论文数：7
+- 精读区：0
+- 速读区：7
 
 ### 今日简报（AI）
-1) 今日精读两篇高评分工作，分别聚焦3D场景图分层房间分割与动态上下文学习模式分类，速读覆盖多模态图预训练、3D占用世界模型及智能体知识编排。
-2) 最值得关注的是场景结构化表示方向（Occupancy-Grounded Room Segmentation）与动态上下文学习（Brick-DICL），两者均为8.0分且方法创新。
-3) 建议普通读者优先通读精读论文的摘要与结论，可尝试将3D场景图与知识编排思路结合到自身任务中。
-- 详情：[/202606/17/README](/202606/17/README)
+今日精选7篇论文速览，聚焦3D资产分割、元数据复用与数据自主查询三大方向。
+
+值得关注：人机协作的3D资产分割方案提升交互内容工作流效率，以及用自主编码代理智能化处理企业数据查询。
+
+建议优先阅读《Data Intelligence Agents》，其自动化建模思路对处理复杂企业数据场景有直接参考价值。
+- 详情：[/202606/18/README](/202606/18/README)
 
 ### 精读区论文标签
-1. [Occupancy-Grounded Room Segmentation for Hierarchical 3D Scene Graphs](/202606/17/2606.13727v1-occupancy-grounded-room-segmentation-for-hierarchical-3d-scene-graphs)  
-   标签：评分：8.0/10、query:smart-city
-   evidence：基于占用率的房间分割用于点云三维场景图
-2. [Brick-DICL: Dynamic In-Context Learning for Automated Brick Schema Classification](/202606/17/2606.17637v1-brick-dicl-dynamic-in-context-learning-for-automated-brick-schema-classification)  
-   标签：评分：8.0/10、query:smart-city
-   evidence：Brick模式本体用于建筑管理系统语义互操作
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [SMGFM: Spectral Multimodal Graph Pretraining for Multimodal-Attributed Graphs](/202606/17/2606.12867v2-smgfm-spectral-multimodal-graph-pretraining-for-multimodal-attributed-graphs)  
+1. [Human-in-the-Loop Atlas-Based 3D Asset Segmentation for Interactive Content Workflows](/202606/18/2606.17824v1-human-in-the-loop-atlas-based-3d-asset-segmentation-for-interactive-content-workflows)  
    标签：评分：7.0/10、query:smart-city
-   evidence：提出融合多模态节点属性的图预训练方法，可应用于智慧城市多模态数据融合
-2. [VISA: VLM-Guided Instance Semantic Auditing for 3D Occupancy World Models](/202606/17/2606.13460v1-visa-vlm-guided-instance-semantic-auditing-for-3d-occupancy-world-models)  
+   evidence：人在回路的3D资产分割，用于语义区域识别和材质分配
+2. [From Embedded Properties to Trait Nodes: A Design Method for Identifying Reusable Metadata in Property Graph Schemas](/202606/18/2606.18297v1-from-embedded-properties-to-trait-nodes-a-design-method-for-identifying-reusable-metadata-in-property-graph-schemas)  
    标签：评分：7.0/10、query:smart-city
-   evidence：面向城市自动驾驶的3D占用语义审计
-3. [Agents-K1: Towards Agent-native Knowledge Orchestration](/202606/17/2606.13669v1-agents-k1-towards-agent-native-knowledge-orchestration)  
+   evidence：属性图模式中可复用元数据识别方法，支持统一语义数据模型
+3. [Data Intelligence Agents: Interpreting, Modeling, and Querying Enterprise Data via Autonomous Coding Agents](/202606/18/2606.19319v1-data-intelligence-agents-interpreting-modeling-and-querying-enterprise-data-via-autonomous-coding-agents)  
    标签：评分：7.0/10、query:smart-city
-   evidence：从科学文档中端到端构建知识图谱
-4. [SpheriCity: Designing Trustworthy Conversational AI for Sustainability Decision Support](/202606/17/2606.13854v1-sphericity-designing-trustworthy-conversational-ai-for-sustainability-decision-support)  
-   标签：评分：7.0/10、query:smart-city
-   evidence：面向城市循环经济报告数据整合的对话式AI
-5. [FlowRAG: Synergizing Explicit Reasoning via Frequency-Aware Multi-Granularity Graph Flow](/202606/17/2606.17856v1-flowrag-synergizing-explicit-reasoning-via-frequency-aware-multi-granularity-graph-flow)  
-   标签：评分：7.0/10、query:smart-city
-   evidence：基于图的多粒度检索增强推理
-6. [Bridging Geographic Bias in Urban Streetscape Inference via Lifelong Learning with Visual-Semantic Pivoting](/202606/17/2606.15055v1-bridging-geographic-bias-in-urban-streetscape-inference-via-lifelong-learning-with-visual-semantic-pivoting)  
+   evidence：使用自主编码代理的企业数据集成系统
+4. [TwinBI: An Agentic Digital Twin for Efficient Augmented Interactions with Business Intelligence Dashboards](/202606/18/2606.13731v1-twinbi-an-agentic-digital-twin-for-efficient-augmented-interactions-with-business-intelligence-dashboards)  
    标签：评分：6.0/10、query:smart-city
-   evidence：城市街景推断，利用视觉语义锚点和终身学习，解决地理偏差
-7. [Extracting Semantics: LLM-Guided Automatic Population of Robot Ontology from URDF](/202606/17/2606.17073v1-extracting-semantics-llm-guided-automatic-population-of-robot-ontology-from-urdf)  
+   evidence：代理式数字孪生框架，具有语义归因
+5. [SAG: SQL-Retrieval Augmented Generation with Query-Time Dynamic Hyperedges](/202606/18/2606.15971v1-sag-sql-retrieval-augmented-generation-with-query-time-dynamic-hyperedges)  
    标签：评分：6.0/10、query:smart-city
-   evidence：从结构化描述自动填充本体的方法，可迁移到BIM语义提取
-8. [Trustworthy Self-Composable Big-Data-as-a-Service: An LLM-Orchestrated Multi-Agent Framework for Automated Data Engineering, AutoML, MLOps Deployment, and Drift-Aware Lifecycle Optimization](/202606/17/2606.17915v1-trustworthy-self-composable-big-data-as-a-service-an-llm-orchestrated-multi-agent-framework-for-automated-data-engineering-automl-mlops-deployment-and-drift-aware-lifecycle-optimization)  
+   evidence：基于SQL的动态超边检索增强生成，可用于知识图谱推理
+6. [AI+CAD Data Representation Architecture: From AI+CAD Solid Modeling to AI+CAD Industrial-Grade Parametric Feature Modeling](/202606/18/2606.16797v1-aicad-data-representation-architecture-from-aicad-solid-modeling-to-aicad-industrial-grade-parametric-feature-modeling)  
    标签：评分：6.0/10、query:smart-city
-   evidence：LLM编排的多智能体框架用于自动化数据集成和生命周期管理
+   evidence：AI+CAD数据表示架构可迁移至建筑基础设施
+7. [SAMA: Semantic Anchor-aligned Augmentation for Unified Low-Resource Multimodal Information Extraction](/202606/18/2606.18780v1-sama-semantic-anchor-aligned-augmentation-for-unified-low-resource-multimodal-information-extraction)  
+   标签：评分：6.0/10、query:smart-city
+   evidence：多模态信息抽取数据增强
 
 
 <div class="dpr-home-promo-card">

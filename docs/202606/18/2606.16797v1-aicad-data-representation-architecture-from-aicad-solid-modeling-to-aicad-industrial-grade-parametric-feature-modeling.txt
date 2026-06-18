@@ -1,0 +1,910 @@
+Title: 2606.16797v1.pdf
+
+URL Source: https://arxiv.org/pdf/2606.16797v1
+
+Published Time: Wed, 17 Jun 2026 00:27:12 GMT
+
+Number of Pages: 33
+
+Markdown Content:
+Rubin Fan 1,2) , Fazhi He 1,2,3,4,5)* , Yuxin Liu 2) , Jing Lin 3) , Ruibo Wan 3) , Xuecheng Zhang 1) ,
+
+Qingchen Kong 1)                                                    
+
+> 1) School of Artificial Intelligence, Wuhan University, Wuhan 430072
+> 2) School of Computer Science /Characteristic Demonstration Software College ,Wuhan University, Wuhan 430072
+> 3) School of Cyber Science and Engineering, Wuhan University, Wuhan 430072
+> 4) National College for Excellent Engineer s,Wuhan University, Wuhan 430072
+> 5) National Engineering Research Center for Multimedia Software, Wuhan University, Wuhan 430072
+
+## Abstract 
+
+In July 2025, Study Times, sponsored by the Party School of the Central Committee of 
+
+the CPC, pointed out that 95% of industrial software for R&D and design in China relies on 
+
+imports, and that 90% of the high-end CAD/CAE/CAM software market is monopolized by 
+
+European and American giants. This is a typical strategic bottleneck problem. Unlike the 
+
+visually oriented goal of "visual plausibility" pursued by related sister disciplines such as CV 
+
+and CG, CAD places greater emphasis on "industrial usability". In CAD, data representation 
+
+architecture is more foundational than the optimization of network algorithms. This paper 
+
+first starts from data representation in AI+CAD and reports a classification paradigm and 
+
+research progress in AI+CAD. Then, using the open-source DeepCAD data representation as 
+
+an example, it analyzes the pain points of representative AI+CAD work and the gap between 
+
+such work and real industrial-grade parametric feature modeling. Next, by comparison with 
+
+the open-source WHUCAD data representation, it discusses how its three-level architecture 
+
+provides fundamental support for industrial-grade parametric feature modeling. Finally, in 
+
+view of the rapid iteration of the AI wave, large models, and agents, this paper offers an 
+
+outlook on AI+industrial-grade CAD. Keywords: parametric CAD; data representation; three-level architecture; industrial-grade 
+
+features; topological naming 
+
+## Introduction 
+
+At present, deep-learning-based three-dimensional modeling methods have generally 
+
+reached the stage of "solid modeling". However, there remains an obvious generational gap 
+
+and a deep divide between these methods and the "design-history-based parametric feature 
+
+modeling methods" actually used in high-end industrial CAD systems today. In this paper, 
+
+high-end industrial CAD systems refer to strategically critical systems represented by CATIA. 
+
+This gap has become a major pain point in the intelligent development of CAD industrial 
+
+software. AI+CAD represented by DeepCAD has fundamental defects in the underlying 
+
+architecture of its data representation. No matter how much the existing dataset size is 
+
+expanded, or how advanced the machine-learning method is - for example large models, 
+
+multimodal models, diffusion models, or Mamba - it is difficult to overcome the above gap. 
+
+Taking the open-source DeepCAD project and the open-source WHUCAD project as 
+
+examples, this paper compares and interprets the above gap and pain points, hoping to make a
+
+modest contribution to helping China's AI+CAD industrial software avoid falling once again 
+
+into a strategic bottleneck in this new track. 
+
+The essence of deep learning is the learning of data representations. In Chinese, "data 
+
+representation" is often used to refer to the high-dimensional features extracted and organized 
+
+by a network model from input data during training. By contrast, "data representation format" 
+
+emphasizes the structured organization of data before it enters the network model: that is, in 
+
+what form the research object is encoded, and which semantic relationships and engineering 
+
+information are retained. For tasks involving images, text, or discrete geometry, data 
+
+representation formats are relatively stable, and the focus of deep learning lies more in 
+
+optimizing network architectures and feature-representation learning algorithms. For CAD, 
+
+however, the data representation format itself is the fundamental issue that determines 
+
+whether AI can enter industrial workflows. The same CAD model may be represented as a
+
+point cloud, a mesh, a boundary representation model, or as sketches, constraints, a feature 
+
+tree, modeling order, and the mechanisms of topological naming and selection. Different representation formats preserve completely different engineering semantics and directly 
+
+determine the upper bound of what a network model can learn. Therefore, this paper adopts 
+
+the foundational concept of data representation format and focuses on how data objects are 
+
+organized and represented in AI+CAD, rather than on internal neural feature representations 
+
+or network algorithm optimization. 
+
+The structure of the paper is as follows. Section 1 starts from the data representation of 
+
+AI+CAD and reports a classification of AI+CAD paradigms and their research progress. 
+
+Section 2 uses DeepCAD data representation as an example to analyze the pain points of 
+
+AI+simple CAD. Section 3 compares and interprets the WHUCAD data representation and 
+
+reports how its three-level data representation architecture supports AI+industrial-grade 
+
+parametric CAD at the foundational level. Section 4 concludes the paper. 
+
+## 1 AI+CAD Paradigms: A Classification and Progress Based on Data 
+
+## Representation 
+
+Unlike the visually oriented goal of "visual plausibility" pursued by related sister 
+
+disciplines such as CV and CG, CAD places greater emphasis on "industrial usability". Data 
+
+representation is more foundational than network algorithms. The data representation of 
+
+AIGC and the industrial usability of generated results constitute a gold standard for 
+
+evaluating AI+CAD paradigms. Therefore, this paper uses the data representation and 
+
+generated results of AIGC as a clue for classifying and reviewing the progress of existing 
+
+AI+CAD research, as shown in Figure 1. Figure 1. AI+CAD paradigms: a classification and progress study based on data representation 
+
+1.1 Paradigm 1: AI + Geometric Representation 
+
+In deep learning research in computer graphics and three-dimensional computer vision, 
+
+data representation based on three-dimensional geometry is fundamental. This paradigm 
+
+takes geometric shape as the main learning object. Typical data representations include voxels, 
+
+point clouds, triangular meshes, implicit fields, and boundary representation models. 
+
+ModelNet, a representative geometric dataset using discrete and approximate 
+
+representations, claims that "We construct ModelNet - a large-scale 3D CAD model dataset." 
+
+In reality, however, it provides only triangular meshes. ShapeNet claims that "It is a richly 
+
+annotated, large-scale repository of shapes represented by 3D CAD models of objects," but it 
+
+provides only point clouds and triangular meshes. These two types of data representation 
+
+mainly serve 3D visual recognition, reconstruction, and generation. They focus on object 
+
+appearance and semantic categories rather than design history, constraint relationships, or 
+
+more complex industrial-grade parametric feature trees [1-2]. Therefore, even if AIGC 
+
+systems based on such data representations can generate visually plausible three-dimensional 
+
+shapes, they usually cannot directly enter engineering design workflows that require 
+
+parameter modification and feature reuse. 
+
+The ABC dataset claims in its title to be "A Big CAD Model Dataset For Geometric Deep Learning", but Section 3.1 further explains that "We will use the term CAD model to refer to 
+
+a geometric shape defined by a boundary representation" [3]. Such geometric representations 
+
+push the research object further toward continuous and exact boundary representation models, 
+
+enabling geometric deep learning to better exploit analytical curves, surface patches, normals, 
+
+curvature, and other geometric attributes. Subsequently, work such as BRepGen began to 
+
+attempt direct generation of boundary representation models, indicating that AI+CAD 
+
+research has gradually moved from discrete and approximate representations toward 
+
+continuous and exact boundary representation models used by CAD kernels [4]. The 
+
+important contribution of this class of data representation is that it lifts shapes from being 
+
+merely "visually plausible" to being "geometrically more accurate" boundary representation 
+
+models. Geometry learning networks based on boundary representation, such as BRepNet, 
+
+ParSeNet, PrimitiveNet, and SolidGen, are not discussed further here [5-9]. 
+
+AIGC based on geometric representations such as point clouds, meshes, and boundary 
+
+representations can only solve the question of "what" is generated. It cannot solve the 
+
+question of "how engineers model step by step in the actual modeling process." Therefore, 
+
+when AI directly generates geometric models, there are at least two industrial-usability 
+
+problems. 
+
+Problem 1. As Piegl, professor at the University of South Florida and former 
+
+editor-in-chief of Computer-Aided Design, pointed out in the top ten challenges in CAD: 
+
+"While one can cheat the eye in computer graphics and animation, the milling machine is not 
+
+as forgiving" [10]. In other words, in computer graphics and animation, geometric errors may 
+
+be visually imperceptible and can "deceive the eye"; however, in machining and 
+
+manufacturing, machine tools do not tolerate geometric errors. Therefore, even if 
+
+AI+geometric models can generate visually plausible three-dimensional shapes, they cannot 
+
+directly guarantee that geometric accuracy, topological validity, and engineering 
+
+manufacturability meet the requirements of industrial CAD scenarios. 
+
+Problem 2 concerns parameterization, editability, and reusability, which have also 
+
+motivated recent research on AI+procedural models. Industrial CAD models need not only 
+
+describe final geometry; they also need to preserve modeling history, sketch constraints, 
+
+parameter associations, and industrial-grade parametric feature trees, so as to support 
+
+subsequent dimensional modification and feature reuse. Thus, merely generating geometric 
+
+models is insufficient for industrial-grade parametric design, and procedural models must be further adopted. Procedural models call the CAD geometry core/kernel to output final 
+
+geometric models. This can, to some extent, avoid or alleviate precision problems associated 
+
+with directly generated geometric models, while preserving the parametric modeling process 
+
+and editable structure, making the representation closer to what industrial CAD software truly 
+
+requires. 
+
+1.2 Paradigm 2: AI + Simple Procedural Representation 
+
+Compared with Paradigm 1, Paradigm 2 takes one step forward by representing the CAD 
+
+modeling process as a simple sequence of CAD commands. What the AI network learns and 
+
+outputs is not an explicit geometric representation, but an implicit procedural representation. 
+
+For machine learning, this serialized expression is highly friendly and facilitates the use of 
+
+Transformers, diffusion models, autoregressive models, and multimodal conditional 
+
+generation frameworks. 
+
+DeepCAD is representative of this paradigm. It represents three-dimensional models as 
+
+CAD operation token sequences similar to natural language and uses a Transformer for 
+
+autoencoding and random generation. Its open dataset contains 178,238 CAD models and 
+
+their corresponding modeling sequences [11]. Fusion 360 Gallery Reconstruction adopts a
+
+similar data representation and provides 8,625 design sequences [12]. There are many 
+
+learning networks and optimization works based on AI+simple CAD procedural models, 
+
+which are not discussed further here [13][14]. 
+
+In Paradigm 2, CSG-Net adopts the representation of constructive solid geometry (CSG). 
+
+Compared with the data representations of DeepCAD and Fusion 360, its underlying logic is 
+
+similar [15]. DeepCAD command sequences first generate geometric solid primitives through 
+
+simple sketch extrusion, and then finally obtain geometric results through a series of Boolean 
+
+operations. The difference is that CSG directly provides parametric geometric solid 
+
+primitives - for example, directly using length, width, and height to represent a cube -
+
+whereas DeepCAD gives parametric geometric solid primitives through sketch extrusion - for 
+
+example, first using a parametric sketch quadrilateral and then an extrusion-height parameter 
+
+to represent a cube. In essence, both belong to the category of solid modeling and support 
+
+only primitive-level parameterization. 
+
+With reference to two milestone monographs in CAD [16][17], Paradigm 2 is essentially 
+
+AI+solid modeling plus a geometry kernel. If benchmarked against the level of industrial CAD technology in the 1980s and 1990s, 
+
+this AI+simple procedural representation, that is AI+solid modeling, is already a closed loop. 
+
+It can support solid modeling and directly interface with geometry kernels. Almost all 
+
+methods following DeepCAD directly connect to the OCC kernel and obtain geometric 
+
+results through Boolean operations with global parameters. 
+
+However, after many years of development, contemporary industrial-grade CAD systems 
+
+- in this paper, high-end industrial CAD systems represented by CATIA - have evolved from 
+
+"solid modeling" to "design-history-based parametric feature modeling." Therefore, Paradigm 
+
+2 cannot support feature modeling in contemporary industrial-grade CAD. 
+
+1.3 Paradigm 3: AI + Native Industrial-Grade Procedural Representation 
+
+As preliminary and exploratory work, the open-source projects HPSketch and WHUCAD 
+
+construct industrial-grade CAD data representations for two-dimensional sketches and 
+
+three-dimensional modeling. The dataset, deep-learning code, and data foundation are 
+
+publicly available, and the data foundation is free to use. Unlike previous paradigms, the 
+
+industrial-grade CAD procedural representation of WHUCAD does not represent merely a
+
+solid whose shape "looks like a part". Instead, it represents a parametric feature model that 
+
+can continue to be solved, edited, reused, and exported by a CAD system. Therefore, the 
+
+WHUCAD data representation unifies design history, sketch constraints, feature operations, 
+
+topological element naming, and selection into the same data representation architecture 
+
+[18][19]. 
+
+Thus, the significance of HPSketch and WHUCAD is not merely the addition of more 
+
+CAD command types. Rather, they upgrade AI+CAD data representation from "simple 
+
+geometric operation commands" to "feature operation commands". Features are a class of 
+
+ontological concepts and rule systems that express design semantics and manufacturing 
+
+processes in modern CAD/CAM systems. 
+
+Taking the chamfer feature in CAD design semantics as an example, solid modeling can 
+
+obtain a chamfer shape by specifying global parameters for Boolean operations. Such 
+
+methods were already used in solid modeling in the 1980s, but they are difficult to edit and 
+
+reuse, and in actual industrial deployment they incur huge manual interaction costs. In 
+
+modern industrial-grade parametric feature CAD systems, however, the underlying logic and 
+
+ontological concepts of the chamfer feature are as follows.  In general, a feature is both a high-level CAD operation command expressing an 
+
+engineer's design semantics and the geometric result of a feature operation, such as an 
+
+edge feature or face feature.  
+
+> 
+
+For a chamfer feature, in addition to the size parameter of the chamfer, this high-level 
+
+operation must be associated with a solid edge. The edge represents the geometric object 
+
+to be modified in the engineer's design semantics; it may also be called an edge feature.  
+
+> 
+
+This geometric object, namely the edge feature, is itself the result of a preceding series of 
+
+historical feature operations. The edge itself is a feature. In addition to having its own 
+
+geometric shape - the geometric shape that solid modeling can represent - the edge 
+
+feature logically contains all modeling history up to the current point and can be traced 
+
+all the way back to the first operation.  
+
+> 
+
+The modeling history, topological information, and geometric information together 
+
+construct the native permanent naming of this topological element. In this way, the 
+
+"chamfer feature" based on the "edge feature" can truly realize design-history-based 
+
+parametric feature modeling, as described in Function 2 below. 
+
+Different from the single function of solid modeling, parametric feature modeling has the 
+
+following two functions.  
+
+> 
+
+Function 1: Through a human-computer interactive CAD sequence process, it supports 
+
+the construction of the current shape. This process is equivalent to solid modeling. The 
+
+key difference is that, while constructing the current shape, it simultaneously constructs 
+
+various features, including visible shape features and the feature dependencies behind 
+
+visualization, including native permanent naming of topological elements, thereby 
+
+supporting the subsequent Function 2.  
+
+> 
+
+Function 2: For an already constructed parametric feature model, if the user edits or 
+
+modifies a feature parameter, the CAD system replays the modeling history according to 
+
+feature dependencies and permanent topological-element naming, without 
+
+human-computer interaction. It then selects and locates feature entities and automatically 
+
+propagates parameters, thereby automatically solving the global Boolean-operation 
+
+parameters used when calling the geometry kernel and finally obtaining a new geometric 
+
+shape. 
+
+Therefore, the essence of WHUCAD is AI+industrial-grade parametric feature modeling. 
+
+## 2 DeepCAD: Pain Points of Simple Procedural Representation 
+
+Taking DeepCAD as an example, its data representation consists of CAD operation 
+
+commands based on "simple sketches" and "simple extrusion operations". Although it claims 
+
+to be a complete design history, DeepCAD's procedural representation actually lacks more 
+
+fundamental key content. Compared with industrial-grade parametric feature modeling, it 
+
+exhibits an obvious generational gap and several pain points. 
+
+Referring to the two milestone monographs in the history of CAD development and to 
+
+the example of the chamfer feature concept in Section 1.3, the simple CAD procedural 
+
+commands in DeepCAD are essentially simple sketch commands in two dimensions or 
+
+simple Boolean operations in three dimensions. They do not yet reach the concept of "feature 
+
+modeling" in true parametric feature modeling. 
+
+Compared with contemporary industrial-grade parametric feature modeling systems, the 
+
+generational gap and pain points of DeepCAD fall into the following three aspects. 
+
+2.1 Insufficiency of Two-Dimensional Sketch Representation 
+
+For two-dimensional sketches, DeepCAD is far from industrial-grade CAD modeling in 
+
+both primitive expression and constraint expression. 
+
+In terms of primitives, DeepCAD contains only simple primitives such as lines, arcs, and 
+
+circles. It is difficult for it to support advanced sketch primitives that are crucial in 
+
+industrial-grade CAD, such as splines, parabolas, hyperbolas, and ellipses. Taking splines as 
+
+an example, after decades of efforts by CAD experts and scholars from computer science, 
+
+mathematics, mechanical engineering, and other fields, NURBS curves and surfaces 
+
+developed on this basis have become the soul and essence of shape modeling in modern 
+
+industrial-grade parametric CAD systems. 
+
+In terms of constraints, DeepCAD sketch procedures have no constraints, and therefore 
+
+cannot support industrial-grade parametric modeling or subsequent parameter modification 
+
+and design-intent maintenance. In industrial-grade parametric CAD, a sketch is a solvable 
+
+design structure composed of primitives, dimensions, and constraints such as coincidence, 
+
+parallelism, perpendicularity, tangency, and symmetry. In terms of two-dimensional feature dependencies, because the sketch procedure in 
+
+DeepCAD lacks mechanisms for naming and selecting two-dimensional topological elements, 
+
+it cannot establish various constraint relationships among two-dimensional primitives during 
+
+modeling and thus cannot support contemporary industrial-grade CAD modeling. 
+
+2.2 Lack of High-Level Three-Dimensional Modeling Commands at the Feature Level 
+
+DeepCAD's three-dimensional modeling commands are merely simple Boolean 
+
+operations and are unable to express high-level feature operations in industrial-grade CAD. 
+
+The procedural representation of DeepCAD expresses the modeling process as simple 
+
+sketches and simple extrusions. There are no dependencies among multiple "sketch +
+
+extrusion" operations. In subsequent editing, relationships among these operations must be 
+
+established manually to satisfy design semantics. 
+
+Therefore, DeepCAD's procedural representation cannot support high-level feature 
+
+operations such as revolve, chamfer, fillet, mirror, draft, shell, groove, and revolved groove. 
+
+These high-level features are basic requirements in contemporary industrial-grade parametric 
+
+feature modeling. 
+
+For example, taking sketch and extrusion commands as an example, DeepCAD supports 
+
+only extrusion in a vertical direction with a vertical height. In parametric feature modeling, 
+
+however, extrusion can be performed up to another specified face, thereby expressing richer 
+
+design semantics of the designer. 
+
+Only CAD commands based on permanent topological-element naming are CAD feature 
+
+operation commands in the true sense. Only such commands can support various advanced 
+
+forms of parametric feature modeling, including the above "extrude up to a face" operation. 
+
+2.3 Lack of Permanent Naming and Selection Mechanisms for Three-Dimensional 
+
+Topological Elements 
+
+In terms of permanent naming and selection mechanisms for three-dimensional 
+
+topological elements, industrial-grade parametric CAD systems require feature commands to 
+
+specify their referenced objects. See Section 1.3 for the underlying logic and ontological 
+
+concept of the chamfer feature in modern industrial-grade parametric feature CAD systems. 
+
+Modeling history, topological information, and geometric information together construct the 
+
+native permanent naming of the edge feature as a topological element. Only on this basis can a chamfer feature based on an edge feature truly realize design-history-based parametric 
+
+feature modeling. 
+
+Because DeepCAD lacks permanent topological-element naming and selection 
+
+mechanisms, there are no dependencies among its multiple "sketch + extrusion" operations, 
+
+and it cannot support true feature-level operations. Even in the simplest sketch extrusion, it 
+
+cannot support extrusion up to another face. 
+
+Through the above analysis, DeepCAD data representation is essentially AI+solid 
+
+modeling. Its editability and reusability are far from meeting the requirements of 
+
+contemporary industrial-grade parametric feature modeling. 
+
+Recent related studies show that DeepCAD (170k samples) and OmniCAD (450k 
+
+samples), which are based on simple procedural representations, suffer from saturation issues 
+
+[20]. 
+
+## 3 WHUCAD: A Data Representation Architecture for Industrial-Grade 
+
+## Parametric Feature Modeling 
+
+Unlike the simple procedural representation of DeepCAD, the data representation of 
+
+WHUCAD is divided into a three-level architecture that broadly supports contemporary 
+
+industrial-grade parametric feature modeling. 
+
+In the era of AI+CAD, the progress from DeepCAD to WHUCAD is, to a certain extent, 
+
+equivalent to the progress of traditional CAD systems at the end of the last century from solid 
+
+modeling to parametric feature modeling [16][17]. 
+
+3.1 The Three-Level Architecture of the Two-Dimensional Sketch Dataset HPSketch 
+
+The WHUCAD two-dimensional sketch component, HPSketch, establishes a three-level 
+
+architecture consisting of Level 0, Level 1, and Level 2. A sketch is no longer merely "which 
+
+primitives have been drawn"; at each step of modeling, it further contains "which operations 
+
+are performed on which primitives." Level 1 and Level 2 are original contributions. Even at 
+
+Level 0, HPSketch supports industrial-grade advanced primitives that are not supported in 
+
+DeepCAD, CADL, or SketchGraphs. 
+
+Level 0 is the primitive-layer representation. At the primitive layer, HPSketch creates industrial-grade advanced primitives such as ellipses, spline curves, parabolas, and 
+
+hyperbolas. The significance of this layer is that it improves the geometric expressive power 
+
+of sketches, allowing network models to learn the soul and essence of real industrial-grade 
+
+CAD sketches rather than only simple lines, circles, and arcs. 
+
+Level 1 is the high-level feature-operation-layer representation. HPSketch creates 
+
+advanced sketch data representations such as mirror, chamfer, fillet, and rotate. Such 
+
+representations are absent from DeepCAD, CADL, and SketchGraphs. HPSketch is 
+
+benchmarked against real industrial-grade CAD sketch modeling. Engineers do not simply 
+
+draw primitives one by one; they often construct complex contours, including constraints, 
+
+quickly through the interaction pattern of "select existing primitives - execute high-level 
+
+operation." 
+
+Level 2 is the selection-mechanism-layer representation and is the core component of 
+
+the HPSketch three-level architecture. A key issue in high-level operations is whether the data 
+
+representation can express "on which primitive, which group of primitives, or which contour 
+
+loop an operation is performed." Therefore, HPSketch constructs naming rules and selection 
+
+mechanisms for sketch primitives, enabling network models to learn the human interactive 
+
+semantic logic of "select objects first, then perform operations." Level 2 provides reference 
+
+objects for Level 1 and is the prerequisite for high-level operations to hold. 
+
+Figure 2 shows the architectural advantages of HPSketch compared with the sketches of 
+
+DeepCAD, CADL, and SketchGraphs.           
+
+> Figure 2. Architectural advantages of the two-dimensional sketch component of WHUCAD
+
+Further analysis and explanation beyond the architecture diagram are as follows. 
+
+First, sketches in SketchGraphs are actually graph representations of the result of 
+
+"primitives + constraints", namely a geometric constraint graph. They do not support 
+
+procedural modeling. Based on this representation, a network can only learn the result, but 
+
+not the process or the reason. It is a typical case of "knowing what is so, but not knowing why 
+
+it is so." By contrast, HPSketch supports procedural modeling and therefore knows not only 
+
+what is so, but also why it is so. 
+
+Second, the constraints in HPSketch are based on "process + selection." The constraints 
+
+beyond the above architecture diagram are shown in Figure 3, and overall they cover the 
+
+sketch-constraint types used in mainstream flagship CAD parametric modeling systems.      
+
+> Figure 3. Constraint representation of HPSketch
+
+3.2 The Three-Level Architecture of WHUCAD for Three-Dimensional Modeling 
+
+The three-dimensional modeling component of WHUCAD establishes a three-level 
+
+architecture consisting of Level 0, Level 1, and Level 2. Level 1 and Level 2 are original 
+
+contributions. Even at Level 0, WHUCAD supports advanced spline primitives that are 
+
+absent from DeepCAD and Fusion 360. 
+
+At Level 1, WHUCAD creates high-level features in three-dimensional modeling 
+
+representations, including revolve, groove, revolved groove, shell, chamfer, fillet, hole, 
+
+mirror, and draft. Its Level 1 data representation broadly covers the high-level feature 
+
+modeling capabilities of mainstream flagship CAD parametric modeling systems. 
+
+At Level 2, WHUCAD creates native permanent naming and selection mechanisms for three-dimensional topological elements. The selected objects in three-dimensional feature 
+
+modeling may be edges or faces generated by preceding operations. For example, a chamfer 
+
+operation must explicitly act on a particular edge, and a shell operation must explicitly 
+
+remove or retain a particular face. WHUCAD has topological naming and selection 
+
+mechanisms that establish reference relationships among different feature operations before 
+
+and after a given operation, thereby supporting parameter propagation and feature 
+
+reconstruction when the design history changes. Once preceding feature operations change, 
+
+the design semantics can be automatically maintained. Figure 4 shows the architectural 
+
+advantages of the three-dimensional modeling component of WHUCAD.           
+
+> Figure 4. Architectural advantages of the three-dimensional modeling component of WHUCAD
+
+3.3 Integrated Data Representation Architecture: Integration of WHUCAD 
+
+Two-Dimensional Sketches and Three-Dimensional Modeling 
+
+The two-dimensional sketch representation and three-dimensional modeling 
+
+representation of WHUCAD together form a parametric modeling representation method that 
+
+moves from 2D to 3D, from primitives to features, and from geometry to historical 
+
+dependencies.  
+
+> 
+
+HPSketch represents advanced primitives, high-level operations, and selection 
+
+mechanisms in two-dimensional sketches, providing a constrained, editable, and reusable sketch foundation for three-dimensional modeling.  
+
+> 
+
+WHUCAD represents high-level features in three-dimensional modeling, selection of 
+
+three-dimensional topological elements, and parameter propagation in three-dimensional 
+
+feature modeling. 
+
+Based on the above representation, the network can learn the complete native 
+
+industrial-grade CAD modeling process, that is, the full modeling process carried out by 
+
+human engineers in an industrial-grade CAD system. According to the needs of actual 
+
+industrial application scenarios, two-dimensional sketches and three-dimensional modeling 
+
+can be integrated. 
+
+The overall architecture of an integrated WHUCAD-pro data representation is shown in 
+
+Table 1 [21].      
+
+> Table 1. Data representation of WHUCAD-pro
+
+## 4 Conclusion: Two Considerations Under the Rapid Iteration of AI 
+
+Different from the goal orientation of "visual plausibility" in the sister fields of CV and 
+
+CG, this paper starts from the CAD disciplinary characteristic of "industrial usability" and 
+
+reviews the data representation architecture of AI+CAD. It summarizes the evolution from 
+
+AI+geometric models, to AI+simple procedural models - essentially AI+solid modeling - and 
+
+then to AI+industrial-grade procedural models - essentially AI+parametric feature modeling. 
+
+As preliminary exploratory work, WHUCAD is the first open-source project that supports AI+industrial-grade parametric feature modeling. However, it still faces the 
+
+challenges brought by the rapid iteration of the AI wave, large models, and agents. Regarding 
+
+how to embrace and respond to the rapid iteration of AI, two directions can be envisioned. 
+
+Direction 1: AI-assisted permanent naming, identification, and selection of topological 
+
+elements. 
+
+The core component of parametric modeling is the permanent naming mechanism of 
+
+topological elements and the problem of their identification and selection. The difficulty, 
+
+focus, and workload of the native parametric modeling representation in WHUCAD lie in this 
+
+problem. Constructing parametric models with native permanent naming of topological 
+
+elements entirely by hand requires enormous effort. Therefore, introducing AI assistance is a
+
+feasible solution. 
+
+NamingCAD first creates a dataset with multimodal representations, including advanced 
+
+CAD modeling processes, structured permanent naming of topological elements - modeling 
+
+process plus topological information plus geometric information - boundary representation 
+
+models, point cloud models, and other multimodal information. It then uses a network to 
+
+predict selection results [22]. 
+
+The selection results predicted by NamingCAD and CAD models with high-level 
+
+features generated based on those predicted selection results are shown in Figure 5.         
+
+> Figure 5. Visualization of the experimental results of NamingCAD
+
+PointerCAD constructs a multimodal dataset whose selection labels contain geometric 
+
+information with implicit representations, and also uses a network to predict selection results. 
+
+At present, it supports chamfer and fillet [23]. Direction 2: Collaboration between large and small models, combined with agents. 
+
+The "solid modeling paradigm based on a geometry core" and the "parametric modeling 
+
+paradigm based on a parametric core" can be further elevated and broken through into a new 
+
+paradigm of "multi-agent-based intelligent CAD software." 
+
+The overall structure of this paradigm is shown in Figure 6. 
+
+Figure 6. Overall structure of a new multi-agent-based intelligent CAD software paradigm 
+
+## References 
+
+[1] Wu Z, Song S, Khosla A, et al. 3D ShapeNets: A deep representation for volumetric shapes[C]//Proceedings 
+
+of the IEEE Conference on Computer Vision and Pattern Recognition. 2015: 1912-1920. 
+
+[2] Chang A X, Funkhouser T, Guibas L, et al. ShapeNet: An information-rich 3D model repository[EB/OL]. 
+
+arXiv:1512.03012, 2015. 
+
+[3] Koch S, Matveev A, Jiang Z, et al. ABC: A big CAD model dataset for geometric deep 
+
+learning[C]//Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2019: 
+
+9593-9603. 
+
+[4] Xu X, Lambourne J G, Jayaraman P K, et al. BrepGen: A B-rep generative diffusion model with structured 
+
+latent geometry[J]. ACM Transactions on Graphics, 2024, 43(4): 1-14. 
+
+[5] Lambourne J G, Willis K D D, Jayaraman P K, et al. BRepNet: A topological message passing system for 
+
+solid models[C]//Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2021: 
+
+12768-12777. 
+
+[6] Jayaraman P K, Sanghi A, Lambourne J G, et al. UV-Net: Learning from boundary 
+
+representations[C]//Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 
+
+2021: 11698-11707. [7] Sharma G, Liu D, Maji S, et al. ParSeNet: A parametric surface fitting network for 3D point 
+
+clouds[C]//Computer Vision - ECCV 2020. Cham: Springer, 2020: 261-276. 
+
+[8] Huang J, Zhang Y, Sun M. PrimitiveNet: Primitive instance segmentation with local primitive embedding 
+
+under adversarial metric[C]//Proceedings of the IEEE/CVF International Conference on Computer Vision. 2021: 
+
+15323-15333. 
+
+[9] Jayaraman P K, Lambourne J G, Desai N, Willis K D D, Sanghi A, Morris N J W. SolidGen: An 
+
+autoregressive model for direct B-rep synthesis[J]. Transactions on Machine Learning Research, 2023. 
+
+arXiv:2203.13944. 
+
+[10] Piegl L A. Ten challenges in computer-aided design[J]. Computer-Aided Design, 2005, 37(4): 461-470. 
+
+[11] Wu R, Xiao C, Zheng C. DeepCAD: A deep generative network for computer-aided design 
+
+models[C]//Proceedings of the IEEE/CVF International Conference on Computer Vision. 2021: 6752-6762. 
+
+[12] Willis K D D, Pu Y, Luo J, et al. Fusion 360 Gallery: A dataset and environment for programmatic CAD 
+
+construction from human design sequences[J]. ACM Transactions on Graphics, 2021, 40(4): 54:1-54:24. 
+
+[13] Zhang A, Jia W, Zou Q, et al. Diffusion-CAD: Controllable Diffusion Model for Generating 
+
+Computer-Aided Design Models. IEEE Transactions on Visualization and Computer Graphics. 2026, 31(12): 
+
+10188-10199. 
+
+[14] Zhang C, Polette A, Pinquie R, et al. ecad-net: Editable parametric cad models reconstruction from dumb 
+
+b-rep models using deep neural networks. Computer-Aided Design 2025(178): 103806. 
+
+[15] Sharma G, Goyal R, Liu D, Kalogerakis E, Maji S. CSGNet: Neural shape parser for constructive solid 
+
+geometry[J]. IEEE Transactions on Pattern Analysis and Machine Intelligence. 2022, 44(5): 2628-2640. 
+
+[16] Mantyla M. An Introduction to Solid Modeling[M]. Rockville: Computer Science Press, 1988. 
+
+[17] Shah J J, Mantyla M. Parametric and feature-based CAD/CAM: Concepts, techniques, and applications[M]. 
+
+New York: John Wiley & Sons, 1995. 
+
+[18] Fan R, He F, Liu Y, Lin J. A history-based parametric CAD sketch dataset with advanced engineering 
+
+commands[J]. Computer-Aided Design, 2025, 182: 103848. 
+
+[19] Fan R, He F, Liu Y, Song Y, Fan L, Yan X. A parametric and feature-based CAD dataset to support 
+
+human-computer interaction for advanced 3D shape learning[J]. Integrated Computer-Aided Engineering, 2025, 
+
+32(1): 75-96. 
+
+[20] Wan R, He F, Fan R. Is Fusion 360 Reconstruction Dataset Really Not Enough for Training When 
+
+Compared With DeepCAD Dataset?[J]. IEEE Computer Graphics and Applications, 2026, 46(3): 27-39. 
+
+[21] Fan R, He F, Yan X. An integration of parametric CAD dataset combining 2D sketches and 3D entities[J]. 
+
+Computer-Aided Design. Submitted on 2026-01-31. Under Review. 
+
+[22] Liu Y, He F, Fan R, Zong Z. NamingCAD: A Naming Method for Unique Identification toward CAD 
+
+Modeling Learning[C]//Proceedings of the 7th ACM International Conference on Multimedia in Asia. 2025: 
+
+Article No. 63, Pages 1-7. [23] Qi D, Wang C, Xu J, Chu T, Zhao Z, Liu W, Ding W, Ma Y, Gao S. Pointer-CAD: Unifying B-Rep and 
+
+Command Sequences via Pointer-based Edges & Faces Selection[C]//Proceedings of the IEEE/CVF Conference 
+
+on Computer Vision and Pattern Recognition. 2026: 17377-17387.
