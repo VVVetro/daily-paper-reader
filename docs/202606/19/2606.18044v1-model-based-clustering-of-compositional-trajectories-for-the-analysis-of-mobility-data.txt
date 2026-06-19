@@ -1,0 +1,843 @@
+Title: Model-based clustering of compositional trajectories for the analysis of mobility data
+
+URL Source: https://arxiv.org/pdf/2606.18044v1
+
+Published Time: Wed, 17 Jun 2026 01:25:27 GMT
+
+Number of Pages: 36
+
+Markdown Content:
+# Model-based Clustering of Compositional Trajectories for the Analysis of Mobility Data 
+
+## Andrea Panarotto 1,∗, Manuela Cattelan 1, and Ruggero Bellio 2
+
+> 1
+
+Department of Statistical Sciences, University of Padova, Padova, Italy 
+
+> 2
+
+Department of Economics and Statistics, University of Udine, Udine, Italy 
+
+Bandrea.panarotto@unipd.it 
+
+Abstract 
+
+Understanding urban mobility patterns is crucial for designing effi-cient and sustainable transportation systems. Motivated by an appli-cation to the municipality of Padova and its surroundings, we propose a novel statistical framework for the analysis and clustering of mobil-ity trajectories derived from telephonic data. We introduce a com-positional representation of individual movements that integrates the uncertain device location with information on the surrounding road network, encoding at each time point the proportions of different road types compatible with the observed position. This formulation nat-urally accounts for measurement uncertainty and yields trajectories evolving in the simplex. To model these data, we develop a state-space framework for compositional time series that captures both the telephonic measurement error and the temporal dynamics of the la-tent mobility process. Building on this representation, we propose a model-based clustering approach based on mixtures of state-space models to identify groups of trajectories with similar evolution. This allows us to aggregate individual movements into interpretable mo-bility patterns at the population level. The results of the case study demonstrate the ability of the approach to uncover meaningful mobil-ity behaviors, providing insights that are potentially relevant to policy makers. 
+
+Keywords: Compositional time series, Expectation-Maximization algorithm, Mixture of experts model, Model-based clustering, State-space models. 1
+
+> arXiv:2606.18044v1 [stat.AP] 16 Jun 2026
+
+# 1 Introduction 
+
+The study of urban mobility is becoming increasingly important in under-standing the functioning of modern cities. Assessing how transportation infrastructures are used and identifying the underlying patterns of mobility are essential for effective transportation planning and management. Uncov-ering recurrent mobility behaviors allows researchers and policy makers to better understand the interaction between users and the transportation net-work, providing evidence to address questions related to infrastructure use, traffic organization, and mobility demand. These insights can also support the development of future sustainable transportation policies. Telephonic data represent a powerful tool for investigating such patterns. Collected by telecommunication companies for operational purposes, they generate large-scale datasets that can be repurposed to study human mo-bility. Sources such as call detail records (CDRs), location updates, and signaling data provide information at increasingly fine temporal and spa-tial resolutions, offering unprecedented opportunities to observe population movements. Early studies were mainly based on aggregated CDRs, enabling the estimation of population-level quantities such as the radius of gyration, step lengths, or waiting times between consecutive displacements (Gonzalez et al., 2008; Song et al., 2010; Zhao et al., 2015), as well as the reconstruction of origin–destination matrices and traffic flows using descriptive approaches or heuristic algorithms (White and Wells, 2002; Calabrese et al., 2011; Wang et al., 2012; Iqbal et al., 2014; Alexander et al., 2015; C ¸ olak et al., 2015; Toole et al., 2015; Jiang et al., 2017). As temporal resolution improved, research progressively shifted toward the individual scale, leading to the development of statistical models for activity detection (Liao et al., 2005; Eagle and Pent-land, 2006; Widhalm et al., 2015; Yin et al., 2017; Vana G¨ ur et al., 2021) and recognition of transportation modes (Wang et al., 2010; Xu et al., 2011; Kalatian and Shafahi, 2016; Graells-Garrido et al., 2018; Bachir et al., 2019; Huang et al., 2019). In parallel, generative models have been proposed to mitigate privacy concerns and compensate for incomplete observations by simulating realistic mobility patterns (Song et al., 2010; Jiang et al., 2016; Pappalardo et al., 2016; Pappalardo and Simini, 2018; Pappalardo et al., 2022; Feng et al., 2020; Yin et al., 2017; Wang et al., 2021; Berke et al., 2022; Luca et al., 2023). Despite this rich body of work, contributions from the statistical liter-ature remain relatively limited, as the field has been predominantly driven by transport engineering and computer science. We argue that statistical methodology can play a crucial role in advancing mobility research. The complexity and volume of telephonic data are matched by substantial in-2ferential challenges, especially when dealing with tower-based localization technologies, where recorded positions are affected by non-negligible spatial uncertainty. Properly accounting for this intrinsic measurement error re-quires principled probabilistic modeling and careful treatment of uncertainty, which naturally fall within the domain of statistics. To address these challenges, we propose a novel framework for the analy-sis of urban mobility based on compositional data analysis (Aitchison, 1982, 1986). To our knowledge, this is the first application of compositional meth-ods in this context, although such techniques are well established in fields such as microbiology, geology, social sciences, and finance (e.g. Greenacre et al., 2023). We represent individual trajectories as compositional time se-ries, where each observation lies in the simplex and encodes the proportions of different types of roads in the individual’s surroundings at a given time. This representation naturally captures the relative nature and inherent de-pendence structure of these quantities, allowing us to model mobility patterns while explicitly accounting for their compositional constraints. The analysis of compositional time series remains relatively underex-plored in the literature and requires dedicated methodological tools (Grun-wald et al., 1993; Bruno et al., 2011; Kynˇ clov´ a et al., 2015; Zheng and Chen, 2017). We introduce a state-space model tailored to compositional data that simultaneously accounts for telephonic measurement uncertainty and for the temporal evolution of the latent compositional trajectory. Building on this framework, we develop a model-based clustering approach for the unsuper-vised grouping of compositional trajectories through a mixture of state-space models. Clustering these trajectories is our ultimate goal, as it enables us to recover interpretable mobility patterns and to provide insight related to the issues mentioned at the outset, including differences in travel modes, traveler typologies, and contrasts between working days and holidays. The remainder of the paper is organized as follows. Section 2 presents a detailed description of the data and introduces the proposed compositional representation of mobility trajectories. Section 3 describes the mixture of state-space models used for model-based clustering. Section 4 is devoted to the motivating application to urban mobility in the city of Padova (Italy), which represents the central contribution of the paper, illustrating how the proposed framework translates into practically relevant insights for the anal-ysis of real mobility data. Section 5 concludes with final remarks and a discussion, while Section 6 provides additional information on data access and privacy constraints related to the use of sensitive telephonic data. 32 Compositional representation of telephonic mobility data 
+
+Urban mobility trajectories are derived from mobile phone signals through tower-mounted amplifier logs. Mobile phones continuously attempt to main-tain a connection to the cellular network by sending numerous pings per minute to nearby telecommunication towers. Each tower provides coverage to its vicinity through multiple cells, which emit wireless signals at various frequencies and in various directions. It is possible to estimate the coverage area of each individual cell and determine to which cell a mobile phone is connected at any given moment; see www.opencellid.org for details. Con-sequently, when a mobile phone connects to a cell, the center of mass of the cell’s coverage area serves as a proxy for the user’s location. A trajectory is the sequence of these estimated user’s positions as they move. Telephonic cells often overlap, and the numerous pings sent by a mobile phone cause signals to frequently bounce between cells, leading to noisy data. To address this, the available data are aggregated minute-wise, and they show only the position of the cell to which the phone was mostly connected every 60 seconds. Extensive preprocessing is then performed to distinguish cell bounces caused by genuine user movements from those resulting from intrinsic connection behavior. Once the final trajectories are obtained, trajectory-specific covariates are retrieved, useful for the clustering procedure and the group interpretation process; see Figure 1a. These include the origin-destination distance (OD; the distance from the origin to the destination in a beeline) and the departure time, used in the application of Section 4, but other information, such as the total distance traveled, the average speed or the radius of gyration, could be useful. The compositional trajectories are obtained by introducing the road-type data into the framework. If we had the exact positions, for example as GPS measurements, we could analyze a user’s path in terms of the type of roads they travel, knowing exactly whether they stand on a sidewalk, on a cycle lane, or on a road, and from that we could draw conclusions on their behavior. However, since we employ the centers of mass of the telephonic cell coverage areas, we have to take into account the uncertainty of the approximation of the position. So, we simultaneously consider all the possible types of road that the user could be traveling on, using a compositional representation. The simplex is the space of the proportions of the types of roads in the surroundings of the positions of the users. We count the meters of walkable pathways, cycle lanes and different types of roads in a circle of a radius of 4200 meters around the estimated position for all measured locations obtained after preprocessing, as in Figure 1b. The specific value for the radius has been chosen according to the size of the cell coverage areas. The counts are normalized to obtain their proportion with respect to the total, that is, a point in the simplex. As a user moves, the proportion of roads in the surroundings changes, so a trajectory in the simplex is drawn; see Figure 1c. The measurements were collected in the province of Padova, Italy, from a sample of 399 individuals during a week in October 2022. Road-type data were collected from Geofabrik GmbH ( www.geofabrik.de ), which provides extracts from the OpenStreetMap project. The preprocessing and extraction of compositional trajectories have been implemented in Python (Van Rossum and Drake, 2009), while an R package (R Core Team, 2025; Eddelbuettel et al., 2025) with the code to perform the proposed model-based clustering procedure for compositional time series is available at https://github.com/ AndreaPanarotto/compStateSpace . Generative AI tools (GPT-4o, GPT-4.5, GPT-5) were used in the writing of this article in the form of language improvement tools and coding assistants to produce clearer figures. 
+
+# 3 Model definition 
+
+In the literature on compositional analysis, the proportions that are part of a composition, or total, are usually called ‘components’. Since we will also be dealing with components in the sense of elements that, interact-ing, construct a mixture of distributions, to avoid confusion, we will only address the compositional elements as ‘parts’ or ‘proportions’. Let SD−1 =n
+
+y ∈ RD>0 | PDi=1 yi = 1 
+
+o
+
+be the D-dimensional open simplex. Since the mile-stone work of Aitchison (1982), the usual way to deal with compositional data is to exploit logratio transformations that map the data from the constrained simplex space SD−1 to the unconstrained Euclidean space RD−1. Assuming a normal distribution on the transformed data allows one to induce flexible variance structures on the data, which is not possible when modeling data via common simplex-supported distributions, such as the Dirichlet distribution. We adopt the isometric logratio (ilr) transformation (Egozcue et al., 2003). Given a composition y ∈ SD−1, the corresponding ilr-transformed vector z = ilr( y) = ( z1, . . . , z D−1) is given by 
+
+zi =
+
+r ii + 1 log 
+
+> i
+
+qQij=1 yj
+
+yi+1 
+
+ , i = 1 , . . . , D − 1 .
+
+The term ‘isometric’ comes from the property of preserving the distances 5(a) Telephonic trajectory. (b) Road representation.          
+
+> Urban road Pedestrian Cycle lanes High-speed road
+> 760.68m 3250.50m 521.36m 0m 16.8% 71.6% 11.6% 0%
+
+(c) Compositional trajec-tory. 
+
+Figure 1: Compositional representation of a mock telephonic trajectory. 6between the Hilbert structure on the simplex and the Euclidean norm in 
+
+RD−1 (Aitchison, 1986; Billheimer et al., 2001). This property is particularly appealing in a clustering framework, since preserving the distance structure avoids inducing further bias in the relationships between the observations after the transformation. A compositional trajectory of length n is an ordered sequence of com-positional vectors, represented as Y = {yt}t=1 ,...,n , with yt ∈ SD−1 for 
+
+t = 1 , . . . , n . We indicate with N the total number of compositional tra-jectories, Y(1) , . . . , Y(N ), with respective lengths n1, . . . , n N not necessarily equal. To provide a modeling framework that also accounts for the noisy na-ture of the data, we employ a linear Gaussian state-space model (e.g. Durbin and Koopman, 2012), working with the ilr-transformed trajectories, that is, 
+
+Z(i) = {z(i) 
+
+> t
+
+}t=1 ,...,n i for i = 1 , . . . , N , where z(i) 
+
+> t
+
+= ilr( y(i) 
+
+> t
+
+) for t = 1 , . . . , n i.Zeros in an observed component (such as high-speed roads in Figure 1) are replaced by a small positive quantity to allow the logratio transformation to be well-defined. 
+
+## 3.1 Mixture of linear Gaussian state-space models 
+
+We model the trajectories through a mixture of linear Gaussian state-space models. We assume that each series belongs to a component k = 1 , . . . , K ,with K being the total number of components. We indicate with Ci the index random variable such that Ci = k if the series i belongs to component 
+
+k. We assume that series in the same component share the same set of system matrices Θ(k) =  T(k), Q(k), H(k), so that, given an initial state α(i)0 ,
+
+α(i) 
+
+> t
+
+= T(k)α(i) 
+
+> t−1
+
++ ξ(i) 
+
+> t
+
+, ξ(i) 
+
+> t
+
+∼ N  0, Q(k) ,
+
+z(i) 
+
+> t
+
+= α(i) 
+
+> t
+
++ ζ(i) 
+
+> t
+
+, ζ(i) 
+
+> t
+
+∼ N  0, H(k) ,
+
+for all series i with Ci = k. The observation-level errors ζ(i) 
+
+> t
+
+represent the localization error due to telephonic measurement, while the state equations in α(i) 
+
+> t
+
+describe the effective development of the trajectory. The component-specific system matrices are the elements on which the model-based clustering is performed. In contrast with a distance-based clustering, this approach allows us to cluster together series that could be distant in the simplex but that develop in time in a similar way in terms of the dependence between consecutive observations. We make some simplifying assumptions about the system matrices T, Q
+
+and H. First, they are invariant over time. In the case study, we deal with a large number of short series whose evolution in time is difficult to model. 7Moreover, this is a simple manner to account for the difference in length of the series, so that short series can borrow information from the longer series in the same cluster. The second assumption is that the system matrices are diagonal, thus avoiding an over-parametrization of the model. In fact, the diagonal matrices act on the ilr-transformed variables, capturing well enough the evolution of the compositional series when they are transformed back in the simplex. To assign each series to the different components, we assume a simple mixture of experts (ME) model (Gormley and Fr¨ uhwirth-Schnatter, 2019), which allows us to model the probability that a time series belongs to each component as a function of both its component-specific state-space likelihood and possible additional covariates. Let k = 1 , . . . , K indicate the components of the mixture and xi be a vector of covariates of dimensions P relative to series i. The likelihood function under the simple mixture of experts model is 
+
+L (Γ, Θ; K) = p  Z(1) , . . . , Z(N ); X, Γ, Θ =
+
+> N
+
+Y
+
+> i=1
+> K
+
+X
+
+> k=1
+
+πk (xi; Γ) LS
+
+ Θ(k); Z(i) .
+
+(1) Here, the πk, as k varies, indicate the component weights of the simple ME model, depending on the series covariates xi and the current associated pa-rameters in Γ = ( γ1, . . . , γK ), as 
+
+πk (xi; Γ) = exp  γk0 + x⊤ 
+
+> i
+
+γk1
+
+PKk′=1 exp  γk′0 + x⊤ 
+
+> i
+
+γk′1
+
+ , (2) where the vectors γk = ( γk0, γ⊤
+
+> k1
+
+)⊤, k = 1 , . . . , K , are of dimension P + 1. The component weights act as marginal probabilities of belonging to the corresponding component, using only the information of the covariates and not the series itself. Meanwhile, LS
+
+ Θ(k); Z(i) is the likelihood of the series 
+
+Z(i), computed via Kalman filter, given the current set of system matrices of the k-th component, Θ(k) = {T(k), Q(k), H(k)}.
+
+## 3.2 Parameter estimation 
+
+The product-sum likelihood in Equation (1) is difficult to maximize directly. Data augmentation is used to associate each series i with a latent group membership indicator wi = ( wi1, . . . , w iK )⊤, a vector of variables such that 
+
+wik = 1(Ci = k), that is, wik equals 1 if Z(i) belongs to the k-th component 8and 0 otherwise. The complete-data likelihood is 
+
+Lc (Γ, Θ, W; K) = p  Z(1) , . . . , Z(N ), W; X, Γ, Θ
+
+=
+
+> N
+
+Y
+
+> i=1
+> K
+
+Y
+
+> k=1
+
+n
+
+πk (xi; Γ) LS
+
+
+
+Θ(k); Z(i)
+
+o wik 
+
+, (3) where the matrix W collects the vectors wi , i = 1 , . . . , N .An Expectation-Maximization algorithm (Dempster et al., 1977) is adopted to iteratively optimize the likelihood. Initial estimates are given for the ele-ments in Θ(k), k = 1 , . . . , K , and for Γ in the form of ( 0, γ2, . . . , γK ), where the component weight parameters for group 1 are set to zero for identifia-bility reasons. At each iteration, in the outer expectation step, we use the current values of the parameters to estimate the latent group membership indicators of the series i as the probability ˆwik ∝ πk (xi; Γ) LS
+
+ Θ(k); Z(i), k = 1 , . . . , K . (4) While πk is the marginal assignment probability, the result of the product with the state-space likelihood of the series is proportional to the conditional probability of inclusion in the component given the data. In the maximization step, the expectation of the complete-data loglikeli-hood is computed as the Q-function 
+
+Q(Γ, Θ(1) , . . . , Θ(K)) = EΘ(k)
+
+> curr
+
+Lc (Γ, Θ, W; K) | Z(1) , . . . , Z(N )
+
+=
+
+> N
+
+X
+
+> i=1
+> K
+
+X
+
+> k=1
+
+ˆwik 
+
+n
+
+log πk (xi; Γ) + EΘ(k)
+
+> curr
+
+h
+
+log LS
+
+
+
+Θ(k); Z(i)
+
+io 
+
+,
+
+(5) where the likelihood of the state-space model is approximated by its expected value given the current parameters Θ(k)
+
+> curr
+
+, as in Shumway and Stoffer (1982, 2000). The authors provide an EM algorithm to estimate the system matrices when analyzing a single series. It exploits the Kalman filter for computing the likelihood and the Kalman smoother to produce the estimates of the states given the entire trajectory information; the smoothed states are used for the estimation of the system matrices. Supplementary material A shows how we generalize their approach to our case, where we have N time series, each of which evolves according to Θ(k) with probability ˆ wik , i = 1 , . . . , N .We perform one iteration of this procedure to update Θ(k), k = 1 , . . . , K .The parameters in Γ are updated, independently of those in Θ, by numerical maximization. Clusters may be initialized randomly or using another clustering tech-nique. In Section 4, we employ the dtwclust package (Sard´ a-Espinosa, 92019), which performs time series clustering according to the Dynamic Time Warping (DTW) distance (Sakoe and Chiba, 1978). Such a distance is par-ticularly suitable for computing similarities in different time scales thanks to the computation of an optimal matching. After all algorithms have converged, the ICL-BIC criterion (e.g. McLach-lan and Peel, 2000, Chapter 6; Fr¨ uhwirth-Schnatter, 2006, Chapter 7) is used for model selection to simultaneously decide the optimal number of mixture components and which trajectory covariates are useful. In particular, once the set of covariates is fixed, we run the algorithm with a varying number of components K = 2 , . . . , K max , and the final number of clusters is ˆK = argmin 
+
+> K∈{ 2,...,K max }
+
+nP log nZ − 2 log Lc
+
+ˆΓ, ˆΘ, ˆW; K
+
+
+
+, (6) where the parameter estimates have been obtained from the procedures in Section 3.2 and the values for ˆW are obtained from Equation (4). In our specific case, the number of parameters nP is the number of the estimated parameters in ˆΓ plus the number of estimated diagonal elements of the system matrices in ˆΘ, nP = ( K − 1)( P + 1) + 3 K(D − 1), and the total number of observations is nZ = ( D − 1) PNi=1 ni. BIC (Schwarz, 1978) and ICL alone (Bachir et al., 2019) have also been considered as criteria, but ICL-BIC appears to be more conservative in the choice of the number of groups and acts directly on the estimated complete likelihood we use in the estimation process. Supplementary Material B shows a simulation study to assess the validity of the clustering procedure. 
+
+# 4 Urban mobility in Padova 
+
+The method is applied to N = 3015 trajectories in the municipality of Padova, Italy, and its immediate surroundings, gathered between 10 pm on Sunday, 9 October 2022 and 10 pm on Sunday, 16 October 2022. We keep trajectories with at least 5 observations (time points), which implies that they have a minimum duration of 5 minutes, and consider a simplex size 
+
+D = 4 as we measure the following road types: fast-paced roads, such as highways or ring roads; other types of road, including all urban roads; cycle lanes; and walkable pathways. The length of the series varies between 5 and 47, with a median of 11. 10 4.1 Clustering of urban trajectories 
+
+Our first research objective is to investigate whether urban mobility tra-jectories can be interpreted as macro-behavioral patterns characterized by distinct uses of the transportation infrastructure. We separate the analysis of the 2301 weekday trajectories from that of the 714 weekend trajectories, since the mass mobility behavior is very different between the two categories of days. As external covariates, we consider the OD distance for all trajec-tories and an indicator of whether the departure occurred during rush hours (7 am to 9 am, 12:30 pm to 2 pm, and 4 pm to 8 pm). The ICL-BIC criterion in Equation (6) is used to select the final number of clusters. However, we do not fit the models independently of each other as we vary K. In fact, we observed that, with real data and low K, the algorithm might converge to local maxima of the likelihood, depending on the starting point. With larger K, the algorithm is more stable, so we exploited this stability. In particular, we proceed iteratively, starting from a large number of components Kmax , and after convergence of the EM algorithm, we remove one component from the mixture until K = 2. This allows us to provide a good initialization for cases with a low number of groups. This backward elimination procedure is described in Supplementary Material C. We start from Kmax = 12. The results of the model selection for the weekdays are shown in Figure 2a. 352500 358500 364500 370500              
+
+> 2345678910 11 12
+> Number of groups
+> ICL−BIC
+> Int. only OD Rush OD−Rush
+
+(a) Model selection based on ICL-BIC. 1 2 3 4 5 6 7 8 
+
+> 0.0 0.5 1.0
+
+(b) Assignment probabilities. 
+
+Figure 2: Weekday analysis model selection and estimated assignment prob-abilities ( ˆ wik ) to the components (on the columns) for the weekday series (on the rows). The optimal number of clusters in the weekday case is 8. The best model is the one with only the OD distance as a covariate. This characteristic was expected to be useful, as covering longer distances requires travel modes (cars 11 or public transports) that are forced to move on urban or fast-paced roads, while shorter distances can be covered by walking or riding micromobility devices that have access to bike lanes. It is interesting that the rush hour information does not bring particular benefits to the analysis, meaning that the departure time or the traffic conditions do not have a very strong effect on the path selected by users. Once the optimal model has been determined, we use its outcome to com-plete the clustering procedure. In particular, the latent group membership estimators act as posterior assignment probability to each component, so we can assign each series i to the cluster having the largest value for such estimator, ˆCi = argmax 
+
+> k=1 ,...,K
+
+ˆwik .
+
+Figure 2b is a heatmap showing the assignment probability of the 2301 weekday series to the 8 clusters obtained by the optimal model. For clarity, the series have been ordered first according to the assigned cluster and then according to the value of the membership estimator for the corresponding component, as a measure of the strength of the probability to be assigned to that group. We observe that the series are well separated across the clusters, with the vast majority of them having an assignment probability to their component close to 1. The series with a lower maximum assignment prob-ability are mostly divided between the largest clusters, which makes sense since those components have a higher prior assignment probability due to their size, but also because those clusters actually show similar characteris-tics, as we will see in the following. Figure 3 shows the superposition of the trajectories on the map for four of the eight clusters. Annotations are added on the cardinalities of the clusters and the estimate of the component weight parameter ˆ γk,OD , relative to the origin-destination distance, and useful for interpretation. Cluster 2 is the one with the lowest value ˆ γ2,OD and, in fact, collects shorter trajectories that are located entirely in the inner part of the city. These behaviors are typical of residents working in the city, but also of tourists covering short distances between points of interest. Cluster 4 is the largest in cardinality and the one with the highest estimated value ˆ γ4,OD , and contains longer trajectories on the exterior highway and the beltway. Many of the trajectories in this cluster belong to people who live and work outside of Padova, and exploit the fast paced roads for their commutes without interacting much with the city. Cluster 1, the second in both the cardinality of the group and the value of ˆ γ1,OD , is composed of trajectories moving between the ring road and the inner city, and less on the motorway. Cluster number 7 shows movements between the inner city and the periphery with the other close municipalities. 12 These two clusters contain people who live in the periphery and need to commute long distances to work in the city, with a different exploitation of the ring road. In the analysis of the 714 weekend trajectories, information on rush hours was not included as there are no real rush hours during the weekend in terms of traffic jams. Again, the OD distance is selected as a covariate for the best model; see Supplementary Material D. The number of detected clusters is 7, less than the 8 in the weekday analysis. This suggests a mobility behavior simpler to describe in the weekend, probably due to the lower number of total trajectories than to an effective different use of roads or travel modes. However, it is possible to delineate some similarities between the previously discussed weekday clusters and the weekend clusters in Figure 4, both visually and in terms of the corresponding number of trajectories and component weight parameters. In particular, cluster 2 shows that, as for cluster 1 during the weekdays, around a quarter of the detected traffic consists of movements between high-speed roads and the inner part of the city; see Figures 3a and 4a. We assign ˆγ2,W E = 0 and treat it as a baseline, as was done for ˆ γ1. This is legit since the component weight parameters are identified up to an additive constant. Cluster 5 on the weekend is comparable to cluster 2 on weekdays, with move-ments in the inner part of the city and a small component weight parameter ˆγW E 
+
+> 5,OD
+
+; see Figures 3b and 4b. Cluster 3 is similar to cluster 4 during the week-days, but comparing Figure 4c with Figure 3c, we observe a difference in the use of the south-eastern highway, A13. This highway connects Veneto and Emilia-Romagna, two highly active regions in terms of transport and trade, and is therefore busier on weekdays due to work-related traffic, particularly heavy vehicles such as trucks. However, when considering the proportion of trajectories within the respective datasets, the weekend cluster appears comparatively more relevant: the weekday cluster includes 666 trajectories out of 2301 total, whereas the analogous weekend cluster contains 244 trajec-tories out of 714 total. Although the A13 corridor is less prominent during weekends, the higher relative weight of the weekend cluster highlights the importance of the other major routes involved, namely the A4/E55 highway that runs east-west north of the city and the ring road, which remain impor-tant crossing points also outside of weekday commuting patterns. Cluster 7 in Figure 4d is analogous to cluster 7 in Figure 3d, which shows the trajec-tories between Padova and the periphery; during the weekend, this type of traffic is more concentrated in neighboring municipalities in the south and west. Overall, the clustering procedure identifies a limited number of recurrent mobility behaviors characterized by distinct patterns of transportation infras-13 (a) Cluster 1, 578 trajectories, ˆ γ1,OD =0. 
+
+(b) Cluster 2, 306 trajectories, ˆ γ2,OD =
+
+−3.51. 
+
+(c) Cluster 4, 666 trajectories, ˆ γ4,OD =0.39. 
+
+(d) Cluster 7, 284 trajectories, ˆ γ7,OD =
+
+−0.67. 
+
+Figure 3: Trajectories plotted on map for a subset of clusters. 14 (a) Cluster 2, 190 trajectories, ˆ γ2,OD =0. 
+
+(b) Cluster 5, 84 trajectories, ˆ γ5,OD =
+
+−3.73. 
+
+(c) Cluster 3, 244 trajectories, ˆ γ3,OD =0.44. 
+
+(d) Cluster 7, 53 trajectories, ˆ γ7,OD =
+
+−0.23. 
+
+Figure 4: Trajectory clusters plotted on map for the weekend analysis. 15 tructure usage. Rather than analyzing thousands of individual trajectories separately, the proposed framework provides a compact representation of ur-ban mobility demand, where each cluster corresponds to a macro-behavioral profile with a clear interpretation in terms of trip length, spatial organization and road usage. This representation can be exploited to study aggregated origin-destination structures, infrastructure utilization patterns and traffic loads associated with specific mobility behaviors, while preserving the main structural information contained in the original dataset. In this sense, the clusters should not be interpreted merely as statistical groups, but as data-driven mobility segments that provide an interpretable intermediate layer between individual trajectories and network-level mobility analyses. The maps for the remaining clusters are in the Supplementary Material D. 
+
+## 4.2 Intracluster analysis 
+
+Our second research objective is to characterize the internal spatial organi-zation of the detected macro-behavioral patterns through the distribution of origins and destinations throughout the urban area. This analysis provides additional insight into the functional interpretation of the clusters by high-lighting recurrent departure and arrival areas at different times of the day. In the following, we focus on the weekday clusters displayed in Figure 3. The bubbleplots in Figure 5 summarize the main origin and destination areas for clusters 1 and 7, which were previously associated with commut-ing behaviors involving residents of the peripheral municipalities surrounding Padova. The temporal structure of the detected points confirms this interpre-tation. During the morning, the main departure locations are concentrated in the peripheral areas, while the main destinations are located in the city center. The opposite behavior is observed in the late afternoon and evening, when the trajectories predominantly move from the center to residential areas outside the city. Cluster 1 also highlights the role of the industrial district located in the eastern part of Padova, which appears as an important destination during the morning and as a departure area in the evening. The cluster also contains users residing within the city who exploit the ring road and the highway network to leave the urban area in the morning and return in the evening, as suggested by the concentration of endpoints near the boundaries of the study domain. The intracluster structure of cluster 2, shown in Figure 6, is particularly relevant from the perspective of sustainable mobility and urban public trans-port. During the morning and evening commute periods, movements within 16 Starts 
+
+> Ends
+
+(a) Cluster 1 between 6:00 and 9:00. Starts  
+
+> Ends
+
+(b) Cluster 1 between 17:00 and 20:00. Starts 
+
+> Ends
+
+(c) Cluster 7 between 6:00 and 9:00. Starts  
+
+> Ends
+
+(d) Cluster 7 between 17:00 and 20:00. 
+
+Figure 5: Origin and destination concentration areas for clusters 1 and 7 during morning and evening periods. 17 the city center appear to be organized predominantly along a north-south axis, approximately corresponding to the current tram line and connecting major urban attractions such as the Saint Anthony Basilica, Prato della Valle and the hospital district. In particular, the hospital area emerges as a major destination during the morning hours. The late morning period (9:00–12:00) exhibits a different spatial organiza-tion, with increased activity along the east-west corridor containing several tourist attractions, including the Scrovegni Chapel and nearby museums, together with a substantial portion of the university facilities such as depart-ments and libraries. This temporal pattern is compatible with the activation of tourist and student mobility after the main commute period. During the early afternoon, several of the locations that acted as morning destinations become major departure areas, particularly in the central and southern res-idential neighborhoods of the city. The present analysis is limited by the relatively small sample size available for the study. However, the same methodology could be applied to substan-tially larger datasets, potentially exceeding the current sample size by two orders of magnitude, which are available to the mobile phone provider and the collaborating companies; see Section 6. In particular, a more focused anal-ysis of the city center, combined with a less coarse preprocessing procedure and reduced interference from peripheral mobility behaviors, could provide useful information for policy makers involved in public transport planning, as well as for mobility service providers such as bike– and scooter–sharing companies interested in optimizing the spatial deployment of their fleets at different times of the day. 
+
+# 5 Discussion and future work 
+
+We proposed a state space representation for compositional trajectories and a related algorithm for the model-based clustering of such trajectories, with an application to mobility trajectories in the province of Padova. A possible improvement involves the creation of the road compositional vectors. We build a circle around the estimated user positions to take into account the uncertainty of the approximation, but in doing so, we use a common radius for all the positions and we do not take into account the different sizes of the coverage areas. We selected a radius of 200 meters based on preliminary findings, which demonstrated that this size is suitable for the dimensions of the cell coverage areas in the city of the case study. However, further research in this direction would be helpful to provide a confidence bound around the estimated positions based on the dimension of 18 Starts 
+
+> Ends
+
+(a) Cluster 2 between 6:00 and 9:00. Starts  
+
+> Ends
+
+(b) Cluster 2 between 9:00 and 12:00. Starts 
+
+> Ends
+
+(c) Cluster 2 between 12:00 and 15:00. Starts  
+
+> Ends
+
+(d) Cluster 2 between 17:00 and 20:00. 
+
+Figure 6: Origin and destination concentration areas for cluster 2 across different times of the day. 19 the coverage areas and the strength of the phenomenon of bouncing of the telephonic signal in the surroundings of the position. A Bayesian approach could be considered. The Gaussian state-space model with the Kalman filtering and smoothing procedure has an equivalent Bayesian formulation (Durbin and Koopman, 2012), and the same occurs for simple mixture of experts models (Gormley and Fr¨ uhwirth-Schnatter, 2019). In model-based clustering, Bayesian nonparametric approaches are usually adopted to model the number of components in the mixture without fixing it in advance (Fr¨ uhwirth-Schnatter et al., 2019). Implementing an MCMC al-gorithm would be useful for providing posterior distributions and uncertainty estimation for the model parameters. In particular, credible intervals could be provided for the component weight parameters Γ, as building confidence intervals with the current proposal would require time-consuming resample-based methods. However, issues in Bayesian mixture analysis such as label switching with several clusters would have to be addressed. 
+
+# 6 Data access and privacy constraints 
+
+The mobile phone data from Fastweb-Vodafone Italia have been handled thanks to the collaboration with Motion Analytica Srl ( www.motionanalytica. com ), an Italian innovative company specialized in advanced mobility intelli-gence. They played a crucial role in the determination of this research project and in its earlier development. The company took care of applying the meth-ods and algorithms we produced to the data in a protected environment, so that we could perform the analysis while respecting the privacy of the phone users. Data are irreversibly anonymized, deprived of any personal or sensible data, such as the name, phone number, gender, age, etc, by the mobile net-work operator provider. Users are only identified via an assigned value to keep track of the same device over time. A further round of preprocessing oc-curred during the collaboration between the authors and Motion Analytica to ensure that the considered dataset contained only trajectories relative to the actual movement of the users and not purely to the noisy behavior of the tele-phonic track. The construction of the compositional trajectories described in Section 2 and the computation of the corresponding covariates took place under a similar scenario, having been planned by the authors, who defined the assumptions necessary to obtain adequate data, and then being applied to the technology stack adopted by the company, which handled the opera-tional execution in the production environments. Finally, device identifiers and other spatio-temporal information were removed from the compositional 20 trajectories. The completely anonymized data were then made available to the authors, who performed the modeling (including the theoretical develop-ment) and its application as described in Section 4. 
+
+# Conflicts of interest 
+
+The authors declare that they have no competing interests. 
+
+# Funding 
+
+Andrea Panarotto’s research was funded by PON “Research and Innova-tion” 2014-2020 Action IV.5 “PhDs on Green issues”, Ministerial Decree 1061/2021, and by the University of Padova – Department of Statistical Sciences, under the BIRD 2023 funding scheme. Manuela Cattelan ac-knowledges the financial support provided by the European Union – Next Generation EU, Mission 4 Component 2 – CUP C53D23002580006 via the MUR-PRIN grant 2022SMNNKY. Ruggero Bellio was supported by the De-partmental Strategic Plan (PSD) of the University of Udine, Department of Economics and Statistics (2022-2025). 
+
+# Data availability 
+
+Road-type data were collected from Geofabrik GmbH ( www.geofabrik.de ), which provides extracts from the OpenStreetMap project. The data we considered are a subsample of the files available at https://download. geofabrik.de/europe/italy/nord-est.html .
+
+# Acknowledgments 
+
+The authors thank Denis Cappellari, Bruno Zamengo, and all the Motion Analytica team, as well as Antonio Canale, Sylvia Fr¨ uhwirth-Schnatter, Kurt Hornik, and Gianna Serafina Monti for helpful discussion and comments. The authors also thank Fastweb-Vodafone Italia, especially Andrea Zaramella, Dario Di Sorte and Luigi Mancino, for providing fully anonymized data for research purposes. 21 References 
+
+John Aitchison. The statistical analysis of compositional data. Journal of the Royal Statistical Society: Series B (Methodological) , 44(2):139–160, 1982. John Aitchison. The Statistical Analysis of Compositional Data . Chapman & Hall, 1986. Lauren Alexander, Shan Jiang, Mikel Murga, and Marta C Gonz´ alez. Origin– destination trips by purpose and time of day inferred from mobile phone data. Transportation Research Part C: Emerging Technologies , 58:240–250, 2015. Danya Bachir, Ghazaleh Khodabandelou, Vincent Gauthier, Mounim El Ya-coubi, and Jakob Puchinger. Inferring dynamic origin-destination flows by transport mode using mobile phone data. Transportation Research Part C: Emerging Technologies , 101:254–275, 2019. Alex Berke, Ronan Doorley, Kent Larson, and Esteban Moro. Generating synthetic mobility data for a realistic population with rnns to improve utility and privacy. In Proceedings of the 37th ACM/SIGAPP Symposium on Applied Computing , pages 964–967, 2022. Dean Billheimer, Peter Guttorp, and William F Fagan. Statistical interpre-tation of species composition. Journal of the American Statistical Associ-ation , 96(456):1205–1214, 2001. Francesca Bruno, Daniela Cocchi, and Fedele Greco. Clustering composi-tional data trajectories: the case of particulate matter in the lower tropo-sphere. Environmetrics , 22(8):975–984, 2011. Francesco Calabrese, Giusy Di Lorenzo, Liang Liu, and Carlo Ratti. Esti-mating origin-destination flows using mobile phone location data. IEEE Pervasive Computing , 10(4):36–44, 2011. Serdar C ¸ olak, Lauren P. Alexander, Bernardo G. Alvim, Shomik R. Mehndi-ratta, and Marta C. Gonz´ alez. Analyzing cell phone location data for urban travel: current methods, limitations, and opportunities. Transportation Research Record , 2526(1):126–135, 2015. Arthur P Dempster, Nan M Laird, and Donald B Rubin. Maximum likeli-hood from incomplete data via the EM algorithm. Journal of the Royal Statistical Society: Series B (Methodological) , 39(1):1–22, 1977. 22 James Durbin and Siem Jan Koopman. Time Series Analysis by State Space Methods . Oxford University Press, 2012. Nathan Eagle and Alex Pentland. Reality mining: Sensing complex social systems. Personal and Ubiquitous Computing , 10:255–268, 2006. Dirk Eddelbuettel, Romain Francois, JJ Allaire, Kevin Ushey, Qiang Kou, Nathan Russell, I˜ naki Ucar, Doug Bates, and John Chambers. Rcpp: Seamless R and C++ Integration , 2025. R package version 1.1.0. Juan Jos´ e Egozcue, Vera Pawlowsky-Glahn, Gl` oria Mateu-Figueras, and Car-les Barcelo-Vidal. Isometric logratio transformations for compositional data analysis. Mathematical Geology , 35(3):279–300, 2003. Jie Feng, Zeyu Yang, Fengli Xu, Haisu Yu, Mudan Wang, and Yong Li. Learn-ing to simulate human mobility. In Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining , pages 3426–3433, 2020. Sylvia Fr¨ uhwirth-Schnatter, Gilles Celeux, and Christian P Robert. Hand-book of Mixture Analysis . Chapman and Hall/CRC, 2019. Sylvia Fr¨ uhwirth-Schnatter. Finite Mixture and Markov Switching Models .Springer, 2006. Marta C Gonzalez, Cesar A Hidalgo, and Albert-Laszlo Barabasi. Under-standing individual human mobility patterns. Nature , 453(7196):779–782, 2008. Isobel Claire Gormley and Sylvia Fr¨ uhwirth-Schnatter. Mixture of experts models. In Handbook of Mixture Analysis , pages 271–307. Chapman and Hall/CRC, 2019. J. Gorodkin. Comparing two K-category assignments by a K-category corre-lation coefficient. Computational Biology and Chemistry , 28(5-6):367–374, 2004. Eduardo Graells-Garrido, Diego Caro, and Denis Parra. Inferring modes of transportation using mobile phone data. EPJ Data Science , 7(49):1–23, 2018. Michael Greenacre, Eric Grunsky, John Bacon-Shone, Ionas Erb, and Thomas Quinn. Aitchison’s compositional data analysis 40 years on: A reappraisal. Statistical Science , 38(3):386–410, 2023. 23 Gary K. Grunwald, Adrian E. Raftery, and Peter Guttorp. Time series of continuous proportions. Journal of the Royal Statistical Society Series B (Methodological) , 55(1):103–116, 1993. Haosheng Huang, Yi Cheng, and Robert Weibel. Transport mode detection based on mobile phone network data: A systematic review. Transportation Research Part C: Emerging Technologies , 101:297–312, 2019. Lawrence Hubert and Phipps Arabie. Comparing partitions. Journal of Classification , 2(1):193–218, 1985. Md Shahadat Iqbal, Charisma F Choudhury, Pu Wang, and Marta C Gonz´ alez. Development of origin–destination matrices using mobile phone call data. Transportation Research Part C: Emerging Technologies , 40: 63–74, 2014. Shan Jiang, Yingxiang Yang, Siddharth Gupta, Daniele Veneziano, Shounak Athavale, and Marta C Gonz´ alez. The TimeGeo modeling framework for urban mobility without travel surveys. Proceedings of the National Academy of Sciences , 113(37):E5370–E5378, 2016. Shan Jiang, Joseph Ferreira, and Marta C. Gonzalez. Activity-based hu-man mobility patterns inferred from mobile phone data: A case study of Singapore. IEEE Transactions on Big Data , 3(2):208–219, 2017. Arash Kalatian and Yousef Shafahi. Travel mode detection exploiting cellular network data. MATEC Web of Conferences , 81:03008, 2016. Petra Kynˇ clov´ a, Peter Filzmoser, and Karel Hron. Modeling compositional time series with vector autoregressive models. Journal of Forecasting , 34 (4):303–314, 2015. Lin Liao, Dieter Fox, and Henry A Kautz. Location-based activity recogni-tion using relational Markov networks. In International Joint Conference on Artificial Intelligence Organization , volume 5, pages 773–778, 2005. Massimiliano Luca, Gianni Barlacchi, Bruno Lepri, and Luca Pappalardo. A survey on deep learning for human mobility. ACM Computing Surveys , 55 (1):1–44, 2023. B.W. Matthews. Comparison of the predicted and observed secondary struc-ture of T4 phage lysozyme. Biochimica et Biophysica Acta (BBA) - Protein Structure , 405(2):442–451, 1975. 24 Geoffrey McLachlan and David Peel. Finite Mixture Models . Wiley, 2000. Luca Pappalardo and Filippo Simini. Data-driven generation of spatio-temporal routines in human mobility. Data Mining and Knowledge Dis-covery , 32(3):787–829, 2018. Luca Pappalardo, Salvatore Rinzivillo, and Filippo Simini. Human mobility modelling: Exploration and preferential return meet the gravity model. 
+
+Procedia Computer Science , 83:934–939, 2016. Luca Pappalardo, Filippo Simini, Gianni Barlacchi, and Roberto Pellungrini. scikit-mobility: A Python library for the analysis, generation, and risk assessment of mobility data. Journal of Statistical Software , 103(4):1–38, 2022. R Core Team. R: A Language and Environment for Statistical Computing .R Foundation for Statistical Computing, 2025. William M. Rand. Objective criteria for the evaluation of clustering methods. 
+
+Journal of the American Statistical Association , 66(336):846–850, 1971. H. Sakoe and S. Chiba. Dynamic programming algorithm optimization for spoken word recognition. IEEE Transactions on Acoustics, Speech, and Signal Processing , 26(1):43–49, 1978. Alexis Sard´ a-Espinosa. Time-series clustering in R using the dtwclust pack-age. The R Journal , 11(1):22–43, 2019. Gideon Schwarz. Estimating the dimension of a model. The Annals of Statis-tics , 6(2):461–464, 1978. Robert H Shumway and David S Stoffer. An approach to time series smooth-ing and forecasting using the EM algorithm. Journal of Time Series Anal-ysis , 3(4):253–264, 1982. Robert H Shumway and David S Stoffer. Time Series Analysis and its Ap-plications . Springer, 2000. Chaoming Song, Tal Koren, Pu Wang, and Albert-L´ aszl´ o Barab´ asi. Mod-elling the scaling properties of human mobility. Nature Physics , 6(10): 818–823, 2010. Jameson L. Toole, Serdar Colak, Bradley Sturt, Lauren P. Alexander, Alexandre Evsukoff, and Marta C Gonz´ alez. The path most traveled: Travel demand estimation using big data resources. Transportation Re-search Part C: Emerging Technologies , 58:162–177, 2015. 25 Guido Van Rossum and Fred L. Drake. Python 3 Reference Manual . Cre-ateSpace, 2009. ISBN 1441412697. Laura Vana G¨ ur, Ennio Visconti, Laura Nenzi, Annalisa Cadonna, and Gre-gor Kastner. Posterior predictive model assessment using formal methods in a spatio-temporal mode. arXiv preprint arXiv:2110.01360 , 2021. Huayong Wang, Francesco Calabrese, Giusy Di Lorenzo, and Carlo Ratti. Transportation mode inference from anonymized and aggregated mobile phone call detail records. In 13th International IEEE Conference on In-telligent Transportation Systems , pages 318–323. IEEE, 2010. Pu Wang, Timothy Hunter, Alexandre M. Bayen, Katja Schechtner, and Marta C. Gonz´ alez. Understanding road usage patterns in urban areas. 
+
+Scientific Reports , 2(1001):1–6, 2012. Xingrui Wang, Xinyu Liu, Ziteng Lu, and Hanfang Yang. Large scale GPS trajectory generation using map based on two stage GAN. Journal of Data Science , 19(1):126–141, 2021. J. White and I. Wells. Extracting origin destination information from mo-bile phone data. In Eleventh International Conference on Road Transport Information and Control, 2002. (Conf. Publ. No. 486) , pages 30–34, 2002. Peter Widhalm, Yingxiang Yang, Michael Ulm, Shounak Athavale, and Marta C. Gonz´ alez. Discovering urban activity patterns in cell phone data. Transportation , 42(4):597–623, 2015. Dafeng Xu, Guojie Song, Peng Gao, Rongzeng Cao, Xinwei Nie, and Kun-qing Xie. Transportation modes identification from mobile phone data using probabilistic models. In Jie Tang, Irwin King, Ling Chen, and Jiany-ong Wang, editors, Advanced Data Mining and Applications , volume 7121, pages 359–371. Springer Berlin Heidelberg, 2011. Mogeng Yin, Madeleine Sheehan, Sidney Feygin, Jean-Fran¸ cois Paiement, and Alexei Pozdnoukhov. A generative model of urban activities from cellular data. IEEE Transactions on Intelligent Transportation Systems ,19(6):1682–1696, 2017. Kai Zhao, Mirco Musolesi, Pan Hui, Weixiong Rao, and Sasu Tarkoma. Ex-plaining the power-law distribution of human mobility through transporta-tion modality decomposition. Scientific Reports , 5(9136):1–7, 2015. Tingguo Zheng and Rong Chen. Dirichlet ARMA models for compositional time series. Journal of Multivariate Analysis , 158:31–46, 2017. 26 Supplementary Material to “Model-based Clus-tering of Compositional Trajectories for the Analysis of Mobility Data” A Parameter updates 
+
+We adopt a notation similar to Shumway and Stoffer (2000). Let Z =
+
+{z1, . . . , zn} be a time series of length n. Let aZ 
+
+> t
+
+= E[zt | z1, . . . , zn], 
+
+PZ 
+
+> t
+
+= V[zt | z1, . . . , zn] and 
+
+PZ 
+
+> t,t −1
+
+= E[( zt − E[zt | z1, . . . , zt])( zt−1 − E[zt−1 | z1, . . . , zt]) ⊤ | z1, . . . , zn]be, respectively, the smoothed elements, their variances, and the lag-one co-variance smoothers. Shumway and Stoffer (2000) update the system matrices as 
+
+T = SZ
+
+> 10
+
+ SZ
+
+> 00
+
+−1 ,
+
+Q = n−1
+
+n
+
+SZ 
+
+> 11
+
+− SZ
+
+> 10
+
+ SZ
+
+> 00
+
+−1  SZ
+
+> 10
+
+⊤o
+
+,
+
+H = n−1
+
+> n
+
+X
+
+> t=1
+
+n zt − aZ
+
+> t
+
+   zt − aZ
+
+> t
+
+⊤ + PZ
+
+> t
+
+o
+
+,
+
+where 
+
+SZ 
+
+> 11
+
+=
+
+> n
+
+X
+
+> t=1
+
+ ant an⊤ 
+
+> t
+
++ Pnt
+
+ ,
+
+SZ 
+
+> 10
+
+=
+
+> n
+
+X
+
+> t=1
+
+ ant an⊤ 
+
+> t−1
+
++ Pnt,t −1
+
+ ,
+
+SZ 
+
+> 00
+
+=
+
+> n
+
+X
+
+> t=1
+
+ ant−1an⊤ 
+
+> t−1
+
++ Pnt−1
+
+ .
+
+We extend their approach to the case where there are multiple sets of system matrices Θ(k) = ( T(k), Q(k), H(k)), k = 1 , . . . , K , multiple time series 
+
+Z(i), i = 1 , . . . , N , and each series Z(i) has length ni and evolves according to the system matrices Θ(k) with probability ˆ wik . Then, the updates for T(k)
+
+and Q(k) become 
+
+T(k) = Sk
+
+> 10
+
+ Sk
+
+> 00
+
+−1 ,
+
+Q(k) = 1
+
+PNi=1 ˆwik ni
+
+n
+
+Sk 
+
+> 11
+
+− Sk
+
+> 10
+
+ Sk
+
+> 00
+
+−1 Sk
+
+> 10
+> ⊤
+
+o
+
+,
+
+1where 
+
+Sk 
+
+> 11
+
+=
+
+> N
+
+X
+
+> i=1
+
+ˆwik SZ(i) 
+
+> 11
+
+, Sk 
+
+> 10
+
+=
+
+> N
+
+X
+
+> i=1
+
+ˆwik SZ(i) 
+
+> 10
+
+, Sk 
+
+> 00
+
+=
+
+> N
+
+X
+
+> i=1
+
+ˆwik SZ(i) 
+
+> 00
+
+.
+
+The update for H(k) is 
+
+H(k) = 1
+
+PNi=1 ˆwik niNX
+
+> i=1
+> ni
+
+X
+
+> t=1
+
+ˆwik 
+
+
+
+zt − aZ(i)
+
+> t
+
+  
+
+zt − aZ(i)
+
+> t
+
+⊤
+
++ PZ(i)
+
+> t
+
+
+
+.
+
+The updates for the component weight parameters in Γ are given, at each iteration, by a Newton-Raphson step: 
+
+γ(new ) 
+
+> k
+
+= γ(old ) 
+
+> k
+
+−
+
+n
+
+Hk
+
+
+
+Γ(old )
+
+o −1
+
+∇kQ
+
+
+
+Γ(old )
+
+
+
+, k = 2 , . . . , K , 
+
+where ∇kQ (Γ) and Hk (Γ) are, respectively, the gradient and the Hessian of the Q-function in Equation (5) with respect to the k-th set of component weight parameters, γk. Let πik = πk (xi; Γ) indicate the component weight parameters defined in Equation (2). The two required elements are obtained explicitly as 
+
+∇kQ (Γ) = 
+
+> N
+
+X
+
+> i=1
+
+( ˆ wik − πik ) ˜ xi , Hk (Γ) = −
+
+> N
+
+X
+
+> i=1
+
+πik (1 − πik )˜ xi ˜x⊤ 
+
+> i
+
+.
+
+# B Simulation study 
+
+A simulation study is carried out to verify the clustering performance of the model. We repeat the experiment 100 times, each time generating 3 groups of compositional trajectories, with simplex dimension D = 4. The sizes of the groups are sampled each time between 20 and 50, and each series length is sampled uniformly between 10 and 30. We suppose that the evolution of the compositions depends on their group. In particular, given a starting composition yi0 uniformly sampled in the simplex S3, the following simulation scheme is implemented. 
+
+• The series in Group 1 evolve according to the perturbation 
+
+yi, t +1 = yit ⊕ a ⊕ uit ,
+
+where a = (0 .5, 0.2, 0.2, 0.1) is a fixed composition and the uit play the role of random errors and are sampled from a Dirichlet distribution 
+
+D(α), α j = 1 for j = 1 , . . . , D .2• The series in Group 2 evolve according to the perturbation yi, t +1 =
+
+yit ⊕ uit , with uit ∼ D (α), α j = 2 for j = 1 , . . . , D . The perturbation by a fixed composition is dropped. 
+
+• The series in Group 3 completely drop the dependence from the pre-vious time points, and yit is uniformly sampled in the simplex for all 
+
+t = 1 , . . . , n i.After creating the series, a covariate xi, i = 1 , . . . , N , is sampled for each series to verify whether the mixture of experts model helps the clustering pro-cedure. Hence, xi is sampled from a N (−1, 1) for the series of the first group, from a standard normal distribution for the series of the second group, and from a N (1 , 1) for the series of the third. We run the model twice, includ-ing or excluding the covariate x in the analysis. The number of components 
+
+K varies between 2 and 8. Clusters are initialized using dtwclust (Sard´ a-Espinosa, 2019). Figure S.1 shows the results in the selection of the number of components ˆK and in the allocation of the series to the clusters. The table shows the estimated ˆK across the 100 experiments, according to the ICL-BIC criterion in Equation (6). The correct number of components, ˆK = 3 is the most selected by both the model that includes the covariate and the one that excludes it. To verify whether the series are allocated to the correct cluster, we use, along with the Adjusted Rand Index (ARI; Rand, 1971; Hubert and Ara-bie, 1985), the multi-class Matthews correlation coefficient (MCC; Matthews, 1975; Gorodkin, 2004), an extension of the Pearson correlation coefficient for contingency tables, defined as MCC = cN − t · p
+
+pN 2 − p · p √N 2 − t · t .
+
+The value c represents the number of correctly allocated series. The vector 
+
+t = ( t1, . . . , t K ) has each element tk that corresponds to the true size of the group k, while the vector p = ( p1, . . . , p ˆK ) has each element pk corresponding to the count of elements allocated by the model in cluster k. When ˆK̸ = K,the scalar product t · p is intended as PK′ 
+
+> k=1
+
+tkpk, where K′ = min( K, ˆK). To account for label switching, all possible permutations of the labels are considered, and the maximum MCC score is selected. The boxplots in Figure S.1 show the values of the ARI and MCC scores of the labels predicted by the models that exclude or include the covariate and by the method in package dtwclust , based on the DTW distance, and used as initialization for both this simulation and the application in Section 4. 3ˆK Freq. (Int/Cov) 2 1 / 3 3 81 / 80 4 16 / 16 5 2 / 1 0.00 0.25 0.50 0.75 1.00 MCC, K ^ = 3 ARI, K ^ = 3 MCC, K ^ ≠ 3 ARI, K ^ ≠ 3Model Int. only Cov. X dtwclust 
+
+Figure S.1: Results in the selection of the number of components and boxplot of the MCC and ARI scores of the assignment of the series to the clusters across the simulation experiments. We compare the proposed model exclud-ing (Int. only) or including (Cov. X) the cluster-specific distributed covariate 
+
+X, with the clustering based on DTW distance ( dtwclust ). We distinguish the cases in which K is correctly estimated ( ˆK = 3) from the cases where it is not ( ˆK̸ = 3). We separate the cases in which the number of clusters is correctly estimated ( ˆK = 3) from the cases where it is not. The two state-space models show similar results and outperform distance-based clustering, with large values of both metrics that indicate that the series allocation in the groups is mostly correct, even when the estimated number of clusters is wrong. When ˆK = 3, ARI and MCC scores are close to 1, indicating an almost perfect allocation when the correct number of components is retrieved. The presence of the covariate slightly improves the allocation results, but since x does not interfere with the initial assignment of the series to the groups and with their creation, the model based only on the compositional trajectory shows satisfactory performance. However, the presence of the group-specific covariate generally improves the complete likelihood, to underscore that it effectively helps with the allocation proba-bilities of some series. This effect is illustrated in Figure S.2a, which depicts the ICL-BIC scores of the models in one of the simulation experiments. In addition, Figure S.2b shows how the series are allocated to the clusters in the same experiment. Up to label switching, the models based on the state-space representation are able to collocate the series in the clusters correctly, with 4just two series that are misplaced when the covariate is included in the model and three when it is not included. Clustering based on DTW distance is not able to retrieve the correct clusters in this setting. 
+
+# C Conditional backward elimination proce-dure 
+
+During the model selection phase, the analysis has to be performed multiple times, while varying the number of components, to find the best number of clusters. However, computing every model from scratch may not lead to sat-isfactory results. The ICL-BIC curve may become unstable as the number of components varies. When K is low, this variability is more evident, probably due to the reach of a local minimum. When K is large, overparametrization allows the assignment of the series to a tailored cluster, so the risk of ending with a local minimum is lower. In light of this, the following proposal exploits the better fit of the high-components cases to help the analysis in the low-components cases, while reducing the above-mentioned overparametrization. The algorithm is started with a high number of components, e.g. 12, and after convergence, one component is removed, and the computation restarts with the results from the remaining components as initial parameters. The choice of the component to remove is crucial. Figure S.3 pictures a toy example to visualize the underlying idea. Assume that points are sampled from three Gaussian distributions: two components, represented respectively by the dashed and dotted lines, have a large weight in the distribution and are almost overlapping, and a smaller component, far away from the others, represented by a continuous line. If one wants to reduce the number of components, a sound strategy is to merge the two overlapping clusters into one and keep the smaller cluster separate. To achieve this, note that after a clustering procedure, the cluster represented by the continuous line would have just a few points assigned, but each of them would have a large probability of belonging to it. The clusters corresponding to the dashed- and dotted-line components would have more assigned points each, but these points could also belong to the other cluster with considerable probability. Our procedure captures this idea and applies it to the trajectory clustering by first assigning the series to the clusters using the estimated latent group membership indicators, and, conditional on the assignment, calculating the average probability of the points to belong to the component. 517400 17500 17600 17700 17800 17900        
+
+> 2345678
+> Number of groups
+> ICL−BIC
+> Int. only Cov. X
+
+(a) ICL-BIC for the simulated data as the number of components changes. The minimum is for K = 3. 123  
+
+> Cluster
+> Intercept only Covariate X dtwclust
+
+(b) Allocation of the simulated series. The dots indicate the cluster to which each series is allocated according to the model. The black vertical lines separate the true groups. 
+
+Figure S.2: Results in the first simulation experiment. The proposed models are indicated by “Intercept only” and “Covariate X” according to the inclu-sion of the component-specific covariate in the mixture of experts, and are compared with the clustering based on DTW distance. Comp. A Comp. B Comp. C 
+
+Figure S.3: Mixture model toy example. 6Let Sk =
+
+n
+
+i : ˆCi = k
+
+o
+
+, for k = 1 , . . . , K , be the sets of all the indices relative to the units assigned to each cluster. The conditional average weight is defined as ˜ηk = 1#Sk
+
+X
+
+> i∈Sk
+
+ˆwik . (S.1) For each cluster, this value ranges between K−1, in the extreme case where all components overlap exactly, and 1, if the corresponding component is well separated from the rest of the mixture. When ˜ ηk is low, the elements in the cluster have low probability of belonging to the corresponding component and could quite likely be part of another one. In the end, we remove the component k with the smallest value for ˜ ηk.Figure S.4 shows the values of the conditional average weights for the com-ponents in the example. The dotted-line component would be removed, and, at the next iteration, all of its elements would be assigned to the dashed-line component. We call this heuristic process ‘conditional backward elimination procedure’, since the calculation of the score to eliminate the component is done conditionally on the group assignment. η~ 1 = 0.59       
+
+> η~2=0.58
+> η~3=1
+
+Figure S.4: Conditional average weights in the sense of Equation (S.1) for the conditional backward elimination procedure. Figure 2a, in the main text, shows the results of model selection for the case study application, starting with 12 components and using the conditional backward elimination procedure. 
+
+# D Further details in cluster analysis 
+
+Figure S.5 shows the selection of the model for the weekend analysis. The best model in terms of ICL-BIC includes the OD distance as a trajectory covariate and selects ˆK = 7 components. The heatmap of the assignment probabilities indicates again a good separation between the clusters, with some exchange 7102800 104200 105600 107000            
+
+> 2345678910 11 12
+> Number of groups
+> ICL−BIC
+> Int. only OD
+
+(a) Model selection based on ICL-BIC. 1 2 3 4 5 6 7 
+
+> 0.0 0.5 1.0
+
+(b) Assignment probabilities. 
+
+Figure S.5: Weekend analysis model selection and estimated assignment probabilities ( ˆ wik ) to the components (on the columns) for the weekend series (on the rows). only between the largest clusters, 2 and 3, containing trajectories on the highway and the ring road. Figures S.6 and S.7 represent the trajectories of the clusters that were not present in Figures 3 and 4 of the main text, respectively, for the weekday and weekend analysis. Also in this case, some similarities may be found, especially between clusters 1, 4, and 6 on the weekend and 5, 8, and 3 on weekdays, respectively, but the small cardinality could be misleading in finding the correct associations. Each cluster presents its own peculiarities that could be relevant to policy makers in a detailed mobility analysis. 8(a) Cluster 3, 87 trajectories, ˆ γ3,OD =
+
+−0.86. 
+
+(b) Cluster 5, 75 trajectories, ˆ γ5,OD =
+
+−1.41. 
+
+(c) Cluster 6, 110 trajectories, ˆ γ6,OD =
+
+−0.30. 
+
+(d) Cluster 8, 190 trajectories, ˆ γ8,OD =
+
+−1.11. 
+
+Figure S.6: Trajectory clusters plotted on map for the remaining clusters for the weekday analysis. 9(a) Cluster 1, 44 trajectories, ˆ γ1,OD =
+
+−1.4. 
+
+(b) Cluster 4, 67 trajectories, ˆ γ4,OD =
+
+−0.77. 
+
+(c) Cluster 6, 32 trajectories, ˆ γ6,OD =
+
+−1.30. 
+
+Figure S.7: Trajectory clusters plotted on map for the weekend analysis. 10

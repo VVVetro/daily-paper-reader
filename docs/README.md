@@ -6,46 +6,43 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-18
-- 运行时间：2026-06-18 21:43:57 UTC
+- 最新运行日期：2026-06-19
+- 运行时间：2026-06-19 20:42:32 UTC
 - 运行状态：成功
 - 本次总论文数：7
-- 精读区：0
-- 速读区：7
+- 精读区：4
+- 速读区：3
 
 ### 今日简报（AI）
-今日精选7篇论文速览，聚焦3D资产分割、元数据复用与数据自主查询三大方向。
-
-值得关注：人机协作的3D资产分割方案提升交互内容工作流效率，以及用自主编码代理智能化处理企业数据查询。
-
-建议优先阅读《Data Intelligence Agents》，其自动化建模思路对处理复杂企业数据场景有直接参考价值。
-- 详情：[/202606/18/README](/202606/18/README)
+今日精选7篇论文，聚焦分布式传感融合与知识图谱溯源。  
+最值得看《The Sheaf Laplacian》提出的拓扑数据融合框架（9.0分），以及《Provenance-Enhanced Statements》增强知识图谱可追溯性（8.0分）。  
+建议优先研读这两篇，以把握分布式网络共识与知识可信度提升的核心思路。
+- 详情：[/202606/19/README](/202606/19/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [The Sheaf Laplacian: A Topological Framework for Data Fusion and Consensus in Distributed Sensing Networks](/202606/19/2606.19529v1-the-sheaf-laplacian-a-topological-framework-for-data-fusion-and-consensus-in-distributed-sensing-networks)  
+   标签：评分：9.0/10、query:smart-city
+   evidence：利用层拉普拉斯实现分布式网络数据融合与共识，直接适用于多源数据集成
+2. [Provenance-Enhanced Statements in Knowledge Graphs](/202606/19/2606.15246v1-provenance-enhanced-statements-in-knowledge-graphs)  
+   标签：评分：8.0/10、query:smart-city
+   evidence：知识图谱中增强来源的陈述框架，支持智慧城市数据中的认知推理
+3. [BIM-Edit: Benchmarking Large Language Models for IFC-Based Building Information Modeling](/202606/19/2606.20146v1-bim-edit-benchmarking-large-language-models-for-ifc-based-building-information-modeling)  
+   标签：评分：8.0/10、query:smart-city
+   evidence：基于LLM的IFC BIM模型编辑基准，保留语义和关系
+4. [PCFootprint: A Large-Scale Dataset and Benchmark for Vectorized Building Footprint Extraction from Aerial LiDAR Point Clouds](/202606/19/2606.20455v1-pcfootprint-a-large-scale-dataset-and-benchmark-for-vectorized-building-footprint-extraction-from-aerial-lidar-point-clouds)  
+   标签：评分：8.0/10、query:smart-city
+   evidence：从航空LiDAR点云提取建筑足迹
 
 ### 速读区论文标签
-1. [Human-in-the-Loop Atlas-Based 3D Asset Segmentation for Interactive Content Workflows](/202606/18/2606.17824v1-human-in-the-loop-atlas-based-3d-asset-segmentation-for-interactive-content-workflows)  
+1. [Model-based clustering of compositional trajectories for the analysis of mobility data](/202606/19/2606.18044v1-model-based-clustering-of-compositional-trajectories-for-the-analysis-of-mobility-data)  
    标签：评分：7.0/10、query:smart-city
-   evidence：人在回路的3D资产分割，用于语义区域识别和材质分配
-2. [From Embedded Properties to Trait Nodes: A Design Method for Identifying Reusable Metadata in Property Graph Schemas](/202606/18/2606.18297v1-from-embedded-properties-to-trait-nodes-a-design-method-for-identifying-reusable-metadata-in-property-graph-schemas)  
-   标签：评分：7.0/10、query:smart-city
-   evidence：属性图模式中可复用元数据识别方法，支持统一语义数据模型
-3. [Data Intelligence Agents: Interpreting, Modeling, and Querying Enterprise Data via Autonomous Coding Agents](/202606/18/2606.19319v1-data-intelligence-agents-interpreting-modeling-and-querying-enterprise-data-via-autonomous-coding-agents)  
-   标签：评分：7.0/10、query:smart-city
-   evidence：使用自主编码代理的企业数据集成系统
-4. [TwinBI: An Agentic Digital Twin for Efficient Augmented Interactions with Business Intelligence Dashboards](/202606/18/2606.13731v1-twinbi-an-agentic-digital-twin-for-efficient-augmented-interactions-with-business-intelligence-dashboards)  
+   evidence：结合电话数据和道路网络的成分轨迹模型用于城市移动分析
+2. [AI+CAD Data Representation Architecture: From DeepCAD Solid Modeling to WHUCAD Industrial-Grade Parametric Feature Modeling](/202606/19/2606.16797v2-aicad-data-representation-architecture-from-deepcad-solid-modeling-to-whucad-industrial-grade-parametric-feature-modeling)  
    标签：评分：6.0/10、query:smart-city
-   evidence：代理式数字孪生框架，具有语义归因
-5. [SAG: SQL-Retrieval Augmented Generation with Query-Time Dynamic Hyperedges](/202606/18/2606.15971v1-sag-sql-retrieval-augmented-generation-with-query-time-dynamic-hyperedges)  
+   evidence：AI+CAD数据表示架构，面向参数化特征建模，可迁移至BIM语义提取
+3. [Aerial-ground LiDAR place recognition with patch-level self-supervised learning and expanded reciprocal re-ranking](/202606/19/2606.18583v1-aerial-ground-lidar-place-recognition-with-patch-level-self-supervised-learning-and-expanded-reciprocal-re-ranking)  
    标签：评分：6.0/10、query:smart-city
-   evidence：基于SQL的动态超边检索增强生成，可用于知识图谱推理
-6. [AI+CAD Data Representation Architecture: From AI+CAD Solid Modeling to AI+CAD Industrial-Grade Parametric Feature Modeling](/202606/18/2606.16797v1-aicad-data-representation-architecture-from-aicad-solid-modeling-to-aicad-industrial-grade-parametric-feature-modeling)  
-   标签：评分：6.0/10、query:smart-city
-   evidence：AI+CAD数据表示架构可迁移至建筑基础设施
-7. [SAMA: Semantic Anchor-aligned Augmentation for Unified Low-Resource Multimodal Information Extraction](/202606/18/2606.18780v1-sama-semantic-anchor-aligned-augmentation-for-unified-low-resource-multimodal-information-extraction)  
-   标签：评分：6.0/10、query:smart-city
-   evidence：多模态信息抽取数据增强
+   evidence：空地LiDAR位置识别，集成多种点云源用于城市测绘
 
 
 <div class="dpr-home-promo-card">

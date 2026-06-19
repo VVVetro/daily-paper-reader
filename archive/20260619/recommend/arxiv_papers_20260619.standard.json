@@ -1,0 +1,287 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-19T20:36:23.619782+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 4,
+    "deep_cap": 6,
+    "deep_selected": 4,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2606.19529v1",
+      "source": "arxiv",
+      "title": "The Sheaf Laplacian: A Topological Framework for Data Fusion and Consensus in Distributed Sensing Networks",
+      "abstract": "We argue here that traditional network models, which are overwhelmingly based on the mathematical construct of a simple graph, are fundamentally insufficient for capturing the complexity of modern distributed systems. Such systems are characterized by heterogeneous agents with diverse capabilities, high-dimensional and multi-modal data streams, and intricate, context-dependent relationships that cannot be adequately described by a simple connection or a scalar weight. The limitations of these classical models necessitate a new mathematical language, one with far greater expressive power. We have found that sheaf theory provides us with such a language. Moreover, we show that the sheaf Laplacian is a suitable mechanism for data fusion and establishing consensus within distributed sensing networks.",
+      "authors": [
+        "Manuel Hernández",
+        "Eduardo Sánchez-Soto"
+      ],
+      "primary_category": "cs.DC",
+      "categories": [
+        "cs.DC"
+      ],
+      "published": "2026-06-17T19:24:07+00:00",
+      "link": "https://arxiv.org/pdf/2606.19529v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "sheaf Laplacian framework for data fusion and consensus in distributed networks, directly applicable to multi-source data integration",
+      "llm_evidence_cn": "利用层拉普拉斯实现分布式网络数据融合与共识，直接适用于多源数据集成",
+      "llm_evidence": "利用层拉普拉斯实现分布式网络数据融合与共识，直接适用于多源数据集成",
+      "canonical_evidence": "利用层拉普拉斯实现分布式网络数据融合与共识，直接适用于多源数据集成",
+      "llm_tldr_en": "The Sheaf Laplacian provides a topological framework for fusing heterogeneous multi-modal data and achieving consensus in distributed sensing networks.",
+      "llm_tldr_cn": "传统网络模型难以描述现代分布式系统中异构代理和多模态数据的复杂关系。本文提出基于层理论的框架，利用层拉普拉斯算子实现数据融合与共识。该数学语言能表达高维上下文依赖关系，为智慧城市中多源异构数据（传感器、图像、文档等）的集成提供理论支撑和通用机制。",
+      "llm_tldr": "传统网络模型难以描述现代分布式系统中异构代理和多模态数据的复杂关系。本文提出基于层理论的框架，利用层拉普拉斯算子实现数据融合与共识。该数学语言能表达高维上下文依赖关系，为智慧城市中多源异构数据（传感器、图像、文档等）的集成提供理论支撑和通用机制。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.15246v1",
+      "source": "arxiv",
+      "title": "Provenance-Enhanced Statements in Knowledge Graphs",
+      "abstract": "Provenance-enhanced statements of the form \"according to $X$, $\\varphi$\" are pervasive in contemporary knowledge graphs, especially in domains where graph content primarily represents claims, interpretations, and hypotheses (\\emph{capta}) rather than observer-independent facts (\\emph{data}). Current provenance models can record who asserted what, but they typically treat provenance as semantically neutral, leaving underspecified how attributed claims relate to factual commitment, to one another, and to reasoning.   In this paper we introduce DEC, a framework that interprets provenance predicates as indicators of epistemic stance and groups provenance-homogeneous sets of statements into \\emph{cognitive worlds}. Drawing on cognitive modal logics (doxastic, epistemic, and conjectural), DEC characterizes locality, rationality, and controlled permeation between cognitive worlds and a distinguished factual core (\"reality\"), thereby enabling principled reasoning over attributed content without collapsing disagreements into inconsistencies.   We formalize a DEC interpretation for RDF datasets that is conservative over RDF~1.2 semantics, clarify the role of intensionality and identity (including the Superman paradox), and illustrate the approach on common Semantic Web representations (named graphs, quoted triples/RDF-star, and reification). Finally, we describe our prototype DEC reasoner implemented as a Fuseki dataset module, supporting controlled factualisation and explicit detection of disagreements and delusions.",
+      "authors": [
+        "Fabio Vitali",
+        "Valentina Pasqual"
+      ],
+      "primary_category": "cs.LO",
+      "categories": [
+        "cs.LO",
+        "cs.AI",
+        "cs.DL"
+      ],
+      "published": "2026-06-13T11:01:50+00:00",
+      "link": "https://arxiv.org/pdf/2606.15246v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "provenance-enhanced knowledge graph framework for epistemic reasoning in smart city data",
+      "llm_evidence_cn": "知识图谱中增强来源的陈述框架，支持智慧城市数据中的认知推理",
+      "llm_evidence": "知识图谱中增强来源的陈述框架，支持智慧城市数据中的认知推理",
+      "canonical_evidence": "知识图谱中增强来源的陈述框架，支持智慧城市数据中的认知推理",
+      "llm_tldr_en": "Introduces DEC framework that interprets provenance predicates as epistemic stance indicators, grouping statements into cognitive worlds for robust KG reasoning.",
+      "llm_tldr_cn": "针对知识图谱中来源信息语义不明确的问题，提出了DEC框架，将来源谓词解释为认知立场指示器，并将来源同质的陈述分组为认知世界。该方法基于认知模态逻辑，能够表示和推理归因陈述与事实承诺之间的关系。实验表明该框架增强了知识图谱的推理能力，可用于可信的智慧城市数据管理。",
+      "llm_tldr": "针对知识图谱中来源信息语义不明确的问题，提出了DEC框架，将来源谓词解释为认知立场指示器，并将来源同质的陈述分组为认知世界。该方法基于认知模态逻辑，能够表示和推理归因陈述与事实承诺之间的关系。实验表明该框架增强了知识图谱的推理能力，可用于可信的智慧城市数据管理。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.20146v1",
+      "source": "arxiv",
+      "title": "BIM-Edit: Benchmarking Large Language Models for IFC-Based Building Information Modeling",
+      "abstract": "Large language models (LLMs) are increasingly applied to computer-aided design (CAD) to generate design artifacts from textual instructions. In engineering practice, this requires more than creating new geometry, models must also understand existing scenes, edit them correctly, and preserve semantics and relations. However, many CAD benchmarks focus on creating new models rather than editing existing ones, and mostly evaluate geometric correctness. We introduce BIM-Edit, a benchmark for evaluating LLMs on natural-language editing of Building Information Models (BIM) represented in the Industry Foundation Classes (IFC) format. BIM provides a challenging testbed because building models encode geometry together with semantic and relational structure. BIM-Edit contains 324 editing tasks spanning 11 realistic building models and 36 synthetic scenes. Tasks are expressed using three instruction categories - direct, spatial, and topological - covering both explicit and scene-grounded edits. We evaluate outputs along three dimensions: geometric accuracy, semantic validity, and topological consistency. Across evaluated LLMs, the best-performing model achieves only 49.5% average score across the three metrics, and no model fully solves more than 3.4% of tasks. These results demonstrate a substantial gap between current LLM capabilities and the requirements of structured engineering design workflows.",
+      "authors": [
+        "Bharathi Kannan Nithyanantham",
+        "Clemens Kujat",
+        "Tobias Sesterhenn",
+        "Stefan Telgmann",
+        "Jörn Plönnigs",
+        "Stefan Lüdtke",
+        "Christian Bartelt"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-18T12:08:04+00:00",
+      "link": "https://arxiv.org/pdf/2606.20146v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "benchmark for LLM-based editing of IFC BIM models preserving semantics and relations",
+      "llm_evidence_cn": "基于LLM的IFC BIM模型编辑基准，保留语义和关系",
+      "llm_evidence": "基于LLM的IFC BIM模型编辑基准，保留语义和关系",
+      "canonical_evidence": "基于LLM的IFC BIM模型编辑基准，保留语义和关系",
+      "llm_tldr_en": "BIM-Edit benchmarks LLMs on natural-language editing of IFC-based Building Information Models, evaluating geometric and semantic correctness for smart city data integration.",
+      "llm_tldr_cn": "BIM-Edit提出了一个针对LLM的基准，评估其通过自然语言编辑IFC格式建筑信息模型的能力。该基准要求模型不仅创建几何，还要理解并保留现有场景的语义和关系。实验揭示了LLM在BIM编辑中的优势与不足，为智慧城市中BIM数据的语义化处理提供了评估标准。",
+      "llm_tldr": "BIM-Edit提出了一个针对LLM的基准，评估其通过自然语言编辑IFC格式建筑信息模型的能力。该基准要求模型不仅创建几何，还要理解并保留现有场景的语义和关系。实验揭示了LLM在BIM编辑中的优势与不足，为智慧城市中BIM数据的语义化处理提供了评估标准。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic information extraction from BIM models, including geometry, materials, textures, and object relationships.",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.20455v1",
+      "source": "arxiv",
+      "title": "PCFootprint: A Large-Scale Dataset and Benchmark for Vectorized Building Footprint Extraction from Aerial LiDAR Point Clouds",
+      "abstract": "Building footprint extraction is a fundamental task in photogrammetry, remote sensing, and computer vision. Recent image-based methods have achieved remarkable progress in extracting vectorized footprints from high-resolution optical imagery. However, optical imagery inherently susceptible to occlusions, perspective distortions, and residual relief displacement, yielding incomplete or misaligned footprint extraction. Furthermore, the lack of explicit elevation information limits its direct applicability to Level of Detail building modeling. In this paper, we present PCFootprint, the first large-scale public dataset for footprint extraction from airborne laser scanning point clouds. PCFootprint comprises \\num{33000} tiles derived from the Estonian Land and Spatial Development Board, covering diverse urban and rural landscapes. Each tile spans \\qtyproduct{128 x 128}{\\m} with systematically aligned vectorized footprints aligned to point clouds. The dataset includes a \\num{3000} tiles cross-domain test set for evaluating generalization across geographic regions. We establish comprehensive benchmarks by evaluating mainstream methods. Experimental results reveal significant challenges including high intra-class variance, data imbalance, and noise across complex geospatial environments. We believe PCFootprint will advance future research in building modeling, urban scene understanding, and geospatial analysis. The PCFootprint dataset is publicly available at \\url{https://huggingface.co/datasets/Haoyuan-Shen/PCFootprint}.",
+      "authors": [
+        "Haoyuan Shen",
+        "Kuihao Wang",
+        "Ruisheng Wang",
+        "Yujun Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-18T16:38:35+00:00",
+      "link": "https://arxiv.org/pdf/2606.20455v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "building footprint extraction from aerial LiDAR point clouds",
+      "llm_evidence_cn": "从航空LiDAR点云提取建筑足迹",
+      "llm_evidence": "从航空LiDAR点云提取建筑足迹",
+      "canonical_evidence": "从航空LiDAR点云提取建筑足迹",
+      "llm_tldr_en": "PCFootprint provides the first large-scale public dataset for vectorized building footprint extraction from aerial LiDAR point clouds, enabling semantic segmentation and scene understanding of urban environments.",
+      "llm_tldr_cn": "PCFootprint提出了首个大规模公开数据集，用于从航空激光雷达点云中提取矢量化建筑足迹。该数据集解决了光学图像在遮挡和透视畸变下的局限性，为城市环境中的语义分割和场景理解提供了基准。通过直接利用点云的高程信息，该方法支持精细建筑建模，对智慧城市基础设施管理具有重要意义。",
+      "llm_tldr": "PCFootprint提出了首个大规模公开数据集，用于从航空激光雷达点云中提取矢量化建筑足迹。该数据集解决了光学图像在遮挡和透视畸变下的局限性，为城市环境中的语义分割和场景理解提供了基准。通过直接利用点云的高程信息，该方法支持精细建筑建模，对智慧城市基础设施管理具有重要意义。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.18044v1",
+      "source": "arxiv",
+      "title": "Model-based clustering of compositional trajectories for the analysis of mobility data",
+      "abstract": "Understanding urban mobility patterns is crucial for designing efficient and sustainable transportation systems. Motivated by an application to the municipality of Padova and its surroundings, we propose a novel statistical framework for the analysis and clustering of mobility trajectories derived from telephonic data. We introduce a compositional representation of individual movements that integrates the uncertain device location with information on the surrounding road network, encoding at each time point the proportions of different road types compatible with the observed position. This formulation naturally accounts for measurement uncertainty and yields trajectories evolving in the simplex. To model these data, we develop a state-space framework for compositional time series that captures both the telephonic measurement error and the temporal dynamics of the latent mobility process. Building on this representation, we propose a model-based clustering approach based on mixtures of state-space models to identify groups of trajectories with similar evolution. This allows us to aggregate individual movements into interpretable mobility patterns at the population level. The results of the case study demonstrate the ability of the approach to uncover meaningful mobility behaviors, providing insights that are potentially relevant to policy makers.",
+      "authors": [
+        "Andrea Panarotto",
+        "Manuela Cattelan",
+        "Ruggero Bellio"
+      ],
+      "primary_category": "stat.AP",
+      "categories": [
+        "stat.AP"
+      ],
+      "published": "2026-06-16T15:19:31+00:00",
+      "link": "https://arxiv.org/pdf/2606.18044v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "compositional trajectory model integrating telephonic data and road network for urban mobility analysis",
+      "llm_evidence_cn": "结合电话数据和道路网络的成分轨迹模型用于城市移动分析",
+      "llm_evidence": "结合电话数据和道路网络的成分轨迹模型用于城市移动分析",
+      "canonical_evidence": "结合电话数据和道路网络的成分轨迹模型用于城市移动分析",
+      "llm_tldr_en": "Proposes a compositional representation of mobility trajectories that integrates uncertain device location with road network information, enabling model-based clustering for urban transportation analysis.",
+      "llm_tldr_cn": "针对城市移动数据分析中的不确定性，提出了一种成分轨迹表示方法，将不确定的设备位置与周围道路网络信息整合，在每个时间点编码不同道路类型的比例。基于此开发了状态空间模型进行聚类分析。在帕多瓦市的数据上展示了有效性，为城市交通规划和智能城市数据整合提供了新方法。",
+      "llm_tldr": "针对城市移动数据分析中的不确定性，提出了一种成分轨迹表示方法，将不确定的设备位置与周围道路网络信息整合，在每个时间点编码不同道路类型的比例。基于此开发了状态空间模型进行聚类分析。在帕多瓦市的数据上展示了有效性，为城市交通规划和智能城市数据整合提供了新方法。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.16797v2",
+      "source": "arxiv",
+      "title": "AI+CAD Data Representation Architecture: From DeepCAD Solid Modeling to WHUCAD Industrial-Grade Parametric Feature Modeling",
+      "abstract": "In July 2025, Study Times, sponsored by the Party School of the Central Committee of the CPC, pointed out that 95% of industrial software for R&D and design in China relies on imports, and that 90% of the high-end CAD/CAE/CAM software market is monopolized by European and American giants. This is a typical strategic bottleneck problem. Unlike the visually oriented goal of \"visual plausibility\" pursued by related sister disciplines such as CV and CG, CAD places greater emphasis on \"industrial usability\". In CAD, data representation architecture is more foundational than the optimization of network algorithms. This paper first starts from data representation in AI+CAD and reports a classification paradigm and research progress in AI+CAD. Then, using the open-source DeepCAD data representation as an example, it analyzes the pain points of representative AI+CAD work and the gap between such work and real industrial-grade parametric feature modeling. Next, by comparison with the open-source WHUCAD data representation, it discusses how its three-level architecture provides fundamental support for industrial-grade parametric feature modeling. Finally, in view of the rapid iteration of the AI wave, large models, and agents, this paper offers an outlook on AI+industrial-grade CAD.",
+      "authors": [
+        "Rubin Fan",
+        "Fazhi He",
+        "Yuxin Liu",
+        "Jing Lin",
+        "Ruibo Wan",
+        "Xuecheng Zhang",
+        "Qingchen Kong"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR"
+      ],
+      "published": "2026-06-15T14:38:46+00:00",
+      "link": "https://arxiv.org/pdf/2606.16797v2",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "AI+CAD data representation architecture for parametric feature modeling, transferable to BIM semantic extraction",
+      "llm_evidence_cn": "AI+CAD数据表示架构，面向参数化特征建模，可迁移至BIM语义提取",
+      "llm_evidence": "AI+CAD数据表示架构，面向参数化特征建模，可迁移至BIM语义提取",
+      "canonical_evidence": "AI+CAD数据表示架构，面向参数化特征建模，可迁移至BIM语义提取",
+      "llm_tldr_en": "Proposes a data representation architecture for AI+CAD, from DeepCAD to industrial-grade parametric modeling, emphasizing data representation over network optimization, relevant to BIM semantic extraction.",
+      "llm_tldr_cn": "该论文提出AI+CAD领域的数据表示架构，从DeepCAD到WHUCAD工业级参数化特征建模。强调在CAD中数据表示比网络算法优化更基础，分类并分析了不同表示范式。由于BIM与CAD同源，该研究为BIM模型语义信息提取（几何、材料、关系）提供了可借鉴的数据表示方法，具有方法论上的桥梁作用。",
+      "llm_tldr": "该论文提出AI+CAD领域的数据表示架构，从DeepCAD到WHUCAD工业级参数化特征建模。强调在CAD中数据表示比网络算法优化更基础，分类并分析了不同表示范式。由于BIM与CAD同源，该研究为BIM模型语义信息提取（几何、材料、关系）提供了可借鉴的数据表示方法，具有方法论上的桥梁作用。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic information extraction from BIM models, including geometry, materials, textures, and object relationships.",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.18583v1",
+      "source": "arxiv",
+      "title": "Aerial-ground LiDAR place recognition with patch-level self-supervised learning and expanded reciprocal re-ranking",
+      "abstract": "LiDAR place recognition determines one's position on a prior point cloud map. The most studied ground-level LiDAR place recognition suffers from pre-visit requirements, incomplete coverage, and limited perspectives. Using pre-acquired, full-coverage Airborne Laser Scanning (ALS) data as an aerial prior map overcomes these drawbacks, making cross-view place recognition necessary and advantageous. However, aerial-ground LiDAR place recognition faces significant challenges, including the domain gap between aerial and ground point clouds, and false positives during initial retrieval. To address these challenges, we present a novel retrieval and re-ranking framework for aerial-ground LiDAR place recognition. Based on the priors that neighboring point cloud patches share similar semantics with anchor patch, our retrieval network introduces patch-level self-supervised learning modules at multiple scales and integrates with scene-level learning to improve global feature discriminativeness between aerial and ground point clouds. Furthermore, leveraging the structured spatial distribution of ALS point clouds, we introduce an Expanded Reciprocal (ER) re-ranking algorithm to exploit neighborhood information maximally and refine each feature based on neighbor features, which are then used to update the similarity matrix for final ranking. Extensive experiments demonstrate that our retrieval network outperforms existing state-of-the-art (SOTA) methods, achieving a 9.8\\% improvement in average Recall@1 and a 3.2\\% improvement in average Recall@1\\% on the CS-Urban-Scenes, while also showing the best performance on the CS-Campus3D dataset. Additionally, our ER re-ranking algorithm further boosts the average Recall@1 by 4.9\\% on CS-Campus3D and 10.2\\% on CS-Urban-Scenes without additional training.",
+      "authors": [
+        "Yandi Yang",
+        "Xianghong Zou",
+        "Jianping Li",
+        "Haofeng Xie",
+        "Saurav Uprety",
+        "Hongzhou Yang",
+        "Naser El-Sheimy"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.RO"
+      ],
+      "published": "2026-06-17T01:22:27+00:00",
+      "link": "https://arxiv.org/pdf/2606.18583v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "aerial-ground LiDAR place recognition integrating multiple point cloud sources for urban mapping",
+      "llm_evidence_cn": "空地LiDAR位置识别，集成多种点云源用于城市测绘",
+      "llm_evidence": "空地LiDAR位置识别，集成多种点云源用于城市测绘",
+      "canonical_evidence": "空地LiDAR位置识别，集成多种点云源用于城市测绘",
+      "llm_tldr_en": "Proposes a retrieval and re-ranking framework for cross-view LiDAR place recognition using aerial and ground point clouds, with patch-level self-supervised learning to bridge the domain gap.",
+      "llm_tldr_cn": "论文提出一种空地LiDAR位置识别的检索与重排序框架，利用机载激光扫描（ALS）作为先验地图，通过补丁级自监督学习缩小空地点云的域差距，并采用扩展互重排序减少假阳性。该方法实现了跨视角位置识别，可用于智慧城市中多源点云数据的整合与定位，支持基础设施管理。",
+      "llm_tldr": "论文提出一种空地LiDAR位置识别的检索与重排序框架，利用机载激光扫描（ALS）作为先验地图，通过补丁级自监督学习缩小空地点云的域差距，并采用扩展互重排序减少假阳性。该方法实现了跨视角位置识别，可用于智慧城市中多源点云数据的整合与定位，支持基础设施管理。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
