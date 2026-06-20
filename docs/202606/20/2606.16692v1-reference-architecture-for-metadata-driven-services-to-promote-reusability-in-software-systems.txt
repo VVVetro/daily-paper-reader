@@ -1,0 +1,563 @@
+Title: Reference Architecture for Metadata-driven Services to Promote Reusability in Software Systems
+
+URL Source: https://arxiv.org/pdf/2606.16692v1
+
+Published Time: Tue, 16 Jun 2026 02:15:55 GMT
+
+Number of Pages: 29
+
+Markdown Content:
+# Highlights 
+
+# Reference Architecture for Metadata-driven Services to Promote Reusability in Software Systems 
+
+João F. L. Daniel, Bruno P. Romano, Xiaofeng Wang, Andrea Janes, Eduardo M. Guerra 
+
+• A reference architecture for metadata-driven service reusability is proposed 
+
+• The reference architecture is grounded in a peer-reviewed pattern language 
+
+• Metadata enables a single service to absorb structurally heterogeneous clients 
+
+• Architecture evolution favors configuration and pluggable changes over code changes 
+
+• Four real-world systems empirically corroborate the reference architecture’s design 
+
+> arXiv:2606.16692v1 [cs.SE] 15 Jun 2026
+
+# Reference Architecture for Metadata-driven Services to Promote Reusability in Software Systems 
+
+# João F. L. Daniel a,∗, Bruno P. Romano b, Xiaofeng Wang c, Andrea Janes a and Eduardo M. Guerra a
+
+> a
+
+Free University of Bozen-Bolzano, Piazza Università, 1, Bozen-Bolzano, 39100, Trentino Alto-Adige, Italy 
+
+> b
+
+University of São Paulo, Rua da Reitoria, 34, Cidade Universitária, 05508-220, São Paulo, Brazil 
+
+> c
+
+Lappeenranta–Lahti University of Technology, Yliopistonkatu 34, Lappeenranta, 53850, Lappeenranta, Finland 
+
+A R T I C L E I N F O 
+
+Keywords :service architectures architecture model software architecture patterns API design reusable services reference architecture metadata 
+
+A B S T R A C T 
+
+Service-based Architectures place reusability among their central design goals, yet structural heterogeneity across clients often drives the creation of services with similar functionalities, undermining system evolution and maintainability. In this work, we address this issue by focusing on validated architectural artifacts that bound to a limit the number of replicated services. We do so by proposing and validating a reference architecture that employs metadata as the core mechanism to promote service reusability, embracing heterogeneous data. The proposed RA is designed based on a pattern language with the same purpose, and it is evaluated by combining two well-established methods for RA evaluation: scenario-based evaluation and case studies with real-world systems. The triangulation of these methods’ results demonstrated that, during the system’s evolution, the most common change types the RA incurs are either no change or less impactful ones, like configuration changes or the addition of a pluggable class. 
+
+# 1. Introduction 
+
+Service-based Architectures (SbA) has established itself as the standard architecture paradigm for designing software systems. It encompasses the architectural styles of Service-Oriented Architecture (SOA) and Microservices Architecture (MSA) because of the shared principle: exposing the system’s capabilities through well-defined API contracts, favoring decoupling and reuse (Sommerville, 2011; Papazoglou, 2008; Gorton, 2006). Reusability is among these styles’ motivations to improve development productivity and cohesion in the architecture. Nonetheless, despite reuse being a goal of SbA, achieving it in practice has challenges. Desirable qualities like modularization and fine-grained boundaries also create conditions that tend to replicate access to similar functionality due to differences in data structure or semantics (Carvalho, Garcia, Assunção, Bonifácio, Tizzei and Colanzi, 2019). That is because the straightforward solution is to create dedicated services for each case of the heterogeneous ecosystem of clients. But, over time, that incurs costly maintenance; after all, the same capability is spread across multiple similar implementations. Addressing this issue requires architectural mechanisms that allow a single service to embrace structural hetero-geneity without compromising coherence or extensibility. One approach to that is to design the API contracts to allow any data structure, as long as it comes with a layer of describing metadata. This idea can be seen in API patterns such as W ISH LIST (Zimmermann, Stocker, Lübke, Zdun and Pautasso, 2023) and in a dedicated pattern language for metadata-driven service reusability (Lino Daniel, Wang and Martins Guerra, 2024; Daniel, Wang and Guerra, 2025). Even though a pattern language communicates solutions to a variety of problems, it might not fit the needs of practitioners seeking solutions for a broader scope, in which multiple such problems occur simultaneously. Reference architectures (RAs) address this gap: by assembling components that play the roles described in the patterns, a pattern-driven RA offers a more concrete and actionable guide, standing out especially when it comes to mapping the patterns into components and the interactions between these components. Nonetheless, RAs are defined in a level of abstraction that still enables their application to multiple different concrete scenarios (Guerra and Nakagawa, 
+
+> ∗
+
+Corresponding author 
+
+joao.daniel@student.unibz.it (J.F.L. Daniel); brunoromano@ime.usp.br (B.P. Romano); (X. Wang); 
+
+andrea.janes@unibz.it (A. Janes); eduardo.guerra@unibz.it (E.M. Guerra) 
+
+> ORCID
+
+(s): 0000-0002-2877-9509 (J.F.L. Daniel); 0009-0000-4305-1295 (B.P. Romano); 0000-0001-8424-419X (X. Wang); 
+
+0000-0002-1423-6773 (A. Janes); 0000-0001-5555-3487 (E.M. Guerra) 
+
+Daniel et al.: Preprint submitted to Elsevier Page 1 of 28 2015). Software RAs are used in a wide range of domains, and their evaluation through scenario-based and case studies is a well-establish practice (Kazman, Abowd, Bass and Clements, 2002; Moreira, Silva, Junior, Tenório and Neto, 2026). The goal of this work is to promote service reusability in the context of service-based architectures via an architectural design approach, aiming at providing a structure that bounds the amount of services with replicated or similar functionalities. From this goal, we distilled the following Research Questions (RQ): 
+
+RQ1 In the context of SbA, how can a RA bound the amount of services with replicated or similar functionalities, yielding service reusability?  
+
+> RATIONALE
+
+⇒ proposing a RA for service reusability is an approach that connects components in collaboration towards well-defined requirements, at the same time that is abstract and flexible enough to be used in multiple concrete scenarios ;
+
+RQ2 To what extent does this RA bound the amount of services with replicated or similar functionalities?  
+
+> RATIONALE
+
+⇒ although the RA is design to fulfill its requirements, it is important to assess more specifically how well each feature is addressed by the proposed reference architecture, both conceptually and in realistic conditions ;
+
+# 2. Reusability in Service-based Architectures 
+
+SbA encompasses various architectural styles, more distinctly Service-Oriented Architecture (SOA) and Microser-vices Architecture (MSA) – although there are other well-known approaches, like Self-Contained Systems and Serverless 
+
+or Function-as-a-Service . Regardless, the central aspect of these styles is the concept of service , which, among multiple definitions, is an approach to expose a system’s capability through a well-established API contract in a reusable and loosely coupled way (Sommerville, 2011; Papazoglou, 2008; Gorton, 2006). Despite SbA having reuse as a key concern, there are different interpretations of its meaning (Oliveira, Vargas and Rodrigues, 2018); some of them are more centered in structural and infrastructural aspects, and others perceive service reuse as the ability to be embedded in different business processes or as a means to achieve higher software quality, regarding improving cohesion and reducing replication. The reasons to seek service reuse also vary, ranging from engineering-related improvements like development agility and productivity to architectural qualities like decoupling and flexibility (Oliveira et al., 2018). In the same work, they also list strategies to achieve service reuse, which highlights the impact of domain modeling around services and following service-oriented standards (Oliveira et al., 2018). The adoption of MSA, especially because of the migration to an architecture centered in service, brings to light the need for flexible services to enable reuse (Carvalho et al., 2019). This process enables the redesign of APIs, and one approach to favor reuse is to slightly broaden their capabilities or shared data, making it suitable for a wider range of clients (Carvalho et al., 2019). Although this is a liability, there are documented, well-known practices to deal with it, like the API patterns W ISH LIST and W ISH TEMPLATE (Zimmermann et al., 2023), that use metadata to enable clients to select specific fields on the fetched data. Lastly, service reusability is not a synonym of self-adaptability: the former is a design-time concern that allows a service to be part of different business contexts; the latter refers to the runtime capability of responding to changes in the context and in response to execution events (Mendonça, Garlan, Schmerl and Cámara, 2018), like a surge in demand or an error. 
+
+# 3. Research Method 
+
+We designed our research method based on the two research questions presented in this study, dividing it into two phases. In the first phase, addressing RQ1, we designed an RA whose goal is to promote reusability in SbA, described in Subsec. 3.1. In the second phase, focusing on RQ2, the designed RA was evaluated based on architectural scenarios and case studies, as described in Subsec. 3.2. 
+
+3.1. Reference Architecture Design 
+
+We distilled RQ1 and defined that our proposed RA should adhere to the following functional requirements and quality attributes: 
+
+• Functional Requirements (FR):   
+
+> Daniel et al.: Preprint submitted to Elsevier Page 2 of 28
+
+(FR-1) Heterogeneous Data Ingestion: rather than multiple dedicated operations per client type or domain object, the service must expose in its API contract a single ingestion operation capable of handling heterogeneous data; 
+
+(FR-2) Contextual Data Characterization: the service must expect an additional information layer (metadata) to characterize the heterogeneous data, in structure, semantics, or both; 
+
+(FR-3) Data-driven Processing Adaptation: in design time, there is not enough information on how to process ingested data; hence, the service must adapt the processing steps to the data and metadata received; 
+
+(FR-4) Provider-side Characterization Bridging: as the API contract’s metadata requirement might not be fulfillable in many cases, the RA must provide the means to satisfy on the clients’ behalf; 
+
+(FR-5) Structural Mediation Between Incompatible Parties: clients might be interested in the capabilities of a legacy (sub)system having either parts unable to adapt to each other; the architecture must support the mediation between these parts based on metadata describing the transformations between expected and provided structures; 
+
+(FR-6) Dynamic External Service Integration: the architecture must support a seamless approach to integrate 
+
+3𝑟𝑑 -party service providers, via self-registration, describing in metadata the communication to be estab-lished; 
+
+(FR-7) Result Aggregation and Flexible Retrieval: in the case of data being stored and processed to be served later, the architecture must provide solutions to that. The service must expose a flexible reading operation, in which the data is responded to with the accompanying metadata so that the client can interpret it, and a normalized reading operation, in which the metadata is used by the service to transform the data into the defined shape. 
+
+• Quality Attributes (QA): 
+
+(QA-1) Service Reusability Across Structural Heterogeneity: the service itself must have the conditions to homogeneously respond to the heterogenous demands of its clients, without compromising its functional capabilities; 
+
+(QA-2) Seamless Extensibility of Providers: a provider is understood as either a client that provides data through the API contract, or another service that provides its capabilities with its own API contract; the service must support accommodating a new provider requiring the least significant design impact possible, ideally having no impact; 
+
+(QA-3) Seamless Extensibility of Consumers: the service must support accommodating a new consumer requiring the least significant design impact possible, ideally having no impact; 
+
+(QA-4) Seamless Extensibility of Processors: the architecture must support accommodating a new processor, requiring the least significant design impact possible, ideally having no impact. The RA was designed following the pattern-based method for creating reference architectures (Guerra and Nakagawa, 2015). Patterns excel in communicating a contextualized solution to a problem, and pattern languages do the same to various related problems within the same context. Nonetheless, there is no single way to implement a pattern, much less a combination of different patterns. Meanwhile, reference architectures assemble software components that play the roles proposed by the patterns, providing a clearer view of how to combine the solutions. We selected a pattern language created in previous work as a starting point: it is intended for metadata-driven services to promote reusability (Lino Daniel et al., 2024), which we summarized in Subsec. 4.1. We mapped its patterns into components of an architecture based on the role the pattern’s solution played. In some cases, a single pattern led to more than one component – such as the P LUG THE PROCESSORS IN pattern, from which we derived the P ROCESSING 
+
+ORCHESTRATOR and the P ROCESSOR interface; in other cases, a single component embedded solutions from different patterns – as it happened with the P ROCESSOR PROXY component that brings together the solutions of both patterns, PLUG THE PROCESSORS IN and P ROXY THE PLUGIN .Once the patterns had been mapped into a comprehensive architecture, we identified three distinct concerns. So, even though they are related and can provide synergy within an architecture, they could be presented separately. Based on that, we separated the proposed RA into the following three parts so as to reduce the cognitive load required to understand each one:    
+
+> Daniel et al.: Preprint submitted to Elsevier Page 3 of 28 Figure 1: An overview of the proposed RA with highlights of its three concerns
+
+1. Data Ingestion and Processing : here lies the core of the pattern language, where metadata is used to guide the processing of data sent from external providers; 2. Moderation : the common factor of this concern is a structural feature entailed by the roles played by the patterns: to serve as supporting intermediates in the communication between systems, typically bridging internal ones to external ones; 3. External Consumption : it can be seen as a specialization of some solutions in the "moderation" slice when enhancing functionalities with 3𝑟𝑑 -party services. The proposed RA comprises these concerns, but they are not mutually exclusive; rather, they are composable. One challenge entailing the D ATA INGESTION AND PROCESSING is the compliance of the clients, and that motivates part of the M ODERATION concern. Similarly, when processing is required for the E XTERNAL CONSUMPTION or M ODERATION 
+
+concerns, structures of the D ATA INGESTION AND PROCESSING can be employed. Fig. 1 illustrates an overview of the proposed RA highlighting these concerns. 
+
+3.2. Evaluation Design 
+
+Moreira et al. (2026) shows that evaluating a RA is a complex task, often requiring a combination of evaluation methods. Our evaluation was driven by some overarching features, such as suitability for the requirements and applicability to real software systems. We designed our evaluation methodology by mixing two well-established evaluation methods for reference architectures: scenario-based assessment and case study. On the one hand, scenario-based evaluation consists of mapping the requirements and quality attributes into scenarios to illustrate how the objects – in this case, the elements of the RA – perform in a meaningful and representative context (Kazman et al., 2002). On the other hand, a case study is an empirical method for contextual investigation, characterized by the realism of its findings and by its flexibility in design (Yin, 2009; Runeson and Höst, 2009; Wohlin and Rainer, 2022). Such flexibility allows it to be combined with scenario-based assessment, resulting in a stronger grounding of the evaluation in existing applications and reality. Our concrete evaluation design mixed these methods and assessed the RA with the triangulation of their results. We started the scenario-based method by defining the scenarios based on the functional requirements and quality attributes presented in Subsec. 3.1. There are three scenarios with realistic elements, their interaction with each other, and a set of change-provoking stimuli. Then, we defined a taxonomy of changes with an increasing impact required to resolve the provoking stimuli. Next, we conducted a Change Impact Analysis (Zhao, Yang, Xiang and Xu, 2002) of the RA, where we applied the RA’s components as the reaction to the provoking stimuli of each scenario and analyzed it according to the taxonomy of change. In parallel, using the case study method, we gathered information on existing systems to use as a case study, following purposive sampling (Baltes and Ralph, 2022). We selected four systems based on the following criteria: having similar requirements, implementing our proposed RA partially or fully, and having maintainers available for clarifications. Then, we observed the scenarios in each case and evaluated the role the RA elements in the implementation played in resolving the scenarios’ provoking stimuli. Finally, for each scenario, we compiled the    
+
+> Daniel et al.: Preprint submitted to Elsevier Page 4 of 28 Figure 2: Concrete steps taken in the designed methods for this work (in green, scenario-based method; in yellow, case study method)
+
+results from each method. Fig. 2 illustrates these steps, which we highlighted in green, the scenario-based method, and in yellow, the case study method. 
+
+3.3. Scenario-based method 
+
+Scenario-based is one of the most adopted methods for evaluating references architectures (Moreira et al., 2026). It is used in other works as a means to reveal the reference architecture’s behavior under specific circumstances, regardless of the domain (Liu, Mao, Zhang and Hou, 2018; Bocciarelli and D’Ambrogio, 2023; Dirin, Oliver and Laine, 2023). Given the reference architecture’s focus on the evolution of microservice architectures, the scenarios target common actions in this architectural style, such as adding service consumers and providers. We created three scenarios in which the proposed RA should excel. Each scenario provides a contextual description and contains stimuli that the architecture must handle. Furthermore, a scenario is described with a mapping into more than one of the RA’s functional requirements (FRs) or quality attributes (QAs) it addresses and illustrated by a components diagram. 
+
+Scenario 1 Metadata-based Platform onboarding New Providers. A platform is built to receive and process data from a variety of independent providers. These providers operate in different domains, were built at different times, and have no coordination with each other; each sends data in its own structure and follows its own conventions. Some providers were able and willing to describe their data when sending it; others lacked this capability or would not change. The platform serves all of them through a unified interface, processing each provider’s data correctly and independently of others. The stimuli: 
+
+• a new provider that describes its own data is onboarded to the platform; 
+
+• a legacy provider that cannot describe its data is onboarded to the platform; 
+
+• both send data concurrently. 
+
+FRs FR-1, FR-2, FR-3, FR-4 
+
+QAs QA-1, QA-2, QA-4 
+
+Scenario 2 Service Connecting Hetereogeneous Consumers and Providers. A service has been in stable operation with an established set of providers and consumers. The system works, contracts are settled, and no party is willing to change their interface. Then the environment shifts: a new provider emerges with a data structure unlike any currently supported; separately, a new consumer wants to interact with an existing provider but speaks a structurally different language. Neither the new consumer nor the existing provider can adapt to the other. The system must absorb both without disturbing what already works. The stimuli:     
+
+> Daniel et al.: Preprint submitted to Elsevier Page 5 of 28 Figure 3: Scenario 1: Metadata-based Platform onboarding New Providers
+> Figure 4: Scenario 2: Service Connecting Heterogeneous Consumers and Providers
+
+• the new provider is introduced to the system; 
+
+• the new consumer is introduced, targeting an existing provider; 
+
+• the system continues operating. 
+
+FRs FR-3, FR-5, FR-6, FR-7 
+
+QAs QA-1, QA-2, QA-3 
+
+Scenario 3 Enriching Capabilities with 3𝑟𝑑 -party. A service needs to enrich its core functionality by delegating certain operations to external 3𝑟𝑑 -party providers. Multiple providers offer the same service category, but each has its own invocation protocol and returns results in its own format. The system must be able to work with any of them interchangeably and accommodate new ones as they emerge, without components that request enrichment needing to know which provider they are talking to. The stimuli: 
+
+• two external providers offering the same category of functionality are registered with the system; 
+
+• a consuming component requests the functionality without specifying a provider; 
+
+• a new external provider is introduced; the consuming component remains unchanged. 
+
+FRs FR-2, FR-5, FR-6, FR-7 
+
+QAs QA-1, QA-2, QA-4 With these scenarios, we manage to cover all the defined functional requirements and quality attributes for the RA. Table 1 assists in visualizing that, describing the FRs and QAs of each scenario.                                     
+
+> Daniel et al.: Preprint submitted to Elsevier Page 6 of 28 Figure 5: Scenario 3: Enriching Capabilities with 3𝑟𝑑 -party FR-1 FR-2 FR-3 FR-4 FR-5 FR-6 FR-7 QA-1 QA-2 QA-3 QA-4 Scenario 1 XXXXXXXScenario 2 XXXXXXXScenario 3 XXXXXXX
+> Table 1
+> Requirements (FR and QA) covered by Scenario
+
+In each scenario, we used architecture change impact analysis (Zhao et al., 2002) to evaluate the RA’s capability by considering the type of change required for each component of the architecture. Based on the mechanisms "slicing" and "chopping" (Zhao et al., 2002), we proposed a taxonomy of changes that applied to the abstractions in our RA, as follows: 
+
+• No change (NoC) : No change is needed in a component; 
+
+• Configuration change (CfC) : A change needs to be performed in the configuration; 
+
+• (Pluggable) Class addition (pCA) : A new class needs to be added to the system, but without changing the code of existing ones; 
+
+• External Subsystem addition (ESA) : A new subsystem needs to be added to the system, but in an external fashion, not requiring changes to the existing subsystems; 
+
+• Source code change (CSC) : The code of the component needs to be changed, requiring it to be repacked and redeployed; 
+
+• API Contract change (ACC) : Change in API, requiring changes to both sides of the communication – the provider and the consumers. The goal of the reference architecture is to avoid higher-impact changes in these scenarios and favor more lightweight ones, such as metadata configuration changes. Adding components is also acceptable, as it still preserves the open-closed principle. The need for source code and API changes would reveal that the reference architecture still does not support smooth architectural evolution, since these changes have a higher impact and are more expensive to implement. 
+
+3.4. Case study method 
+
+Open Data Hub is an open-source platform that was created to promote innovation in South Tyrol, Italy. It does so by being an open data platform that exposes its capabilities through an API, fed by numerous partners in           
+
+> Daniel et al.: Preprint submitted to Elsevier Page 7 of 28 Scenario 1 Scenario 2 Scenario 3 Open Data Hub XXCatch&Solve XXDigi Dojo XMetrics Platform X
+> Table 2
+> Scenarios observed in each case
+
+the region. The API acts as an abstraction layer for its microservice-based architecture, centered on two main components: the Ingestion Service and the Aggregated Database. Orbiting the former, there are numerous 3𝑟𝑑 -party data providers, some autonomously sending their data, others requiring dedicated data fetchers. When data is sent to Ingestion, it might be accompanied by metadata descriptors and locally stored. According to their processing policy, these raw data records are asynchronously sent to the Transforming Service that orbits the Aggregated Database. Its responsibility is to handle the heterogeneity in data shapes from the providers and maintain a consistent, normalized shape in the Aggregated Database. These transformations are made based on the metadata when present. 
+
+Catch&Solve is a software-based startup in South Tyrol, Italy, that provides quality-checking services to other software-based companies (Silva, Melegati, Wang, Ferreira and Guerra, 2024). The solution consists of a range of Check Agents, each for a different check type – for instance, a toolkit that is built with Android apps and sends checks of exceptions happening at runtime. These checks are assigned a check-ID and sent to the Ingestion API, a microservice that receives and persists the data. Eventually, the Dashboard Backend reads the raw data, processes it according to the service mapped to the check-ID metadata, and then aggregates it into reports. A user can access such reports in a web-based dashboard. 
+
+Digi Dojo is a platform implemented to support a research project aiming at creating virtual workspaces for early-stage startups. Its implementation has four domain microservices: "Startups and Users", "Virtual Spaces", "Tasks and Calendars", and "Assistant", which is dedicated to research support. Additionally, there is the "Gateway Router and Balancer" that has an infrastructure-related role of abstracting the internal separation of microservices and a meta-domain responsibility to feed the "Assistant" with the logs of the incoming requests. The Assistant supports research queries based on the logs sent and uses three tiers of pluggable processors. 
+
+Metrics Platform is an open-source platform that supports the collection of metrics for architectural analysis of software systems. It was developed as a contribution of research for a master’s degree. Once a system is registered in the platform, one can configure metrics to be analyzed. The platform supports dynamic registration of external metric collectors, extending its capabilities. Its architecture is centered on the "Manager" microservice acting as a hub for the collectors, who are responsible for registering both systems to be analyzed and metric collectors to do the work. An important aspect is that the cases are related to the scenarios presented in Subsec. 3.3. In each case, we can see some of the scenarios implemented. Table 2 presents which scenario happens in each case. 
+
+# 4. Reference Architecture 
+
+In this section, we present a reference architecture that aims at answering this work’s RQ1 . We designed a reference architecture based on a pattern language with similar scope and goals. The proposed RA is organised around the concerns "Data Ingestion and Processing", "Moderation", and "External Consumption", each in a dedicated segment of this subsection. We leveraged UML to represent the proposed RA, but with two simplifications over the use of stereotypes: the Flexible Provided Interface and the Flexible Requested Interface . They are explained in the Appendix A. 
+
+4.1. Base Pattern Language 
+
+The pattern language we used was published in two complementary segments in continuation of its definition over two years. In total, there are 12 patterns, where the first segment with 8 patterns was published in (Lino Daniel et al., 2024), and the second with the remaining 4 in (Daniel et al., 2025).   
+
+> Daniel et al.: Preprint submitted to Elsevier Page 8 of 28
+
+The summary we present here contains all 12 patterns, each in a shorter version of its text that contains three phrases presenting its core features: the context of occurrence, the problem it solves – shaped as a question –, and the solution statement. 
+
+• Ingestion, Processing and Returning FLEXIBILIZE THE INGESTION A service is constrained to handle heterogeneous data in its API by its various clients. How do we define its API contract to ensure it can be used in multiple different contexts? Define an API Contract that, as parameters to its operation, accepts multiple data structures. 
+
+FLEXIBILIZE THE RETURN An entity of a service’s domain is represented in various structures for each record. How to centralize access to the same type of entity, whose instances might have different structures? 
+
+Provide a single operation that returns the entity in its most suitable format for its context, and add metadata that allows the client to interpret its particular structure. 
+
+PLUG THE PROCESSORS IN A service accepting heterogeneous data needs to process it. How to process data that can vary in structure, domain, or nature, and can evolve in time? Design the data processing to accept plugins, each partially processing the input. 
+
+ENRICH WITH METADATA A service with a flexible ingestion that deals with clients in different contexts. 
+
+How can a service understand semantic and structural aspects of the data without implicitly making assumptions? Adopt metadata as a way to enrich the messages received. 
+
+• Moderating 3𝑟𝑑 -Party PROXY THE PLUGIN In a plugin-based architecture, one of the plugins has specific quality attributes that differ from the rest. How to enable the integration of a plugin processor, selected based on the request metadata, that requires specific qualities? Have the processor as an external component, and create the local plugin as a proxy, which will be invoked depending on the metadata associated with the request. 
+
+ADAPT THE INGESTION Metadata is adopted, but a client is unwilling or unable to send it to the service. How to provide the metadata about referring to an API Consumer unwilling or impossible to change? Adapt the interaction between API Provider and API Consumer with a component that is capable of providing the API Consumer’s metadata on its behalf. 
+
+CONSUME AS PLUG -AND -P LAY A system that relies on 3rd party providers for a service it needs. How can a client dynamically consume a service offered by multiple providers in different formats? Enable the dynamic integration of new service providers by using metadata to describe how the service should be invoked and how their output should be interpreted. 
+
+MEDIATE WITH METADATA Service provider do not match exactly the structural expectations of their potential consumers. How can a service and various consumer components be seamlessly integrated when there are unchangeable and incompatible message structures? Mediate the interaction between service and consumers with a component that uses metadata to guide the transformation of structures. 
+
+• Tuning Metadata CONFIGURE META DURING DEPLOY A metadata layer is added on top of the heterogeneous data, so that the service and its clients can communicate clearly. Also, there are some pieces of metadata that are owned by the service instead. How to provide metadata about the heterogeneous data in the received message? 
+
+Design the API Provider to accept deploy-time configuration for the metadata. 
+
+AGREE ON META STRUCTURE Metadata was adopted to overcome the challenges of heterogeneous data. 
+
+How to avoid repeating in the metadata layer the uncertainties of the heterogeneity in the data layer? 
+
+Seek agreement on the structure of the metadata among the different agents: senders and receivers of data. 
+
+CONFIGURE META IN RUNTIME A metadata layer is added on top of the heterogeneous data, so that the service and its clients can communicate clearly. Also, each client is known for having a stable data structure. 
+
+How to provide metadata about the heterogeneous data in the received message? Include a metadata configuration service in the API Contract of the API Provider, so API Consumers configure their metadata once to be used onwards.     
+
+> Daniel et al.: Preprint submitted to Elsevier Page 9 of 28 Figure 6: Schematics for the Pattern Language navigation map
+> Figure 7: The navigation map for the pattern language used as a base for the creation of the reference architecture
+
+EMBED METADATA A metadata layer is added on top of the heterogeneous data, so that the service and its clients can communicate clearly. How to provide metadata about the received heterogeneous data? Expect metadata as part of the message received. The pattern language also contains a navigation map that relates different patterns in a chain of refinement and composition. More specifically, the map displays the patterns and some of their resulting characteristics or challenges, which are addressed by another pattern, leading to a progressive adoption scheme for the pattern language. Fig. 7 illustrates this map, according to the schematics of Fig. 6. Its reading begins in the START circle and proceeds by navigating a characteristic/challenge that leads to a pattern; from there, the navigation follows the same dynamic, selecting the next characteristic/challenge to address and navigating its line. The patterns in the map are also grouped into categories by the type of problem they are solving: "Ingestion, Processing and Returning", "Moderating 3𝑟𝑑 -Party", "Tuning Metadata". As an example of use, one with "unchangeable clients and providers" issue in their system, starting from the START the map leads to implementing M EDIATE WITH METADATA ; next, deciding to approach the "configuration by data source", the map leads to implementing C ONFIG META DURING DEPLOY .  
+
+> Daniel et al.: Preprint submitted to Elsevier Page 10 of 28
+
+Concern 1: Data Ingestion and Processing 
+
+A Data Ingestor microservice interacts with a wide range of Data Providers. The ingestor serves a capability that can input a variety of data structures. Instead of offering dedicated operations for each data structure, the ingestor leverages metadata as an approach to deal with different data homogeneously. The metadata can come from three sources or periods of time: 1. the maintainers of the ingestor can provide metadata during deployment; 2. the maintainers of a data provider can configure their metadata during the runtime of the ingestor; 3. the data sent by the data providers can embed its metadata. To support the (2) approach, the ingestor offers a “configure metadata” operation publicly. The Metadata Configuration Manager handles the call and stores the valid metadata within the Metadata Repository. This repository abstracts the persistence and aggregates the just-received metadata with its existing content, which encompasses the metadata set using (1) flow. Data ingestion occurs via two operations offered by the Flexible Data Ingestor object within the ingestor microservice: one for ingesting data with embedded metadata, and another for ingesting data without metadata. Regardless of which operation a data provider calls, the flexible ingestor triggers data processing. It calls the Processing Orchestrator, which receives the data and combines it with all referring metadata (the pieces that might have come with the data, and those stored in the Metadata Repository). Data processing is split into small units, each implementing the Processor interface. Some processors might run locally within the same operating system (OS) process as the Ingestor microservice – these are called Local Processors. In some cases, it might be necessary to implement the processor as a remote OS process – e.g., when it requires a different programming platform or when non-functional requirements apply – or it might already be implemented on a remote system. In these cases, the Processor interface is implemented as a Proxy object that redirects calls to the remote system. They are named External Service Proxy and System Service Proxy, respectively, when the implementation is 3rd-party software and when it is part of the same system. The Orchestrator selects which processors to run as a pipeline based on the metadata that accompanies the data. One approach is to agree with the metadata stakeholders that it represents domain elements that add semantic value to the data; a composable approach is to treat the metadata as a structural description of the data. Once the pipeline finishes, the Data Provider can receive its corresponding results. 
+
+As an example, consider a tax calculation microservice that interacts with the product catalogues of an international store. Each time a tax calculation is required, it might involve products from different categories and be situated in different country contexts. The metadata representing the product list structure is combined with the metadata identifying the country. The orchestrator triggers the processors specific to the combination of category and country in each product. Such processors might be local or remote. Finally, when all is run, the orchestrator provides an output with the total tax value, and the Flexible Ingestor returns it as a response to the Data Provider that started the request. 
+
+The processors can do more than process a piece of data with its metadata. One particular use case is when the ingestion is requested not for an immediate calculation, but to aggregate or consolidate the results for a later query. In this case, one processor serves as the Result Sink, writing the results to a Processed Data Repository. There are two ways to query the results: a flexible read, which returns the data as it is accompanied by descriptive metadata; and a normalised read, which provides a normal structure, with metadata used to normalise the record. The Results Server offers both approaches, fetching the existing metadata from the Metadata Repository and relying on the Normalizer to transform. 
+
+Here, an illustration of this scenario. Consider a smart city platform that ingests data from a variety of providers, such as the municipality informing road closures for renovations and the local university announcing lectures open to the community. For each ingestion, the data provider does not expect a synchronous result. But aggregating the events of interest for a given period might be interesting. In this case, the Sink stores the processed data if any processing occurs. Clients of the platform can query for the normalized list of events happening in a given week. 
+
+Concern 2: Moderation 
+
+Not all the Data Providers that interact with the Ingestor are able or willing to provide metadata. For example, the provider is a public API consumed by multiple other systems. The lack of metadata support challenges the integration with the Ingestor.    
+
+> Daniel et al.: Preprint submitted to Elsevier Page 11 of 28 Figure 8: The components that implement the responsibilities of Ingestion and Processing of this concern
+
+Two other types of Data Providers do not support metadata: 1. the Passive Data Provider, the one that offers its data upon request, and 2. the Active Data Provider, that autonomously sends its data to interested parties. To address the lack of metadata essential to the Ingestor, it is necessary to enrich the data on the Providers’ behalf. For that, there is the Metadata Enricher, a microservice that intermediates communication between a given Provider and the Ingestor. The Enricher component adds the specific metadata and forwards the data to the Ingestor. The “enrich” operation is publicly offered, so Active Providers can use it. For the Passive Providers, the microservice includes a Fetcher component that requests the data and passes it to the “enrich” operation. The Metadata Enricher needs to be dedicated to a specific type of Data Provider so it can define the appropriate metadata. 
+
+For instance, consider a platform for personal organization that wants to integrate with a weather and forecast public API. The platform has a flexible ingestor as depicted in the previous section. The weather API is a Passive Data Provider for the platform’s ingestor. Then, the platform created a dedicated weather-and-forecast metadata enricher, based on the documentation and specification of the API. 
+
+Flexible ingestion might not always be the case, which challenges the integration: when a Service Provider offers an operation of interest to a Service Consumer, but neither the Provider has a flexible ingestion, nor the Consumer can change to either adapt its data structure or add metadata. To overcome that, there is the Metadata-Driven Moderator, which exposes a flexible input operation via the Transformation Trigger component, triggering the processing of the data in the Consumer shape into the Provider’s. This transformation happens based on the metadata descriptors stored in     
+
+> Daniel et al.: Preprint submitted to Elsevier Page 12 of 28 Figure 9: The components that implement the responsibility of Serving aggregated results of this concern
+> Figure 10: The Metadata Enricher in the application context of this concern
+
+the Metadata Repository. Since it depends only on the metadata, not on the specific data structures, the same Moderator can integrate different Consumers with different Providers, as long as the Moderator has the appropriate metadata descriptors. Additionally, the Moderator can operate in various ratios, not only one-to-one Consumer and Provider. Data structure transformation occurs under the Processing Orchestrator, as described in the previous section. 
+
+Consider the following scenario as an illustration. A marketplace has a legacy API for adding new stores; a digital store has its own e-commerce but is seeking to expand its business by integrating its store into the marketplace. The API provides the registration of stores with a fixed structure, whereas e-commerce has a behavior solely designed by the interaction with its own frontend. The integration strategy was the marketplace providing the Moderator.    
+
+> Daniel et al.: Preprint submitted to Elsevier Page 13 of 28 Figure 11: The Metadata-Driven Moderator
+
+Concern 3: External Consumption 
+
+It is common to rely on third-party services to enhance the functionality and extend the capabilities of an application. These external services, such as S ERVICE PROVIDER [A] and S ERVICE PROVIDER [B] (from Fig. 12) provided by various vendors, offer specialized features that can be seamlessly integrated into our system. However, one of the primary challenges is managing the diverse data formats and protocols used by different service providers. Furthermore, each provider operates within a distinct domain; but for our application, despite these differences, these service providers can be seen as similar in the sense that they all contribute to the overall functionality. The External Providers Gateway ensures seamless integration of external services into the system and comprises several key components. The Service Register is responsible for registering external services, making them available for consumption. It reads and writes to the Call Metadata Descriptor Repository to maintain a repository of available services and their associated metadata. The Service Invoker is responsible for invoking external services based on metadata stored in the repository. It acts as the execution engine, translating metadata into actionable service calls and managing the communication with external services. With these roles covered, the Gateway dynamically accommodates new Service Providers while providing an abstraction for its clients. Particularly, a Gateway’s client is when a Data Processor acts similarly to the Proxy case mentioned before: in a data processing pipeline, there is a step of collecting extra data for enrichment or crossing. 
+
+Consider an application that, among other details, enriches its domain data with both forecast and traffic information. In this scenario, there are two service providers, one for the forecast and the other for traffic information. The Service Register component registers them both by storing their associated metadata in the repository. When the     
+
+> Daniel et al.: Preprint submitted to Elsevier Page 14 of 28 Figure 12: The External Consumption concern
+> Figure 13: Scenario 1 resolved with RA’s components; in blue, the RA’s components; in pink, the required changes
+
+application needs enrichment, one Processor requests data from the Gateway, which handles it internally with the Service Invoker. Note that, despite the distinct domains of weather forecasting and traffic information, these service providers are perceived as similar for our application, as they both provide data for enrichment. 
+
+# 5. Results of the Scenario-based Method 
+
+In this section, we explore the proposed RA in a conceptual approach, considering three scenarios designed to showcase the FRs and QAs. In each, we discuss how the RA’s components resolve the scenario’s stimuli. Furthermore, we illustrate each resolution with a diagram in which we highlight in blue the RA’s components and, as a pink star, the elements impacted by change.    
+
+> Daniel et al.: Preprint submitted to Elsevier Page 15 of 28 Figure 14: Scenario 2 resolved with RA’s components; in blue, the RA’s components; in pink, the required changes
+
+5.1. Metadata-based Platform Onboarding New Providers (Scenario 1) 
+
+In scenario 1, the PLATFORM receives heterogeneous data from PROVIDERS 1 and 2, and this is further challenged by adding a NEW PROVIDER and a LEGACY PROVIDER . This scenario addresses FR-1 , FR-2 , FR-3 , FR-4 , QA-1 , QA-2 ,and QA-4 .As illustrated in Fig. 13, we present the scenario with the RA’s components that are pertinent to this situation, highlighted in blue. The stacked METADATA ENRICHER s are there to overcome providers’ non-compliance with including the required metadata; the PLATFORM is connected to a subset of the RA’s internal components to ensure the flexibility of its API, as well as to act accordingly when processing the heterogeneous, metadata-enriched data it receives through such an API. To handle the stimuli of this scenario, the changes required are around the elements highlighted with the pink stars in Fig. 13. When adding a new provider, two aspects must be considered: its compliance with metadata use and the information the metadata contains. Regarding the former, when the new provider complies, then NoC no change is required; otherwise, an ESA external subsystem needs to be added – the enricher. When it comes to the latter, the metadata from the new provider can be something already handled by the platform, in which case NoC no change is required; but if there is new information and processing to be made, then a pCA pluggable class is added, a new concrete implementation of the < PROCESSOR > interface, to be mapped to these new metadata and to be plugged into the PROCESSING ORCHESTRATOR .Then, we indicate how this scenario and the RA components address each FR. 
+
+FR-1 - heterogeneous data ingestion the role of the FLEXIBLE DATA INGESTOR is to define a flexible API contract, such that heterogeneous data can be passed; 
+
+FR-2 - contextual data characterization on the providers’ side, they either send the metadata along as characteriza-tion, or the METADATA ENRICHER s act on their behalf; internally, the METADATA REPOSITORY represents the dedicated handling of these data pieces; 
+
+FR-3 - data-driven processing adaptation the PROCESSOR ORCHESTRATOR dynamically employs concrete < PRO -
+
+> CESSOR
+
+>s according to the metadata accompanying the data; 
+
+FR-4 - provider-side characterization bridging when the providers do not comply with the use of metadata, the  
+
+> METADATA ENRICHER
+
+bridges over this gap; With the resolution of this scenario, it is possible to see that the RA enables the same service – the platform – to be reused by different and heterogeneous clients – the providers –, which is the QA-1 - service reusability across structural heterogeneity . It also demonstrates the seamless extensibility of providers and processors , which are respectively QA-2 and QA-4 .
+
+5.2. Service Connecting Heterogeneous Consumers and Providers (Scenario 2) 
+
+In scenario 2, the S ERVICE bridges a set of PROVIDERS and CONSUMERS that otherwise would not be directly possible. That is stimulated by adding a NEW PROVIDER offering new capabilities and adding a NEW CONSUMER 
+
+presenting new needs. It addresses FR-3 , FR-5 , FR-6 , FR-7 , QA-1 , QA-2 , and QA-3 .   
+
+> Daniel et al.: Preprint submitted to Elsevier Page 16 of 28 Figure 15: Scenario 3 resolved with RA’s components; in blue, the RA’s components; in pink, the required changes
+
+Fig. 14 presents the accommodation of the stimuli in the scenario using the RA’s components, following the same schema as Fig. 13. The internal components of the SERVICE are responsible for representing, using metadata, the transformations between consumers and providers, triggering processing for a specific consumer request, and serving the final results. The changes required in this application of the RA are related to the elements highlighted with the pink stars in Fig. 14. To add a new consumer or provider, the required changes are similar: the metadata repository needs to reflect the new participants, i.e., a new target shape for consumers or a new source for providers, which is a CfC configuration change; then, it also needs a new processor to be plugged in to the processing orchestrator, a pCA that makes it possible to implement the needed algorithms for the new steps in transforming the data. Each FR is addressed as follows: 
+
+FR-3 - data-driven processing adaptation the PROCESSING ORCHESTRATOR dynamically employs concrete < PRO -
+
+> CESSOR
+
+>s according to the metadata describing the transformations required between providers and consumers; 
+
+FR-5 - structural mediation between incompatible parties the SERVICE acts as the RA’s METADATA -DRIVEN MOD - 
+
+> ERATOR
+
+providing to the CONSUMERS needs, according to the concrete capabilities of the PROVIDERS ;
+
+FR-6 - dynamic external service integration based on the content of the METADATA REPOSITORY , the SERVICE ’s code can be generic and work for a PROVIDER defined during runtime; 
+
+FR-7 - result aggregation and flexible retrieval the METADATA REPOSITORY can describe complex transformations that involve sourcing multiple PROVIDERS for a single CONSUMER ’s need. Applying the RA to the resolution of this scenario achieves QA-1 in a more nuanced way: the SERVICE can be reused by its external clients CONSUMER – as in the previous scenario – as well as by the PROVIDERS it abstracts in its API. It is possible to see that this resolution with the RA also supports QA-2 and QA-3 by updating the metadata configuration and eventually plugging in new processors. 
+
+5.3. Enriching Capabilities with 3𝑟𝑑 -party (Scenario 3) 
+
+In Scenario 3, SERVICE enhances its capabilities with different 3𝑟𝑑 -PARTY PROVIDERS A, B and C. This context is being stimulated by a NEW 3𝑟𝑑 -PARTY D. It addresses FR-2 , FR-5 , FR-6 , FR-7 , QA-1 , QA-2 , and QA-4 .In blue in Fig. 15, there are the internal components of SERVICE that belong to the RA. They support a seamless integration of various 3𝑟𝑑 -party providers by registering metadata describing the technical details of calling them. This scenario’s stimuli are handled by the SERVICE INVOKER implementing the protocol (e.g., a REST service caller or a gRPC invoker), which in various cases is a NoC no change. Instead, when a new external provider registers itself with a new protocol, then a new type of SERVICE INVOKER is required to be plugged in, i.e., a pCA .The requirements are implemented as follows: 
+
+FR-2 - contextual data characterization the CALL METADATA DESCRIPTOR REPOSITORY stores metadata about the protocols and technical details for calling the 3𝑟𝑑 -party services;                    
+
+> Daniel et al.: Preprint submitted to Elsevier Page 17 of 28 Scenarios Stimuli Impacts
+> 1new provider NoC (know meta) NoC
+> legacy provider ESA (new meta) pCA
+> 2new provider CfC (new transformation) pCA
+> new consumer 3new external provider NoC ; unless new protocol, then pCA Table 3
+> Summary of the types of impact for each scenario’s stimuli
+> Figure 16: Representation of the Open Data Hub case, tagged with the scenarios’ elements, and mapped into the RA’s components
+
+FR-5 - structural mediation between incompatible parties the SERVICE allows its CONSUMER s to indirectly inte-grate with a range of 3𝑟𝑑 -PARTY PROVIDERS , even if that is not the main goal; 
+
+FR-6 - dynamic external service integration the mechanics involving SERVICE REGISTRY , CALL METADATA DE -
+
+> SCRIPTOR REPOSITORY
+
+, and SERVICE INVOKER allows to virtually any 3𝑟𝑑 -PARTY PROVIDER to be integrated; 
+
+FR-7 - result aggregation and flexible retrieval especially but not restricted to when multiple 3𝑟𝑑 -PARTY PROVIDER sbelong to different categories, the SERVICE can potentially aggregate their data as part of its capability. The dynamic registration and call of external services meet the QA-1 . In this scenario, we can consider an overlap of the roles "provider" and "processor" for each 3𝑟𝑑 -party provider: as service providers, each can fall at different points on the spectrum from data provider to data processor. With that, it meets QA-2 and QA-4 as well. 
+
+5.4. Summary 
+
+In summary, we present Table 3 with the stimuli of each scenario, and the respective observed level of impact (according to the taxonomy presented in Subsec. 3.3). For scenario 1, there are two steps for the impacts: the first depends directly on the stimuli, and the second depends on the novelty of the metadata. For scenario 2, regardless of the stimuli the impact is the same; it only depends whether new transformations are required. Finally, for scenario 3, the only impact depends whether there is a processor for the communication protocol. 
+
+# 6. Results of the Case Study Method 
+
+In this section, we present the four cases included in the study design, with the purpose of observing the RA performing with the scenarios applied to real systems. Each of the cases is also illustrated with a diagram, in which the green label indicates the scenario element, in purple the RA’s components, and in orange the components of the case’s system. 
+
+6.1. Open Data Hub 
+
+The case of Open Data Hub (illustrated in Fig. 16) matched scenario 1 entirely, and it also matched a particularity of scenario 2. Despite our mapping of requirements to scenarios, this case was strongly aligned with FR-7 - result    
+
+> Daniel et al.: Preprint submitted to Elsevier Page 18 of 28 Figure 17: Representation of the Catch&Solve case, tagged with the scenarios’ elements, and mapped into the RA’s components
+
+aggregation and flexible retrieval , as it is the means to achieving their goal. In other words, the purpose of their platform was to collect data from various sources and aggregate it into a single, structured API to facilitate its integrated use. Nonetheless, their structural features were strongly aligned with our designed scenario 1. The first important aspect to mention about this case, regarding scenario 1, is how the RA’s DATA INGESTOR was implemented: they decided to separate the concerns of ingestion and processing into two independent microservices, allowing custom scalability and deployment configurations for each. For instance, they valued availability for their 
+
+Ingestion Service , while they could favor scheduling and load balancing for their Transforming Service .Another interesting feature of this case was the driver for implementing the RA’s METADATA ENRICHER : initially, they struggled with passive data providers, i.e., external systems that would only provide data upon request. That is why their component is called Fetcher , which later they realised could be the type of component to handle enrichments when needed. In this case, the stimuli of scenario 1 map into the following concrete situations: 
+
+• a new provider describing its own metadata happens when a project starts a partnership with the Open Data Hub, and agrees on sending their data autonomously, duly accompanied with the metadata descriptors – one instance would be a municipality that integrates their own system with the project; In this situation, there was no need for an enricher, but it did require a new set of processors because the metadata added information that required new algorithms to run. 
+
+• a new legacy provider would map into, for example, an API that provides an access key to their resources, but they are passive and do not add their own metadata – for example, a regional forecast API. In this situation, a fetcher-and-enricher was needed to gather the data and add metadata before sending it to ingestion, but no new processors were needed, as there were already processors for meteorological data. For scenario 2, and more specifically FR-7 , it falls under the responsibilities of the Transforming Service . The raw data, along with its respective metadata, are used as input for the transformations into the normal format adopted by their platform. This format structures in a common way a wide variety of data records of different domains under higher abstractions; for example, a "station" represents a data generator and is applied either to a point-of-interest like a hotel or to a e-charging parking spot, or a "measurement" represents a data piece and is applied either to the vacancy status of a hotel room or to the temperature status given by a thermal sensor on the mountains. They also support transforming the data served, but in a simpler way than a full reshaping; instead, they allow filtering by attributes within a data record. 
+
+6.2. Catch & Solve 
+
+The case of the Catch&Solve platform (represented by Fig. 17) partially matches scenarios 1 and 2, as it depends on the interpretation of the roles either for the system’s components or the scenarios’ elements. It matches scenario 1, considering the system’s Ingestion API as an important piece of the scenario 1 Platform, given its role in ingesting data from data providers. At the same time, the interaction between the Dashboard Backend and the Processing Services 
+
+can be expressed as the service consumption defined by the Platform and Providers in scenario 2.     
+
+> Daniel et al.: Preprint submitted to Elsevier Page 19 of 28 Figure 18: Representation of the Digi Dojo case, tagged with the scenarios’ elements, and mapped into the RA’s components
+> Figure 19: Representation of the Metrics Platform case, tagged with the scenarios’ elements, and mapped into the RA’s components
+
+In this case, we observed a technical decision regarding the implementation of the RA’s D ATA INGESTOR similar to the Open Data Hub case: the separation between ingestion and processing. In this case, the availability of the Ingestion API was the main driver, leading to separating it into a more compact piece of software to keep it replicated and online. The stimuli of the scenarios are observed in the following concrete situations of this case: 
+
+• a new provider (from scenario 1) happened when they decided to revisit an existing Check Agent to embed a new piece of information into its data; When it happened, only updates were required for the Check Agent and its respective processing service. 
+
+• a new service provider (from scenario 2) happened as a response to the first stimulus mentioned, when a processing service was updated; due to backward compatibility, the updated version was a different component released. 
+
+6.3. Digi Dojo 
+
+Fig. 18 illustrates the matching of the Digi Dojo case with scenario 1. In this case, it is possible to see an interesting implementation of the RA’s component M ETADATA ENRICHER in the system’s component Gateway Router and Balancer . In this application, it serves as a notifier for the Assistant , informing it of each new request – that is, the data being ingested. The interesting aspect is the complete division this enricher creates, in which there is no need to directly integrate the domain microservices – Startups and Users , Virtual Spaces , and Tasks and Calendars – with the Assistant .The stimulus from scenario 1 that would be visible in this case would occur with the evolution of the system, i.e., when new responsibilities are implemented in new microservices or when an existing one is split into multiple ones. 
+
+6.4. Metrics Platform 
+
+This case was the only one that matched scenario 3. In Fig. 19, we present it visually, but the Consumer is omitted because there was no impact on the analysis. It is possible to see that the Manager implemented all the RA’s components related to scenario 3, namely S ERVICE REGISTER , S ERVICE INVOKER , and C ALL METADATA 
+
+DESCRIPTOR REPOSITORY . In this case, to provide its clients with a metrics report on their architecture, the Manager 
+
+relies on the various Metric Collectors , which act as the Service Providers in the scenario. An interesting highlight for this case regards the distribution of responsibilities. Similarly to the cases of Open Data Hub and Catch&Solve, the maintainers of the Metrics Platform had concerns about drawing a hard boundary between two responsibilities – here, registering and invoking 3𝑟𝑑 -party services –, but in this case, the decision was                                                   
+
+> Daniel et al.: Preprint submitted to Elsevier Page 20 of 28 Open Data Hub Catch&Solve Digi Dojo Metrics Platform #scenarios / #cases FR-1 1111 / 3 FR-2 11132 / 4 FR-3 11, 2 12 / 3 FR-4 1111 / 3 FR-5 232 / 2 FR-6 232 / 2 FR-7 2232 / 3 QA-1 11, 2 133 / 4 QA-2 11, 2 133 / 4 QA-3 21 / 1 QA-4 11132 / 4
+> Table 4
+> FRs and QAs observed in each case studied, and the scenarios in which they appear
+
+the opposite of the previous cases. It was considered to implement each responsibility in a dedicated microservice, but this was discarded due to the associated costs of maintaining and deploying that infrastructure. Instead, they decided to package both in a single deployable unit to reduce these costs. Nonetheless, the intentions of splitting originated from the specific measures the invoking of services would require, such as security, scalability, and, in particular, the possibility to easily schedule re-runs (for this case’s domain, some invocations are done in repetition, e.g., every 5 minutes or twice every day), instead of solely invoking on demand by the client. The stimulus for scenario 3, when a new service provider is to be added, occurred when a new metric collector was added. In this project, the same maintainers of the Manager hold ownership of the Metric Collector s currently available – but they implemented this architecture to enable seamless extension of the collectors. In this case, it happened when adding a new collector, and it only required the Metric Collector to register itself in the Manager 
+
+during bootstrap at runtime. 
+
+# 7. Discussion 
+
+7.1. Combined Results Analysis 
+
+The triangulation of the results from both methods covered all functional requirements and quality attributes of the proposed RA. We summarize this in Table 4, where it crosses the FRs and QAs with the cases through the scenarios, e.g., FR-3 (3rd row) is assessed in the "Catch&Solve" (3rd column) case through scenarios 1 and 2. It is important to note that Table 4 is a join of Tables 1 and 2 on the scenarios. The combined analysis makes explicit that FR-2 contextual data characterization is the prerequisite that enables 
+
+FR-3 through FR-7 . The use of metadata as an architectural mechanism has a cascading effect: much of the RA’s coverage can be traced back to this central design decision. This has practical implications for adoption, as even a partial instantiation of the RA (e.g., limited to metadata-driven processing) already unlocks a substantial portion of its benefits, with the remaining concerns composable on top as needs arise. 
+
+Finding A: Metadata is the central enabling mechanism of the RA. Metadata is the backbone of the solutions in the three concerns of the RA: in Data Ingestion and Processing , with it the heterogeneity can be handled, and the dynamic processing can happen; in Moderation , metadata is the enabler for connecting legacy providers to non-complying clients; and in External Consumption , the metadata describing the service providers is the reason why no changes are required to any stimuli. From the evaluations, we could see that the FR-1 heterogeneous data ingestion was a key step in achieving the QA-1 
+
+service reusability across structural heterogeneity . The Open Data Hub case made it clear that integrating numerous new data providers into a single API operation was straightforward. Despite the heterogeneity among the providers, the platform could be reused seamlessly. On a similar note, FR-1 also presents positive impacts on the actualization of 
+
+QA-2 seamless extensibility of providers .  
+
+> Daniel et al.: Preprint submitted to Elsevier Page 21 of 28
+
+There was already evidence of this in the analysis of Scenario 1: no changes are required when a new data provider sends a known metadata type. Even when corner cases occur, the change impact is reduced, requiring either a pluggable implementation of the P ROCESSOR interface for new types of metadata or a M ETADATA ENRICHER when the client does not comply with the metadata requirements. The direct implementation of the FR-1 nonetheless presents issues. From this stems the challenge of handling unforeseen data representations, which is addressed by the FR-2 contextual data characterization . The use of metadata – the adopted approach to FR-2 – is the most characteristic feature of the proposed RA, enabling a considerable number of other RA’s functional requirements and quality attributes. Metadata is at the heart of the solutions for FR-2 
+
+throughout FR-7 .
+
+FR-3 data-driven processing adaptation was done in the proposed RA via the metadata from FR-2 . A first key use of metadata is done by the P ROCESSING ORCHESTRATOR when dynamically employing concrete P ROCESSOR 
+
+implementations to process a data record. From the analysis of Scenario 1, the impacts of these changes are considered minimal, as it consists of the straightforward solution of adding a pluggable class ( pCA ) that enables either a local implementation or an adapter to a remote system. We could also evaluate this in practice in all the cases studied. The Catch&Solve system and the Digi Dojo had a 1-to-1 approach between a high-level abstraction (represented in the metadata) and the concrete P ROCESSOR ; on a different approach, the Open Data Hub had metadata indicating smaller, low-level information in the metadata, which led the P ROCESSING ORCHESTRATOR to compose a set of concrete P ROCESSOR s. That provides evidence for QA-4 
+
+seamless extensibility of processors , and on a step further, of reusability of these processors in different contexts. But that comes at the expense of a slightly more complex P ROCESSING ORCHESTRATOR to dynamically match multiple metadata to multiple P ROCESSOR s. Both approaches are valid instantiations of the same RA components – the P ROCESSING ORCHESTRATOR and the P ROCESSOR interface – and neither required deviating from the RA’s structure. This variability in granularity, not prescribed by the RA, suggests that the RA is flexible enough to accommodate different levels of processing complexity. Nonetheless, it trades off the compositional approach, which provides greater reusability of individual processors across different contexts, for a more sophisticated orchestrator that dynamically matches multiple metadata values to multiple processor implementations. 
+
+Finding B: The RA accommodates heterogeneous processor granularity. The solution involving the P ROCESS - 
+
+> ING
+
+MANAGER and <P ROCESSOR >s implementations mapping to metadata is flexible to support from coarse-grained mapping between metadata and implementation, as seen in the case of Catch&Solve, to a fine-grained, composable one as seen in the Open Data Hub. This flexibility makes the RA adaptable, where the same components are applicable to different scenarios. Imposing metadata as part of the contract between a service and its clients causes friction, as we saw with the Open Data Hub, which had some non-compliant data providers, and with Digi Dojo, where it was desirable to have domain services decoupled from the Assistant. The proposed RA encompasses components to address and mitigate these issues, providing FR-4 provider-side characterization bridging and FR-5 structural mediation between incompatible parties .In Scenarios 1 and 2, the results provided evidence of the controlled impact of these intermediate components – the METADATA ENRICHER and M ETADATA -D RIVEN MODERATOR .Across all three scenarios, the only stimulus that requires a more impactful change (an ESA ) is the onboarding of a legacy provider that cannot supply metadata. All other stimuli are more frequent and resolve at NoC , CfC , or 
+
+pCA , which are of lower impact. This means the RA confines architectural growth to well-justified cases: a new deployable unit is required only when a client is structurally incapable of participating in the metadata contract. The cost is proportional to the degree of incompatibility, not to the act of extending the system. In the Digi Dojo and Open Data Hub cases, we saw examples of the E NRICHER as the solution. Implementing both requirements led to QA-2 and QA-3 , providing seamless extensibility for consumers . Also, the Digi Dojo case highlighted the E NRICHER ’s impact on the dependency between components, as it enabled complete decoupling of the domain services from the Assistant. The M ETADATA ENRICHER was designed primarily to bridge non-compliant clients ( FR-4 ), enabling legacy or unwilling providers to participate in the metadata contract without modifying their own implementation. The Digi Dojo case, however, revealed a secondary benefit: the component also functions as a structural decoupling mechanism between otherwise unrelated domain services. By routing domain microservice traffic through the Gateway Router and   
+
+> Daniel et al.: Preprint submitted to Elsevier Page 22 of 28
+
+Balancer before it reaches the Assistant, the system achieved a complete independence between its domain services and the research support component – a separation that was architecturally desirable but not the original motivation for the enricher. This emergent benefit suggests the component’s value extends beyond the reusability dimension it was explicitly designed to address. 
+
+Finding C: The Metadata Enricher may carry decoupling as a secondary benefit. The M ETADATA ENRICHER 
+
+is structurally influenced by the D ECORATOR design pattern from Object-Oriented paradigm (Gamma, Helm, Johnson and Vlissides, 1995), which provides a decoupled way to add behavior and, as seen in the Digi Dojo case, architectural separation of concerns. The taxonomy analysis across all three scenarios shows that the RA consistently avoids the two most disruptive change types: source code change and API contract change. The predominant impacts are NoC , CfC , and pCA . This is mapped to concrete situations in the cases (Sec. 6). In Catch&Solve, a new provider triggered only updates to the Check Agent and its processing service; in Metrics Platform, a new collector required only runtime self-registration. These observations characterize how the RA bounds service proliferation: the cost of extending the system is proportional to the novelty introduced, not to the act of extension itself. 
+
+Finding D: Change impact with the RA is bounded and predictable. The most impactful change observed is the 
+
+ESA , which is an impact that only happens in corner cases (e.g., onboarding a provider that does not comply to the use of metadata), and furthermore, is still a mild impact considering the adopted taxonomy. In other words, implementing the RA leads towards a more seamless evolution of the architecture. There is a close relationship between FR-6 dynamic external service integration and FR-7 result aggregation and flexible retrieval . In the Metrics Platform case, these requirements were implemented in collaborating components: concrete metric collectors could register with the Manager, and their metrics could be aggregated into the client’s result. These two FRs are an important asset for the extensibility provided by the proposed RA, as they support embedding new external capabilities into the system and enabling new consumer interactions as clients. That translates into support for the quality attributes QA-2 and QA-3 .Both Open Data Hub and Catch&Solve independently arrived at splitting the D ATA INGESTOR into two separate deployable units, each driven by distinct operational concerns; Open Data Hub prioritized availability for ingestion while favoring scheduling and load balancing for processing, while Catch&Solve separated the two for similar availability reasons, keeping the ingestion API compact and replicated. These decisions were made independently, without prescriptions from the RA, yet they consistently align with the RA’s component boundary between ingestion and processing. The recurrence across independent systems suggests that this boundary is structurally well-placed, coinciding with a natural operational fault line that practitioners discover on their own. 
+
+Finding E: Ingestion and processing separation recurs as an independently motivated decision. The use of metadata as approach to service reusability yields an important decoupling between ingestion and data processing; despite being sequential, the proposed RA accommodates independent operation and runtime for these tasks, as demonstrated in the Catch&Solve and Open Data Hub cases. In conclusion, as illustrated in Table 4, the combined methods of scenario-based evaluation and case studies enabled the analysis of all seven functional requirements and four quality attributes of the proposed RA. The final analysis brought enough elements to sustain the proposed RA regarding the fulfillment of its design requirements, which ultimately answers RQ2 : the adoption of the proposed RA is an effective architectural artifact in providing or improving the reusability of a service, favoring the evolution through a flexible API contract that requires no changes over time, as well as through a well-established metadata-based approach, whose benefits span from data description to dynamic processing. 
+
+QA-3 seamless extensibility of consumers was observed in only one case (Catch&Solve, through scenario 2), as reflected in Table 4. While the RA’s design supports consumer extensibility through the M ETADATA -D RIVEN 
+
+MODERATOR , and the scenario-based analysis confirms the mechanism conceptually, the empirical grounding for this quality attribute is thinner than for the remaining six. This does not invalidate the claim, but it does calibrate the confidence with which it can be asserted.   
+
+> Daniel et al.: Preprint submitted to Elsevier Page 23 of 28
+
+Finding F: The proposed RA fulfills all 7 FRs and all 4 QAs With the combination of scenario-based and the case study methods, we found enough evidence to support all the RA’s requirements; still, the conditions covered focused on features that were specialization of "consumer", such as providing data or other services (expressed in QA-2), hence QA-3 has a concrete yet thinner support than the others. 
+
+7.2. Related Works 
+
+The evolution of systems and their architecture is subject to challenges, often documented as anti-patterns or bad smells. Anti-patterns are recurrently adopted solutions that lead to negative consequences to the software (Brown, Malveau, McCormick and Mowbray, 1998), whereas bad smells are symptoms of poor design choices that erode the qualities of a system or architecture (Fowler, 1999). SbA are also affected by these challenges (Taibi, Lenarduzzi and Pahl, 2019; Cerny, Abdelfattah, Al Maruf, Janes and Taibi, 2023), of which we highlight three: 
+
+• Microservice Greedy is reported as the explosion in the number of services in a system (Mumtaz, Singh and Blincoe, 2021), which is the architectural issue motivating this work; 
+
+• Duplicated Service is defined as a set of similar services (Mumtaz et al., 2021; Bogner, Boceck, Popp, Tschechlov, Wagner and Zimmermann, 2019; Sabir, Palma, Rasool, Guéhéneuc and Moha, 2019); this bad smell might stem from Greedy and can be addressed by the pattern F LEXIBILIZE THE INGESTION implemented by the FLEXIBLE DATA INGESTOR of this RA; and 
+
+• Co-Change Coupling is said to be present when one service requires a change to reflect another service’s change (Mumtaz et al., 2021); this bad smell indicates a tight coupling between two services, which might be due to a poor API design with rigid data structures. This can also be addressed by the proposed RA. Reusability and modifiability are related design quality attributes, as both influence the evolution of an architecture (Bass, Clements and Kazman, 1997). Cobaleda, Mazo, Becerra and Duitama (2016) propose a RA to ease modifiability in personalised web applications. Their RA is centered on the P ERSONALISATION CONTROLLER module, which identifies and executes the appropriate personalisation. The personalisations are implemented as a set of components specialized in a goal or strategy. To isolate personalisation data from transactional domain data, they propose a separate module: the P ERSONALISATION MODEL ADMINISTRATOR , in which relevant data is replicated from the domain to support inference of contextual data that guides and enriches concrete personalisations. The interaction established between P ERSONALISATION CONTROLLER and the specialized components in their work aiming at personalisation, is structurally very similar to our proposed RA’s P ROCESSING ORCHESTRATOR and <P ROCESSOR >s, aiming at supporting FR-3 data-driven processing adaptation . These structures reflect the Depen-dency Inversion Principle of Object-Oriented Programming (Martin, 2012), and can be considered implementations of the S TRATEGY design pattern (Gamma, Helm, Johnson and Vlissides, 1997). Furthermore, both approaches rely on metadata for employing concrete processing or customizations. But here there is a difference in how the metadata ownership is assigned: in their approach, the metadata (or inferred data , as they refer to it) has an implicit nature, and the client does not own it; meanwhile, our RA relies on explicit metadata and is flexible regarding its provenance. 
+
+7.3. Threats to Validity 
+
+The evaluation methodology combines scenario-based assessment and case study research, each carrying its own validity threats, some of which are inherited from their respective methodological traditions and others that arise from the specific way they were applied in this work. 
+
+Construct Validity : The functional requirements and quality attributes defined in Subsec. 3.1 were distilled directly from RQ1 by the authors. The requirements may not fully capture what service reusability demands in practice. A partial mitigation is that the RA was grounded in a pre-existing pattern language with aligned goals (Lino Daniel et al., 2024; Daniel et al., 2025), whose patterns were independently published and peer-reviewed, lending some external grounding to the reality . The change impact analysis taxonomy (NoC, CfC, pCA, ESA, CSC, ACC) was created by the authors for this study. Nonetheless, to mitigate its negative impacts, it was an adaptation of what was demonstrated by Zhao, Yang, Xiang and Xu (2002), when the method was proposed.   
+
+> Daniel et al.: Preprint submitted to Elsevier Page 24 of 28
+
+Internal Validity : The scenarios were constructed by the same team that designed the RA, creating a risk that they were tailored to showcase the architecture’s strengths rather than probe its limits. We attempted to mitigate it by systematically deriving the scenarios and keeping traces from the FRs and QAs prior to the analysis (Table 1), and the stimuli were defined before the RA’s components were applied to resolve them. Furthermore, the case study relied on the authors’ own access to and knowledge of the selected systems, three of which have direct institutional proximity to the research team. This proximity facilitates depth of observation but threatens independence of analysis. A mitigation present in the study is that maintainers of the systems were made available for clarifications, introducing at least one external perspective into the evidence gathering. Nevertheless, no formal protocol for interviews or data collection is reported, which limits the auditability of how case evidence was gathered and interpreted (Runeson and Höst, 2009). The triangulation of two independent evaluation methods – scenario-based assessment and case study – serves as a structural mitigation for internal validity overall: conclusions that converge across both methods are less likely to be artifacts of either method’s specific weaknesses. 
+
+External Validity : The four cases selected are all relatively small-scale systems. This concentration limits the generalizability of the findings to large-scale industrial systems, systems operating under strict regulatory constraints, or systems developed in different organizational cultures. No explicit mitigation for this threat is present in the study; broadening the case selection in future work to include larger, independently developed systems would strengthen this dimension. The scenario-based method, as noted by Kazman, Abowd, Bass and Clements (2002), evaluates an architecture against a finite set of representative situations and cannot provide exhaustive coverage. Conclusions from the scenario analysis should therefore be understood as evidence of fitness-for-purpose in the described contexts, not as a general guarantee of architectural quality. A mitigation for external validity is the deliberate use of realistic elements in each scenario’s contextual description, as well as the subsequent grounding of those scenarios in actually existing systems through the case study. This connection between the abstract scenarios and concrete implementations increases the ecological validity of the evaluation beyond what a purely analytical assessment would offer. 
+
+Conclusion Validity : The triangulation of results across two methods (Subsec. 7.1) strengthens conclusion validity by requiring that each FR and QA be evidenced both analytically, through change impact analysis, and empirically, through case observation. However, not all FRs and QAs were observed across all four cases (Table 4); in particular, QA-3 was observed in only one case. This uneven coverage means confidence in conclusions varies across requirements, and claims about QA-3 rest on thinner empirical support than the remaining attributes. An additional potential mitigation not explicitly discussed in the paper would be member checking: sharing the case study findings with the maintainers of each system for confirmation that the mapping between their implementation and the RA’s components was accurately interpreted. If this was performed informally through the clarification exchanges mentioned in the study, making it explicit would strengthen the auditability of the conclusions. 
+
+# 8. Conclusion 
+
+This work addressed the challenge of service reusability in service-based architectures through an architectural design approach. Motivated by the recurring problem of services with replicated or similar functionalities proliferating across a system, we proposed a reference architecture whose central mechanism is the use of metadata to guide the ingestion, processing, and mediation of heterogeneous data. The RA was designed following the pattern-based method for creating reference architectures (Guerra and Nakagawa, 2015), grounded in a pattern language specifically developed for metadata-driven service reusability (Lino Daniel et al., 2024; Daniel et al., 2025). This grounding ensured that each architectural component carries a well-motivated solution to a recurring problem, rather than being an ad hoc design decision. The architecture covers three concerns, each addressing a distinct dimension of the reusability challenge: Data Ingestion and Processing, Moderation, and External Consumption. To answer RQ1, the proposed RA defines a structure in which a single service can absorb heterogeneous providers and consumers without requiring structural changes to its core components. This is achieved through a flexible ingestion contract, metadata-driven processing orchestration, and intermediary components – the M ETADATA ENRICHER and the M ETADATA -D RIVEN MODERATOR – that bridge structural incompatibilities between parties that cannot or will not adapt to each other. The E XTERNAL PROVIDERS GATEWAY extends this principle to 3𝑟𝑑 -party service integration,    
+
+> Daniel et al.: Preprint submitted to Elsevier Page 25 of 28 Figure 20: Flexible Provided Interface
+
+enabling dynamic registration and invocation of external capabilities without coupling the consuming components to any specific provider. To answer RQ2, the RA was evaluated through a combination of scenario-based assessment and case study. The scenario-based method applied change impact analysis (Zhao et al., 2002) to three representative scenarios, covering all seven functional requirements and four quality attributes defined for the RA. The results demonstrated that the most common type of change required when the architecture evolves is either no change at all, a configuration change, or the addition of a pluggable class, consistently avoiding the more disruptive source code and API contract changes. The case study method grounded these findings in four existing systems, each of which independently converged on architectural solutions that align with the proposed RA: Open Data Hub, Catch&Solve, Digi Dojo, and Metrics Platform. The triangulation of both methods covered all defined requirements and attributes, providing converging evidence that the proposed RA is an effective architectural artifact for promoting service reusability. Beyond the structural contributions, the case studies revealed nuances in how the RA’s components can be instantiated in practice. The separation of ingestion and processing concerns into independent deployable units, observed in both Open Data Hub and Catch&Solve, illustrates how the RA accommodates operational concerns such as availability and scalability without requiring modifications to its design. The Digi Dojo case demonstrated a non-obvious benefit of the M ETADATA ENRICHER : beyond its primary role of bridging metadata non-compliance, it can serve as a decoupling mechanism between otherwise unrelated domain services. These observations suggest that the value of the RA extends beyond the reusability dimension it was explicitly designed for. As future work, first, the evaluation was conducted on relatively small-scale systems. Hence, applying and evaluating the RA in larger industrial settings would strengthen the external validity of the findings. Second, the current work focused on functional and structural quality attributes. It would contribute to a more complete picture of its trade-offs a dedicated investigation into the implications of the RA for non-functional attributes such as performance, security, and fault tolerance. Finally, the development of reference implementations for specific technology stacks would lower the adoption barrier for practitioners seeking to apply the proposed RA in their systems. 
+
+# A. UML notation 
+
+• Flexible Provided Interface : it extends the Provided Interface notation by highlighting the flexibility in the incoming connection, i.e., it accepts multiple data structures from the clients; Fig. 20 displays the notation design; 
+
+• Flexible Requested Interface : it extends the Requested Interface by its flexibility when connecting out, i.e., it can handle multiple Provided Interfaces; Fig. 21 displays the notation design. We provide two examples, one for each notation. In Fig. 22, a system containing the U SER REGISTRY , O RDER 
+
+MANAGEMENT , and L OGGER components, the Logger offers a record log operation as a Flexible Provided Interface . With that, the single operation can handle both the User and the Order records. In Fig. 23, another system containing the C OMPUTERS STOCK , V IDEOGAMES STOCK , and E LETRONICS CATALOG components, the aggregation of both electronics into a single list is exposed by a Flexible Required Interface : the electronics list operation. That is possible because of the flexibility in handling different interfaces.   
+
+> Daniel et al.: Preprint submitted to Elsevier Page 26 of 28
+
+Figure 21: Flexible Requested Interface 
+
+Figure 22: Example of Flexible Provided Interface 
+
+Figure 23: Example of Flexible Requested Interface 
+
+# CRediT authorship contribution statement 
+
+João F. L. Daniel: . Bruno P. Romano: . Xiaofeng Wang: . Andrea Janes: . Eduardo M. Guerra: .
+
+# References 
+
+Baltes, S., Ralph, P., 2022. Sampling in software engineering research: a critical review and guidelines. Empirical Software Engineering 27, 94. doi: 10.1007/s10664-021-10072-8 .Bass, L., Clements, P.C., Kazman, R., 1997. Software Architecture in Practice. Third edit ed., Addison-Wesley. Bocciarelli, P., D’Ambrogio, A., 2023. A tosca-based conceptual architecture to support the federation of heterogeneous msaas infrastructures. Future Internet 15, 48. Bogner, J., Boceck, T., Popp, M., Tschechlov, D., Wagner, S., Zimmermann, A., 2019. Towards a Collaborative Repository for the Documentation of Service-Based Antipatterns and Bad Smells. Proceedings - 2019 IEEE International Conference on Software Architecture - Companion, ICSA-C 2019 , 95–101doi: 10.1109/ICSA-C.2019.00025 .Brown, W.H., Malveau, R.C., McCormick, H.W.S., Mowbray, T.J., 1998. AntiPatterns: refactoring software, architectures, and projects in crisis. John Wiley & Sons, Inc. Carvalho, L., Garcia, A., Assunção, W.K., Bonifácio, R., Tizzei, L.P., Colanzi, T.E., 2019. Extraction of configurable and reusable microservices from legacy systems: An exploratory study, in: Proceedings of the 23rd international systems and software product line conference-volume A, pp. 26–31. Cerny, T., Abdelfattah, A.S., Al Maruf, A., Janes, A., Taibi, D., 2023. Catalog and detection techniques of microservice anti-patterns and bad smells: A tertiary study. Journal of Systems and Software 206, 111829. 
+
+Daniel et al.: Preprint submitted to Elsevier Page 27 of 28 Cobaleda, L.V., Mazo, R., Becerra, J.L.R., Duitama, J.F., 2016. Reference software architecture for improving modifiability of personalised web applications-a controlled experiment. International Journal of Web Engineering and Technology 11, 351–370. Daniel, J., Wang, X., Guerra, E., 2025. Incrementing the metadata for service reusability pattern language, in: European Conference on Pattern Languages of Programs, People, and Practices, Springer. pp. 161–171. Dirin, A., Oliver, I., Laine, T.H., 2023. A security framework for increasing data and device integrity in internet of things systems. Sensors 23, 7532. Fowler, M., 1999. Refactoring Improving the Design of Existing Code. Addison-Wesley Professional. Gamma, E., Helm, R., Johnson, R., Vlissides, J., 1995. Design Patterns, elements of reusable object-oriented software. Addison-Wesley. doi: 10.1007/978-1-4302-0096-3{\_}10 .Gamma, E., Helm, R., Johnson, R., Vlissides, J., 1997. Design Patterns - Elements of Reusable Object-Oriented Software. Gorton, I., 2006. Essential software architecture. Springer. Guerra, E., Nakagawa, E., 2015. Relating Patterns and Reference Architectures . Kazman, R., Abowd, G., Bass, L., Clements, P., 2002. Scenario-based analysis of software architecture. IEEE software 13, 47–55. Lino Daniel, J.F., Wang, X., Martins Guerra, E., 2024. Pattern Language for Leveraging Metadata to Reusability in APIs, in: Proceeding of the 29th European Conference on Pattern Languages of Programs. doi: 10.1145/3698322.3698344 .Liu, P., Mao, X., Zhang, S., Hou, F., 2018. Towards reference architecture for a multi-layer controlled self-adaptive microservice system., in: SEKE, pp. 236–235. Martin, R.C., 2012. The Clean Architecture. Mendonça, N.C., Garlan, D., Schmerl, B., Cámara, J., 2018. Generality vs. reusability in architecture-based self-adaptation: the case for self-adaptive microservices, in: Proceedings of the 12th European Conference on Software Architecture: Companion Proceedings, pp. 1–6. Moreira, E.I., Silva, L.F., Junior, E.O., Tenório, N., Neto, V.V.G., 2026. How are software reference architectures being evaluated? a systematic mapping study. doi: 10.1016/j.infsof.2026.108116 .Mumtaz, H., Singh, P., Blincoe, K., 2021. A systematic mapping study on architectural smells detection. Journal of Systems and Software 173, 110885. URL: https://doi.org/10.1016/j.jss.2020.110885 , doi: 10.1016/j.jss.2020.110885 .Oliveira, J.A., Vargas, M., Rodrigues, R., 2018. Soa reuse: Systematic literature review updating and research directions, in: Proceedings of the XIV Brazilian Symposium on Information Systems, pp. 1–8. Papazoglou, M.P., 2008. Web services: principles and technology. Pearson Education. Runeson, P., Höst, M., 2009. Guidelines for conducting and reporting case study research in software engineering. Empirical Software Engineering 14, 131–164. doi: 10.1007/s10664-008-9102-8 .Sabir, F., Palma, F., Rasool, G., Guéhéneuc, Y.G., Moha, N., 2019. A systematic literature review on the detection of smells and their evolution in object-oriented and service-oriented systems. Software: Practice and Experience 49, 3–39. Silva, K., Melegati, J., Wang, X., Ferreira, M., Guerra, E., 2024. Using Hypotheses to Manage Technical Uncertainty and Architecture Evolution in a Software Start-up. IEEE Software 41, 7–13. doi: 10.1109/MS.2024.3383628 .Sommerville, I., 2011. Software engineering 9th edition. ISBN-10 137035152, 18. Taibi, D., Lenarduzzi, V., Pahl, C., 2019. Microservices Anti-Patterns : A Taxonomy . Wohlin, C., Rainer, A., 2022. Is it a case study?—A critical analysis and guidance. Journal of Systems and Software 192, 111395. doi: 10.1016/ j.jss.2022.111395 .Yin, R.K., 2009. Case Study Research, design and methods. 4th ed., SAGE. Zhao, J., Yang, H., Xiang, L., Xu, B., 2002. Change impact analysis to support architectural evolution. Journal of Software Maintenance and Evolution: Research and Practice 14, 317–333. doi: 10.1002/smr.258 .Zimmermann, O., Stocker, M., Lübke, D., Zdun, U., Pautasso, C., 2023. Patterns for API Design - simplifying integration with loosely coupled message exchanges. volume 1. 1 ed., Pearson Addison-Wesley. 
+
+Daniel et al.: Preprint submitted to Elsevier Page 28 of 28

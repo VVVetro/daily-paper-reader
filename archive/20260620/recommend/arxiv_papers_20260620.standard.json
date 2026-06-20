@@ -1,0 +1,261 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-20T20:32:00.011533+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 6,
+    "quick_skim_target": 11,
+    "quick_selected": 6
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.17667v1",
+      "source": "arxiv",
+      "title": "Handling Feature Heterogeneity with Learnable Graph Patches",
+      "abstract": "In recent years, the rapid development of foundation models and graph pre-training technologies has spurred increasing interest in constructing a universal pre-trained graph model or Graph Foundation Model (GFM). However, a significant challenge is that existing models are unable to address feature heterogeneity in graph data without textual information, which hinders the transferability of graph models across different datasets. To bridge this gap, we propose the concept of learnable graph patches, which we regard as the smallest semantic units of any graph data. We decompose the graph into learnable graph patches by unfolding the node features and constructing corresponding patch structures separately. We then design a framework that mines transferable information from graph data across domains. Specifically, after extracting graph patches, we propose a patch encoder to extract knowledge from each unit and a patch aggregator to learn how the units are combined into a whole. Due to its domain-agnostic nature, the model can be applied to downstream data across different domains. Furthermore, we analyze the connection between our method and existing graph models, as well as the transferability of the node embeddings it generates. Empirically, our method not only achieves the capability to use multi-domain graphs for pre-training, but also shows enhanced performance across various downstream datasets and tasks. Moreover, we observe consistent improvement in downstream performance as the volume of pre-training data increases.",
+      "authors": [
+        "Yifei Sun",
+        "Yang Yang",
+        "Xiao Feng",
+        "Zijun Wang",
+        "Haoyang Zhong",
+        "Chunping Wang",
+        "Lei Chen"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-16T08:29:34+00:00",
+      "link": "https://arxiv.org/pdf/2606.17667v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Learnable graph patches handle feature heterogeneity, applicable to knowledge graph construction from heterogeneous urban data",
+      "llm_evidence_cn": "可学习图块处理特征异质性，可应用于异构城市数据的知识图谱构建",
+      "llm_evidence": "可学习图块处理特征异质性，可应用于异构城市数据的知识图谱构建",
+      "canonical_evidence": "可学习图块处理特征异质性，可应用于异构城市数据的知识图谱构建",
+      "llm_tldr_en": "Proposes learnable graph patches as semantic units to handle feature heterogeneity in graph data, enabling transferable graph foundation models that can support knowledge graph construction for smart city data.",
+      "llm_tldr_cn": "现有的图预训练模型难以处理无文本信息的图数据的特征异质性，阻碍了图基础模型的通用性。本文提出可学习图块的概念，将节点特征展开并构建相应图块结构，设计框架挖掘跨数据集的迁移信息。该方法可用于智慧城市中BIM、GIS等异构数据的知识图谱构建与推理，支持语义整合。",
+      "llm_tldr": "现有的图预训练模型难以处理无文本信息的图数据的特征异质性，阻碍了图基础模型的通用性。本文提出可学习图块的概念，将节点特征展开并构建相应图块结构，设计框架挖掘跨数据集的迁移信息。该方法可用于智慧城市中BIM、GIS等异构数据的知识图谱构建与推理，支持语义整合。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.16692v1",
+      "source": "arxiv",
+      "title": "Reference Architecture for Metadata-driven Services to Promote Reusability in Software Systems",
+      "abstract": "Service-based Architectures place reusability among their central design goals, yet structural heterogeneity across clients often drives the creation of services with similar functionalities, undermining system evolution and maintainability. In this work, we address this issue by focusing on validated architectural artifacts that bound to a limit the number of replicated services. We do so by proposing and validating a reference architecture that employs metadata as the core mechanism to promote service reusability, embracing heterogeneous data. The proposed RA is designed based on a pattern language with the same purpose, and it is evaluated by combining two well-established methods for RA evaluation: scenario-based evaluation and case studies with real-world systems. The triangulation of these methods' results demonstrated that, during the system's evolution, the most common change types the RA incurs are either no change or less impactful ones, like configuration changes or the addition of a pluggable class.",
+      "authors": [
+        "João F. L. Daniel",
+        "Bruno P. Romano",
+        "Xiaofeng Wang",
+        "Andrea Janes",
+        "Eduardo M. Guerra"
+      ],
+      "primary_category": "cs.SE",
+      "categories": [
+        "cs.SE"
+      ],
+      "published": "2026-06-15T13:27:29+00:00",
+      "link": "https://arxiv.org/pdf/2606.16692v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "metadata-driven reference architecture for service reusability",
+      "llm_evidence_cn": "元数据驱动的服务重用参考架构",
+      "llm_evidence": "元数据驱动的服务重用参考架构",
+      "canonical_evidence": "元数据驱动的服务重用参考架构",
+      "llm_tldr_en": "Proposes a reference architecture using metadata to promote service reusability in heterogeneous environments, applicable to smart city data integration.",
+      "llm_tldr_cn": "服务架构中客户端异构性导致功能重复服务泛滥，影响系统可维护性。本文提出一种以元数据为核心机制的参考架构，通过模式语言设计并利用场景评估验证，在异构数据环境下提升服务重用性，为智慧城市中BIM、GIS等多源数据统一管理提供架构参考。",
+      "llm_tldr": "服务架构中客户端异构性导致功能重复服务泛滥，影响系统可维护性。本文提出一种以元数据为核心机制的参考架构，通过模式语言设计并利用场景评估验证，在异构数据环境下提升服务重用性，为智慧城市中BIM、GIS等多源数据统一管理提供架构参考。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing unified data standards and semantic data models for integrating heterogeneous smart city construction data, including BIM, GIS, documents, images, videos, point clouds, and structured databases.",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.18846v1",
+      "source": "arxiv",
+      "title": "From Bounding Boxes to Visual Reasoning: An On-Policy Data Annotation Tool for Vision-Language Models",
+      "abstract": "Vision-language models (VLMs) are rapidly advancing toward sophisticated grounded structured visual reasoning. Training models for such advanced capabilities demands a new genre of data that seamlessly unifies spatial coordinates, open-vocabulary descriptions, structured attributes, and topological relationships into a singular representation. However, existing data annotation tools fundamentally fail to meet these intricate demands, suffering from three systematic bottlenecks: limited expressiveness, severe annotation-training decoupling, and poor data reusability. To bridge this infrastructure gap, we introduce an open-source annotation tool, ScreenAnnotator. First, we define a unified annotation atom schema that binds spatial, semantic, and structural primitives into a single unit. Second, we implement an on-policy annotation loop embedded with a Bayesian Annotation Verifier (BAV). Finally, we design a template-driven multi-task data synthesis process dynamically transforms static atoms into diverse multi-dimensional reasoning tasks, eliminating redundant re-annotation. The on-policy loop drives the annotation accept rate to nearly 100% on flowcharts and 77% on GUI screenshots, while steadily reducing per-image annotation time as labeled data accumulate. In the flowchart scenario, fine-tuning a VLM yields 76.1% average accuracy, which is a 35.1% point absolute gain. Our code is available at: https://github.com/WnQinm/Annotator.",
+      "authors": [
+        "Like Zhang",
+        "Runliang Niu",
+        "Shiqi Wang",
+        "Xiyu Hu",
+        "Qianli Xing",
+        "Pan Wang",
+        "Qingzu He",
+        "Qi Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-17T09:25:59+00:00",
+      "link": "https://arxiv.org/pdf/2606.18846v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "unified annotation schema that binds spatial coordinates, open-vocabulary descriptions, structured attributes, and topological relationships",
+      "llm_evidence_cn": "统一标注模式，融合空间坐标、开放词汇描述、结构化属性和拓扑关系",
+      "llm_evidence": "统一标注模式，融合空间坐标、开放词汇描述、结构化属性和拓扑关系",
+      "canonical_evidence": "统一标注模式，融合空间坐标、开放词汇描述、结构化属性和拓扑关系",
+      "llm_tldr_en": "Introduces ScreenAnnotator, a unified annotation tool that binds spatial, textual, attribute, and topological data into a single representation, enabling advanced visual reasoning data creation.",
+      "llm_tldr_cn": "当前VLM标注工具存在表达能力有限、标注-训练脱节和数据复用性差的问题。为此，本文提出ScreenAnnotator开源标注工具，定义统一标注原子模式，将空间坐标、开放词汇描述、结构化属性和拓扑关系绑定到单一表示中。该工具填补了基础设施空白，支持生成面向结构化视觉推理的高质量数据。其统一数据模式对智慧城市中多源异构数据（BIM、GIS、点云等）的整合具有方法论借鉴意义。",
+      "llm_tldr": "当前VLM标注工具存在表达能力有限、标注-训练脱节和数据复用性差的问题。为此，本文提出ScreenAnnotator开源标注工具，定义统一标注原子模式，将空间坐标、开放词汇描述、结构化属性和拓扑关系绑定到单一表示中。该工具填补了基础设施空白，支持生成面向结构化视觉推理的高质量数据。其统一数据模式对智慧城市中多源异构数据（BIM、GIS、点云等）的整合具有方法论借鉴意义。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing unified data standards and semantic data models for integrating heterogeneous smart city construction data, including BIM, GIS, documents, images, videos, point clouds, and structured databases.",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.18075v1",
+      "source": "arxiv",
+      "title": "A Unified Framework for Context-Aware and Relation-Aware Graph Retrieval-Augmented Generation",
+      "abstract": "Retrieval-Augmented Generation (RAG) has emerged as a paradigm for enhancing large language models (LLMs) with external knowledge, yet existing graph-based methods face a fundamental limitation: entity-centric and chunk-centric approaches operate on representations anchored to original text without true knowledge fusion. While entity-centric methods connect logically related content and chunk-centric methods preserve context, both retrieve information separately through similarity search, missing emergent understanding from their synthesis. In this paper, we propose HyGRAG, a hierarchical graph RAG framework that transcends source documents by addressing three core challenges: constructing summaries that genuinely integrate contextual and relational information, leveraging these synthesized representations to access emergent knowledge during retrieval, and efficiently updating hierarchical structures for dynamic corpora. Specifically, we design hierarchical index structures over hybrid graphs with both chunk and entity nodes, then iteratively cluster them and generate LLM-based summaries. Then, we design context and relation-aware retrieval that searches across all abstraction levels while expanding through community membership. Moreover, we enable dynamic knowledge update through attachment-based algorithms with only local re-summarization. Experimental results show that HyGRAG improves the average accuracy of multi-hop reasoning tasks by 9.7%, while maintaining reasonable efficiency.",
+      "authors": [
+        "Haoyang Zhong",
+        "Yifei Sun",
+        "Antong Zhang",
+        "Chunping Wang",
+        "Lei Chen",
+        "Yang Yang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-16T15:44:10+00:00",
+      "link": "https://arxiv.org/pdf/2606.18075v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "hierarchical graph RAG framework for knowledge fusion and reasoning",
+      "llm_evidence_cn": "层次图RAG框架实现知识融合与推理",
+      "llm_evidence": "层次图RAG框架实现知识融合与推理",
+      "canonical_evidence": "层次图RAG框架实现知识融合与推理",
+      "llm_tldr_en": "Proposes HyGRAG, a hierarchical graph RAG that integrates context and relations for true knowledge fusion beyond similarity search, improving LLM reasoning.",
+      "llm_tldr_cn": "现有图RAG方法因实体/块分离而缺乏真正知识融合。本文提出HyGRAG层次图RAG框架，构建整合上下文和关系的摘要，实现超越相似搜索的知识融合。该方法提升了LLM在复杂查询上的推理能力。其知识图融合与推理机制可直接应用于智慧城市中BIM、GIS等异构数据的知识图谱构建与智能问答。",
+      "llm_tldr": "现有图RAG方法因实体/块分离而缺乏真正知识融合。本文提出HyGRAG层次图RAG框架，构建整合上下文和关系的摘要，实现超越相似搜索的知识融合。该方法提升了LLM在复杂查询上的推理能力。其知识图融合与推理机制可直接应用于智慧城市中BIM、GIS等异构数据的知识图谱构建与智能问答。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.20230v1",
+      "source": "arxiv",
+      "title": "SysML Modeling of Digital Twins for Renewable Energy Communities",
+      "abstract": "Renewable Energy Communities (RECs) are emerging as a key organizational model for local and global sharing of renewable generation, storage, and flexible loads. Engineering Digital Twins of RECs is made difficult by the heterogeneity of devices, contracts, and runtime data involved. In this paper, we take a first step toward a Model-Based Systems Engineering (MBSE) workflow for REC's Digital Twins. Starting from an industrially-validated REC domain model, we re-express a representative house subset in SysML using the open-source Modelio tool, yielding two Block Definition Diagrams - a device taxonomy and a community organizational view. We then discuss four semantic gaps that plain SysML leaves open and sketch how the SAREF4ENER ontology could be imported as a reference package to close them. Combining SysML with SAREF-based semantics for smart-energy Digital Twins remains largely unexplored, and we position this paper as a first step along that line.",
+      "authors": [
+        "Mohammad Samadi",
+        "Luís Miguel Pinho",
+        "Andrey Sadovykh",
+        "Gabriela Lucas"
+      ],
+      "primary_category": "cs.SE",
+      "categories": [
+        "cs.SE"
+      ],
+      "published": "2026-06-18T13:40:50+00:00",
+      "link": "https://arxiv.org/pdf/2606.20230v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "SysML modeling of digital twins with ontology integration",
+      "llm_evidence_cn": "使用SysML和本体集成的数字孪生建模",
+      "llm_evidence": "使用SysML和本体集成的数字孪生建模",
+      "canonical_evidence": "使用SysML和本体集成的数字孪生建模",
+      "llm_tldr_en": "Proposes a Model-Based Systems Engineering workflow for Renewable Energy Community digital twins using SysML and discusses semantic gaps addressed by SAREF4ENER ontology import.",
+      "llm_tldr_cn": "针对可再生能源社区数字孪生构建中的异构设备与数据问题，本文提出了一种基于SysML的模型驱动系统工程工作流。通过将工业验证的领域模型用SysML重新表达，生成了设备分类和社区组织视图，并讨论了SysML未覆盖的语义间隙及如何引入SAREF4ENER本体来填补。该工作为城市级数字孪生的语义互操作提供了可转移的方法论。",
+      "llm_tldr": "针对可再生能源社区数字孪生构建中的异构设备与数据问题，本文提出了一种基于SysML的模型驱动系统工程工作流。通过将工业验证的领域模型用SysML重新表达，生成了设备分类和社区组织视图，并讨论了SysML未覆盖的语义间隙及如何引入SAREF4ENER本体来填补。该工作为城市级数字孪生的语义互操作提供了可转移的方法论。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.19609v1",
+      "source": "arxiv",
+      "title": "Building Drift: Documenting On-Site Construction Adaptations Across Material Lifecycles",
+      "abstract": "In a circular economy for construction, reclaimed materials carry prior lives of use and go on to have post-lives in future buildings. Yet working with such materials introduces unpredictability that requires on-site improvisation, making their reuse challenging to document and scale across building lifetimes. Without documentation, the on-site adaptations that make construction with reclaimed materials possible leave collaborators, evaluators, and inheritors without the information they need to continue, assess, and reuse materials. We call the collective deviation of the physical state from the digital model through these adaptations \"building drift.\" Through a case study, ReShelter, a reclaimed timber pavilion constructed in the forest, we develop a taxonomy for building drift that characterizes the collective deviation across building lifetimes: Tending the Site, Foraging for Fit, Interpreting the Material, Marking Measurements, and Coordinating Across Communities.   To put our taxonomy for building drift into practice, we present Pentimento, a documentation tool that leverages video documentation and 3D Gaussian Splatting to spatially, temporally, and semantically represent on-site adaptations in relation to the designed model. Pentimento enables each stakeholder to navigate material histories in ways that reduce barriers to material reuse. Together, these contributions open pathways towards computational tools that support the on-site improvisation essential to construction with reclaimed materials, enabling more sustainable cycles of recovery, repair, and reuse.",
+      "authors": [
+        "Ritik Batra",
+        "Martin Tamke",
+        "Tom Svilans",
+        "Jan Hüls",
+        "Amritansh Kwatra",
+        "Steven J. Jackson",
+        "Thijs Roumen",
+        "Mette Ramsgaard Thomsen"
+      ],
+      "primary_category": "cs.HC",
+      "categories": [
+        "cs.HC",
+        "cs.GR"
+      ],
+      "published": "2026-06-17T21:23:16+00:00",
+      "link": "https://arxiv.org/pdf/2606.19609v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "documents on-site construction adaptations from digital models",
+      "llm_evidence_cn": "记录现场施工与数字模型的偏差",
+      "llm_evidence": "记录现场施工与数字模型的偏差",
+      "canonical_evidence": "记录现场施工与数字模型的偏差",
+      "llm_tldr_en": "Proposes 'building drift' to document on-site adaptations from digital models in construction, enabling circular economy for reclaimed materials.",
+      "llm_tldr_cn": "论文提出‘建筑漂移’概念，指现场施工中物理状态偏离数字模型的累积偏差。通过一个回收木结构案例，展示了如何记录这些适应以确保可追溯性，从而支持建筑材料的循环利用。该方法有助于改进建筑生命周期管理中的数据集成。",
+      "llm_tldr": "论文提出‘建筑漂移’概念，指现场施工中物理状态偏离数字模型的累积偏差。通过一个回收木结构案例，展示了如何记录这些适应以确保可追溯性，从而支持建筑材料的循环利用。该方法有助于改进建筑生命周期管理中的数据集成。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

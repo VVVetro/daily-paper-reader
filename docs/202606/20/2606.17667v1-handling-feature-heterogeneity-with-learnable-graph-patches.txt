@@ -1,0 +1,498 @@
+Title: Handling Feature Heterogeneity with Learnable Graph Patches
+
+URL Source: https://arxiv.org/pdf/2606.17667v1
+
+Published Time: Wed, 17 Jun 2026 00:51:47 GMT
+
+Number of Pages: 13
+
+Markdown Content:
+# Handling Feature Heterogeneity with Learnable Graph Patches 
+
+# Yifei Sun 
+
+Zhejiang University Hangzhou, China yifeisun@zju.edu.cn 
+
+# Yang Yang ∗
+
+Zhejiang University Hangzhou, China yangya@zju.edu.cn 
+
+# Xiao Feng 
+
+Zhejiang University Hangzhou, China functionendless@zju.edu.cn 
+
+# Zijun Wang 
+
+Zhejiang University Hangzhou, China 3200103994@zju.edu.cn 
+
+# Haoyang Zhong 
+
+Huazhong University of Science and Technology Wuhan, China haoyangzhong@hust.edu.cn 
+
+# Chunping Wang 
+
+Finvolution Group Shanghai, China wangchunping02@xinye.com 
+
+# Lei Chen 
+
+Finvolution Group Shanghai, China chenlei04@xinye.com 
+
+## Abstract 
+
+In recent years, the rapid development of foundation models and graph pre-training technologies has spurred increasing interest in constructing a universal pre-trained graph model or Graph Founda-tion Model (GFM). However, a significant challenge is that existing models are unable to address feature heterogeneity in graph data without textual information, which hinders the transferability of graph models across different datasets. To bridge this gap, we pro-pose the concept of learnable graph patches , which we regard as the smallest semantic units of any graph data. We decompose the graph into learnable graph patches by unfolding the node features and constructing corresponding patch structures separately. We then design PatchNet , a framework that mines transferable informa-tion from graph data across domains. Specifically, after extracting graph patches, we propose a patch encoder to extract knowledge from each unit and a patch aggregator to learn how the units are combined into a whole. Due to its domain-agnostic nature, the model can be applied to downstream data across different domains. Furthermore, we analyze the connection between PatchNet and existing graph models, as well as the transferability of the node embeddings it generates. Empirically, our method not only achieves the capability to use multi-domain graphs for pre-training, but also shows enhanced performance across various downstream datasets and tasks. Moreover, we observe consistent improvement in down-stream performance as the volume of pre-training data increases.  
+
+> ∗Corresponding author. Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org.
+> KDD ’25, August 3–7, 2025, Toronto, ON, Canada
+> ©2025 Copyright held by the owner/author(s). Publication rights licensed to ACM. ACM ISBN 979-8-4007-1245-6/25/08 https://doi.org/10.1145/3690624.3709242
+
+## CCS Concepts 
+
+• Networks → Network algorithms .
+
+## Keywords 
+
+Graph neural networks, graph pre-training, feature heterogeneity 
+
+ACM Reference Format: 
+
+Yifei Sun, Yang Yang, Xiao Feng, Zijun Wang, Haoyang Zhong, Chun-ping Wang, and Lei Chen. 2025. Handling Feature Heterogeneity with Learnable Graph Patches. In Proceedings of the 31st ACM SIGKDD Con-ference on Knowledge Discovery and Data Mining V.1 (KDD ’25), August 3–7, 2025, Toronto, ON, Canada. ACM, New York, NY, USA, 13 pages. https: //doi.org/10.1145/3690624.3709242 
+
+## 1 Introduction 
+
+Graph, as a prevalent data structure, is ubiquitous in a wide range of applications, such as social network analysis [55], bio-informatics [ 57 ], finance [ 56 ], etc. These graphs form a vast knowledge base, encompassing rich and comprehensive information across various fields. With the advancement of graph neural networks (GNNs) and pre-training techniques, the development of universal graph pre-train models or graph foundation models (GFMs) that absorb knowl-edge across diverse graphs has gained significant attention [ 23 , 27 ]. However, efforts to develop transferable pre-trained models have faced numerous challenges. The reason is that graph data exhibits more complex heterogeneity compared to images in computer vi-sion (CV) and sentences in natural language processing (NLP). One reason lies in the structural aspect, graph data exhibits vastly differ-ent patterns across various domains. For example, benzene rings are commonly found in molecular graphs, while triangles frequently appear in social networks. Fortunately, this issue has seen consid-erable breakthroughs in recent research [31, 66]. On the other hand, feature heterogeneity poses significant chal-lenges and has been less explored due to its complex nature. Specif-ically, the sources of node information in graph data can be various, and the process of converting raw data into features also varies greatly. This leads to node features in different graph datasets po-tentially existing in entirely different semantic spaces. For example,   
+
+> arXiv:2606.17667v1 [cs.LG] 16 Jun 2026 KDD ’25, August 3–7, 2025, Toronto, ON, Canada Yifei Sun et al. Tokenization
+> Social Patch Transaction Patch Others
+> Feature of Node Leanable Graph Patch Corresponding Structure A Channel of Node Tokens
+
+# +
+
+> Graph Structure
+
+Figure 1: Decomposing a graph into graph patches. The upper side is an input graph (financial network as example). The lower side shows two of the decomposed graph patches. The first patch represents a social network, utilizing the social attributes of users for its node token, with edges indicating similarities in social aspects. The second patch is a transac-tion network, featuring nodes characterized by transactional information, where edges reflect transactional similarities. 
+
+node features in molecular graphs might be manually annotated by experts in laboratories without further processing, whereas in financial networks, features could be derived from tabular data using some feature selecting method. One existing solution involves introducing text feature and using LLMs to map these into a common space [ 22 ]. However, most graph data do not include text as part of the node information, and in some cases, the feature information cannot be provided due to privacy concerns. Another approach is to use simple singular value decom-position (SVD) to convert feature to the same length [ 65 ], but this only standardizes feature length without aligning the joint distri-bution of node features and structure across different graphs. Thus, effectively addressing feature heterogeneity on graphs becomes crucial for building a unified graph pre-training model. The core challenges in handling feature heterogeneity include, firstly, the difficulty in extracting meaningful and transferable in-formation from the vastly diverse features across different graph data. Secondly, how to preserve such transferable information using a scalable model during the pre-training process also presents a significant challenge. In this paper, we propose that the associa-tion of feature structures could be the key to transferability. Hence, we aim to consider both node features and structural information when addressing feature heterogeneity. The key idea is to design a learnable graph patching module which is adaptable to various kinds of feature and train it to extract the transferable information to boost performance of downstream tasks. First, we propose that each graph can be seen as a complex object consisting of graph patches. As the example shown in Fig. 1, the financial network on the upper side can be decomposed into a series of graph patches, including a social graph patch and a transaction graph patch, among others. Each graph patch contains a piece of relatively independent and transferable information from the original graph. Note that the node tokens 𝑇 of each graph patch 𝑃 are unfolded from the original node features, and its graph structure e𝐴 is learned from both the original structure and the node tokens. We propose that such graph patches preserve the basic transferable information between graphs, as other graphs may also be decomposed into similar social and transactional information. Second, we propose to build a scalable graph model, PatchNet ,to encode the captured information in the graph patches. Specifi-cally, we first extract learnable graph patches from original graph, which are composed of node tokens and corresponding structures. Since the transferable information is hidden in the graph patches, we design a patch encoder to aggregate graph patch of each channel. Then we build a patch aggregation module to learn how to combine these transferable information across channels of graph patches. Our method is the first one that can be pre-trained on data across domains without the requirement for text or other side information, and can be applied to downstream data across domains. Addition-ally, the high degree of modularity of our model allows for stacking to scale up the model’s parameter. Finally, we evaluate our model on domain transfer settings and self-supervised setting. The results indicate that this is a promising step toward building a GFM. The contribution of this paper are summarized as follows: 
+
+• We propose the concept of learnable graph patches to handle feature heterogeneity, which enables the preserving of multi-domain knowledge across different graphs. 
+
+• We propose a graph model, PatchNet , composed of patch encoder and patch aggregator for generalized graph pre-training. We analyze the obtained embedding quality and the correlation between PatchNet and existing models. 
+
+• We empirically prove the effectiveness of PatchNet in vari-ous settings, which demonstrate the superior performance across multiple graph datasets and tasks. 
+
+## 2 Related Work 
+
+Tackling feature heterogeneity. Developing transferable GNNs or GFM has always been a hot topic of research in the graph com-munity. One of the great challenges is dealing with feature hetero-geneity [ 23 , 27 ]. Existing methods for graph pre-training or transfer learning suffer from feature heterogeneity due to varying feature origins and semantic spaces. OFA [ 22 ] manually converts heteroge-neous features into textual descriptions using LLMs. However, most of the graphs mainly contain feature attributes without either side information like text or homogeneous origin. GCOPE [ 65 ] employs domain-specific virtual nodes that serve as inter-connectors linking nodes across various domains. Although these virtual nodes enable connections between domains, they only apply SVD to address feature heterogeneity without explicitly capturing the transferable information. However, we propose to use learnable graph patches to capturing transferrable information within feature heterogeneity. 
+
+Graph patching or tokenization. Due to the complex non-Euclidean nature of graph data, many existing studies have ad-dressed the associated challenges by decomposing graphs into Handling Feature Heterogeneity with Learnable Graph Patches KDD ’25, August 3–7, 2025, Toronto, ON, Canada 
+
+smaller units like patches or tokens to enable more effective mod-eling and information extraction. These methods can be catego-rized into 4 types based on the granularity of the decomposition: node-level, path-level, subgraph-level, and combination-level. The most common approach is node-level decomposition, a method employed by various graph transformers [ 7, 29 , 33 , 59 ]. The ad-vantage of this level is the natural way of segmentation, although it does not reduce the complexity of the graph structure. Next is the path level: PathNet [ 39 ] enhances the discriminability of graph models on heterophily graphs by capturing path patterns, while PathNNs [ 28 ] theoretically demonstrate that capturing full-range paths can enhance both expressiveness and model performance. The subgraph level includes NAGphormer [ 3 ], which efficiently improves node classification on large graphs by aggregating each layer of neighbors as separate patches, and GPatcher [ 64 ], which proposes aggregating 𝑝 neighbors for each node based on topology and node features in heterophily graphs; Graph ViT [ 12 ] employs METIS for graph segmentation, validating that ViT-like approaches can also be effective on graphs. The final category is the combina-tion level, to which our method belongs. We propose that learning such patch is transferable across graphs because these learnable graph patches can learn common unit information across graphs even with feature heterogeneity. 
+
+## 3 Method 
+
+Notations. We denote a graph as G = (𝑉 , 𝐴, 𝑋 ) and 𝑁 is the number of nodes, 𝐴 ∈ { 0, 1}𝑁 ×𝑁 is the adjacency matrix and 𝑋 ori ∈
+
+R𝑁 ×𝐷 is the node attribute matrix where 𝐷 is the dimension of attributes that differs across domains. Due to feature heterogeneity, we normalize the node attributes as 𝑋 ∈ [ 0, 1]𝑁 ×𝐷 .
+
+Overview. The overall architecture of PatchNet is shown in Fig. 2 and the full algorithm can be found in Appendix. As discussed in Sec. 1, the goal is to handle feature heterogeneity between graphs in order to transfer the knowledge from various pre-training datasets into target downstream datasets. Moreover, we propose that the key is to build learnable patches that can capture the inherent fea-ture and structure correlation. After obtaining graph patches, we first perform an encoding within each graph patch to obtain the inner-patch embedding, known as the Patch Encoder. Subsequently, we aggregate across all patches, referred to as Patch Aggregation, to produce the final node embedding 𝐹 , which can be used for node classification or graph classification after pooling. This com-plete processing represents one layer of PatchNet , meaning that the entire process can be repeated multiple times to capture more extensive and richer patch information. 
+
+## 3.1 Building Structure-aware Graph Patches 
+
+The construction of graph patches consists of two parts: the formu-lation of node tokens and patch structure learning. 
+
+Definition 3.1 (Unfolding Node Tokens). Given a graph G = (𝑉 , 𝐴, 𝑋 ),the normalized attributes of each node 𝑋 𝑖 ∈ [ 0, 1]𝐷 can be unfolded into node tokens 𝑇 𝑖 ∈ [ 0, 1]𝐾 ×𝑀 , where 𝐾 is the number of channels of node tokens and 𝑀 is the token size. This can be formalized as follows: 𝑇 𝑙 𝑖 = 𝑋 [𝑖, 𝑠𝑡𝑎𝑟𝑡 𝑙 : 𝑒𝑛𝑑 𝑙 ], 𝑠𝑡𝑎𝑟𝑡 𝑙 = 𝑆 × 𝑙, 𝑒𝑛𝑑 𝑙 = 𝑆 × 𝑙 + 𝑀, 𝑙 =
+
+0, ..., 𝐾 , 𝑀 is the size of each token, step 𝑆 refers to the stride of the unfolding window, which can be calculated by 𝑆 = ⌊ 𝐷 −𝑀 𝐾 ⌋.Here, each token 𝑇 𝑙 𝑖 ∈ [ 0, 1]𝑀 , 𝑙 ∈ 1, ..., 𝐾 is a smaller information unit of node. Each channel of tokens for all nodes is denoted as 
+
+𝑇 𝑙 ∈ [ 0, 1]𝑁 ×𝑀 . Hence, the node token matrix of this graph is 
+
+𝑇 ∈ [ 0, 1]𝑁 ×𝐾 ×𝑀 .The node token in Fig. 1 is represented by the tokenized pink vectors, which are extracted from the original node features. The core idea is to use the tensor unfold operation to losslessly expand each node’s features into tokens. This unfold operation resembles the first half of a convolution operation, which is akin to spreading out potentially useful information. The single channel of tokens for all nodes in the graph contains a single perspective of all features. 
+
+Relation between node tokens. We explain the following two re-lations: The relation between node tokens on the same node 𝑇 1 
+
+> 𝑖
+
+,𝑇 2
+
+> 𝑖
+
+and the relation between node tokens across different nodes 𝑇 𝑙  
+
+> 1
+
+,𝑇 𝑙  
+
+> 2
+
+.Note that subscripts represent node indices, while superscripts denote token or patch indices. 𝑇 𝑙 𝑖 = 𝑋 [𝑖, 𝑠𝑡𝑎𝑟𝑡 𝑙 : 𝑒𝑛𝑑 𝑙 ], the neigh-boring 𝑇 1 
+
+> 𝑖
+
+,𝑇 2 
+
+> 𝑖
+
+share the overlap feature. Since 𝑠𝑡𝑎𝑟𝑡 1 < 𝑠𝑡𝑎𝑟𝑡 2 <
+
+𝑒𝑛𝑑 1 < 𝑒𝑛𝑑 2 and 𝑒𝑛𝑑 1 − 𝑠𝑡𝑎𝑟𝑡 2 = (𝑀 − 𝑆 ), the shared part between 
+
+𝑇 1 
+
+> 𝑖
+
+,𝑇 2 
+
+> 𝑖
+
+is a subset of token 𝑇 1 
+
+> 𝑖
+
+. Since the process of splitting tokens from node features does not involve interactions between nodes, the relationship between 𝑇 𝑙  
+
+> 1
+
+,𝑇 𝑙  
+
+> 2
+
+is similar to that between 𝑋 1, 𝑋 2,meaning that they are relatively independent. After we formulate tokens from each node with the original structure (dotted edges in Fig. 2), we then introduce a structure learning method to derive learnable graph patches based on the original graph structure and node tokens. This part is our key to handling feature heterogeneity across graphs. 
+
+Definition 3.2 (Learning Graph Patches). Given a channel of to-kens 𝑇 𝑙 and the original graph structure 𝐴 , a graph patch is denoted 
+
+𝑃 𝑙 =
+
+
+
+𝑇 𝑙 , e𝐴 𝑙 
+
+
+
+, where 𝑙 = 1, ..., 𝐾 . Here, e𝐴 𝑙 ∈ { 0, 1}𝑁 ×𝑁 is learned for each token channel 𝑙 with a shared graph learner Ψ in parallel. That is, e𝐴 𝑙 = Ψ(𝑇 𝑙 , 𝐴 ).Thus, a graph can be divided into 𝐾 learnable graph patches for further modeling. We propose that the key to tackling feature heterogeneity is to find/learn the transferable information across different graphs. Here we propose to design a learnable module to extract the graph patches that contain feature-structure correlation information. In other words, the learned graph patches themselves are not transferable, but the learning mechanism within the param-eters of graph learning module is transferable. Note that the graph learner module are learned simultaneously with patch encoder and aggregator which are introduced in following sections. There are many ways to construct such a graph learner module. In this paper, we utilize an attention-based approach. 
+
+𝑆 𝑖,𝑗 = 𝑓 𝜙 (𝑊 ⊙ 𝑇 𝑙 𝑖 ,𝑊 ⊙ 𝑇 𝑙 𝑗 ), (1) 
+
+e𝐴 𝑖,𝑗 (𝑇 ) =
+
+(
+
+𝜎 (𝑆 𝑖,𝑗 ), 𝑗 ∈ top-k (𝑆 𝑖, :)
+
+0, 𝑗 ∉ top-k (𝑆 𝑖, :) , (2) where 𝑇 𝑙 𝑖 and 𝑇 𝑙 𝑗 denote two node tokens, ⊙ is the Hadamard oper-ation, 𝑊 is a learnable parameter vector, 𝑓 𝜙 denotes the similarity metric such as cosine similarity, 𝜎 stands for non-linear activation function like relu. Moreover, we employ residual connections to KDD ’25, August 3–7, 2025, Toronto, ON, Canada Yifei Sun et al. odes   
+
+> 1~ odes 1~ Patches 1~ K
+> Transformer Block Token-wise Pooling ode Embeddings
+> Z
+> Original Structure A
+> Input graph
+> of any domain Node Feature / Embedding Unfolding
+> Node Tokens Channel 1 Channel 2 Channel 3 ( K)
+> Graph Patching Structure Learning Structure Learning Patch Encoder
+> Structure Learning Share Weights Share Weights Patch Encoder Patch Encoder Patch Aggregation Share Weights
+> X / F F
+> Input for Next Layer
+> Input as sequence Graph Patches TP
+
+Figure 2: Overall architecture of PatchNet . (a) Building Graph Patches: The input node attributes 𝑋 are unfolded into multiple node tokens, which are then paired with a graph learner to form patches. (b) Encoding Patches: Each patch is encoded using a shared-parameter encoder, resulting in patch embeddings 𝑍 without information passing between patches. (c) Aggregating Patches: Patch embeddings are aggregated within each node to yield the final node embeddings 𝐹 .
+
+update the learned e𝐴 to accelerate and stabilize the training process: 
+
+e𝐴 = 𝛼 e𝐴 + ( 1 − 𝛼 )𝐴 (3) where 𝛼 stands for the trade-off parameter for how much trainable structure to adopt. 
+
+## 3.2 Theoretical Analysis of Graph Patches 
+
+Fundamental assumption. The success of transfer learning relies on the pre-training and downstream data having similar distribu-tions as model inputs [ 68 ]. Compared to the original graph, patches of the same granularity are more likely to exhibit similar distribu-tions, as the extracted tokens have the same dimensions, and the patch structures are learned by a transferable graph learner. This enables the model to transfer learned knowledge effectively when modeling and aggregating patches across different datasets. 
+
+Physical meaning. Any graph data is partitioned into learnable graph patches 𝑃 𝑙 = (𝑇 𝑙 , e𝐴 𝑙 ) with the same token feature space 
+
+𝑇 𝑙 ∈ [0, 1]𝑁 ×𝑀 and the same space of learned structure e𝐴 𝑙 ∈{0, 1}𝑁 ×𝑁 , representing the division into smaller graph patches with the same Cartesian Product space of 𝑇 × e𝐴 . Ultimately, patching reduces the distributional differences between Pr (𝑇 (𝐺 𝑎 ), e𝐴 (𝐺 𝑎 )) 
+
+and Pr (𝑇 (𝐺 𝑏 ), e𝐴 (𝐺 𝑏 )) of different graphs 𝐺 𝑎 , 𝐺 𝑏 .
+
+Relation among patches. Note that when generating node to-kens 𝑇 1,𝑇 2 from the original node features, we use an unfolding operation with overlap ( 𝑇 1 ∩𝑇 2 ≠ ∅). The e𝐴 of each patch is learned based on the same 𝐴 . Thus, the information between two adjacent patches (adjacent in the token splitting process) partially overlaps, which means these patches are not entirely independent. On the other hand, since the node tokens obtained through unfolding can be restored via the folding operation ( Ð𝐾 𝑙 =1 𝑇 𝑙 𝑖 = 𝑋 𝑖 , 𝑖 = 1, ..., 𝑁 ), all the patches can be combined to reconstruct the original graph ( 
+
+Ð𝐾 𝑙 =1 𝑃 𝑙 = 𝐺 (𝑋, 𝐴 )). 
+
+## 3.3 Encoding and Aggregating Graph Patches 
+
+In this section, we introduce scalable graph patch encoder and aggregator to extract transferable knowledge in graph patches. 
+
+Encoding Graph Patches. We propose a dual-branch attention mechanism to adaptively encode the patches. Specifically, given each token 𝑇 𝑙 ∈ [ 0, 1]𝑁 ×𝑀 , the original 𝐴 and learned e𝐴 , the 𝑙 -th patch are encoded in following two steps: we first use GNN with shared parameters to respectively encode both the learned patches and the combination of the original graph with node tokens. 
+
+𝐻 𝑙 = Φ(𝑇 𝑙 , 𝐴 ), f𝐻 𝑙 = Φ(𝑇 𝑙 , e𝐴 (𝑇 𝑙 )) , (4) where Φ denotes a GNN. This results in embeddings 𝐻 𝑙 , f𝐻 𝑙 , both in R𝑁 ×hid . Then we combine both 𝐻 𝑙 and f𝐻 𝑙 to get the representa-tion of the 𝑙 -th patch of the whole graph. 
+
+𝑓 MLP (f𝐻 𝑙 || 𝐻 𝑙 ) = 𝐸 ∈ R𝑁 ×2, 𝛿 (𝐸 ) = 𝛽 ∈ ( 0, 1)𝑁 ×2, (5) where 𝑓 MLP is a two-layer MLP and 𝛿 stands for Softmax operation. The Softmax operation is applied along the second dimension to produce normalized importance scores 𝛽 . Finally, we utilizes the scores 𝛽 to combine 𝐻 𝑙 , f𝐻 𝑙 .
+
+𝑍 𝑙 =∑︁ 𝛿 (𝐸 ), (6) where the summation is applied along the second dimension. The output 𝑍 𝑙 ∈ R𝑁 ×hid (𝑙 = 1, ...𝐾 ) is encoded patch embedding for 𝑁 nodes. Handling Feature Heterogeneity with Learnable Graph Patches KDD ’25, August 3–7, 2025, Toronto, ON, Canada 
+
+Aggregating Graph Patches. For images or natural languages, after extracting the patches, it is vital to combine with positional embedding before aggregating the patches. However, the positional embedding of tokens, and even that of each dimension of node attributes, is meaningless for graph data. For example, in a social network where users are nodes, swapping the age and gender at-tributes does not affect the information of the nodes or the graph itself. Thus, we directly feed the patch embeddings into the patch aggregation process. Moreover, since we have node-wisely (along the 1st dimension) aggregated the tokens with graph structure, we propose to patch-wisely (along the 2nd dimension) aggregate the patches for every node. One straight way is to aggregate all the patches through a MLP-based module. However, since PatchNet is designed to transfer across different domains which cannot guarantee the same number of patches, we propose to employ a module with unlimited capacity of aggregation length, transformer block. It enables PatchNet to capture contextual information throughout the entire feature. Given 
+
+𝑍 ∈ R𝑁 ×𝐾 ×hid as input, the 
+
+𝑈 = LayerNorm (MHA (𝑍 )) , (7) 
+
+𝑈 ′ = LayerNorm (FFN (𝑈 )) , (8) 
+
+𝐹 = Pooling (𝑊 ′) (9) where MHA function computes the attention for each of the ℎ
+
+heads and concatenates them together, FF function applies two linear layers with ReLU activation in between, LayerNorm is used to provide training stability and the Pooling refers to pooling along the direction of 𝐾 patches. Thus, we get the final embeddings 𝐹 ∈ R𝑁 ×𝑓 .Overall, the time complexity of patch aggregation is O( 𝑁 𝐾 2) .It is noteworthy that, through the aggregation within patches and between patches, only one layer of the proposed framework is completed. Similar to the concept of the layer in classical GNNs, we can stack multiple layers of PatchNet . Specifically, when using 
+
+PatchNet for the first layer, the input features are the original node features. In the second layer of using PatchNet , we perform a new layer of graph patch construction and modeling based on the node embeddings generated in the first layer. 
+
+## 3.4 Pipeline and Intuition 
+
+In this section, we aim to illustrate the process of using PatchNet 
+
+during pre-training and fine-tuning, and to explain the intuition behind our model’s ability to handle feature heterogeneity. 
+
+Detailed Implementation. Firstly, we shuffle multiple datasets and feed them into PatchNet . We segment all graphs into graph patches and encoding and aggregating graph patches to get node embedding. Then, we use existing self-supervised tasks to enable 
+
+PatchNet to learn transferable information across graph datasets. During downstream fine-tuning, the downstream data must also be segmented according to the patching steps shown in Sec. 3.1. The major difference in fine-tuning is that the tasks are switched to downstream tasks. After fine-tuning on the training data, we use the tuned PatchNet to infer on the test set. Here we give the analysis of time complexity of PatchNet .The pre-processing the tokens takes O( 𝑁 𝐾𝑀 ), where number of patches is 𝐾 and token size is 𝑀 . The encoding of structure-aware graph patches is divided into two parts: For the structure learning 
+
+Figure 3: The decomposed operation of PatchNet from the perspective of MPNN. 
+
+part, we account for complexities involving locality-sensitive kNN sparsification post-processing [ 11 ], where neighbors of each node are selected from a batch of nodes (batch size = 𝑏 , hidden dimension 
+
+≈ 𝑀 ). Thus, the complexity is O( 𝑁 𝑀 2 + 𝑁 𝑀𝑏 ) [ 26 ]. The GNN aggregation typically takes O( 𝑁 + 𝐸 ). Lastly, patch Aggregation takes O( 𝑁 𝐾 2). Hence, the overall complexity is: O( 𝑁 (𝐾𝑀 + 𝑀 2 +
+
+𝑀𝑏 + 𝐾 2)) .
+
+Intuition. Here we intuitively explain why the proposed graph patch learning is transferable to tackle feature heterogeneity. The success of transfer learning relies on the pre-training and down-stream data having similar distributions as model inputs [ 68 ]. Com-pared to the original graph, patches of the same granularity are more likely to exhibit similar distributions, as the extracted tokens have the same dimensions and the patch structures are learned by a transferable graph learner. This enables the model to trans-fer learned knowledge effectively when modeling and aggregating patches across different datasets. Note that Fig. 1 is merely illustra-tive, assuming that in a financial network, some features represent social information while some represent transaction information. In reality, the token features in the data may not always correspond to clearly defined or linguistically describable aspects. Thus, we use the the learnable parameters in structure learning module to automate the learning of the patch construction. Since we have learned the transferable information across datasets during patch extraction, we further preserve these information by encoding and aggregating the patches. Then, we use encoder to acquire knowledge within graph patches with the same informa-tion granularity. Subsequent transformer-based patch aggregation learns how different graphs combine these graph patches. In sum-mary, the information transferred by PatchNet is encapsulated within the extracted graph patches. The richer the variety of graph patches during pre-training, the more likely it is that similar graph patches will be encountered in downstream data, thus enhancing downstream performance. 
+
+## 3.5 Model Analysis 
+
+Connection to others. Compared to the existing graph pre-training backbone, where only transferable information could be learned from a complete graph, dividing the graph into patches allows for learning both fine-grained inner-patch patterns and cor-relations between coarse-grained inter-patches information. In this section, we analyze the correlation between PatchNet , existing MPNNs and other graph transformers. KDD ’25, August 3–7, 2025, Toronto, ON, Canada Yifei Sun et al. 
+
+Figure 4: The SVE and LSVR of the embedding generated by 
+
+PatchNet .
+
+Theoretically, PatchNet can be seen as a decoupled version of existing MPNNs. Formally, each layer of an MPNN can be formu-lated as the combination of “propagation” and “transformation”: 
+
+H = 𝜎   ˆAXW , ˆA = eD− 12 eAeD− 12 , (10) where 𝑊 is the weight matrix of the “transformation” process. As shown in Fig. 3, our patch encoder decouples the aggregation process between patches, which was originally achieved through aggregation with graph structure ˆ𝐴 in MPNNs, and implements it through the transformer block in Section 3.3. Thus, our patch encoder can be seen as setting the parameters of the white part in the 𝑊 matrix to zeros. These blank parameters are replaced by the powerful transformer block, which not only retains the learning ability but also reduces the noise impact of the graph structure on the misaligned patches. In addition, since our structure-aware module shares weights for 𝐾 patches, the parameters near the diagonal of our 𝑊 matrix are duplicated and identical, which is shown to be parameter-efficient. From another perspective, 𝑊 in Fig. 3 is essentially a block diagonal matrix. Such matrices are often used in scenarios aimed at enhancing efficiency while still maintaining the accuracy of the algorithm [6]. Generally, PatchNet reduces information exchange between patches compared to MPNN in the patch encoding stage and ear-lier steps, which we compensate for during patch aggregation. In other words, our method retains the flexibility of parameter trans-formations on input features, similar to MPNN, while significantly surpassing MPNN in terms of generalizability. 
+
+Quality of embedding. To further analyze PatchNet , we propose to qualify the generated node embedding from the perspective of singular value. The singular value spectrum of the embedding space, which is widely considered to be related to the generalization performance [ 4, 30 , 54 ]. More specifically, we perform singular value decomposition (SVD) on the node embedding F ∈ R𝑀 ×𝐷 by 
+
+PatchNet : F = U𝚺 V⊤.1.
+
+Definition 3.3 (Singular Value Entropy). Singular value entropy (SVE) is characterized as the entropy associated with the normalized singular values. It serves as a quantifier for the distribution’s flatness among singular values. 
+
+SVE = −
+
+> 𝐷
+
+∑︁ 
+
+> 𝑖 =1
+
+𝜎 𝑖 
+
+Í𝐷 𝑗 =1 𝜎 𝑗 
+
+log 𝜎 𝑖 
+
+Í𝐷 𝑗 =1 𝜎 𝑗 
+
+(11) Higher SVE values suggest an enhanced capture of data structure within the feature space, attributed to either the learning of more distinct features or the memorization of noise, thereby expanding its dimensional span. 
+
+Definition 3.4 (Largest Singular Value Ratio). The largest singular value ratio (LSVR) is determined by taking the logarithm of the quotient obtained from dividing the largest singular value, denoted as 𝜎 1, by the aggregate of all singular values: 
+
+LSVR = − log 𝜎 1
+
+Í𝐷 𝑖 =1 𝜎 𝑖 
+
+. (12) LSVR quantifies the disparities in data encapsulated by the singular vector associated with the largest singular value, 𝜎 1, indicative of the model’s transferability [4]. We plot the SVE and LSVR for the embedding generated by 
+
+PatchNet in Fig. 4. The input data here is PCQM4Mv2 [ 15 ]. Specif-ically, the dashed lines represent the average values of SVE and LSVR obtained from the original data’s node features, while the different colored solid lines represent the average values of SVE and LSVR for the node representations obtained by our model af-ter different numbers of rounds of training. The solid lines with dots represent the values of SVE, and the solid lines with crosses represent the values of LSVR. The results indicate that during the forward propagation process of PatchNet , both SVE and LSVR for the node representations are continuously increasing, demonstrat-ing that our model is constantly improving the transferability and distinguishability of the representations. 
+
+## 4 Experiments 
+
+In this section, we answer the following four questions through experiments to validate the effectiveness of PatchNet 2:
+
+• RQ1. Can PatchNet handle feature heterogeneity on differ-ent downstream datasets through cross-domain pre-training? 
+
+• RQ2. Does the performance of PatchNet improve with the increase of the scale of pre-training datasets? 
+
+• RQ3. Can PatchNet outperform other pre-trained back-bones in both graph and node classification tasks? 
+
+• RQ4. How sensitive is PatchNet to the size of node tokens? Note that each set of experiments is repeated five times. Detailed hyper-parameters can be found in the Appendix.        
+
+> 1Uand Vdenotes the left and right singular vector matrices, respectively, and Σ
+> denoting the diagonal singular value matrix {𝜎 1, . . . , 𝜎 𝐷 }.
+> 2Our codes are available at https://github.com/zjunet/PatchNet. Handling Feature Heterogeneity with Learnable Graph Patches KDD ’25, August 3–7, 2025, Toronto, ON, Canada
+
+Table 1: Cross domain pre-training and fine-tuning performance in terms of mean and std. deviation of ROC-AUC (for Sider, HIV, Bace) and F1 (for Flickr and DBLP). Improvement (IMP) and P-value are used to measure the gap between using PatchNet with all pre-training data and without any pre-training.                                              
+
+> Model Pre Down Sider HIV Bace Flickr DBLP GIN No pre-train 52.14 ±0.56 56.58 ±2.57 55.84 ±3.16 47.25 ±3.54 74.86 ±2.26
+> PatchNet No pre-train 51.88 ±0.59 57.72 ±1.31 57.35 ±2.77 46.29 ±3.86 75.05 ±2.52
+> PatchNet
+> ZINC 53.06 ±0.47 58.74 ±1.72 59.74 ±0.54 45.30 ±2.98 76.44 ±2.32 Arxiv 52.77 ±0.58 57.01 ±1.80 56.00 ±2.66 50.64 ±2.69 79.01 ±2.84 ZINC+Arxiv 53.71 ±0.48 60.23 ±1.15 59.75 ±1.02 50.81 ±1.9 479.12 ±1.93
+> IMP (%) 1.29 2.51 2.40 4.52 4.07 P-value 0.012 0.008 0.010 0.003 0.003
+
+Figure 5: Performance on scaling of the size fo pre-training datasets. 
+
+## 4.1 Cross Domain Transfer Learning 
+
+To address RQ1 , we set up experiments (Tab. 1) with cross-domain pre-training and fine-tuning. Some graph data’s features are derived from text and are not the target of this paper, as they can either be generated using the same text encoder to obtain homogeneous features, or use models like OFA [ 22 ] with LLMs. To the best of our knowledge, no other models have yet been pre-trained across multiple domains and then applied to different tasks in various downstream domains, so we only use PatchNet to evaluate. During pre-training, we selected molecular dataset ZINC [ 38 ]and paper citation dataset Ogbn-Arxiv [ 16 ]. These datasets not only exhibit feature heterogeneity but also have different forms: Arxiv is a single large graph, whereas ZINC consists of many smaller molecular graphs. Thus, we employ neighbor sampling for Arxiv and graph sampling for ZINC. We load these two datasets simul-taneously to pre-train one PatchNet using existing two pre-text tasks, Attribute Masking (AM) and Context prediction (CP) [ 17 ]. We empirically find out that using these multi-task trick [ 21 ] to combine AM and CP performs the best. Note that since ZINC has 2M samples (graphs) while Arxiv only has 0.17M samples (sub-graph stems from nodes), we randomly choose 0.17M samples out of ZINC in each epoch. The reason is to keep balance between the pre-training information. In the fine-tuning phase, we employed two different types of tasks across datasets: graph and node classifi-cation; the graph classification involved Sider, HIV, and Bace from [ 47 ], while the node classification included datasets Flickr [ 63 ] and DBLP [ 1]. Notably, the downstream data also originated from dif-ferent domains: Sider, HIV, and Bace are molecular datasets, while Flickr and DBLP are social network and citation graph, respectively. Not only is there feature heterogeneity between the pre-train and downstream datasets, but they also belong to different tasks. During fine-tuning, we conduct fine-tuning and testing according to the data splits specific to each dataset. In Tab. 1, each row represents a combination of pre-training data, and each column represents a dif-ferent downstream dataset. The first two rows represent end-to-end learning without any transfer. 
+
+Results. From Tab. 1, it is evident that our model handles fea-ture heterogeneity effectively, both between pre-training datasets and between pre-training and downstream datasets. Large IMP values demonstrate that our method has achieved performance im-provements through pre-training and transfer learning, while small p-values ensure that these improvements are statistically significant. Moreover, although PatchNet may sometimes perform compara-bly to basic models like GIN [ 52 ] (used without pre-training) in an end-to-end manner, it consistently shows improvement after pre-training. Furthermore, the underlined scores representing the second-best results generally indicate that pre-training with the same task data tends to yield relatively better results. Addition-ally, we find that even when the two pre-training datasets come from completely different backgrounds, combined pre-training still leads to improvements in downstream tasks. Even when there is significant variation among downstream datasets, this type of cross-domain transfer pre-training still achieves good results in down-stream tasks. This is also the outcome we hope to see in future graph foundation models, positioning PatchNet as a step towards the realization of a GFM. 
+
+## 4.2 Data Scaling Perspective 
+
+To address RQ2 , we control the domain variable, increasing only the scale of the pre-training dataset within a single domain. We use different combinations of pre-training datasets to increase the volume of pre-training data. Fig. 5 uses pre-training data that in-cludes ZINC, PCQM [ 15 ], and PCBA [ 16 ]. By combining these for pre-training, we obtain three models, plus one model without pre-training, resulting in four data points of each line. The downstream data includes Toxcast, Sider, MUV and BBBP from [ 47 ], correspond-ing to four colors of lines. 
+
+Results. From Fig. 5, we find that PatchNet is capable of multi-dataset pre-training and efficiently handling larger amounts of pre-training data. Additionally, certain pre-train datasets contribute more significantly to improvements in specific downstream datasets compared to others. For example, PCBA has a greater impact on enhancing MUV compared to its impact on Toxcast and Sider. This may be attributed to the fact that both PCBA and MUV are classified within the Biophysics category, whereas Sider is categorized under Physiology data [ 47 ]. Moreover, PatchNet performs better when pre-trained with more datasets, which reveals that our model has great potential when trained with enormous data. KDD ’25, August 3–7, 2025, Toronto, ON, Canada Yifei Sun et al. 
+
+Tox21 Toxcast Sider ClinTox MUV HIV BBBP Bace Rank GIN (w/o pre) 67.90 ±1.48 58.39 ±0.96 52.14 ±0.56 56.43 ±4.23 58.53 ±2.52 56.58 ±2.57 58.57 ±7.72 55.84 ±3.16 12.5 ContextPred [17] 66.45 ±1.75 58.16 ±0.85 51.53 ±0.22 55.83 ±1.07 59.49 ±2.66 56.58 ±1.31 63.57 ±1.16 57.92 ±1.07 11.3 AttrMask [17] 67.17 ±1.31 59.33 ±1.37 52.21 ±1.12 56.69 ±1.78 58.58 ±2.18 57.34 ±0.98 63.65 ±2.18 57.27 ±1.94 9.3 AM+CP [21] 67.62 ±1.84 58.19 ±0.68 52.44 ±0.29 57.17 ±0.96 59.06 ±2.63 56.53 ±1.43 63.79 ±1.60 57.96 ±3.64 9.3 GPT-GNN [18] 67.98 ±1.75 58.39 ±1.51 52.97 ±0.91 57.07 ±1.73 58.56 ±1.54 56.68 ±1.03 65.06 ±3.05 56.25 ±2.05 8.5 GraphCL [62] 68.22 ±1.61 59.09 ±1.18 52.67 ±0.09 56.99 ±1.63 58.73 ±1.85 56.82 ±1.64 64.68 ±1.44 56.92 ±1.26 7.9 GraphMVP [24] 68.01 ±0.93 55.43 ±0.44 52.24 ±0.57 55.54 ±2.12 57.36 ±2.69 56.88 ±1.75 65.41 ±0.39 57.77 ±0.35 10.3 3D InfoMax [37] 67.05 ±1.26 58.22 ±0.58 52.58 ±0.35 54.56 ±2.55 59.85 ±2.36 56.65 ±1.67 67.64 ±1.33 58.66 ±1.40 9.0 Mole-BERT [49] 70.07 ±0.69 59.72 ±0.15 52.58 ±0.35 55.52 ±3.09 61.05 ±1.35 57.79 ±1.79 68.44 ±2.90 60.07 ±1.71 4.0 
+
+PatchNet (w/o pre) 67.77 ±1.80 56.74 ±0.59 51.88 ±0.59 55.78 ±1.15 60.16 ±1.17 57.72 ±1.31 59.15 ±2.85 57.35 ±2.77 10.4 
+
+PatchNet (AM) 64.84 ±1.41 56.95 ±0.74 52.29 ±0.39 57.26 ±2.81 60.65 ±2.50 54.27 ±1.39 60.32 ±4.27 57.20 ±1.94 11.1 
+
+PatchNet (CP) 66.22 ±1.83 59.56 ±0.27 53.06 ±0.52 58.60 ±1.35 61.79 ±1.47 54.11 ±1.46 55.01 ±6.11 57.55 ±1.34 7.9 
+
+PatchNet (AM+CP) 68.56 ±1.34 59.64 ±0.71 53.06 ±0.47 59.50 ±1.79 62.19 ±1.46 58.74 ±1.72 68.55 ±3.75 59.74 ±0.54 1.4 
+
+Table 2: The comparison on graph classification task. "w/o pre" means without pre-training (Full version see Appendix).                                                                                                                      
+
+> Tox21 Toxcast Sider ClinTox BBBP Bace Rank GCN [46] 55.25 ±1.68 52.14 ±0.44 51.94 ±0.26 50.96 ±3.73 65.27 ±1,76 53.62 ±0.92 5.3 GIN [52] 60.17 ±1.84 54.19 ±0.68 51.44 ±0.29 53.59 ±0.96 68.10 ±1.60 50.02 ±3.64 5.0 GAT [43] 61.62 ±2.37 53.86 ±0.46 51.83 ±0.28 58.41 ±2.08 68.14 ±2.11 54.01 ±1.73 3.8 Graphormer [60] 63.04 ±1.47 57.14 ±0.70 52.54 ±0.19 55.61 ±1.60 66.24 ±1.62 57.56 ±1.85 3.2 GraphGPS [33] 65.77 ±1.78 56.13 ±0.78 52.80 ±0.21 58.75 ±1.13 68.73 ±2.17 52.11 ±1.76 2.5
+> PatchNet 68.56 ±1.34 59.64 ±0.71 53.06 ±0.47 59.50 ±1.79 68.55 ±3.75 59.74 ±0.54 1.2
+
+Table 3: The comparison of backbones on graph classification task. 
+
+Coauthor-CS Coauthor-physics GCN [46] 82.15 ±1.93 87.25 ±0.72 GAT [43] 82.72 ±1.96 88.41 ±0.52 DGI [58] 83.09 ±2.02 88.34 ±0.75 GRACE [67] 83.43 ±2.96 88.69 ±0.87 GraphMAE [14] 84.33 ±2.75 90.13 ±0.57 GraphMAE2 [13] 84.67 ±2.43 91.80 ±0.64 
+
+PatchNet 87.69 ±1.28 92.87 ±0.27 Table 4: Results of node classification evaluation. 
+
+## 4.3 Pre-training and Fine-tuning 
+
+To address RQ3 , we conduct experiments on two types of down-stream tasks: graph classification and node classification. 
+
+Graph classification evaluation. In this section, we conduct two parts of experiments: comparing with different pre-text tasks (Tab. 2) comparing with different backbones (Tab. 3). We choose ZINC as our pre-training datasets in both experiments. Note that the size of node feature is 𝐷 = 300 , which is different from the publicly available feature size 𝐷 = 2. It’s well known that most of the researches involving molecular graphs all expand two-dimensional original feature to 300 dimensions of learnable features [ 51 ]. Thus, we replace the learnable feature with non-trainable features by using group VQ-VAE [ 42 ] which is also used by Mole-bert [ 49 ]which are frozen throughout the training process. For patch extraction, we use token size 𝑀 = 32 and step size 
+
+𝐾 = 20 . For downstream evaluation, we adopt the widely-used 8 binary classification datasets from MoleculeNet [ 47 ]. Due to the difficulty of obtaining sufficient labels in practical applications, we adopt a 1:1:8 train-validation-test label split . Note that we employ scaffold splitting [ 34 ] to split molecules based on their structures, which emulates real-world scenarios. On the one hand, we fix the backbone of baselines as their origi-nal GIN. Tab. 2 is divided into 4 main blocks by row. The first row is using GIN as backbone and without pre-training. The second block consists of current popular pre-training strategies. The third block contains those strategies designed for molecular graphs. In the last block we adopt 3 combination of pre-text tasks: attribute masking, context prediction, and both. From Tab. 2, we can see that: Compared to all baselines, PatchNet achieves competitive or better performance under the same experimental protocols. Since we only use simple pre-training strategies and its combination, it is apparent that our backbone plays the most significant role. Moreover, we find that single pre-training strategies may lead to negative transfer on both GIN and PatchNet . But after applying multi-task pre-training strategy, PatchNet opens up a significant gap with GIN, which means our model does better on combining pre-training strategies. When testing PatchNet ’s raw capability, we are surprised to find that PatchNet outperform some GIN se-ries models in certain datasets even without pre-training, which indicates that even under the condition of such extreme label ratio and more model parameters, PatchNet still achieves better per-formance, reflecting that PatchNet is adaptive and robust. Due to space limitation, we show the full version in Appendix. On the other hand, we compare with different backbones using the same pre-training strategy as the combination of AM and CP. Tab. 3 is also divided into 3 blocks, universal backbones, molecu-lar specialized backbones and our backbone from top to bottom. Handling Feature Heterogeneity with Learnable Graph Patches KDD ’25, August 3–7, 2025, Toronto, ON, Canada                                                        
+
+> Tox21 Toxcast Sider ClinTox MUV HIV BBBP Bace
+> PatchNet 68.56 ±1.34 59.64 ±0.71 53.06 ±0.47 59.50 ±1.79 62.19 ±1.46 58.74 ±1.72 68.55 ±3.75 59.74 ±0.54
+> Inter-Mean 60.87 ±1.50 53.41 ±0.86 52.11 ±0.90 51.46 ±1.26 59.35 ±1.09 55.91 ±2.20 50.58 ±3.08 52.01 ±0.54 Inter-Sum 60.65 ±2.17 51.48 ±0.80 52.80 ±0.43 58.79 ±1.30 58.05 ±1.92 52.34 ±3.07 52.02 ±7.82 53.89 ±0.93 Inner-GCN 63.78 ±2.10 55.93 ±0.53 51.62 ±0.47 50.13 ±1.66 58.74 ±1.17 53.82 ±1.70 54.04 ±5.18 53.18 ±2.02 Inner-GAT 59.14 ±3.76 56.07 ±1.34 52.54 ±0.60 57.98 ±1.23 59.79 ±1.27 58.21 ±3.21 54.19 ±5.83 54.84 ±1.58 Non-overlap 60.62 ±2.36 54.68 ±0.92 52.89 ±0.41 58.31 ±1.54 61.47 ±1.86 56.60 ±2.39 53.71 ±4.57 55.54 ±1.59
+
+Table 5: Ablation on our backbone 
+
+From Tab. 3, we can see that: As is known to all, the effect of trans-fer between pre-train and downstream datasets is an important measurement for backbones. PatchNet provides a well-performed transfer compared to traditional backbones such as GCN, GAT and GIN. This is because patch extraction process significantly increases the generalizability of our model, and the transformer module can avoid the old problems such as over-smoothing, allowing our model to effectively use a greater amount of parameters than normal GNNs. Moreover, our method performs better than molecule specialized backbones such as Graphormer. That’s because we combine the strengths of both GNN aggregation and transformer. Since our backbone can obtain more detailed semantic information in origi-nal features by learning from tokens, it is much more efficient and effective than other backbones. 
+
+Node classification evaluation. Here we use two datasets, Coauthor-CS [ 36 ] and Coauthor-Physics [ 36 ] for both pre-training and down-stream evaluation due to their rich node features. Tab. 4 contains 3 blocks: classical end-to-end methods, well-known self-supervised methods and PatchNet . As for dataset split, we follow ParetoGNN [ 20 ]with 1:1:8 for training/validation/test. We report the average ROC-AUC with the corresponding standard deviation. Tab. 4 shows that our backbone is more powerful and capable of extracting more information from the limited downstream data. Since PatchNet 
+
+is trained on both datasets, our method has achieved cross-dataset transferability, which enables us to pre-train a model using more large-scale datasets to get a more powerful model. 
+
+Figure 6: Performance of varying token size 𝑀 .
+
+## 4.4 Ablation and Sensitivity Study 
+
+To address RQ4 , we conduct two experiments: an ablation study of PatchNet ’ s sub-modules and a sensitivity analysis of the most critical hyperparameter, the token size 𝑀 .As shown in Tab. 3, the backbone with transformer performs significantly better than that with simple pooling, since the rich information among different patches cannot be simply aggregated by pooling. And the inner-patch aggregation with GIN does a bet-ter work than others. This is due to the fact that GIN has high expressiveness, which is also the reason why GIN has become the preferred choice in many molecular graph-based research studies. What’s more, we test the behavior of our model when there is no overlapping information between patches. Since splitting original feature of any dataset is quite challenging, we allow overlapping tokens to form graph patches. And as our expectation, the backbone with token overlapping performs better. But to our surprise, some of the results are better than the setting without pre-training, which means our model could potentially learn to complete missing fea-tures. From Fig. 6, we find that having a large number of token size isn’t a good idea. This is because if the number of token channels is relatively low, the learning process for aggregating information between tokens will be partially lost. In extreme scenarios where there’s only one token, this process will be lost entirely, which means our backbone will devolve into a to normal GNN model. Moreover, we can find out that even when token size is small, satis-factory results can still be achieved. It indicates that GNN’s ability to learn structure is not abandoned even when the backbone focuses more on transformer’s token aggregation. 
+
+## 5 Conclusion 
+
+In summary, we highlight the challenges in addressing the limita-tions of current graph pre-training models for the incapability of handling cross-domain transfer. We identify the main challenge as feature heterogeneity. Then, by introducing the learnable graph patches as a basic semantic unit for graph data, we propose Patch-Net , a framework capable of mining transferable information across different graph domains. Our empirical analyses show PatchNet ’s capability to generate distinguishable and transferable node rep-resentations, advancing pre-training on multi-domain non-textual graphs and showing continuous improvement on various down-stream datasets and tasks. 
+
+Limitation and future work. Our method has an inherent limi-tation in using a fixed size for unfolding node features into node tokens, determined by a hyperparameter based on empirical experi-ence. Future work will explore automatic learning of optimal node token sizes to improve generalization. 
+
+## 6 Acknowledgment 
+
+This work is supported by National Natural Science Foundation of China (No. 62176233, No. 62322606, No. 62441605). KDD ’25, August 3–7, 2025, Toronto, ON, Canada Yifei Sun et al. 
+
+## References 
+
+[1] Uchenna Akujuobi, Han Yufei, Qiannan Zhang, and Xiangliang Zhang. 2019. Collaborative Graph Walk for Semi-Supervised Multi-label Node Classification. In 2019 IEEE International Conference on Data Mining (ICDM) . 1–10. https: //doi.org/10.1109/ICDM.2019.00010 [2] Yuxuan Cao, Jiarong Xu, Carl Yang, Jiaan Wang, Yunchao Zhang, Chunping Wang, Lei Chen, and Yang Yang. 2023. When to Pre-Train Graph Neural Networks? From Data Generation Perspective!. In Proceedings of the 29th ACM SIGKDD Conference on Knowledge Discovery and Data Mining . 142–153. [3] Jinsong Chen, Kaiyuan Gao, Gaichao Li, and Kun He. 2023. NAGphormer: A Tok-enized Graph Transformer for Node Classification in Large Graphs. In Proceedings of the International Conference on Learning Representations .[4] Xinyang Chen, Sinan Wang, Mingsheng Long, and Jianmin Wang. 2019. Transfer-ability vs. Discriminability: Batch Spectral Penalization for Adversarial Domain Adaptation. In Proceedings of the 36th International Conference on Machine Learn-ing (Proceedings of Machine Learning Research, Vol. 97) , Kamalika Chaudhuri and Ruslan Salakhutdinov (Eds.). PMLR, 1081–1090. [5] Zhikai Chen, Haitao Mao, Hang Li, Wei Jin, Hongzhi Wen, Xiaochi Wei, Shuaiqiang Wang, Dawei Yin, Wenqi Fan, Hui Liu, et al . 2023. Exploring the potential of large language models (llms) in learning on graphs. arXiv preprint arXiv:2307.03393 (2023). [6] Tri Dao, Beidi Chen, Nimit S Sohoni, Arjun Desai, Michael Poli, Jessica Grogan, Alexander Liu, Aniruddh Rao, Atri Rudra, and Christopher Ré. 2022. Monarch: Expressive structured matrices for efficient and accurate training. In International Conference on Machine Learning . PMLR, 4690–4721. [7] Vijay Prakash Dwivedi and Xavier Bresson. 2020. A generalization of transformer networks to graphs. arXiv preprint arXiv:2012.09699 (2020). [8] Nouha Dziri, Ximing Lu, Melanie Sclar, Xiang Lorraine Li, Liwei Jian, Bill Yuchen Lin, Peter West, Chandra Bhagavatula, Ronan Le Bras, Jena D Hwang, et al .2023. Faith and Fate: Limits of Transformers on Compositionality. arXiv preprint arXiv:2305.18654 (2023). [9] Taoran Fang, Yunchao Zhang, Yang Yang, Chunping Wang, and Lei Chen. 2023. Universal Prompt Tuning for Graph Neural Networks. In Thirty-seventh Confer-ence on Neural Information Processing Systems .[10] Taoran Fang, Wei Zhou, Yifei Sun, Kaiqiao Han, Lvbin Ma, and Yang Yang. 2024. Exploring Correlations of Self-supervised Tasks for Graphs. In International Conference on Machine Learning .[11] Bahare Fatemi, Layla El Asri, and Seyed Mehran Kazemi. 2021. Slaps: Self-supervision improves structure learning for graph neural networks. Advances in Neural Information Processing Systems 34 (2021), 22667–22681. [12] Xiaoxin He, Bryan Hooi, Thomas Laurent, Adam Perold, Yann LeCun, and Xavier Bresson. 2023. A generalization of vit/mlp-mixer to graphs. In International conference on machine learning . PMLR, 12724–12745. [13] Zhenyu Hou, Yufei He, Yukuo Cen, Xiao Liu, Yuxiao Dong, Evgeny Kharlamov, and Jie Tang. 2023. GraphMAE2: A Decoding-Enhanced Masked Self-Supervised Graph Learner. arXiv:2304.04779 [cs.LG] https://arxiv.org/abs/2304.04779 [14] Zhenyu Hou, Xiao Liu, Yukuo Cen, Yuxiao Dong, Hongxia Yang, Chunjie Wang, and Jie Tang. 2022. GraphMAE: Self-Supervised Masked Graph Autoencoders. arXiv:2205.10803 [cs.LG] https://arxiv.org/abs/2205.10803 [15] Weihua Hu, Matthias Fey, Hongyu Ren, Maho Nakata, Yuxiao Dong, and Jure Leskovec. 2021. OGB-LSC: A Large-Scale Challenge for Machine Learning on Graphs. arXiv:2103.09430 [cs.LG] [16] Weihua Hu, Matthias Fey, Marinka Zitnik, Yuxiao Dong, Hongyu Ren, Bowen Liu, Michele Catasta, and Jure Leskovec. 2020. Open Graph Benchmark: Datasets for Machine Learning on Graphs. arXiv preprint arXiv:2005.00687 (2020). [17] Weihua Hu, Bowen Liu, Joseph Gomes, Marinka Zitnik, Percy Liang, Vijay Pande, and Jure Leskovec. 2019. Strategies for pre-training graph neural networks. arXiv preprint arXiv:1905.12265 (2019). [18] Ziniu Hu, Yuxiao Dong, Kuansan Wang, Kai-Wei Chang, and Yizhou Sun. 2020. Gpt-gnn: Generative pre-training of graph neural networks. In Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining . 1857–1867. [19] Renhong Huang, Jiarong Xu, Xin Jiang, Chenglu Pan, Zhiming Yang, Chunping Wang, and Yang Yang. 2024. Measuring Task Similarity and Its Implication in Fine-Tuning Graph Neural Networks. 38, 11 (2024), 12617–12625. [20] Mingxuan Ju, Tong Zhao, Qianlong Wen, Wenhao Yu, Neil Shah, Yanfang Ye, and Chuxu Zhang. 2023. Multi-task Self-supervised Graph Neural Networks Enable Stronger Task Generalization. (2023). [21] Xi Lin, Hui-Ling Zhen, Zhenhua Li, Qing-Fu Zhang, and Sam Kwong. 2019. Pareto multi-task learning. Advances in neural information processing systems 32 (2019). [22] Hao Liu, Jiarui Feng, Lecheng Kong, Ningyue Liang, Dacheng Tao, Yixin Chen, and Muhan Zhang. 2023. One for All: Towards Training One Graph Model for All Classification Tasks. arXiv preprint arXiv:2310.00149 (2023). [23] Jiawei Liu, Cheng Yang, Zhiyuan Lu, Junze Chen, Yibo Li, Mengmei Zhang, Ting Bai, Yuan Fang, Lichao Sun, Philip S Yu, et al . 2023. Towards graph foundation models: A survey and beyond. arXiv preprint arXiv:2310.11829 (2023). [24] Shengchao Liu, Hanchen Wang, Weiyang Liu, Joan Lasenby, Hongyu Guo, and Jian Tang. 2021. Pre-training molecular graph representation with 3d geometry. 
+
+arXiv preprint arXiv:2110.07728 (2021). [25] Shengchao Liu, Hanchen Wang, Weiyang Liu, Joan Lasenby, Hongyu Guo, and Jian Tang. 2022. Pre-training Molecular Graph Representation with 3D Geometry. arXiv:2110.07728 [cs.LG] [26] Yixin Liu, Yu Zheng, Daokun Zhang, Hongxu Chen, Hao Peng, and Shirui Pan. 2022. Towards unsupervised deep graph structure learning. In Proceedings of the ACM Web Conference 2022 . 1392–1403. [27] Haitao Mao, Zhikai Chen, Wenzhuo Tang, Jianan Zhao, Yao Ma, Tong Zhao, Neil Shah, Michael Galkin, and Jiliang Tang. 2024. Graph foundation models. arXiv preprint arXiv:2402.02216 (2024). [28] Gaspard Michel, Giannis Nikolentzos, Johannes F Lutzeyer, and Michalis Vazir-giannis. 2023. Path neural networks: Expressive and accurate graph neural networks. In International Conference on Machine Learning . PMLR, 24737–24755. [29] Erxue Min, Runfa Chen, Yatao Bian, Tingyang Xu, Kangfei Zhao, Wenbing Huang, Peilin Zhao, Junzhou Huang, Sophia Ananiadou, and Yu Rong. 2022. Trans-former for graphs: An overview from architecture perspective. arXiv preprint arXiv:2202.08455 (2022). [30] Samet Oymak, Zalan Fabian, Mingchen Li, and Mahdi Soltanolkotabi. 2019. Gen-eralization guarantees for neural networks via harnessing the low-rank structure of the jacobian. arXiv preprint arXiv:1906.05392 (2019). [31] Jiezhong Qiu, Qibin Chen, Yuxiao Dong, Jing Zhang, Hongxia Yang, Ming Ding, Kuansan Wang, and Jie Tang. 2020. GCC: Graph Contrastive Coding for Graph Neural Network Pre-Training. KDD (2020). [32] Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, Ilya Sutskever, et al . 2019. Language models are unsupervised multitask learners. OpenAI blog 
+
+1, 8 (2019), 9. [33] Ladislav Rampášek, Michael Galkin, Vijay Prakash Dwivedi, Anh Tuan Luu, Guy Wolf, and Dominique Beaini. 2022. Recipe for a general, powerful, scalable graph transformer. Advances in Neural Information Processing Systems 35 (2022), 14501–14515. [34] Bharath Ramsundar, Peter Eastman, Pat Walters, and Vijay Pande. 2019. Deep learning for the life sciences: applying deep learning to genomics, microscopy, drug discovery, and more . " O’Reilly Media, Inc.". [35] Abulhair Saparov and He He. 2022. Language models are greedy reasoners: A systematic formal analysis of chain-of-thought. arXiv preprint arXiv:2210.01240 
+
+(2022). [36] Oleksandr Shchur, Maximilian Mumme, Aleksandar Bojchevski, and Stephan Günnemann. 2018. Pitfalls of Graph Neural Network Evaluation. arXiv preprint arXiv: 1811.05868 (2018). [37] Hannes Stärk, Dominique Beaini, Gabriele Corso, Prudencio Tossou, Christian Dallago, Stephan Günnemann, and Pietro Liò. 2022. 3d infomax improves gnns for molecular property prediction. In International Conference on Machine Learning .PMLR, 20479–20502. [38] Teague Sterling and John J Irwin. 2015. ZINC 15–ligand discovery for everyone. 
+
+Journal of chemical information and modeling 55, 11 (2015), 2324–2337. [39] Yifei Sun, Haoran Deng, Yang Yang, Chunping Wang, Jiarong Xu, Renhong Huang, Linfeng Cao, Yang Wang, and Lei Chen. 2022. Beyond Homophily: Structure-aware Path Aggregation Graph Neural Network. In Proceedings of the Thirty-First International Joint Conference on Artificial Intelligence, IJCAI-22 , Lud De Raedt (Ed.). International Joint Conferences on Artificial Intelligence Organization, 2233–2240. https://doi.org/10.24963/ijcai.2022/310 Main Track. [40] Yifei Sun, Qi Zhu, Yang Yang, Chunping Wang, Tianyu Fan, Jiajun Zhu, and Lei Chen. 2024. Fine-Tuning Graph Neural Networks by Preserving Graph Generative Patterns. In Proceedings of the AAAI Conference on Artificial Intelligence , Vol. 38. 9053–9061. [41] Susheel Suresh, Pan Li, Cong Hao, and Jennifer Neville. 2021. Adversarial graph augmentation to improve graph contrastive learning. Advances in Neural Infor-mation Processing Systems 34 (2021), 15920–15933. [42] Aäron van den Oord, Oriol Vinyals, and K. Kavukcuoglu. 2017. Neural Discrete Representation Learning. NIPS (2017). [43] Petar Veličković, Guillem Cucurull, Arantxa Casanova, Adriana Romero, Pietro Liò, and Yoshua Bengio. 2018. Graph Attention Networks. In ICLR .[44] Heng Wang, Shangbin Feng, Tianxing He, Zhaoxuan Tan, Xiaochuang Han, and Yulia Tsvetkov. 2023. Can Language Models Solve Graph Problems in Natural Language? arXiv preprint arXiv:2305.10037 (2023). [45] Yuyang Wang, Jianren Wang, Zhonglin Cao, and Amir Barati Farimani. 2022. Molecular Contrastive Learning of Representations via Graph Neural Networks. arXiv:2102.10056 [cs.LG] [46] Max Welling and Thomas N Kipf. 2016. Semi-supervised classification with graph convolutional networks. In J. International Conference on Learning Representations (ICLR 2017) .[47] Zhenqin Wu, Bharath Ramsundar, Evan N Feinberg, Joseph Gomes, Caleb Ge-niesse, Aneesh S Pappu, Karl Leswing, and Vijay Pande. 2018. MoleculeNet: a benchmark for molecular machine learning. Chemical science 9, 2 (2018), 513–530. [48] Jun Xia, Lirong Wu, Jintao Chen, Bozhen Hu, and Stan Z Li. 2022. Simgrace: A simple framework for graph contrastive learning without data augmentation. In 
+
+Proceedings of the ACM Web Conference 2022 . 1070–1079. Handling Feature Heterogeneity with Learnable Graph Patches KDD ’25, August 3–7, 2025, Toronto, ON, Canada 
+
+Type Name 𝑁 𝐸 
+
+> Pre-training
+
+Graph level ZINC [38] 53,254,058 115,472,818 PCQM4Mv2 [15] 52,970,652 109,093,626 Ogbg-molpcba [16] 11,373,137 24,618,372 
+
+Node level Ogbn-arxiv [16] 169,343 1,166,243 Flickr [63] 105,938 2,316,948 DBLP [1] 28,702 68,335 
+
+> Downstream
+
+Graph level Tox21 [47] 145,459 302,190 Toxcast [47] 161,088 330,356 Sider [47] 48,006 100,912 ClinTox [47] 38,637 82,372 MUV [47] 2,255,846 4,892,252 HIV [47] 1,049,163 2,259,376 BBBP [47] 49,068 105842 Bace [47] 51,577 111,536 
+
+Node level Flickr [63] 105,938 2,316,948 DBLP [1] 28,702 68,335 Coauthor-CS [36] 18,333 81,894 Coauthor-Physics [36] 34,493 247,962 
+
+Table 6: The statistics of all datasets. 
+
+[49] Jun Xia, Chengshuai Zhao, Bozhen Hu, Zhangyang Gao, Cheng Tan, Yue Liu, Siyuan Li, and Stan Z Li. 2023. Mole-bert: Rethinking pre-training graph neural networks for molecules. (2023). [50] Jun Xia, Yanqiao Zhu, Yuanqi Du, and Stan Z Li. 2022. A survey of pretraining on graphs: Taxonomy, methods, and applications. arXiv preprint arXiv:2202.07893 
+
+(2022). [51] Jun Xia, Yanqiao Zhu, Yuanqi Du, and Stan Z. Li. 2022. A Systematic Survey of Chemical Pre-trained Models. arXiv preprint arXiv: Arxiv-2210.16484 (2022). [52] Keyulu Xu, Weihua Hu, Jure Leskovec, and Stefanie Jegelka. 2019. How Powerful are Graph Neural Networks?. In ICLR .[53] Minghao Xu, Hang Wang, Bingbing Ni, Hongyu Guo, and Jian Tang. 2021. Self-supervised graph-level representation learning with local and global structure. In International Conference on Machine Learning . PMLR, 11548–11558. [54] Yihao Xue, Kyle Whitecross, and Baharan Mirzasoleiman. 2022. Investigating why contrastive learning benefits robustness against label noise. In International Conference on Machine Learning . PMLR, 24851–24871. [55] Yang Yang, Yuhong Xu, Yizhou Sun, Yuxiao Dong, Fei Wu, and Yueting Zhuang. 2019. Mining fraudsters and fraudulent strategies in large-scale mobile social networks. IEEE Transactions on Knowledge and Data Engineering 33, 1 (2019), 169–179. [56] Yang Yang, Yuhong Xu, Chunping Wang, Yizhou Sun, Fei Wu, Yueting Zhuang, and Ming Gu. 2019. Understanding default behavior in online lending. In CIKM .2043–2052. [57] Jiacai Yi, Chengkun Wu, Xiaochen Zhang, Xinyi Xiao, Yanlong Qiu, Wentao Zhao, Tingjun Hou, and Dongsheng Cao. 2022. MICER: a pre-trained encoder– decoder architecture for molecular image captioning. Bioinformatics 38, 19 (2022), 4562–4572. [58] Peiqi Yin, Xiao Yan, Jinjing Zhou, Qiang Fu, Zhenkun Cai, James Cheng, Bo Tang, and Minjie Wang. 2022. DGI: Easy and Efficient Inference for GNNs. arXiv:2211.15082 [cs.LG] https://arxiv.org/abs/2211.15082 [59] Chengxuan Ying, Tianle Cai, Shengjie Luo, Shuxin Zheng, Guolin Ke, Di He, Yanming Shen, and Tie-Yan Liu. 2021. Do transformers really perform badly for graph representation? Advances in Neural Information Processing Systems 34 (2021), 28877–28888. [60] Chengxuan Ying, Tianle Cai, Shengjie Luo, Shuxin Zheng, Guolin Ke, Di He, Yanming Shen, and Tie-Yan Liu. 2021. Do Transformers Really Perform Badly for Graph Representation?. In Thirty-Fifth Conference on Neural Information Processing Systems . https://openreview.net/forum?id=OeWooOxFwDa [61] Yuning You, Tianlong Chen, Yang Shen, and Zhangyang Wang. 2021. Graph contrastive learning automated. In International Conference on Machine Learning .PMLR, 12121–12132. [62] Yuning You, Tianlong Chen, Yongduo Sui, Ting Chen, Zhangyang Wang, and Yang Shen. 2020. Graph contrastive learning with augmentations. Advances in neural information processing systems 33 (2020), 5812–5823. [63] Hanqing Zeng, Hongkuan Zhou, Ajitesh Srivastava, Rajgopal Kannan, and Viktor Prasanna. 2019. Graphsaint: Graph sampling based inductive learning method. 
+
+arXiv preprint arXiv:1907.04931 (2019). [64] Shuaicheng Zhang, Haohui Wang, Si Zhang, and Dawei Zhou. 2023. GPatcher: A Simple and Adaptive MLP Model for Alleviating Graph Heterophily. arXiv preprint arXiv:2306.14340 (2023). [65] Haihong Zhao, Aochuan Chen, Xiangguo Sun, Hong Cheng, and Jia Li. 2024. All in one and one for all: A simple yet effective method towards cross-domain graph pretraining. arXiv preprint arXiv:2402.09834 (2024). [66] Qi Zhu, Carl Yang, Yidan Xu, Haonan Wang, Chao Zhang, and Jiawei Han. 2021. Transfer learning of graph neural networks with ego-graph information maximization. Advances in Neural Information Processing Systems 34 (2021), 1766–1779. [67] Yanqiao Zhu, Yichen Xu, Feng Yu, Qiang Liu, Shu Wu, and Liang Wang. 2020. Deep Graph Contrastive Representation Learning. arXiv:2006.04131 [cs.LG] https://arxiv.org/abs/2006.04131 [68] Fuzhen Zhuang, Zhiyuan Qi, Keyu Duan, Dongbo Xi, Yongchun Zhu, Hengshu Zhu, Hui Xiong, and Qing He. 2020. A comprehensive survey on transfer learning. 
+
+Proc. IEEE 109, 1 (2020), 43–76. 
+
+## A Details of Experiments A.1 Datasets 
+
+The datasets used are shown in Tab. 7. The scale of the graphs used in pre-training and downstream tasks also highlights the high scalability of PatchNet .
+
+## A.2 Experiment Settings A.3 Hyperparemeter Strategy 
+
+Overall, our proposed framework is implemented via PyTorch. As for software versions, we use Python 3.7.0, PyTorch 1.13.1, OGB 1.3.6, and CUDA 11.3. Moreover, the range of hyperparameters are listed in Table 7. Hyperparameter Range 
+
+𝐾 {15 → 25} 
+
+𝑀 64 number of GIN layers 3number of Attention heads 3Learning Rate {1e-3 → 3e-3} Weight decay {0 → 1e-6} GIN dropout rate 0.2 Attention dropout rate {0.3 → 0.7} Batch size {256, 512, 1024} Optimizer Adam Epoch 100 GPU GeForce RTX 4090 
+
+Table 7: Hyper-parameter of graph classification task. 
+
+## A.4 Additional Experiments 
+
+Here we present the complete graph evaluation results in Tab. 8, comparing our model against a broader range of self-supervised tasks. It is evident that our model indeed outperforms existing self-supervised methods. Please refer to the main text for the simplified Tab. 2. As is shown in the table, our model’s performance, combined with simple pre-training tasks, surpasses other existing approaches on datasets within a single domain. This result demonstrates that our model not only exhibits strong generalization capabilities but also effectively learns domain-specific knowledge. KDD ’25, August 3–7, 2025, Toronto, ON, Canada Yifei Sun et al.                                                                                                                                                                      
+
+> Tox21 Toxcast Sider ClinTox MUV HIV BBBP Bace Rank GIN(w/o pre) 67.90 ±1.48 58.39 ±0.96 52.14 ±0.56 56.43 ±4.23 58.53 ±2.52 56.58 ±2.57 58.57 ±7.72 55.84 ±3.16 12.5 AD-GCL [41] 64.81 ±1.22 55.55 ±0.79 51.13 ±0.17 53.46 ±2.20 59.41 ±2.42 56.01 ±1.02 59.26 ±1.86 52.27 ±2.08 15.3 ContextPred [17] 66.45 ±1.75 58.16 ±0.85 51.53 ±0.22 55.83 ±1.07 59.49 ±2.66 56.58 ±1.31 63.57 ±1.16 57.92 ±1.07 11.3 AttrMask [17] 67.17 ±1.31 59.33 ±1.37 52.21 ±1.12 56.69 ±1.78 58.58 ±2.18 57.34 ±0.98 63.65 ±2.18 57.27 ±1.94 9.3 AM+CP [21] 67.62 ±1.84 58.19 ±0.68 52.44 ±0.29 57.17 ±0.96 59.06 ±2.63 56.53 ±1.43 63.79 ±1.60 57.96 ±3.64 9.3 SimGRACE [48] 67.49 ±1.37 58.79 ±0.34 52.73 ±0.08 56.54 ±2.34 59.98 ±2.45 57.65 ±1.96 63.27 ±2.30 56.03 ±1.84 8.8 GraphLoG [53] 64.09 ±1.47 58.88 ±0.59 52.74 ±0.55 57.38 ±1.76 60.39 ±1.99 57.04 ±1.07 62.49 ±2.80 56.14 ±1.88 8.6 GPT-GNN [18] 67.98 ±1.75 58.39 ±1.51 52.97 ±0.91 57.07 ±1.73 58.56 ±1.54 56.68 ±1.03 65.06 ±3.05 56.25 ±2.05 8.5 GraphCL [62] 68.22 ±1.61 59.09 ±1.18 52.67 ±0.09 56.99 ±1.63 58.73 ±1.85 56.82 ±1.64 64.68 ±1.44 56.92 ±1.26 7.9 JOAO [61] 68.41 ±1.59 58.92 ±0.42 52.45 ±0.14 57.78 ±1.36 60.73 ±2.06 56.88 ±1.45 62.99 ±2.29 57.35 ±1.46 7.0 GraphMVP [24] 68.01 ±0.93 55.43 ±0.44 52.24 ±0.57 55.54 ±2.12 57.36 ±2.69 56.88 ±1.75 65.41 ±0.39 57.77 ±0.35 10.3 3D InfoMax [37] 67.05 ±1.26 58.22 ±0.58 52.58 ±0.35 54.56 ±2.55 59.85 ±2.36 56.65 ±1.67 67.64 ±1.33 58.66 ±1.40 9.0 Mole-BERT [49] 70.07 ±0.69 59.72 ±0.15 52.58 ±0.35 55.52 ±3.09 61.05 ±1.35 57.79 ±1.79 68.44 ±2.90 60.07 ±1.71 4.0
+> PatchNet (w/o pre) 67.77 ±1.80 56.74 ±0.59 51.88 ±0.59 55.78 ±1.15 60.16 ±1.17 57.72 ±1.31 59.15 ±2.85 57.35 ±2.77 10.4
+> PatchNet (AM) 64.84 ±1.41 56.95 ±0.74 52.29 ±0.39 57.26 ±2.81 60.65 ±2.50 54.27 ±1.39 60.32 ±4.27 57.20 ±1.94 11.1
+> PatchNet (CP) 66.22 ±1.83 59.56 ±0.27 53.06 ±0.52 58.60 ±1.35 61.79 ±1.47 54.11 ±1.46 55.01 ±6.11 57.55 ±1.34 7.9
+> PatchNet (AM+CP) 68.56 ±1.34 59.64 ±0.71 53.06 ±0.47 59.50 ±1.79 62.19 ±1.46 58.74 ±1.72 68.55 ±3.75 59.74 ±0.54 1.4
+
+Table 8: The comparison of overall performance on graph classification task. 
+
+## B Algorithm 
+
+The algorithm of Fig. 2 is shown in Algo. 1. The computation of 
+
+PatchNet includes three parts: node tokenization, patch construc-tion, encoding and aggregation of graph patches. Hence, the overall complexity is: O( 𝑁 (𝐾𝑀 + 𝑀 2 + 𝑀𝑏 + 𝐾 2)) .
+
+Algorithm 1 Pseudo code for the forward process of the model The Patch Encoder Φ, the multi-head self-attention encoder 
+
+𝑊 and a feed forward network using ReLU 𝐹 . An Attention Mechanism 𝐴𝑡𝑡 .The graph structure and node feature after patch extraction is 𝑔, 𝑥 . If we regarded each channel separately, we will get 
+
+𝑔, 𝑥 𝑖 , 𝑖 = 0..𝐾 for different tokens 𝑖 ./* Model training starts */ Obtain their node embeddings 𝑧 0 by [Some Method]. 
+
+for each token 𝑗 do 
+
+Learn the new graph structure 𝑔 ′.
+
+for each node 𝑢 , node 𝑣 do 
+
+Calculate similarity 𝑆 𝑗 𝑢𝑣 = 𝑆𝐼𝑀 (𝑊 · 𝑥 𝑢 𝑗 ,𝑊 · 𝑥 𝑣 𝑗 ).Apply non-linear transformation to 𝑆 𝑗 .Normalize 𝑆 𝑗 .Update graph structure 𝑔 ′ ← 𝑇𝑜𝑝𝑘 (𝑔, 𝑆 𝑗 ).Combine node embeddings using attention mechanism: 
+
+𝑧 0,𝑗 ← 𝐴𝑡𝑡 (Φ(𝑔, 𝑥 𝑗 ), Φ(𝑔 ′, 𝑥 𝑗 )) .
+
+end for 
+
+Aggregate through patches by 𝑊 and pass through 𝐹 : 𝑧 1 ←
+
+𝑊 (𝑧 0).Combine embeddings: 𝑧 2 ← 𝐹 (𝑧 0 + 𝑧 1).Merge all channels by mean-pooling: 𝑧 3 ← 𝑃 (𝑧 0 + 𝑧 1 + 𝑧 2).
+
+## C More Related Work 
+
+We provide additional information here on related work concerning pre-training and fine-tuning GNNs. The concept of graph founda-tion model (GFM) is comprehensively established [ 23 , 27 ] and envi-sioned to be adept across various tasks and datasets. Yet, there cur-rently does not exist a GFM that fully meets the criteria. However, building a cross-domain and cross-task graph model has always been a hot topic. One of the pathways to build graph foundation models is to design graph pre-training framework. Pre-training graph models has achieved significant success, with various self-supervised pre-training methods proposed for both node-level and graph-level tasks. W2PGNN [ 2 ] explores how to construct pretraining graph datasets to maximize downstream per-formance gains. Following the generative language model GPT [ 32 ], GPT-GNN [ 18 ] factorizes graph generation into Attribute Generation and Edge Generation. GraphCL [ 62 ] maximizes agree-ment between two representations of the same node by injecting random perturbations, and [ 17 ] use subgraphs to develop several self-supervised learning strategies combining node-level and graph-level pre-training information. Graph Contrastive Coding (GCC) [31 ] captures the universal network topological properties through subgraph instance discrimination as pre-training task. Recent self-supervised learning on graph data [ 10 ] explores the relationships between different tasks and designs models to achieve the most balanced embeddings for labels. However, a majority of these works still utilize a plain GNN, such as the 5-layer Graph Isomorphism Network(GIN) [ 50 , 52 ], and therefore cannot be reused when en-countering different downstream tasks without corresponding data. Besides, some other works utilize the uniqueness of input data in designing architectures. For example, MolCLR [ 45 ] uses molecule SMILES to implement graph augmentation for contrastive learning. GraphMVP [ 25 ] pretrains by leveraging the consistency between 3D geometry and 2D topology. Since these models utilize more semantic information, they are even more domain-specific. Some of above methods only transfer structural information, neglecting the node attributes that contain valuable information. After pretraining, fine-tuning is often required to adapt the pre-trained graph model to downstream data and tasks. GPF [ 9 ] is the first to introduce efficient prompt tuning into graph model. G-tuning [ 40 ] and Bridge-Tune [ 19 ] bridge the gaps between pre-training and downstream from the perspectives of data and tasks, respectively, during the tuning stage. Recently, attempts have been made to adapt LLMs to tasks as-sociated with graph analysis. Despite their proficiency in natural language processing, directly converting graph data for LLMs pro-cessing has not been entirely effective, leading to less than ideal Handling Feature Heterogeneity with Learnable Graph Patches KDD ’25, August 3–7, 2025, Toronto, ON, Canada 
+
+outcomes, as demonstrated in research on both textual [ 5 ] and non-textual graphs [ 44 ]. Nevertheless, LLMs still encounter challenges when processing graph data [8, 35].
