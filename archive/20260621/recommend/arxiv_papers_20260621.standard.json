@@ -1,0 +1,307 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-21T21:16:57.168893+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 6,
+    "quick_skim_target": 11,
+    "quick_selected": 6
+  },
+  "deep_dive": [
+    {
+      "id": "2606.17246v1",
+      "source": "arxiv",
+      "title": "GeoDisaster: Benchmarking Orchestrated Agents for Operational Disaster Geo-Intelligence",
+      "abstract": "Remote-sensing vision-language models (RS-VLMs) have advanced Earth-observation analysis toward visual interpretation and instruction-following, yet fall short of operational geo-intelligence, which demands tool-grounded spatial reasoning and structured, evidence-backed decisions. We introduce GeoDisaster, an operational geospatial disaster reasoning benchmark with 2,921 verified instances across 43 question types and five task families: deforestation monitoring, multi-hazard analysis, building-damage assessment, flood-safe routing, and Sentinel-1 SAR flood monitoring. Instances integrate heterogeneous EO/GIS evidence-optical and SAR imagery, raster masks, vector geometries, road networks, and exposure layers-spanning hazard detection, damage assessment, exposure estimation, and diagnostic report generation. Ground-truth answers are grounded in executable geospatial workflows and deterministic consistency checks, removing the need for language-model annotation. We further propose an orchestrated multi-agent framework with 18 disaster-oriented tools, where role-specialized agents coordinate through explicit execution contracts, aligned via Role-Contract Expectation Alignment (RCEA): failure-aware supervised fine-tuning combined with contract-grounded reinforcement learning over dense step-level signals. Experiments show that GeoDisaster challenges existing RS-VLMs and agentic systems, while RCEA improves tool use, evidence grounding, state consistency, and decision generation.",
+      "authors": [
+        "Maram Hasan",
+        "Aman Verma",
+        "Savitra Roy",
+        "Hariseetharam Gunduboina",
+        "Daksh Jain",
+        "Muhammad Haris Khan",
+        "Subhasis Chaudhuri",
+        "Biplab Banerjee"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.MA"
+      ],
+      "published": "2026-06-15T19:46:10+00:00",
+      "link": "https://arxiv.org/pdf/2606.17246v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "integrates heterogeneous EO/GIS data for disaster geo-intelligence, multimodal fusion for urban environments",
+      "llm_evidence_cn": "整合异构遥感/GIS数据进行灾害地理智能分析，涉及多模态融合",
+      "llm_evidence": "整合异构遥感/GIS数据进行灾害地理智能分析，涉及多模态融合",
+      "canonical_evidence": "整合异构遥感/GIS数据进行灾害地理智能分析，涉及多模态融合",
+      "llm_tldr_en": "GeoDisaster benchmarks operational disaster geo-intelligence by integrating optical/SAR imagery, vector geometries, road networks, and exposure layers for multi-hazard analysis, grounding tool-based spatial reasoning with structured evidence.",
+      "llm_tldr_cn": "现有遥感视觉语言模型缺乏工具化空间推理和结构化决策能力。本文提出GeoDisaster基准，整合光学与SAR影像、栅格掩膜、矢量几何、路网等多源异构地理空间证据，支持森林砍伐监测、建筑损毁评估等5类任务。实验验证了多模态融合在灾害地理智能中的有效性，为智慧城市空间数据平台提供了评估范式。",
+      "llm_tldr": "现有遥感视觉语言模型缺乏工具化空间推理和结构化决策能力。本文提出GeoDisaster基准，整合光学与SAR影像、栅格掩膜、矢量几何、路网等多源异构地理空间证据，支持森林砍伐监测、建筑损毁评估等5类任务。实验验证了多模态融合在灾害地理智能中的有效性，为智慧城市空间数据平台提供了评估范式。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.16092v1",
+      "source": "arxiv",
+      "title": "VinQA: Visual Elements Interleaved Long-form Answer Generation for Real-World Multimodal Document QA",
+      "abstract": "Real-world documents combine text with tables, charts, photographs, and diagrams arranged in diverse layouts, yet existing research on multimodal large language models (MLLMs) for document QA predominantly produces text-only responses, underutilizing these visual elements. We introduce VinQA, a dataset for long-form answer generation where cited visual elements are explicitly interleaved with their supporting text and grounded in relevant document pages. To support this task, we study two encoding methods for feeding raw document page images into an MLLM, along with their visual-element citation mechanisms: (1) Page Encoding, which directly encodes full-page images with bounding boxes of visual elements and treats these boxed regions as citable units; and (2) Modality Encoding, which parses each page to extract text and crop visual elements, encodes them separately, and uses these cropped elements as citable units. In our experiments, we propose M-GroSE, a multimodal evaluation framework extending GroUSE to assess answers along four dimensions: completeness, answer relevancy, faithfulness, and unanswerability. We additionally report Visual Source F1 to directly measure visual citation accuracy. Although proprietary frontier models still achieve the best overall scores on the VinQA test split, fine-tuning open Qwen2.5-VL models on the training split substantially improves their performance and narrows this gap. Modality Encoding is initially more robust for complex documents with long text, many visual elements, and diverse citation requirements. After training on VinQA, however, Page Encoding reaches a comparable level, competing effectively even without the explicit parsing used in Modality Encoding. Finally, Visual G-Eval, an MLLM-based judge, confirms that fine-tuned models insert visual elements at semantically appropriate positions with faithful supporting text.",
+      "authors": [
+        "Young Rok Jang",
+        "Hyesoo Kong",
+        "Kyunghwan An",
+        "Jae Sub Huh",
+        "Gyeonghun Kim",
+        "Stanley Jungkyu Choi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-06-15T01:14:14+00:00",
+      "link": "https://arxiv.org/pdf/2606.16092v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multimodal document QA with visual elements interleaved in answers, relevant to multimodal fusion for smart city documents",
+      "llm_evidence_cn": "多模态文档问答中视觉元素与文本交错回答，适用于智慧城市文档多模态融合",
+      "llm_evidence": "多模态文档问答中视觉元素与文本交错回答，适用于智慧城市文档多模态融合",
+      "canonical_evidence": "多模态文档问答中视觉元素与文本交错回答，适用于智慧城市文档多模态融合",
+      "llm_tldr_en": "VinQA dataset for long-form answer generation where cited visual elements are interleaved with text, and studies encoding methods for multimodal document QA with visual citation.",
+      "llm_tldr_cn": "现有多模态文档问答仅生成纯文本回答，忽略表格、图表等视觉信息。本文提出VinQA数据集，要求回答中交错引用视觉元素并定位源页面。研究了整页编码和区域编码两种MLLM输入方法，实现了带视觉引用的长文本生成。该工作可促进智慧城市中多格式文档（如规划图、报告）的统一理解和生成。",
+      "llm_tldr": "现有多模态文档问答仅生成纯文本回答，忽略表格、图表等视觉信息。本文提出VinQA数据集，要求回答中交错引用视觉元素并定位源页面。研究了整页编码和区域编码两种MLLM输入方法，实现了带视觉引用的长文本生成。该工作可促进智慧城市中多格式文档（如规划图、报告）的统一理解和生成。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.16509v1",
+      "source": "arxiv",
+      "title": "Model Graph Inductive Learning for Knowledge Graph Completion",
+      "abstract": "Link prediction in knowledge graphs fundamentally depends on the quality of learned embeddings for entities and relations. However, most existing methods derive these embeddings by aggregating only the local neighborhood of each entity, neglecting the global structure of the knowledge graph. This limited view prevents models from capturing higher-level structural patterns that are essential for accurate and generalizable link prediction.   To address these limitations, we introduce Model Graph Inductive Learning (\\textbf{MGIL}), a framework that constructs a model graph by clustering entities based on the similarity of their incoming and outgoing relational structures or their entity types. A GNN is then applied to this model graph to produce embeddings that capture the global view of the knowledge graph. These embeddings subsequently serve as high-quality initial features %embeddings for the original knowledge graph, replacing random initialization and leading to more stable and expressive representations.   Extensive experiments on standard and recently proposed inductive benchmarks demonstrate that MGIL achieves state-of-the-art or highly competitive performance in inductive link prediction, highlighting its effectiveness across diverse graph settings.",
+      "authors": [
+        "Mohommad Esmaei Khani",
+        "Mahdieh Hasheminejad",
+        "Ali Taherkhani",
+        "Hossein Hajiabolhassan"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-15T10:13:27+00:00",
+      "link": "https://arxiv.org/pdf/2606.16509v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "model graph inductive learning for knowledge graph completion, directly contributes to knowledge graph construction and reasoning",
+      "llm_evidence_cn": "模型图归纳学习用于知识图谱补全，直接贡献于知识图谱构建与推理",
+      "llm_evidence": "模型图归纳学习用于知识图谱补全，直接贡献于知识图谱构建与推理",
+      "canonical_evidence": "模型图归纳学习用于知识图谱补全，直接贡献于知识图谱构建与推理",
+      "llm_tldr_en": "MGIL constructs a model graph by clustering entities based on relational structures, applies GNN for embeddings that capture global patterns, improving link prediction.",
+      "llm_tldr_cn": "知识图谱链接预测通常只聚合局部邻居，忽略了全局结构。本文提出模型图归纳学习（MGIL），首先根据实体的入边和出边结构或实体类型对实体聚类，构建一个更紧凑的模型图，然后在其上应用GNN生成蕴含全局结构信息的嵌入。实验表明MGIL提升了链接预测的准确性和泛化能力。对于智慧城市中构建城市知识图谱（如BIM、GIS实体）和推理关系有重要借鉴意义。",
+      "llm_tldr": "知识图谱链接预测通常只聚合局部邻居，忽略了全局结构。本文提出模型图归纳学习（MGIL），首先根据实体的入边和出边结构或实体类型对实体聚类，构建一个更紧凑的模型图，然后在其上应用GNN生成蕴含全局结构信息的嵌入。实验表明MGIL提升了链接预测的准确性和泛化能力。对于智慧城市中构建城市知识图谱（如BIM、GIS实体）和推理关系有重要借鉴意义。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.17183v1",
+      "source": "arxiv",
+      "title": "VL-MemKnG: Hybrid Memory with a Spatio-Temporal Knowledge Graph for Question Answering over Long Egocentric Navigation Trajectories",
+      "abstract": "Answering navigation-relevant questions over long egocentric videos requires retrieving and organizing evidence distributed across distant temporal moments while maintaining spatial and contextual consistency. Although long-context vision--language models can achieve strong answer quality, they are computationally expensive for long trajectories and inefficient for repeated querying. Recent graph-based approaches such as VL-KnG address this challenge through persistent spatio-temporal knowledge graphs, but graph-centric retrieval alone may underrepresent broader temporal continuity and contextual cues. We present VL-MemKnG, a hybrid memory framework that extends VL-KnG by combining a spatio-temporal knowledge graph with persistent segment-level contextual memory. The knowledge graph captures structured relational information and long-range object associations, while segment-level memory preserves broader temporal context for long-horizon evidence retrieval. A hybrid retrieval-and-reasoning module jointly operates over both memory representations to produce evidence-grounded answers and temporally organized supporting evidence. We also introduce WalkieKnowledgeT+, an extension of WalkieKnowledge for long-horizon navigation-oriented video question answering. The benchmark includes temporally distributed reasoning tasks requiring evidence aggregation across multiple non-cooccurring moments. On WalkieKnowledgeT+, VL-MemKnG improves Top-1 retrieval accuracy from 58% to 67% and Recall@1 from 34.50% to 40.55%, outperforming all compared methods, including Gemini 2.5 Pro and Qwen 3.5+. The gains are particularly pronounced on temporal-global and temporally scattered aggregation questions, demonstrating the benefits of combining structured relational memory with segment-level contextual memory while maintaining efficient query-time inference.",
+      "authors": [
+        "Svetlana Lukina",
+        "Mohamad Al Mdfaa",
+        "Gloria Haro",
+        "Sergey Zagoruyko",
+        "Gonzalo Ferrer"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-15T18:21:14+00:00",
+      "link": "https://arxiv.org/pdf/2606.17183v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "spatio-temporal knowledge graph construction for question answering over navigation trajectories",
+      "llm_evidence_cn": "面向导航轨迹问答的时空知识图谱构建",
+      "llm_evidence": "面向导航轨迹问答的时空知识图谱构建",
+      "canonical_evidence": "面向导航轨迹问答的时空知识图谱构建",
+      "llm_tldr_en": "VL-MemKnG extends VL-KnG with a hybrid memory combining spatio-temporal knowledge graphs and temporal context retrieval, improving question answering over long egocentric navigation videos.",
+      "llm_tldr_cn": "长时域视频问答中现有图检索方法忽略时序连续性。本文提出混合记忆框架VL-MemKnG，结合时空知识图谱与连续上下文检索，从长导航视频中高效组织空间和时间证据。实验在导航QA任务上超越纯图方法和长上下文模型，为城市级时空知识图谱查询提供了可迁移方法。",
+      "llm_tldr": "长时域视频问答中现有图检索方法忽略时序连续性。本文提出混合记忆框架VL-MemKnG，结合时空知识图谱与连续上下文检索，从长导航视频中高效组织空间和时间证据。实验在导航QA任务上超越纯图方法和长上下文模型，为城市级时空知识图谱查询提供了可迁移方法。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.19383v1",
+      "source": "arxiv",
+      "title": "3D Scene Graphs: Open Challenges and Future Directions",
+      "abstract": "3D Scene Graphs (3DSGs) have emerged as a powerful representation for spatial AI by combining geometric grounding with semantic and relational abstractions of the environment. Their expressiveness has made them relevant to a broad range of problems in robotics and computer vision, including manipulation, navigation, task planning, scene understanding, and many others. However, the field remains fragmented: different communities adopt distinct formulations, construction pipelines, and evaluation protocols, making it difficult to compare methods, identify common assumptions, and assess remaining challenges for robust real-world deployment. This survey provides a unified and critical review of 3DSGs, with particular emphasis on open challenges and future directions. We first formalize 3DSGs under a common definition and analyze the principal modeling choices that characterize existing formulations, including node and edge attributes, hierarchical structure, dynamic scene representations, and affordance-aware extensions. We then review how 3DSGs are built from raw sensory observations, discussing the most common terminologies, conventions, and techniques. Finally, we examine downstream applications and evaluation strategies, from intrinsic graph quality to task-level performance. To support the community, we also provide a dedicated website that organizes and extends the surveyed content, accessible at https://3dscenegraphs.com/.",
+      "authors": [
+        "Dennis Rotondi",
+        "Francesco Argenziano",
+        "Sebastian Koch",
+        "Nathan Hughes",
+        "Martin Buechner",
+        "Johanna Wald",
+        "Lukas Rosenberger Schmid",
+        "Daniele Nardi",
+        "Abhinav Valada",
+        "Liam Paull",
+        "Federico Tombari",
+        "Luca Carlone",
+        "Kai O. Arras"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV"
+      ],
+      "published": "2026-06-15T08:14:08+00:00",
+      "link": "https://arxiv.org/pdf/2606.19383v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "survey on 3D scene graphs unifying semantic and relational abstractions for spatial AI",
+      "llm_evidence_cn": "关于3D场景图的综述，统一了空间AI的语义和关系抽象",
+      "llm_evidence": "关于3D场景图的综述，统一了空间AI的语义和关系抽象",
+      "canonical_evidence": "关于3D场景图的综述，统一了空间AI的语义和关系抽象",
+      "llm_tldr_en": "This survey reviews 3D scene graphs, combining geometric grounding with semantic and relational abstractions, highlighting open challenges for robust deployment.",
+      "llm_tldr_cn": "3D场景图（3DSG）作为空间AI的强大表示，将几何基础与语义关系抽象结合，广泛应用于机器人等领域。但该领域存在碎片化问题，不同社区采用不同公式和评估协议。本综述统一回顾了3DSG，特别强调开放挑战和未来方向，为智慧城市中语义场景理解与知识图构建提供了理论基础。",
+      "llm_tldr": "3D场景图（3DSG）作为空间AI的强大表示，将几何基础与语义关系抽象结合，广泛应用于机器人等领域。但该领域存在碎片化问题，不同社区采用不同公式和评估协议。本综述统一回顾了3DSG，特别强调开放挑战和未来方向，为智慧城市中语义场景理解与知识图构建提供了理论基础。",
+      "llm_tags": [
+        "query:smart-city:composite"
+      ],
+      "matched_query_tag": "query:smart-city:composite",
+      "matched_query_text": "Papers central to 智慧城市建设中的数据整合与语义化处理, especially work that connects or combines: Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.; Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.; Find research papers describing semantic information extraction from BIM models, including geometry, materials, textures, and object relationships.; Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.; Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.; Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.; Find research papers describing unified data standards and semantic data models for integrating heterogeneous smart city construction data, including BIM, GIS, documents, images, videos, point clouds, and structured databases.; Find research papers describing semantic parsing, ontology learning, and knowledge graph construction from BIM models and point cloud scans for AI ready urban infrastructure databases.; Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.; Find research papers describing cross domain data management methodologies transferred from manufacturing or industrial digital twins to construction, infrastructure, and smart city data integration..",
+      "matched_requirement_id": "req-composite-smart-city",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.19956v1",
+      "source": "arxiv",
+      "title": "Towards Graph-Based Deep Learning for Map Generalization: Insights from Building Footprints Simplification and Aggregation",
+      "abstract": "Map generalization remains one of the fundamental tasks in cartography, especially for the simplification and aggregation of complex building footprints. This study presents the first exploratory application of graph-based deep learning to both tasks, reformulating simplification as node movement prediction and aggregation as link prediction within a unified graph learning framework. We evaluate representative graph neural network architectures (GCN, GAT, and GraphSAGE) on multi-scale building datasets, showing that GraphSAGE demonstrates relative strengths in link prediction accuracy, while also revealing persistent challenges in precise node movement prediction. Beyond quantitative performance, the results highlight that aggregation poses greater complexity and challenges than simplification, underscoring the difficulty of capturing higher-level spatial relationships in map generalization with current deep learning approaches. Although limitations such as data imbalance and the need for post-processing remain, the study provides valuable insights and methodological directions for advancing automated map generalization with deep learning approaches.",
+      "authors": [
+        "Yanning Wang",
+        "Zhiyong Zhou",
+        "Zhouyu Liu",
+        "Mengni Yu",
+        "Yu Feng"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-18T08:55:17+00:00",
+      "link": "https://arxiv.org/pdf/2606.19956v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "graph-based deep learning for building footprint simplification and aggregation, relevant to urban data processing",
+      "llm_evidence_cn": "基于图的深度学习用于建筑足迹简化与聚合，属于城市数据处理",
+      "llm_evidence": "基于图的深度学习用于建筑足迹简化与聚合，属于城市数据处理",
+      "canonical_evidence": "基于图的深度学习用于建筑足迹简化与聚合，属于城市数据处理",
+      "llm_tldr_en": "Proposes graph-based deep learning for map generalization tasks: building footprint simplification as node movement and aggregation as link prediction, evaluated with GCN, GAT, GraphSAGE on multi-scale building datasets.",
+      "llm_tldr_cn": "地图概括中的建筑足迹简化与聚合是智慧城市基础设施管理的重要任务。本文首次将图深度学习应用于这两个任务，将简化建模为节点移动预测，聚合建模为链接预测，并使用GCN、GAT和GraphSAGE在多种尺度的建筑数据集上进行评估。结果显示GraphSAGE在链接预测上表现较好，但节点移动预测仍有挑战。该工作为城市建筑数据的自动化处理提供了新思路，可迁移至智慧城市的数据整合与语义化场景。",
+      "llm_tldr": "地图概括中的建筑足迹简化与聚合是智慧城市基础设施管理的重要任务。本文首次将图深度学习应用于这两个任务，将简化建模为节点移动预测，聚合建模为链接预测，并使用GCN、GAT和GraphSAGE在多种尺度的建筑数据集上进行评估。结果显示GraphSAGE在链接预测上表现较好，但节点移动预测仍有挑战。该工作为城市建筑数据的自动化处理提供了新思路，可迁移至智慧城市的数据整合与语义化场景。",
+      "llm_tags": [
+        "query:smart-city:composite"
+      ],
+      "matched_query_tag": "query:smart-city:composite",
+      "matched_query_text": "Papers central to 智慧城市建设中的数据整合与语义化处理, especially work that connects or combines: Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.; Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.; Find research papers describing semantic information extraction from BIM models, including geometry, materials, textures, and object relationships.; Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.; Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.; Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.; Find research papers describing unified data standards and semantic data models for integrating heterogeneous smart city construction data, including BIM, GIS, documents, images, videos, point clouds, and structured databases.; Find research papers describing semantic parsing, ontology learning, and knowledge graph construction from BIM models and point cloud scans for AI ready urban infrastructure databases.; Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.; Find research papers describing cross domain data management methodologies transferred from manufacturing or industrial digital twins to construction, infrastructure, and smart city data integration..",
+      "matched_requirement_id": "req-composite-smart-city",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.19960v1",
+      "source": "arxiv",
+      "title": "Stellar: Scalable Multimodal Document Retrieval for Natural Language Queries",
+      "abstract": "Multimodal document retrieval--selecting the most relevant multimodal document from a large corpus to answer a natural language query--plays an essential role in Retrieval-Augmented Generation (RAG) systems. State-of-the-art methods represent each document and query with multiple token-level embeddings and use late interaction to achieve high effectiveness. However, such multi-vector representations incur substantial memory overhead during retrieval, leading to poor scalability and hindering real-world deployment. In this paper, we present Stellar, a scalable multimodal document retrieval framework that stores token-level document embeddings on disk and loads only a small set of candidate embeddings into memory for late interaction. Stellar comprises two key components: (i) Lexical Representation-based Filtering (LRF), which fine-tunes a Multimodal Large Language Model (MLLM) as a sparse encoder to produce high-quality lexical representations, enabling efficient and effective document filtering to significantly reduce the candidate set; (ii) Efficient Disk-backed Late Interaction (DLI), which designs an on-disk token embedding storage layout guided by a balanced clustering algorithm, and dynamically loads only the necessary token embeddings into memory using a simple yet effective cost model. Extensive experiments on four real-world benchmarks and a newly presented large-scale dataset demonstrate that Stellar reduces memory overhead and query latency by 1-2 orders of magnitude compared to existing methods without compromising retrieval effectiveness.",
+      "authors": [
+        "Yuxiang Guo",
+        "Zhonghao Hu",
+        "Yuren Mao",
+        "Yuhang Liu",
+        "Congcong Ge",
+        "Xiaolu Zhang",
+        "Jun Zhou",
+        "Yunjun Gao"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR"
+      ],
+      "published": "2026-06-18T08:57:26+00:00",
+      "link": "https://arxiv.org/pdf/2606.19960v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multimodal document retrieval for RAG, transferable to smart city multimodal fusion",
+      "llm_evidence_cn": "多模态文档检索方法可迁移至智慧城市多模态融合",
+      "llm_evidence": "多模态文档检索方法可迁移至智慧城市多模态融合",
+      "canonical_evidence": "多模态文档检索方法可迁移至智慧城市多模态融合",
+      "llm_tldr_en": "Stellar proposes a scalable multimodal document retrieval framework using disk-based token embeddings for late interaction, reducing memory while maintaining effectiveness, enabling efficient RAG over heterogeneous documents.",
+      "llm_tldr_cn": "现有多模态文档检索方法因多向量表示导致内存开销大，难以扩展。本文提出Stellar框架，将token级文档嵌入存储在磁盘上，仅加载少量候选嵌入进行延迟交互，大幅降低内存需求。实验表明在保持高准确率的同时显著提升检索速度，为智慧城市中整合文档、图像等多源数据提供了可扩展的检索基础。",
+      "llm_tldr": "现有多模态文档检索方法因多向量表示导致内存开销大，难以扩展。本文提出Stellar框架，将token级文档嵌入存储在磁盘上，仅加载少量候选嵌入进行延迟交互，大幅降低内存需求。实验表明在保持高准确率的同时显著提升检索速度，为智慧城市中整合文档、图像等多源数据提供了可扩展的检索基础。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

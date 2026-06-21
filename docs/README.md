@@ -6,43 +6,41 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-20
-- 运行时间：2026-06-20 20:35:08 UTC
+- 最新运行日期：2026-06-21
+- 运行时间：2026-06-21 21:23:09 UTC
 - 运行状态：成功
-- 本次总论文数：6
-- 精读区：0
+- 本次总论文数：7
+- 精读区：1
 - 速读区：6
 
 ### 今日简报（AI）
-今日速读6篇论文，覆盖图特征异质性处理、视觉语言模型数据标注及可再生能源数字孪生建模。
-
-最值得关注方向：可学习图补丁解决特征异质性（7.0分），以及基于在线策略的视觉语言模型标注工具（7.0分）。
-
-建议优先精读这两篇，前者在图学习领域有方法论创新，后者为数据标注提供实用框架。
-- 详情：[/202606/20/README](/202606/20/README)
+今日聚焦7篇论文，精读《GeoDisaster》构建灾害地理智能测评基准，发现多智能体协作在真实灾害数据上效果显著。速读中《VL-MemKnG》提出混合记忆架构解决长时空轨迹问答，值得关注其知识图谱与视觉导航的融合思路。建议优先精读《GeoDisaster》的灾害行业标准，速读部分可重点把握多模态文档问答与时空知识图谱的实用技巧。
+- 详情：[/202606/21/README](/202606/21/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [GeoDisaster: Benchmarking Orchestrated Agents for Operational Disaster Geo-Intelligence](/202606/21/2606.17246v1-geodisaster-benchmarking-orchestrated-agents-for-operational-disaster-geo-intelligence)  
+   标签：评分：8.0/10、query:smart-city
+   evidence：整合异构遥感/GIS数据进行灾害地理智能分析，涉及多模态融合
 
 ### 速读区论文标签
-1. [Handling Feature Heterogeneity with Learnable Graph Patches](/202606/20/2606.17667v1-handling-feature-heterogeneity-with-learnable-graph-patches)  
-   标签：评分：7.0/10、query:smart-city
-   evidence：可学习图块处理特征异质性，可应用于异构城市数据的知识图谱构建
-2. [From Bounding Boxes to Visual Reasoning: An On-Policy Data Annotation Tool for Vision-Language Models](/202606/20/2606.18846v1-from-bounding-boxes-to-visual-reasoning-an-on-policy-data-annotation-tool-for-vision-language-models)  
-   标签：评分：7.0/10、query:smart-city
-   evidence：统一标注模式，融合空间坐标、开放词汇描述、结构化属性和拓扑关系
-3. [SysML Modeling of Digital Twins for Renewable Energy Communities](/202606/20/2606.20230v1-sysml-modeling-of-digital-twins-for-renewable-energy-communities)  
-   标签：评分：7.0/10、query:smart-city
-   evidence：使用SysML和本体集成的数字孪生建模
-4. [Reference Architecture for Metadata-driven Services to Promote Reusability in Software Systems](/202606/20/2606.16692v1-reference-architecture-for-metadata-driven-services-to-promote-reusability-in-software-systems)  
+1. [VinQA: Visual Elements Interleaved Long-form Answer Generation for Real-World Multimodal Document QA](/202606/21/2606.16092v1-vinqa-visual-elements-interleaved-long-form-answer-generation-for-real-world-multimodal-document-qa)  
    标签：评分：6.0/10、query:smart-city
-   evidence：元数据驱动的服务重用参考架构
-5. [A Unified Framework for Context-Aware and Relation-Aware Graph Retrieval-Augmented Generation](/202606/20/2606.18075v1-a-unified-framework-for-context-aware-and-relation-aware-graph-retrieval-augmented-generation)  
+   evidence：多模态文档问答中视觉元素与文本交错回答，适用于智慧城市文档多模态融合
+2. [Model Graph Inductive Learning for Knowledge Graph Completion](/202606/21/2606.16509v1-model-graph-inductive-learning-for-knowledge-graph-completion)  
    标签：评分：6.0/10、query:smart-city
-   evidence：层次图RAG框架实现知识融合与推理
-6. [Building Drift: Documenting On-Site Construction Adaptations Across Material Lifecycles](/202606/20/2606.19609v1-building-drift-documenting-on-site-construction-adaptations-across-material-lifecycles)  
+   evidence：模型图归纳学习用于知识图谱补全，直接贡献于知识图谱构建与推理
+3. [VL-MemKnG: Hybrid Memory with a Spatio-Temporal Knowledge Graph for Question Answering over Long Egocentric Navigation Trajectories](/202606/21/2606.17183v1-vl-memkng-hybrid-memory-with-a-spatio-temporal-knowledge-graph-for-question-answering-over-long-egocentric-navigation-trajectories)  
    标签：评分：6.0/10、query:smart-city
-   evidence：记录现场施工与数字模型的偏差
+   evidence：面向导航轨迹问答的时空知识图谱构建
+4. [3D Scene Graphs: Open Challenges and Future Directions](/202606/21/2606.19383v1-3d-scene-graphs-open-challenges-and-future-directions)  
+   标签：评分：6.0/10、query:smart-city
+   evidence：关于3D场景图的综述，统一了空间AI的语义和关系抽象
+5. [Towards Graph-Based Deep Learning for Map Generalization: Insights from Building Footprints Simplification and Aggregation](/202606/21/2606.19956v1-towards-graph-based-deep-learning-for-map-generalization-insights-from-building-footprints-simplification-and-aggregation)  
+   标签：评分：6.0/10、query:smart-city
+   evidence：基于图的深度学习用于建筑足迹简化与聚合，属于城市数据处理
+6. [Stellar: Scalable Multimodal Document Retrieval for Natural Language Queries](/202606/21/2606.19960v1-stellar-scalable-multimodal-document-retrieval-for-natural-language-queries)  
+   标签：评分：6.0/10、query:smart-city
+   evidence：多模态文档检索方法可迁移至智慧城市多模态融合
 
 
 <div class="dpr-home-promo-card">
