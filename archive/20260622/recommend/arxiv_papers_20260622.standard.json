@@ -1,0 +1,250 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-22T22:24:54.580402+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2606.16881v1",
+      "source": "arxiv",
+      "title": "SGM-SLAM: Scene Graph Matching for Data-Efficient Distributed SLAM",
+      "abstract": "We introduce a data-efficient distributed Simultaneous Localization and Mapping (SLAM) framework designed for a team of robots equipped with LiDAR, cameras, and inertial sensors. Our framework uses scene graph matching to identify inter-robot measurement constraints. Unlike prior approaches that rely on feature-level matching, our framework is the first to perform scene graph matching using only object labels and centroids. Our approach constructs a scene graph by using fused RGB-LiDAR point clouds to generate both a semantically segmented point cloud layer, and a layer of discrete bounded objects, to accompany estimated robot trajectories. Scene graph matching is performed collaboratively through exchanging and matching object data with neighboring robots. To maximize communication efficiency, we utilize a multi-step data exchange and optimization process. We demonstrate the effectiveness and efficiency of our approach using both simulation and real-world datasets collected by legged robots in indoor and outdoor environments.",
+      "authors": [
+        "Yewei Huang",
+        "Tixiao Shan",
+        "Abhinav Rajvanshi",
+        "Niluthpol Chowdhury Mithun",
+        "Yaxuan Li",
+        "Brendan Englot",
+        "Han-Pang Chiu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-15T15:53:59+00:00",
+      "link": "https://arxiv.org/pdf/2606.16881v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "semantic segmentation of point clouds; scene graph matching",
+      "llm_evidence_cn": "点云语义分割；场景图匹配",
+      "llm_evidence": "点云语义分割；场景图匹配",
+      "canonical_evidence": "点云语义分割；场景图匹配",
+      "llm_tldr_en": "A distributed SLAM framework that constructs semantically segmented point cloud layers and uses object labels and centroids for scene graph matching, enabling efficient multi-robot mapping.",
+      "llm_tldr_cn": "针对多机器人协同建图场景，现有方法依赖特征级匹配，数据效率低。本文提出SGM-SLAM框架，利用融合RGB-LiDAR点云生成语义分割点云层和离散对象层，仅通过对象标签和质心进行场景图匹配以识别机器人间约束。实验表明该方法在减少通信开销的同时实现了鲁棒的分布式SLAM，为城市环境中的点云语义理解提供了高效方案。",
+      "llm_tldr": "针对多机器人协同建图场景，现有方法依赖特征级匹配，数据效率低。本文提出SGM-SLAM框架，利用融合RGB-LiDAR点云生成语义分割点云层和离散对象层，仅通过对象标签和质心进行场景图匹配以识别机器人间约束。实验表明该方法在减少通信开销的同时实现了鲁棒的分布式SLAM，为城市环境中的点云语义理解提供了高效方案。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.19277v1",
+      "source": "arxiv",
+      "title": "A Unified Framework for Efficient Remote Sensing Visual Question Answering: Adapting Dual, Hybrid, and Encoder-Decoder Architectures",
+      "abstract": "Visual Question Answering (VQA) in the Remote Sensing (RS) domain presents unique challenges due to the high resolution, multi scale object distribution, and semantic complexity of aerial imagery. While general domain Foundation Models have achieved remarkable success, their direct application to RSVQA is hindered by massive domain shifts and the computationally prohibitive nature of full fine tuning. This study presents a comparative analysis of RS Adapter, a Parameter Efficient Fine Tuning (PEFT) strategy, applied across three distinct Vision Language Model (VLM) architectures: the Dual Encoder CLIP, the Encoder Decoder BLIP, and the Hybrid FLAVA. We introduce a unified architectural surgery pipeline that injects lightweight bottleneck adapters into the attention and MLP layers of frozen backbones, enabling rapid adaptation with less than 5 percent of trainable parameters. Experimental results on the high resolution RSVQA x dataset demonstrate that while all adapted models achieve convergence, the Hybrid FLAVA architecture offers a superior balance of multimodal reasoning and retrieval capabilities compared to its unimodal counterparts. Our findings establish a new baseline for resource efficient VQA in disaster assessment and urban monitoring.",
+      "authors": [
+        "Timothy Agboada",
+        "Shikha Chandel",
+        "Yadav Raj Ghimire",
+        "Leila Hashemi-Beni"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-17T16:52:26+00:00",
+      "link": "https://arxiv.org/pdf/2606.19277v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "VLM adaptation for remote sensing VQA, integrating visual and textual data for scene understanding",
+      "llm_evidence_cn": "将视觉语言模型适配到遥感领域，实现图像与文本的多模态融合以理解场景",
+      "llm_evidence": "将视觉语言模型适配到遥感领域，实现图像与文本的多模态融合以理解场景",
+      "canonical_evidence": "将视觉语言模型适配到遥感领域，实现图像与文本的多模态融合以理解场景",
+      "llm_tldr_en": "Compares RS Adapter PEFT across CLIP, BLIP, and FLAVA architectures for remote sensing VQA, achieving efficient multimodal fusion.",
+      "llm_tldr_cn": "该论文系统比较了参数高效微调策略RS Adapter在双编码器CLIP、编码器-解码器BLIP和混合FLAVA三种视觉语言模型架构上的远程感知视觉问答性能。通过引入统一架构代理，有效克服了领域偏移和全微调的计算瓶颈，为遥感图像与文本的多模态融合提供了高效方案，可推广到智慧城市中的卫星图像分析与问答任务。",
+      "llm_tldr": "该论文系统比较了参数高效微调策略RS Adapter在双编码器CLIP、编码器-解码器BLIP和混合FLAVA三种视觉语言模型架构上的远程感知视觉问答性能。通过引入统一架构代理，有效克服了领域偏移和全微调的计算瓶颈，为遥感图像与文本的多模态融合提供了高效方案，可推广到智慧城市中的卫星图像分析与问答任务。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.16935v1",
+      "source": "arxiv",
+      "title": "CrossMaps: Confidence-Aware Open-Vocabulary Semantic Mapping for Rover Navigation",
+      "abstract": "Rovers rely on perception to maintain spatial maps that encode both objects and sensor quality (e.g., range reliability, lighting artifacts, data density), guiding data fusion, embedding updates, and navigation under partial observability. To study these coupled perception-navigation processes, we present CrossMaps, a real-time confidence-aware open-vocabulary semantic mapping pipeline that constructs language-queryable maps from RGB-D data. Building on VLMaps-style approaches, CrossMaps integrates multi-scale CLIP embeddings with confidence-aware fusion and a dual-memory architecture consisting of Short-Term Memory (STM) and Long-Term Memory (LTM). The STM aggregates noisy visual observations using geometric, semantic, and temporal confidence cues, while confident and coherent cells are promoted to the LTM as persistent semantic landmarks. Designed for deployment with a Jetson Orin-powered UGV alongside SLAM, CrossMaps runs in real time and produces semantic heatmaps that can be queried with natural language to guide rover navigation.",
+      "authors": [
+        "Jan-Niklas Klein",
+        "Sona Ghahremani",
+        "Christian Medeiros Adriano",
+        "Holger Giese"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-06-15T16:35:01+00:00",
+      "link": "https://arxiv.org/pdf/2606.16935v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "open-vocabulary semantic mapping with confidence-aware fusion for scene understanding",
+      "llm_evidence_cn": "开放词汇语义地图构建与置信度感知融合用于场景理解",
+      "llm_evidence": "开放词汇语义地图构建与置信度感知融合用于场景理解",
+      "canonical_evidence": "开放词汇语义地图构建与置信度感知融合用于场景理解",
+      "llm_tldr_en": "Presents CrossMaps, a real-time confidence-aware open-vocabulary semantic mapping pipeline using multi-scale CLIP embeddings and dual-memory architecture for rover navigation, applicable to point cloud scene understanding.",
+      "llm_tldr_cn": "本文提出CrossMaps，一个实时的置信度感知开放词汇语义地图构建流水线，利用多尺度CLIP嵌入和双记忆架构，在机器人导航任务中实现鲁棒的语义建图。其方法可迁移至城市环境的点云语义分割与场景理解，通过融合多视觉特征并维护短期与长期记忆，提升语义一致性和鲁棒性。",
+      "llm_tldr": "本文提出CrossMaps，一个实时的置信度感知开放词汇语义地图构建流水线，利用多尺度CLIP嵌入和双记忆架构，在机器人导航任务中实现鲁棒的语义建图。其方法可迁移至城市环境的点云语义分割与场景理解，通过融合多视觉特征并维护短期与长期记忆，提升语义一致性和鲁棒性。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.19710v1",
+      "source": "arxiv",
+      "title": "FineREX: Fine-Tuned NER-RE for Human Smuggling Knowledge Graphs",
+      "abstract": "Court proceedings contain valuable evidence about human smuggling networks, but this information is often buried within unstructured, jargon-heavy legal documents. While large language models (LLMs) can support knowledge graph construction through automated information extraction, existing approaches rely on general-purpose models that are not tailored to the entity and relationship definitions required in this domain. We introduce FineREX, a streamlined knowledge graph construction pipeline built around a fine-tuned LLM for named entity recognition and relationship extraction (NER-RE). Using a manually annotated dataset of $512$ text chunks, FineREX achieves absolute improvements of 15.50% and 31.46% in entity and relationship F1-score, respectively, compared to a larger general-purpose baseline. These gains translate into higher-quality knowledge graphs, reducing legal noise by nearly half and lowering node duplication on long documents from 17.78% to 11.17%. By eliminating document rewriting and redundant extraction stages, FineREX also reduces end-to-end processing time by 50.0%. Our results demonstrate that domain-specific fine-tuning can substantially outperform larger general-purpose models while improving both the quality and efficiency of knowledge graph construction for illicit network analysis.",
+      "authors": [
+        "Elijah Feldman",
+        "Dipak Meher",
+        "Carlotta Domeniconi"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-06-18T02:09:33+00:00",
+      "link": "https://arxiv.org/pdf/2606.19710v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Knowledge graph construction via fine-tuned NER-RE, transferable to smart city domains",
+      "llm_evidence_cn": "通过微调NER-RE构建知识图谱，可迁移至智慧城市领域",
+      "llm_evidence": "通过微调NER-RE构建知识图谱，可迁移至智慧城市领域",
+      "canonical_evidence": "通过微调NER-RE构建知识图谱，可迁移至智慧城市领域",
+      "llm_tldr_en": "FineREX fine-tunes an LLM for NER-RE to build knowledge graphs from legal texts, achieving significant F1 gains. The pipeline is directly applicable to constructing smart city knowledge graphs from documents.",
+      "llm_tldr_cn": "现有知识图谱构建方法依赖通用模型，在特定领域实体关系抽取上效果不佳。本文提出FineREX，通过微调大语言模型完成命名实体识别和关系抽取，并构建知识图谱。在人口走私法律文本上，实体和关系F1分别提升15.50%和31.46%。该方法可迁移至智慧城市领域，用于从技术文档、报告等非结构化文本中自动抽取实体关系，支持城市知识图谱的构建。",
+      "llm_tldr": "现有知识图谱构建方法依赖通用模型，在特定领域实体关系抽取上效果不佳。本文提出FineREX，通过微调大语言模型完成命名实体识别和关系抽取，并构建知识图谱。在人口走私法律文本上，实体和关系F1分别提升15.50%和31.46%。该方法可迁移至智慧城市领域，用于从技术文档、报告等非结构化文本中自动抽取实体关系，支持城市知识图谱的构建。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.20034v1",
+      "source": "arxiv",
+      "title": "Exploring the potential of AlphaEarth and TESSERA embeddings for Fine-scale Local Climate Zone Mapping: A case study across five cities in Switzerland",
+      "abstract": "Understanding urban spatial morphology is critical for climate modeling, risk assessment, and sustainable urban design, and Local Climate Zone (LCZ) mapping provides the basic framework for this. However, many cities still use coarse ~100-m resolution LCZ records, which are unsuitable for fine-scale urban research. In this study, precomputed embeddings from TESSERA (Feng et al., 2025) and AlphaEarth (Brown et al., 2025) are compared to traditional Sentinel-1/2 (S1S2) composites in five Swiss cities to see if they can upscale coarse LCZ maps to 10-m resolution using an attention-based U-Net. Three experiments assess multi-city transferability, the impact of higher-resolution reference data, and temporal robustness to year-to-year phenology changes. We find that all datasets achieve strong performance with test data Intersection-over-Union (IoU) ranging from 0.59-0.69 and 0.77-0.82 in the first two experiments. TESSERA consistently outperforms both S1S2 and AlphaEarth across both settings As expected, we find that the transfer of embedding-based models from one year to another remains an open challenge. Overall, however, our results demonstrate the promising potential of embeddings derived from EO foundation models to reduce time consuming preprocessing, respectively, manual feature engineering tasks and to guide a universal deep learning-based LCZ mapping workflow. When combined with a simple location-aware attention U-Net architecture, the embeddings enhance regional transferability and scalability, supporting the development of comprehensive and reproducible fine-scale LCZ maps for global urban climate applications Improving reference data quality remains the strongest lever for further accuracy gains.",
+      "authors": [
+        "Htet Yamin Ko Ko",
+        "Clement Atzberger"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-18T10:06:42+00:00",
+      "link": "https://arxiv.org/pdf/2606.20034v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "use of precomputed embeddings for fine-scale urban climate zone mapping, relates to representation learning for urban data",
+      "llm_evidence_cn": "利用预计算嵌入进行精细城市气候区制图，关联城市数据的表示学习方法",
+      "llm_evidence": "利用预计算嵌入进行精细城市气候区制图，关联城市数据的表示学习方法",
+      "canonical_evidence": "利用预计算嵌入进行精细城市气候区制图，关联城市数据的表示学习方法",
+      "llm_tldr_en": "Compares TESSERA and AlphaEarth embeddings with Sentinel-1/2 for upscaling LCZ maps to 10m resolution using attention U-Net, demonstrating representation learning for urban data.",
+      "llm_tldr_cn": "针对当前粗分辨率（100米）局部气候区（LCZ）地图难以支持精细城市研究的问题，该研究比较TESSERA和AlphaEarth预计算嵌入与传统遥感数据在五个瑞士城市的效果，使用注意力U-Net将LCZ地图升尺度到10米分辨率。实验表明嵌入方法在多城市迁移性和精细制图上有潜力，为城市数据表示学习提供了新途径。",
+      "llm_tldr": "针对当前粗分辨率（100米）局部气候区（LCZ）地图难以支持精细城市研究的问题，该研究比较TESSERA和AlphaEarth预计算嵌入与传统遥感数据在五个瑞士城市的效果，使用注意力U-Net将LCZ地图升尺度到10米分辨率。实验表明嵌入方法在多城市迁移性和精细制图上有潜力，为城市数据表示学习提供了新途径。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.20382v1",
+      "source": "arxiv",
+      "title": "Towards Modality-imbalanced Federated Graph Learning: A Data Synthesis-based Approach",
+      "abstract": "MultiModal Federated Graph Learning (MM-FGL) offers a natural collaborative training paradigm, but its practical deployment is challenged by two granularities of modality imbalance. Client-level imbalance occurs when certain clients lack entire modalities, while node-level imbalance occurs when individual nodes exhibit missing visual or textual attributes. While several relevant studies exist, our investigation reveals that they predominantly target graph-agnostic or centralized scenarios, rendering them difficult to adapt directly. To address these challenges, we formalize modality-imbalanced MM-FGL as an implicit graph-aware latent semantic representation synthesis problem. This paradigm recovers missing modal semantics directly within the representation space, thereby maximizing alignment with the original data's semantic distribution and mitigating the high variance induced by missing modalities. To this end, we propose FedMGS (Federated Modality-aware Graph Synthesis), which integrates three core components. The availability-aware graph encoder prevents missing modalities from contaminating local structural propagation. The prototype-guided latent semantic synthesizer establishes cross-client semantic anchors for unavailable modalities. The reliability-calibrated semantic fusion mechanism regulates the impact of recovered latent representations prior to predictive readout. Extensive experiments on four tasks show that FedMGS consistently outperforms competitive baselines with gains up to 17.41% with best efficiency-performance tradeoff.",
+      "authors": [
+        "Zhengyu Wu",
+        "Hongchao Qin",
+        "Xunkai Li",
+        "Zekai Chen",
+        "Rong-Hua Li",
+        "Guoren Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-18T15:40:55+00:00",
+      "link": "https://arxiv.org/pdf/2606.20382v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "addresses missing modalities in graph learning for multimodal data fusion",
+      "llm_evidence_cn": "解决图学习中模态缺失问题，用于多模态数据融合",
+      "llm_evidence": "解决图学习中模态缺失问题，用于多模态数据融合",
+      "canonical_evidence": "解决图学习中模态缺失问题，用于多模态数据融合",
+      "llm_tldr_en": "Proposes a data synthesis approach to recover missing modal semantics in multimodal federated graph learning.",
+      "llm_tldr_cn": "该论文研究了多模态联邦图学习中的模态不平衡问题，包括客户端层面和节点层面的模态缺失。提出了一种隐式图感知的潜在语义表示合成范式，直接在图表征空间中恢复缺失的模态语义。实验证明该方法能有效处理不完整多模态数据，为智慧城市中来自BIM、GIS、传感器等异构数据的图融合提供方法论支持。",
+      "llm_tldr": "该论文研究了多模态联邦图学习中的模态不平衡问题，包括客户端层面和节点层面的模态缺失。提出了一种隐式图感知的潜在语义表示合成范式，直接在图表征空间中恢复缺失的模态语义。实验证明该方法能有效处理不完整多模态数据，为智慧城市中来自BIM、GIS、传感器等异构数据的图融合提供方法论支持。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

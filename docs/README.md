@@ -6,41 +6,38 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-21
-- 运行时间：2026-06-21 21:23:09 UTC
+- 最新运行日期：2026-06-22
+- 运行时间：2026-06-22 22:28:37 UTC
 - 运行状态：成功
-- 本次总论文数：7
+- 本次总论文数：6
 - 精读区：1
-- 速读区：6
+- 速读区：5
 
 ### 今日简报（AI）
-今日聚焦7篇论文，精读《GeoDisaster》构建灾害地理智能测评基准，发现多智能体协作在真实灾害数据上效果显著。速读中《VL-MemKnG》提出混合记忆架构解决长时空轨迹问答，值得关注其知识图谱与视觉导航的融合思路。建议优先精读《GeoDisaster》的灾害行业标准，速读部分可重点把握多模态文档问答与时空知识图谱的实用技巧。
-- 详情：[/202606/21/README](/202606/21/README)
+今日精读了SGM-SLAM：利用场景图匹配实现数据高效的分布式SLAM，并速读了遥感视觉问答、人口走私知识图谱构建与开放词汇语义映射等五个方向。最值得关注的是SGM-SLAM（8分）在分布式SLAM数据效率上的突破，以及FineREX（7分）如何通过微调NER-RE构建人类走私领域知识图谱。建议普通读者重点探索SGM-SLAM在机器人协同中的落地潜力，同时关注FineREX的方法能否迁移到自己的领域知识图谱项目中。
+- 详情：[/202606/22/README](/202606/22/README)
 
 ### 精读区论文标签
-1. [GeoDisaster: Benchmarking Orchestrated Agents for Operational Disaster Geo-Intelligence](/202606/21/2606.17246v1-geodisaster-benchmarking-orchestrated-agents-for-operational-disaster-geo-intelligence)  
+1. [SGM-SLAM: Scene Graph Matching for Data-Efficient Distributed SLAM](/202606/22/2606.16881v1-sgm-slam-scene-graph-matching-for-data-efficient-distributed-slam)  
    标签：评分：8.0/10、query:smart-city
-   evidence：整合异构遥感/GIS数据进行灾害地理智能分析，涉及多模态融合
+   evidence：点云语义分割；场景图匹配
 
 ### 速读区论文标签
-1. [VinQA: Visual Elements Interleaved Long-form Answer Generation for Real-World Multimodal Document QA](/202606/21/2606.16092v1-vinqa-visual-elements-interleaved-long-form-answer-generation-for-real-world-multimodal-document-qa)  
+1. [A Unified Framework for Efficient Remote Sensing Visual Question Answering: Adapting Dual, Hybrid, and Encoder-Decoder Architectures](/202606/22/2606.19277v1-a-unified-framework-for-efficient-remote-sensing-visual-question-answering-adapting-dual-hybrid-and-encoder-decoder-architectures)  
+   标签：评分：7.0/10、query:smart-city
+   evidence：将视觉语言模型适配到遥感领域，实现图像与文本的多模态融合以理解场景
+2. [FineREX: Fine-Tuned NER-RE for Human Smuggling Knowledge Graphs](/202606/22/2606.19710v1-finerex-fine-tuned-ner-re-for-human-smuggling-knowledge-graphs)  
+   标签：评分：7.0/10、query:smart-city
+   evidence：通过微调NER-RE构建知识图谱，可迁移至智慧城市领域
+3. [CrossMaps: Confidence-Aware Open-Vocabulary Semantic Mapping for Rover Navigation](/202606/22/2606.16935v1-crossmaps-confidence-aware-open-vocabulary-semantic-mapping-for-rover-navigation)  
    标签：评分：6.0/10、query:smart-city
-   evidence：多模态文档问答中视觉元素与文本交错回答，适用于智慧城市文档多模态融合
-2. [Model Graph Inductive Learning for Knowledge Graph Completion](/202606/21/2606.16509v1-model-graph-inductive-learning-for-knowledge-graph-completion)  
+   evidence：开放词汇语义地图构建与置信度感知融合用于场景理解
+4. [Exploring the potential of AlphaEarth and TESSERA embeddings for Fine-scale Local Climate Zone Mapping: A case study across five cities in Switzerland](/202606/22/2606.20034v1-exploring-the-potential-of-alphaearth-and-tessera-embeddings-for-fine-scale-local-climate-zone-mapping-a-case-study-across-five-cities-in-switzerland)  
    标签：评分：6.0/10、query:smart-city
-   evidence：模型图归纳学习用于知识图谱补全，直接贡献于知识图谱构建与推理
-3. [VL-MemKnG: Hybrid Memory with a Spatio-Temporal Knowledge Graph for Question Answering over Long Egocentric Navigation Trajectories](/202606/21/2606.17183v1-vl-memkng-hybrid-memory-with-a-spatio-temporal-knowledge-graph-for-question-answering-over-long-egocentric-navigation-trajectories)  
+   evidence：利用预计算嵌入进行精细城市气候区制图，关联城市数据的表示学习方法
+5. [Towards Modality-imbalanced Federated Graph Learning: A Data Synthesis-based Approach](/202606/22/2606.20382v1-towards-modality-imbalanced-federated-graph-learning-a-data-synthesis-based-approach)  
    标签：评分：6.0/10、query:smart-city
-   evidence：面向导航轨迹问答的时空知识图谱构建
-4. [3D Scene Graphs: Open Challenges and Future Directions](/202606/21/2606.19383v1-3d-scene-graphs-open-challenges-and-future-directions)  
-   标签：评分：6.0/10、query:smart-city
-   evidence：关于3D场景图的综述，统一了空间AI的语义和关系抽象
-5. [Towards Graph-Based Deep Learning for Map Generalization: Insights from Building Footprints Simplification and Aggregation](/202606/21/2606.19956v1-towards-graph-based-deep-learning-for-map-generalization-insights-from-building-footprints-simplification-and-aggregation)  
-   标签：评分：6.0/10、query:smart-city
-   evidence：基于图的深度学习用于建筑足迹简化与聚合，属于城市数据处理
-6. [Stellar: Scalable Multimodal Document Retrieval for Natural Language Queries](/202606/21/2606.19960v1-stellar-scalable-multimodal-document-retrieval-for-natural-language-queries)  
-   标签：评分：6.0/10、query:smart-city
-   evidence：多模态文档检索方法可迁移至智慧城市多模态融合
+   evidence：解决图学习中模态缺失问题，用于多模态数据融合
 
 
 <div class="dpr-home-promo-card">
