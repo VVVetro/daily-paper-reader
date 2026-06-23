@@ -1,0 +1,521 @@
+Title: Urban Power Grid Topology and Hierarchy Identification from Open Data
+
+URL Source: https://arxiv.org/pdf/2606.21352v1
+
+Published Time: Tue, 23 Jun 2026 00:59:10 GMT
+
+Number of Pages: 12
+
+Markdown Content:
+> 1
+
+# Urban Power Grid Topology and Hierarchy Identification from Open Data 
+
+Shiliang Zhang, Member, IEEE , Sabita Maharjan, Senior Member, IEEE 
+
+Abstract —Understanding the complex topology and hierarchy of urban power grid is crucial for energy prognosis, power flow management, and system resilience analysis. However, detailed grid information remains largely proprietary. This creates sig-nificant barriers for research and innovation, especially when analyzing the last-mile distribution networks connecting individ-ual buildings. This paper addresses this challenge by developing an open-data-driven framework for the complete identification of urban power grid topology, from high-voltage transmission down to individual building connections. Particularly, we fuse public infrastructure data (power-lines, substations, transformers, poles) to map the high and medium-voltage skeleton using graph-based algorithms. We then leverage geospatial machine learning on OpenStreetMap building data to group power demand clus-ters, and infer the physical topology of the final distribution lines linking the clustered buildings. We apply the developed framework to the district of Alna in Oslo, Norway, and we reconstruct the complete grid topology that connects 7,330 buildings and all major electricity infrastructure assets. With the research in this work, we provide a critical tool that facilitates power system analysis, e.g. , power flow optimization, cascading failure simulation, and grid resilience against the penetration of distributed renewable generation. 
+
+Index Terms —Power grid, network topology and hierarchy, open data, Open Street Map, machine learning. 
+
+I. I NTRODUCTION 
+
+# THE urban power grid serves as the backbone for modern society, which ensures consistent supply of electricity that underpins economic activities, public services, and daily life [1]. As the transition in cities towards sustainable and resilient energy systems unfolds [2]–[4], the power grid topol-ogy (the connectivity pattern of power nodes and lines) and hierarchy (the organization across grid infrastructure types) have become paramount for energy analysis [5]. Granular models of these structures are indispensable for critical en-ergy applications, including power flow optimization, energy prognosis, simulation of power system resilience, etc .Despite the crucial role of grid data, detailed informa-tion about urban power infrastructure remains largely pro-prietary [6]–[8]. Utility agencies may hold their distribution network map as confidential assets, due to safety, security, and commercial constrains [9], or the digitized network rep-resentation is absent because of legacy issues. This opacity creates significant barriers for external stakeholders, including industry, business, and researchers, who require this data for  
+
+> This work was supported by the PriTEM project funded by UiO:Energy Convergence Environments. Shiliang Zhang and Sabita Maharjan are with University of Oslo, Oslo, Norway (email: {shilianz, sabita }@ifi.uio.no).
+
+innovation and scientific analysis. Though high-voltage trans-mission skeletons are often partially available or inferable [10], [11], the lack of transparency is most acute in the distribution network [12], particularly the last-mile connections that link transformers, utility poles, and individual end-user buildings. This gap hinders the development of models necessary for analyzing local energy phenomena, such as the impact of the penetration of distributed production (like rooftop solar power) and the simulation of cascading failures within a neighborhood microgrid [13]–[17]. It also impedes the studies on urban energy transition, where battery storage, electric vehicles, and demand-response schemes can materially alter local grid loading profiles and power flows [18]–[20]. Existing studies in bridging this gap often rely on synthetic models generated through simplified geometric assumptions, real-time meter readings that risk privacy, or heavily ag-gregated data. Jongh et al. [21] considered the distribution grid of fixed structure yet with the active status of its lines unknown, and they realized the active status of cables using a mixed-integer quadratic programming solver with limited measurements. Li et al. [22] also targeted a grid with known structure, and detected the grid topology change due to the operations of soft open points (SOPs) and unreported de-activated lines. Bolognani et al. [23] assumed a first-order model for the distributed grid topology, and recognized the topology with grid measurements. Huang et al. [24] considered the power lines linking transformers and customers, and they proposed a Gaussian mixture model in identifying the grid topology among them in an adaptive way. Luan et al. [25] realized transformer-customer pairing in distribution network using K-nearest neighbor (KNN) approach. Ahshan et al. [26] introduced a convolutional-network based approach to locate grid infrastructures in residual power grid, e.g. , substations and poles, without identifying power lines connecting them. Tischbein et al. [27] simplified the network topology iden-tification. Using synthesized power flow data, they trained an LSTM classification model to determine whether a link exists between two given nodes in the grid, while neglecting the the georeference of the link. Feng et al. [28] assumed the network topology satisfies a distance topology matrix (DTM) structure. Based on simulated meter data, they seek the most representative DTM for low-voltage distribution grid by stochastic fractal search, and reconstruct the grid topology through clustering approach. Karunarathne et al. [29] iden-tified low-voltage network topology through multiple linear regression and clustering techniques, using real-time high-resolution smart meter data. Zhu et al. [30] identified the grid topology using both real-time and historical measurement data. 
+
+> arXiv:2606.21352v1 [cs.LG] 19 Jun 2026 2
+
+Xu et al. [31] identified distributed network topology using smart metering data, where they considered the situation that multiple feeders are connected with the same bus. A similar metering-based approach is presented by Guo et al. [32], where they further developed the voltage quality control for the identified grid topology. Nozal et al. [33] described a genetic approach in modeling distribution grid topology using metering data. Yang et al. [34] employed principal component analysis on metering data to gain topological connections between nodes in distribution grid. Li et al. [35] proposed a weighted convolution model to identify transformer-customer connectivity. Their identification considers the impact of solar power generation in low-voltage distribution network, based on analyzing measured power data from transformers, cus-tomers, and household PV systems. Zheng et al. [36] also emphasized the impact of solar PV power. They adopted graph theory to represent the grid topology, and used optimization techniques in the topology recognition. Huang et al. [37] recognized the grid topology of station area, using Lasso algorithm and t-SNE algorithm, while they did not consider the grid hierarchy across station areas. Garc´ ıa et al. [38] presented topology identification for low-voltage distribution networks based on wavelet transform. Though their method also relies on metering data, it required less amount of data and grid observability for the identification. Ponsaerts et al. [39] devel-oped a topology identification method combining admittance matrix estimation and hidden nodes detection, with limited smart meter coverage in the grid. Shi et al. [40] identified station area grid topology with part of metering data being missing, where they compensate the missing values and use K-mean clustering to process the data for the topology identifica-tion. Tischbein et al. [41] analyzed the impact of measurement uncertainties ( e.g. , missing or incorrect metering data) on grid topology identification. Jongh et al. [42] presented a topology identification through mixed-integer quadratic programming on power usage measurements and geographic information system (GIS) data, where they deduct grid topology based on spatial relationships between measurements. More approaches relying on meter readings and the coverage of meter installa-tion are studied in [43]–[49]. Nevertheless, collecting meter readings from individual buildings at district or city level challenges privacy requirement [50]–[54], rendering it compli-cated in implementing meter-reading-based network topology identification especially for non-utility users. A robust solution should be capable of integrating available data to reflect the physical topology and hierarchy of the network in a realistic way. Over the recent years, the open data ecosystem has advanced rapidly. Public geospatial datasets provide rich coverage of urban power infrastructure footprints, including overhead and underground power lines, substations, transformers, etc [55]– [58]. Open Street Map (OSM) offers building-level geometries with attributes indicating use and size [59]–[61], and authorita-tive agencies publish data on utilities and power consumption and production. Advances in graph analytics and geospatial machine learning [62], [63] make it feasible to fuse these disparate data into coherent infrastructure network models. Topology identification from open data has been explored in recent studies. Weber et al. [64] introduced a semi open-data-driven approach in distribution network identification. Their identification uses the open data of OSM building footprints and 3D OSM building data, together with proprietary data of the number and locations of smart meters from DSO, with the transformer locations assumed to be known. Liu 
+
+et al. [65] leveraged open GIS data and smart meter data in identifying the distribution network topology. They use GIS data in building the topology, and then they trim the topology branches and improve the network representativeness using smart meter data. Baecker et al. [66] presented an open-source approach where they synthesize distribution grid topology. They refer to open and georeferenced data for build-ings, streets, and transformers, and generate a representative topology for low-voltage power grid. Lundblad et al. [67] developed and applied an open approach for synthesizing low-voltage grid at a national level, where they emphasize the accuracy of the synthesized demand and the grid capacity. Oneto et al. [68] introduced large-scale generation of synthetic georeferenced distribution grids using open data, taking into account operational and geographical constraints. Xiong et al. [10] reconstructed the European high-voltage grid using OpenStreetMap data. They include components of substations, transmission lines and cables, transformers, and converters in the topology identification. Similarly, Wang et al. [69] reconstructed distribution networks using open data. Their work leverages multi-modal data like road network, building maps, and street view images, and reconstruct overhead and underground grid topology. Nevertheless, both of the studies did not consider low-voltage infrastructures and the “last-mile” power lines linking individual buildings. These developments above together with their limitations motivate us in identifying urban power grid topology and hierarchy from open data, which is expected to reflect both the skeleton and the “last-miles” of the grid in a realistic manner. This paper presents an open-data-driven framework for the complete, bottom-up identification of urban power grid topol-ogy and hierarchy. Our method synthesizes public and open-source geospatial data to reconstruct the network from high-voltage power lines down to individual building connections. Particularly, we identify the high- and medium-voltage skele-ton using graph-based method, while respecting voltage levels, asset types, and typical meshed patterns observed in urban context. We then generate building-level demand clusters by using geospatial machine learning and the data from OSM. We establish the power line connections among clustered buildings using the minimum spanning tree (MST) approach [70]. Fi-nally, we infer the complete power grid network that links all the individual buildings, building clusters, poles, transformers, substations, and high- and medium-voltage distribution power lines. We validate and demonstrate the developed framework in the district of Alna, Oslo, Norway, a heterogeneous urban area with a mix of loads such as residential, commercial, and industrial. Using publicly available infrastructure and OSM building footprints, we reconstruct the connectivity for 7,330 buildings, alongside high- and medium-voltage power lines, substations, transformers, and poles that traverse the district. We summarize our contributions in this paper as follows: 3(a) OSM data 
+
+(b) Utility data 
+
+(d) Last mile of the grid 
+
+(c) Power grid skeleton 
+
+(e) Results 
+
+> Power line geometries from OpenStreetMap
+> Power line geometries and assets locations from utility data
+
+Data integration     
+
+> Connectivity ignoring geographical constraints
+> Connectivity aligned with road networks
+> Power line geometries Building footprints
+> Land use Road network
+> Power line geometries
+> Substations
+> Utility poles
+> Identified grid skeleton
+> Identified grid with last-miles
+> Road network constraints
+> Building segmentation Power lines linking buildings
+> Fig. 1. Overview of the workflow for our urban power grid identification. (a) presents the data from OpenStreetMap including power line geometries, land-use type of areas that urban buildings belong to, footprints of individual buildings, and road network topology. (b) exemplifies the data openly released by governmental agencies, encompassing the data of power line geometries and locations of power infrastructures. (c) demonstrates the grid skeleton topology that is aligned with geographical constraints. (d) displays the “last-miles” of the power grid linking individual buildings. (e) shows the outcome of topology reconstruction integrating the grid skeleton and the last-miles.
+
+(i) We present an open-data-driven approach in identify-ing urban power grid toplogy and hierarchy, where we fuse multi-source data including power lines, substations, transformers, utility poles, and building footprints. This approach with data fusion provides realistic materials and constrains in network reconstruction. (ii) We introduce the identification of grid skeleton leveraging graph-based algorithm, OSM data, and publicly available infrastructure data. This results in the network topology that links high- and medium-voltage lines, substations, transformers, and poles. (iii) We develop the method that establish the “last-miles” for the distribution network. We cluster urban buildings, and we use geospatial machine learning on OSM building footprints to infer the power links connecting individual buildings in clusters. This leads to the complete network reconstruction from high-voltage lines down to building demands. We apply and validate our approach in Alna in Oslo, Norway, which is with substantial diversity in its power infrastructure and geographical attributes. The reminder of this paper is as follows. Section II-A provides an overview of our open-data-driven topology identi-fication approach. Section II-B describes the reconstruction of the power grid skeleton, encompassing high-, medium-, and low-voltage power lines, substations, transformers, and poles. Section II-C present the clustering of buildings and the inference of grid connections within clustered buildings, which establishes the “last-mile” of the urban power grid in completing the network identification. Section III showcases the application and results of the framework in the district of Alna, Oslo. We discuss the implications of releasing dis-tribution network with the last-miles in Section IV, and we conclude this paper in Section V. II. U RBAN POWER GRID IDENTIFICATION 
+
+A. Overview of our approach 
+
+Fig. 1 provides an overview of our method encompassing different components. We start the grid topology identification from collecting relevant data, where we gather utility data openly released by authoritative agencies and OSM data. These two data resources are complementary, and we integrate them to serve the entire topology reconstruction. We use the integrated data to generate the grid skeleton, where we build the power lines connecting high-, medium-, and low-voltage power lines and major power infrastructures including sub-stations, transformers, and utility poles. We generate the con-nectivity respecting operational and geographical constraints. We then construct the “last-miles” of the grid with the power lines linking all the individual buildings and the power grid skeleton. In generating the last-miles, we partition the area of interest into sub-areas, within each of which we build the connections. The area partition is conducted according to the land-use type ( e.g. , residential or industrial), and the power line links is generated through geographic machine learning. Below we elaborate the identification of grid skeleton and the last-miles technically. 
+
+B. Skeleton of the urban power grid 
+
+This section establishes the skeleton of the urban distribution power grid topology. We refer this skeleton as the hierarchical graph encompassing all major infrastructure assets (substations, transformers, power lines) with all known and inferred connections across high-voltage, medium-voltage, and low-voltage levels. This skeleton topology forms the foundation upon which the “last-mile” connectivity to 4Power line geometries from OpenStreetMap 
+
+> Power line geometries and assets locations from utility data
+> Fig. 2. An example of data sources from OSM (upper) and utility data released by authoritative agencies (lower). The lines are transmission or distribution power grid, and the dots in the lower are utility poles (black solid dots with yellow edge) and substations (bigger and hollow dots).
+
+individual buildings will be established in Section II-C. 
+
+1) Data integration: The skeleton identification relies on the synergy of two open data sources: (i) OpenStreetMap (OSM) and (ii) utility data openly released by authoritative agencies, e.g. , NVE (Norwegian Water Resources and Energy Directorate) in our work. The OSM data retrieved includes (i) land-use label and boundaries for urban areas and (ii) the road network geometry. Particularly, the former is used to partition the urban area. In this way, we can cluster buildings and power infrastructures into groups, and conduct the topology identification in each groups in a parallelized manner. The latter is used to guide topology reconstruction of low-voltage infrastructures like utility poles. The utility data provides geospatial information for the physical assets, including locations for substations, transform-ers, utility poles, along with the line geometries for trans-mission and distribution lines. Note that we also use line geometries from OSM to compensate the utility data where there are missing values, as exemplified in Fig. 2. We combine the two data sources to categorize assets based on voltage level and the hierarchical structure of the grid, as shown in Table I, and generate the topology for the skeleton of the grid. 
+
+2) High- and medium-voltage network reconstruction: This reconstruction concerns the connections between transmission and distribution power lines, together with the grid network’s connection with substations and transformers. All the geome-    
+
+> TABLE I CATEGORIZED ASSETS IN URBAN GRID AND THEIR CONNECTIVITY BASIS
+> Voltage level Asset involved Connectivity basis High- and medium-voltage Transmission lines, substations, transformers, distribution lines Merged line geometries from utility data and OSM Low-voltage Utility poles Inferred links constrained by road geography
+
+tries/locations of the power lines and assets are retrieved from OSM or utility data. We connect power lines in a way that respect power flow operations. That is, the electricity flows from lines of higher voltage to lower uni-directionally, and from transmission lines to distribution lines. The substations/transformers should also match the voltage level of the power lines they are connected to. We also assume that all the power line connections respect the geographical constraints of the road network. To fill the above requirements, we develop the following graph-based approach in reconstructing the grid topology. Particularly, for each of the power line, we first generate the potential points on the power line that can be connected at with a target asset. We refer potential point as the location on the power line that intersect a road or overlaps with an intersection in the road map. Then we calculate the shortest connection between those potential points and the target asset using Dijkstra’s algo-rithm [71], as shown in Fig. 3. The full procedure of generating the links complied with all the operational and geographical constraints is explained in the pseudocode Algorithm 1           
+
+> Fig. 3. An example of connecting an asset with a power line. The green line represents a power line, the red dots are the potential points, the blue dot is the asset. We display three possible connections between the asset and potential point 1, and the shortest connection is selected through Dijkstra’s algorithm. This connection recognition repeats for point 2-6. The final connection between the asset and the power line is determined as the shortest connection.
+
+3) Low-voltage assets connectivity inference: This section concerns with the power grid connections between utility poles. To reconstruct the grid topology, we employ a hi-erarchical clustering approach combined with geographical 5
+
+Algorithm 1 High/Medium-voltage network reconstruction  
+
+> 1:
+
+Input: GIS information of high- and medium-voltage power lines and assets  
+
+> 2:
+
+Output: Connections between power lines and substa-tions/transformers  
+
+> 3:
+
+procedure  
+
+> 4:
+
+Group power lines by voltage level  
+
+> 5:
+
+Sort groups in ascending order of voltage levels  
+
+> 6:
+
+for each voltage level group i do  
+
+> 7:
+
+for each power line in group i do  
+
+> 8:
+
+Generate potential connection points for lower voltage power lines  
+
+> 9:
+
+Identify the next higher voltage group i + 1  
+
+> 10:
+
+for each power line in group i + 1 do  
+
+> 11:
+
+Generate potential connection points  
+
+> 12:
+
+Use Dijkstra’s algorithm to find shortest path between power lines from group i and group i + 1 
+
+through potential points  
+
+> 13:
+
+Store the connection details  
+
+> 14:
+
+end for  
+
+> 15:
+
+end for  
+
+> 16:
+
+end for  
+
+> 17:
+
+for each power line do  
+
+> 18:
+
+if the power line connects to a transformer then  
+
+> 19:
+
+if transformer voltage level matches the power line then  
+
+> 20:
+
+Create a direct link between power line and transformer, by generating potential points on the power line and realizing the link using Dijktra’s algorithm  
+
+> 21:
+
+end if  
+
+> 22:
+
+end if  
+
+> 23:
+
+end for  
+
+> 24:
+
+end procedure 
+
+constraints derived from OSM road network to model the connectivity. Below we elaborate the reconstruction in detail. The reconstruction starts with a two-stage spatial partition of the utility poles in urban area. We first divide the considered area into sub-areas based on land-use boundaries ( e.g. , residen-tial, commercial, industrial) available in OSM. This ensures that the resulted topology are consistent with geographically distinct land-use zones, aligning with typical urban planning and utility deployment strategies. We then conduct an intra-area clustering. That is, within each sub-area, we cluster the utility poles using hierarchical density-based spatial clustering of applications with noise (HDBSCAN) [72]. This algorithm is selected for its ability to identify poles clusters of varying density and shape. Upon the spatial partition, we establish the connections between utility poles by generating edges within the identified clusters, prioritizing connections that respect real-world utility installation practice along the road network, as demonstrated in Fig. 4. This process ensures the resulted topology is geometrically plausible. Particularly, for every utility pole in a cluster, we prioritize its connection to a neighboring pole based on two constraints: (i) The connection should situate on the same side of the  
+
+> Fig. 4. An example of the distribution of utility poles (red dots). The blue lines are the main road network.
+
+nearest road segment. We verify this condition by pro-jecting the two poles onto the road segment and checking the direction of the offset vectors. (ii) The two poles should be near each other in the same cluster. If a pole cannot satisfy both constraints, then the constraints will be relaxed and the pole will be connected to its globally nearest utility pole within the same cluster. This fallback ensures full connectivity while maintaining a preference for the most probable topology. We also note that HDBSCAN can lead to outliers [73]– [75] of utility poles that are not assigned to any clusters. In that case, we link the outlier poles to their nearest utility pole regardless of cluster membership. We show the full procedure of reconstructing grid topology amongst utility poles in Algorithm 2 
+
+C. The last-mile of urban distribution network 
+
+The final stage of the grid topology reconstruction is the inference of the last-mile connectivity, which establishes the grid lines linking individual buildings to the utility poles. This step requires geospatial algorithms to group demand points (buildings) and connect them to the nearest feasible supply point while respecting infrastructural and geographical constraints. We elaborate this stage in the following. 
+
+1) Spatial partition and building clustering: The process of inferring building connectivity is computationally intensive and highly dependent on local geographical context. To man-age this complexity, we apply the similar hierarchical approach in Section II-B and partition the buildings before generating the power links. We partition the entire study area into sub-areas according to the land-use types retrieved from OSM, as shown in Fig. 5. This ensures that the clustering and subsequent grid 6
+
+Algorithm 2 Utility pole connectivity inference via con-strained HDBSCAN 
+
+Input: Utility pole locations VP ole , land use boundaries L,road network geometry R
+
+Output: Utility pole edge set Ep 
+
+> 1:
+
+Initialize the edge set: Ep ← ∅ 
+
+Stage 1: Hierarchical spatial partitioning .// Partition urban area into sub-areas Ak based on land use L 
+
+> 2:
+
+A ← Partition (Area , L) 
+
+> 3:
+
+for each sub-area Ak ∈ A do 
+
+// Find poles within the sub-area  
+
+> 4:
+
+VAk ← VP ole ∩ Ak
+
+// Cluster poles using HDBSCAN // V Clust Ak are the identified clusters Ck,j 
+
+// V Out Ak are the outlier poles  
+
+> 5:
+
+V Clust Ak , V Out Ak ← HDBSCAN (VAk )
+
+Stage 2: Constrained link generation  
+
+> 6:
+
+for each cluster Ck,j ∈ V Clust Ak do  
+
+> 7:
+
+for each pole Pi ∈ Ck,j do 
+
+// Find all other poles in cluster // Apply two constraints  
+
+> 8:
+
+NCk,j ← Neighbors (Pi, C k,j )
+
+// Find geometrically nearest pole  
+
+> 9:
+
+Pnear ← NearestNeighbor (Pi, N Ck,j ) 
+
+> 10:
+
+if IsSameSide (Pi, P near , R) == TRUE then 
+
+// Connect if same side and nearest  
+
+> 11:
+
+Ep ← Ep ∪ { (Pi, P near )} 
+
+> 12:
+
+else 
+
+// Fallback: Connect to nearest neighbor  
+
+> 13:
+
+Ep ← Ep ∪ { (Pi, P near )} 
+
+> 14:
+
+end if  
+
+> 15:
+
+end for  
+
+> 16:
+
+end for Stage 3: Outlier handling  
+
+> 17:
+
+for each outlier pole Po ∈ V Out Ak do 
+
+// Find nearest pole in entire VP ole set  
+
+> 18:
+
+Pglob near ← NearestNeighbor (Po, V P ole ) 
+
+> 19:
+
+Ep ← Ep ∪ { (Po, P glob near )} 
+
+> 20:
+
+end for  
+
+> 21:
+
+end for return Ep
+
+generation reflect typical building densities and connection patterns specific to local urban environment. Then within each sub-area, we cluster the georeferenced locations of the building footprints, as shown in Fig. 6, using HDBSCAN. This step identifies natural group of buildings that are likely to be served by a common utility pole or a supply point in a distribution line. The HDBSCAN output yields both clustered buildings and outlier buildings that do not belong to any clusters. 
+
+2) Intra-cluster building connectivity: For each of the clus-ters in a sub-area, we will generate the connections that link all the buildings within a cluster while respecting geographical constraints. Particularly, we apply the minimum spanning tree (MST) algorithm to the building footprints, thus we can obtain   
+
+> Fig. 5. An example of land-use types retrieved from OSM.
+> Fig. 6. An example of building footprints (in blue polygons) retrieved from OSM.
+
+the power line links for buildings within a cluster. Note that there can be buildings not belonging to any clusters, In that case, we connect such a building to the its nearest clustered building in the same sub-area. We generate such a connection using Dijkstra’s algorithm that respects road network topology. 
+
+3) Cluster-to-skeleton linkage: The final step is to connect the building clusters to the reconstructed grid skeleton in Section II-B, specifically targeting the lowest voltage distribu-tion assests: utility poles and low-voltage lines. This linkage determines the supply point for the building clusters. For each building cluster, the optimal connection point is determined by comparing two network-constrained shortest distances: (i) distance to the nearest utility pole Dp, and (ii) distance to the nearest low-voltage power line Dl. Dp is calculated as the shortest path from any building in a cluster to any utility pole in the considered area, via the road network. Dl
+
+is calculated as the shorted path from any building in a cluster to the closest point on any of the distribution grid with lowest voltage level. This accounts for scenarios where a cluster is optimally connected to an existing line segment rather than a utility pole. The cluster is then linked to the target that provides the shortest distance D = min (Dp, Dl). We will generate the link between the building that achieves this minimum distance 7
+
+Algorithm 3 Last-mile connectivity inference 
+
+Input: Building locations VBld , land-use boundaries L, road network graph R, utility poles VP ole , low-voltage power lines LLV 
+
+Output: Last-mile edge set ELast 
+
+// Initialize the set of all last-mile edges  
+
+> 3:
+
+ELast ← ∅ 
+
+Stage 1: Building clustering and partitioning 
+
+// Partition area into sub-areas Ak based on land-use LA ← Partition (Area , L)
+
+for each sub-area Ak ∈ A do 
+
+// Buildings within the sub-area  
+
+> 6:
+
+V Bld Ak ← VBld ∩ Ak
+
+// Cluster buildings using HDBSCAN: V kC is set of clusters, V kO are outliers 
+
+V kC , V kO ← HDBSCAN (V Bld Ak )
+
+// Set of all clustered buildings 
+
+V kClustered ← S Ck,j for Ck,j ∈ V kC
+
+Stage 2: Intra-cluster connectivity by MST  
+
+> 9:
+
+for each cluster Ck,j ∈ V kC do for each pair of buildings (Bi, B j ) ∈ Ck,j do 
+
+// Network-constrained distance using Dijkstra 
+
+wij ← ShortestPath (Bi, B j , R) 
+
+> 12:
+
+end for 
+
+// Apply minimum spanning tree (MST) 
+
+EM ST ← MST (Ck,j , w ij )
+
+ELast ← ELast ∪ EM ST  
+
+> 15:
+
+end for Stage 3: Outlier building connection for each outlier building Bo ∈ V kO do 
+
+// Find nearest clustered building 
+
+Bnear ← argmin  
+
+> Bc∈VkClustered
+
+(ShortestPath (Bo, B c, R)) 
+
+// Add link following road network  
+
+> 18:
+
+ELast ← ELast ∪ Path (Bo, B near , R)
+
+end for Stage 4: Cluster-to-skeleton linkage for each cluster Ck,j ∈ V kC do 
+
+// Distance to nearest pole Dp 
+
+> 21:
+
+Dp, (B∗ 
+
+> p
+
+, P ∗) = argmin   
+
+> Bi∈Ck,j ,P ∈VP ole
+
+(ShortestPath (Bi, P, R)) 
+
+// Distance to nearest low-voltage line segment Dl
+
+Dl, (B∗ 
+
+> l
+
+, P ∗ 
+
+> l
+
+) = argmin  
+
+> Bi∈Ck,j ,P l∈LLV
+
+(ShortestPath (Bi, P l, R)) 
+
+if Dp ≤ Dl then 
+
+// Link cluster to pole  
+
+> 24:
+
+ELast ← ELast ∪ Path (B∗ 
+
+> p
+
+, P ∗, R)
+
+else 
+
+// Link cluster to low-voltage line segment 
+
+ELast ← ELast ∪ Path (B∗ 
+
+> l
+
+, P ∗ 
+
+> l
+
+, R) 
+
+> 27:
+
+end if end for end for return ELast 
+
+and the corresponding nearest utility pole or a point on a distribution line. Note that the determined link should be generated following the road network topology. We show the full procedure of last-mile grid topology reconstruction in Algorithm 3. We summarize that the full power grid topology identifi-cation is the union of the high- and medium-voltage network topology, the low-voltage assets connectivity, the intra-cluster building connectivity, and the cluster-to-skeleton links. III. C ASE -STUDY : P OWER GRID IDENTIFICATION FOR 
+
+ALNA 
+
+A. Data collection and geographic overview of the studied area 
+
+This section implements the identification of the power grid network topology and hierarchy for the district of Alna, Oslo, Norway. Alna is selected as the case study area because it exhibits substantial diversity in land-use types (see Fig. 7), power grid infrastructure (see Fig. 8), and a sufficient large number of buildings (see Fig. 9). Table II summarizes all existing power infrastructures extracted from OpenStreetMap and NVE, as well as the number of buildings and land-use types within Alna.  
+
+> Fig. 7. Land-use of different types in the area of Alan, Oslo.
+
+B. Grid skeleton Identification 
+
+This section integrates the existing power grid data from OpenStreetMap and NVE, and connects power line segments that share common nodes. This procedure serves as a pre-processing step on the raw data. The outcome is a connected transmission and main distribution power grid network with five voltage levels, as shown in Fig. 10. In total, we obtain 34 power lines at 11 kv, 59 lines at 47 kv, 3 lines at 132 kv, 30 lines at 300 kv, and 1 line at 420 kv. Although this subset of lines is not very dense, it constitutes the backbone grid that links transmission system operator (TSO) to the local distribution system operator (DSO). 
+
+C. Last-mile power grid network identification 
+
+This section applies Algorithm 1, 2, and 3 to identify the last-mile power grids that connect directly to individual 8Utility poles 
+
+> Substations (kV)
+> Boundary of Alna
+
+Fig. 8. Utility assets in the area of Alan from the utility data released by NVE.no. The lines in different colors indicate power grids of different voltage levels. Alna boundary 
+
+> Building footprints
+> Road edges
+
+Fig. 9. Building footprints and road networks in Alna. TABLE II AN OVERVIEW OF POWER GRID AND INFRASTRUCTURES IN ALNA .Asset name Total number of the asset in Alna Buildings 7,330 Types of land-use 51 residential areas 9 industrial areas 7 commercial areas 5 cemetery areas 4 railway areas 1 military area Buildings without land-use type 683 Power lines 127 Transformers 8 substations Utility poles 2,787 Roads 21,406 road edges 
+
+Fig. 10. All the power grids GIS information integrated from OpenStreetMap and utility data from NVE. 
+
+buildings. We also determine how these last-mile connections link to utility poles and the low-voltage distribution network. The identified power grids connecting utility poles and individual buildings are visualized in Fig. 11. As expected from the design of Algorithm 2, the inferred utility pole connections generally follow the local road network. We summarize the numerical grid identification results in Fig. 12, where we visualize different identified grid components ac-cording to their position in the hierarchy. The figure shows (i) the existing grid topology and transformers (in the left) from OSM and NVE (ii) the identified power connections between utility poles (iii) the identified power connections between the main distribution grid, transformers, and utility poles (iv) the identified grid connecting individual buildings, and (v) the identified grid that connects buildings with utility poles and low-voltage distribution grids. 
+
+Fig. 11. Identified last-mile power line connections between buildings (in red lines) and utility power poles (in blue lines). 
+
+Fig. 12 indicates that the power grids connecting utility poles and the distributions grids (2.5307 km) and those linking individual buildings and distribution grids (1.7737 + 1.7184 km) account for the majority of the total network length in our identification. These components are typically absent from publicly available datasets. For clarity, we also provide a simplified view of the identified power grid for Alna in 9Existing power lines -------------------------------------------------------Voltage (V) Number Total length of lines (km) 11000 34 0.0733 47000 59 0.4534 132000 3 0.1344 300000 30 1.0552 420000 1 0.5854 -------------------------------------------------------                    
+
+> Identified grid connection between utility poles -------------------------------------------------------Voltage (V) Number Total length of lines (km) 11000 187 1.1395 -------------------------------------------------------
+> Identified grid connection between utility poles and the utility grid -------------------------------------------------------Voltage (V) Number Total length of lines (km) 11000 170 2.5307 -------------------------------------------------------
+> Identified grid connections between individual buildings -------------------------------------------------------Voltage (V) Number Total length of lines (km) 230 704 1.7737 -------------------------------------------------------
+> Identified grid connections between buildings and the utility grid -------------------------------------------------------Voltage (V) Number Total length of lines (km) 230 704 1.7184 -------------------------------------------------------
+
+Fig. 12. Overview of the identified power grids from the skeleton grid down to the last miles. 
+
+Fig. 13, which offers an intuitive visualization of the grid hierarchy. This representation shows how individual building loads are connected and aggregated to their nearest substations or transformers, which are further linked to high-voltage distribution and transmission networks. To illustrate the usability of the identified power grid topology, we perform a simple frequency response analysis under time-varying load, as shown in Fig. 14. We assign an initial load to the grid and increase the load by 10% at time instant 0, and decrease it by 10% at time instant 10. The system frequency drops from 50 Hz to approximately 49.75 Hz in response to the load increase, and returns to 50 Hz after the additional 10% load is removed, as expected. This simplified example shows how the identified, geograph-ically constrained grid can support power dynamic analysis. However, conducting detailed and comprehensive power flow simulations is beyond the scope of this work. IV. I MPLICATIONS OF DISTRIBUTION NETWORK WITH THE LAST -MILE 
+
+The identification of last-mile power grids provides a critical complement to existing representations of the grid topology. It enables physics-based modeling of the network that links the granular, building-level demand to the utility grid. In our approach, each edge in the identified grid corresponds to an individual building indexed at OpenStreetMap. These build-ings are, by their nature, associated with rich attributes such as building type and number of floors, and can be further linked to 10   
+
+> Fig. 13. The simplified view of identified power grid for Alna, where we straighten all the power lines to make the hierarchy of the power grid clear. In this figure, the blue dots denote building loads, and the red lines represent the simplified power line connection from transformer/substation directly down to the load location.
+> Fig. 14. Frequency response of the identified power grid. We increase the load by 10% at time instant 0, and decrease the load back to its original value at the 10-th second.
+
+local power production ( e.g. , rooftop PV), population density, and local temperature profiles. Such information can support the construction of high-resolution energy demand profiles for individual buildings, leading to realistic load patterns on the identified grid network. This makes it possible to build an energy digital twin for urban areas that simultaneously respects the underlying power grid topology, geographic constrains, and fine-grained demand characteristics. At the same time, this level of detail substantially in-creases the computational burden of power flow analysis, as it introduces large number of demand nodes. In our case study of the Alna district in Oslo, we take more than 7,000 individual buildings as load points. Extending this approach to the entire Oslo city increases this number to over 80,000. This scale implies not only considerable efforts for generating and maintaining building-level demand profiles, but also significant complexity for real-time power flow simulations. Aggregating the loads at selected points in the network can reduce the problem to a tractable size. However, the trade-off between granularity of the power flow analysis and the associated computational complexity requires careful consideration. V. C ONCLUSION AND FUTURE RESEARCH 
+
+This work presents an approach to identify urban power grid networks and their hierarchies while respecting geographical and physical constrains. The identified power grid connects the transmission grid down through the main distribution grid, low-voltage distribution grids, and ultimately to the last-mile connections to individual buildings. We derive the grid topology via geographic machine learning applied to open data, ensuring that our method generalizes across regions. Our work opens opportunities to construct physics-based energy digital twins, to simulate the power flow with fine-grained demand profiles, and to assess grid resilience under increasing penetration of distributed energy production. It is important to note that 100% accurate reconstruction of grid topology is impossible, particularly because the ground-truth data are missing for the last-mile connections. Neverthe-less, a realistic topology and hierarchy, derived from existing power infrastructure and geographical constrains, can serve as a critical tool for analyzing power flow dynamics and gaining insights into grid behavior and the demand-supply balance. We envision the future work to synthesize or estimate large-scale building energy demand. This will enable approximation of realistic power load distributions, which are essential for the power flow simulation. We also suggest investigating the trade-off between fine-grained load representation and the computational complexity, in order to better understand the feasibility and scalability of energy digital twins for urban power systems. REFERENCES [1] Yonghua Song, Can Wan, Xuejun Hu, Hongpei Qin, and Kengweng Lao. Resilient power grid for smart city. iEnergy , 1(3):325–340, 2022. [2] Fang Z. Peng, Chen-Ching Liu, Yuan Li, Akshay Kumar Jain, and Dmitri Vinnikov. Envisioning the future renewable and resilient energy grids—A power grid revolution enabled by renewables, energy storage, and energy electronics. IEEE Journal of Emerging and Selected Topics in Industrial Electronics , 5(1):8–26, 2024. [3] Jinbao Wang, Jun Liu, Xuehui Ma, Shiliang Zhang, Chenhui Yang, and Bairen An. Ultra-short-term solar power forecasting by deep learning and data reconstruction. Solar Energy , 315:114749, 2026. [4] Oskar V˚ ale, Shiliang Zhang, Sabita Maharjan, and Gro Klæboe. Ex-ploring the interpretability of forecasting models for energy balancing market. Artificial Intelligence Science and Engineering , 1(4):295–306, 2025. [5] Mohannad Alhazmi and Peijin Li. Advancing resilient power systems through hierarchical restoration with renewable resources. Scientific Reports , 15(1):29755, 2025. [6] Emran Altamimi, Abdulaziz Al-Ali, Qutaibah M. Malluhi, and Ab-dulla K. Al-Ali. Smart grid public datasets: Characteristics and as-sociated applications. IET Smart Grid , 7(5):503–530, 2024. [7] Julian St¨ urmer, Anton Plietzsch, Thomas Vogt, Frank Hellmann, J¨ urgen Kurths, Christian Otto, Katja Frieler, and Mehrnaz Anvari. Increasing the resilience of the texas power grid against extreme storms by hardening critical lines. Nature Energy , 9(5):526–535, 2024. [8] Neil Ortiz, Alvaro A. Cardenas, and Avishai Wool. SCADA world: An exploration of the diversity in power grid networks. Proceedings of the ACM on Measurement and Analysis of Computing Systems , 8(1), 2024. [9] Ignacio Aravena, Chih-Che Sun, Ranyu Shi, Subir Majumder, Weihang Yan, Jhi-Young Joo, Le Xie, and Jiyu Wang. Open power system datasets and open simulation engines: A survey toward machine learning applications. IEEE Open Access Journal of Power and Energy , 12:353– 365, 2025. [10] Bobby Xiong, Davide Fioriti, Fabian Neumann, Iegor Riepin, and Tom Brown. Modelling the high-voltage grid using open data for Europe and beyond. Scientific Data , 12(1):277, 2025. 11 
+
+[11] Bilgehan Donmez and Ali Abur. Static state estimation without topology processor. IEEE Transactions on Power Systems , 36(5):4712–4722, 2021. [12] Yijun Xu, Jaber Valinejad, Mert Korkali, Lamine Mili, Yajun Wang, Xiao Chen, and Zongsheng Zheng. An adaptive-importance-sampling-enhanced Bayesian approach for topology estimation in an unbalanced power distribution system. IEEE Transactions on Power Systems ,37(3):2220–2232, 2022. [13] Barbera de Mol, Davide Barbieri, Jan Viebahn, and Davide Grossi. Centrally coordinated multi-agent reinforcement learning for power grid topology control. In Proceedings of the 16th ACM International Conference on Future and Sustainable Energy Systems , E-Energy ’25, page 460–475, New York, NY, USA, 2025. Association for Computing Machinery. [14] Shiliang Zhang, Sabita Maharjan, Raul Shahi, and Xuehui Ma. The impact of integration of renewable energy on imbalance settlement: Resilience analysis. In 2024 IEEE International Conference on Com-munications, Control, and Computing Technologies for Smart Grids (SmartGridComm) , pages 98–104. IEEE, 2024. [15] Sina Gharebaghi, Nilanjan Ray Chaudhuri, Ting He, and Thomas F. La Porta. Dynamic modeling and mitigation of cascading failures in power grids with interdependent cyber and physical layers. IEEE Transactions on Smart Grid , 15(3):3235–3247, 2024. [16] Yujie Yang, Yadong Zhou, Jiang Wu, Zhanbo Xu, Sizhe He, Ting Liu, and Xiaohong Guan. A failure tree model for cascading failure in power grid with uncertain renewable energy generation. IEEE Transactions on Automation Science and Engineering , 22:4092–4108, 2025. [17] Meixuan Jade Li, Chi Kong Tse, Dong Liu, and Xi Zhang. Cascading failure propagation and mitigation strategies in power systems. IEEE Systems Journal , 17(2):3282–3293, 2023. [18] C. Birk Jones, William Vining, Matthew Lave, Thad Haines, Christopher Neuman, Jesse Bennett, and Don R. Scoffield. Impact of electric vehicle customer response to time-of-use rates on distribution power grids. 
+
+Energy Reports , 8:8225–8235, 2022. [19] Ruipeng Xu, Cuo Zhang, Daming Zhang, Zhao Yang Dong, and Chris-tine Yip. Adaptive robust load restoration via coordinating distribution network reconfiguration and mobile energy storage. IEEE Transactions on Smart Grid , 15(6):5485–5499, 2024. [20] Lokesh Vankudoth and Altaf Q.H. Badar. Development and analysis of scheduling strategies for utilizing shared energy storage system in networked microgrids. Journal of Energy Storage , 97:112691, 2024. [21] Steven de Jongh, Felicitas Mueller, Fabian Osterberg, Claudio A. Ca˜ nizares, Thomas Leibfried, and Kankar Bhattacharya. Data-driven topology and parameter identification in distribution systems with lim-ited measurements. IEEE Transactions on Power Delivery , 40(1):249– 260, 2025. [22] Yixuan Li, Li Ma, Wei Pei, Hao Xiao, and Guoju Zhang. Adaptive topology identification with dynamic update mechanisms for flexible interconnected distribution networks. Electric Power Systems Research ,245:111649, 2025. [23] Saverio Bolognani and Keith Moffat. Grid topology identification via distributed statistical hypothesis testing. In Reza Arghandeh and Yuxun Zhou, editors, Big Data Application in Power Systems (Second Edition) ,pages 109–134. Elsevier Science, second edition edition, 2024. [24] Li Huang, Gan Zhou, Ying Zeng, Jian Zhang, and Yanjun Feng. Transformer-customer relationship identification based on deep gaussian mixture model in low-voltage distribution system. Electric Power Systems Research , 234:110591, 2024. [25] Wenpeng Luan, Da Xu, Bo Liu, Wenqian Jiang, Li Feng, and Wenbin Liu. Improved topology identification for distribution network with relatively balanced power supplies. IET Energy Systems Integration ,6(2):162–173, 2024. [26] Razzaqul Ahshan, Md. Shadman Abid, and Mohammed Al-Abri. Geospatial mapping of large-scale electric power grids: A residual graph convolutional network-based approach with attention mechanism. 
+
+Energy and AI , 20:100486, 2025. [27] Franziska Tischbein, Antoni Chajan, Luis B¨ ottcher, and Andreas Ulbig. Topology identification in low-voltage grids using neural networks. In 
+
+2024 IEEE International Conference on Communications, Control, and Computing Technologies for Smart Grids (SmartGridComm) , pages 568– 574, 2024. [28] Nan Feng, Yaping Du, and Yuxuan Ding. A heuristic-search-based topology identification and parameter estimation method in low voltage distribution grids with low observability. IEEE Transactions on Smart Grid , 15(6):5826–5839, 2024. [29] Eshan Karunarathne, Michael Z. Liu, Luis F. Ochoa, and Tansu Alpcan. Using real smart meter data to construct three-phase low voltage network models. IEEE Transactions on Power Systems , 40(3):2465–2477, 2025. [30] Lei Zhu, Shutan Wu, Qi Wang, and Yang Li. Progressive identification of distribution network topology based on user-side Internet of Things device measurement data. IET Generation, Transmission & Distribution ,19(1):e70064, 2025. [31] Zhiqi Xu, Wei Jiang, Junjun Xu, Lei Wu, Minghua Wang, Jinming Chen, Ye Chen, and Junbo Zhao. Distribution network topology identification using smart meter data and considering the same-bus-different-feeder condition. IEEE Transactions on Industrial Informatics , 19(8):8600– 8613, 2023. [32] Li Guo, Ge Yang, Yixin Liu, Yuxuan Zhang, Zhongguan Wang, Haifeng Yu, Yifei Wang, and Chengshan Wang. Topology and parameter iden-tification of three-phase low-voltage distribution network and voltage control strategy based on user smart meter measurements: A data-driven approach. IEEE Transactions on Instrumentation and Measurement ,74:1–13, 2025. [33] ´Alvaro Rodr´ ıguez del Nozal, Rub´ en Carmona-Pardo, Juan M. Mauricio, and Esther Romero-Ramos. An evolutionary computational approach for the identification of distribution networks models. Engineering Applications of Artificial Intelligence , 137:109184, 2024. [34] Hao Yang, Lei Yu, Xinhao Lin, Yinliang Liu, Xian Qiao, Haidian Li, Bowen Dong, and Tianyu Chen. An edge computing-based lightweight topology identification method for low voltage power distribution net-works. In International Conference on Smart Electrical Grid and Re-newable Energy , pages 269–282. Springer, Springer Nature Singapore, 2024. [35] Liang Li, Jian Zhao, Xiaoyu Wang, Zhao Xu, and Yinjie Zhu. Transformer-customer connectivity relationship identification for low-voltage distribution system with high penetration of household pv systems. IEEE Transactions on Smart Grid , 16(1):356–368, 2025. [36] Guoquan Zheng, Enguo Zhu, Hailong Zhang, Yan Liu, Junlong Wang, and Zhe Liu. Topology identification technology for low-voltage distributed photovoltaic distribution network lines. In 2024 3rd Interna-tional Conference on Energy and Electrical Power Systems (ICEEPS) ,pages 202–206, 2024. [37] Sheng Huang, Huakun Que, Yingnan Zhang, Tenglong Xie, and Jie Peng. Automatic grid topology detection method based on lasso algorithm and t-SNE algorithm. Energy Informatics , 7(1):44, 2024. [38] Sebasti´ an Garc´ ıa, Matteo Fresia, J.M. Mora-Merch´ an, Alejandro Car-rasco, Enrique Personal, and Carlos Le´ on. A data-driven topology identification method for low-voltage distribution networks based on the wavelet transform. Electric Power Systems Research , 243:111517, 2025. [39] H´ el` ene Ponsaerts, Reinhilde D’hulst, Marta Vanin, and Dirk Van Hertem. A two-step method for topology identification and hidden nodes detec-tion in distribution networks. In 2025 IEEE Kiel PowerTech , pages 1–6, 2025. [40] Shuo Shi, Xiaoqing Han, Tingjun Li, Hao Zhang, and Hongbo Yan. A data-driven topology identification method for low-voltage distribution network. In 2024 3rd International Conference on Power Systems and Electrical Technology (PSET) , pages 522–526, 2024. [41] Franziska Tischbein, Dominik Kubon, Markus Stroot, and Andreas Ulbig. Influence of measurement uncertainties on the quality of grid topology identification in three-phase systems. In 2024 IEEE PES Innovative Smart Grid Technologies Europe (ISGT EUROPE) , pages 1–6, 2024. [42] Steven de Jongh, Felicitas Mueller, Claudio A. Ca˜ nizares, Thomas Leibfried, and Kankar Bhattacharya. Topology and parameter identi-fication in electrical distribution systems using spatial priors. In 2024 IEEE PES Innovative Smart Grid Technologies Europe (ISGT EUROPE) ,pages 1–6, 2024. [43] Vedantham Lakshmi Srinivas and Jianzhong Wu. Topology and pa-rameter identification of distribution network using smart meter and μPMU measurements. IEEE Transactions on Instrumentation and Measurement , 71:1–14, 2022. [44] Guido Cavraro, Andrey Bernstein, Vassilis Kekatos, and Yingchen Zhang. Real-time identifiability of power distribution network topologies with limited monitoring. IEEE Control Systems Letters , 4(2):325–330, 2020. [45] Youbo Liu, Pengzhe Ren, Junbo Zhao, Tingjian Liu, Zeqi Wang, Zao Tang, and Junyong Liu. Real-time topology estimation for active distribution system using graph-bank tracking Bayesian networks. IEEE Transactions on Industrial Informatics , 19(4):6127–6137, 2023. [46] Haipeng Zhang, Jian Zhao, Xiaoyu Wang, and Yi Xuan. Low-voltage distribution grid topology identification with latent tree model. IEEE Transactions on Smart Grid , 13(3):2158–2169, 2022. 12 
+
+[47] Abu Bakr Pengwah, Luxin Fang, Reza Razzaghi, and Lachlan L. H. Andrew. Topology identification of radial distribution networks using smart meter data. IEEE Systems Journal , 16(4):5708–5719, 2022. [48] Hazhar Sufi Karimi and Balasubramaniam Natarajan. Joint topology identification and state estimation in unobservable distribution grids. 
+
+IEEE Transactions on Smart Grid , 12(6):5299–5309, 2021. [49] Chijun Zhang and Franziska Tischbein. A method for determining the topology of multiple low-voltage radial distribution grids. In 2024 IEEE 12th International Conference on Smart Energy Grid Engineering (SEGE) , pages 90–96, 2024. [50] Shiliang Zhang, Sabita Maharjan, Lee Andrew Bygrave, and Shui Yu. Data sharing, privacy and security considerations in the energy sector: A review from technical landscape to regulatory specifications. arXiv preprint arXiv:2503.03539 , 2025. [51] Daniel Gerbi Duguma, Juliana Zhang, Meysam Aboutalebi, Shiliang Zhang, Catherine Banet, Cato Bjørkli, Chinmayi Baramashetru, Frank Eliassen, Hui Zhang, Jonathan Muringani, et al. Privacy-preserving transactive energy systems: Key topics and open research challenges. 
+
+arXiv preprint arXiv:2312.11564 , 2023. [52] Shiliang Zhang, Anton Hagermalm, Sanjin Slavnic, Elad Michael Schiller, and Magnus Almgren. Evaluation of open-source tools for differential privacy. Sensors , 23(14):6509, 2023. [53] Shary Heuninckx, Maarja Meitern, Geert te Boveldt, and Thierry Coose-mans. Practical problems before privacy concerns: How European energy community initiatives struggle with data collection. Energy Research & Social Science , 98:103040, 2023. [54] Shiliang Zhang and Sabita Maharjan. Security, privacy, and agentic ai in a regulatory view: From definitions and distinctions to provisions and reflections. arXiv preprint arXiv:2603.18914 , 2026. [55] Shiliang Zhang, Sabita Maharjan, Kai Strunz, and Jan Christian Bryne. Descriptor: Norwegian electricity in geographic dataset (noregeo). IEEE Data Descriptions , 3:82–92, 2026. [56] Lill Mari Engan, Stine Ekrheim, Sigurd Bjarghov, Jonatan Ralf Axel Klemets, Ivan Schytte, and Gerd Kjølle. Reference dataset for semi-urban and rural Norwegian low voltage distribution grids. Data in Brief ,59:111453, 2025. [57] Shiliang Zhang, Sabita Maharjan, and Damla Turgut. Ai and open-data driven scalable solar power profiling. arXiv preprint arXiv:2605.02738 ,2026. [58] Anna Varbella, Kenza Amara, Blazhe Gjorgiev, Mennatallah El-Assady, and Giovanni Sansavini. Powergraph: A power grid benchmark dataset for graph neural networks. In Advances in Neural Information Process-ing Systems , volume 37, pages 110784–110804. Curran Associates, Inc., 2024. [59] Shiliang Zhang, Dyako Fatih, Fahmi Abdulqadir, Tobias Schwarz, and Xuehui Ma. Extended vehicle energy dataset (eved): an enhanced large-scale dataset for deep learning on vehicle trip energy consumption. arXiv preprint arXiv:2203.08630 , 2022. [60] Henrique F. de Arruda, Sandro M Reia, Shiyang Ruan, Kuldip S Atwal, Hamdi Kavak, Taylor Anderson, and Dieter Pfoser. An OpenStreetMap derived building classification dataset for the United States. Scientific Data , 11(1):1210, 2024. [61] Shiliang Zhang and Sabita Maharjan. Cenergy3: An open software package for city energy 3d modeling. arXiv preprint arXiv:2603.20361 ,2026. [62] Surajit Ghosh, Archita Mallick, Anuva Chowdhury, Kounik De Sarkar, and Jayesh Mukherjee. Graph theory applications for advanced geospa-tial modelling and decision-making. Applied Geomatics , 16(4):799–812, 2024. [63] Shiliang Zhang, Dyako Fatih, Fahmi Abdulqadir, Tobias Schwarz, and Xuehui Ma. Extended vehicle energy dataset (eved): An enhanced large-scale dataset for vehicle energy consumption analysis. In 2025 IEEE 101st Vehicular Technology Conference (VTC2025-Spring) , pages 01– 07. IEEE, 2025. [64] Moritz Weber, Luc Janecke, H¨ useyin K. C ¸ akmak, and Veit Hagenmeyer. Open data-driven automation of residential distribution grid modeling with minimal data requirements. IEEE Transactions on Smart Grid ,15(6):5721–5732, 2024. [65] Dong Liu, Juan S. Giraldo, Peter Palensky, and Pedro P. Vergara. Topology identification and parameters estimation of LV distribution networks using open gis data. International Journal of Electrical Power & Energy Systems , 164:110395, 2025. [66] Beneharo Reveron Baecker, Soner Candas, Deniz Tepe, and Anurag Mohapatra. Generation of low-voltage synthetic grid data for energy system modeling with the pylovo tool. Sustainable Energy, Grids and Networks , 41:101617, 2025. [67] Therese Lundblad, Maria Taljegard, Niclas Mattsson, Elias Hartvigsson, and Filip Johnsson. An open data-based model for generating a synthetic low-voltage grid to estimate hosting capacity. Sustainable Energy, Grids and Networks , 39:101483, 2024. [68] Alfredo Oneto, Blazhe Gjorgiev, Filippo Tettamanti, and Giovanni Sansavini. Large-scale generation of geo-referenced power distribution grids from open data with load clustering. Sustainable Energy, Grids and Networks , 42:101678, 2025. [69] Zhecheng Wang, Arun Majumdar, and Ram Rajagopal. Geospatial map-ping of distribution grid with machine learning and publicly-accessible multi-modal data. Nature Communications , 14(1):5006, 2023. [70] Nisrine Kebir, Aniq Ahsan, Malcolm McCulloch, and Daniel J. Rogers. Modified minimum spanning tree for optimised DC microgrid cabling design. IEEE Transactions on Smart Grid , 13(4):2523–2532, 2022. [71] Divyam Verma, Devansh Messon, Mayank Rastogi, and Amit Singh. Comparative study of various approaches of dijkstra algorithm. In 2021 International Conference on Computing, Communication, and Intelligent Systems (ICCCIS) , pages 328–336, 2021. [72] Matthias Fuchs and Wolfram H¨ opken. Clustering: Hierarchical, k-Means, DBSCAN , pages 129–149. Springer International Publishing, Cham, 2022. [73] Shiliang Zhang, Hui Cao, Shuo Yang, Yanbin Zhang, and Xiali Hei. Sequential outlier criterion for sparsification of online adaptive filter-ing. IEEE Transactions on Neural Networks and Learning Systems ,29(11):5277–5291, 2018. [74] Xuehui Ma, Fucai Qian, Shiliang Zhang, Li Wu, and Lei Liu. Adaptive dual control with online outlier detection for uncertain systems. ISA transactions , 129:157–168, 2022. [75] Shiliang Zhang, Hui Cao, Zonglin Ye, Yanbin Zhang, and Xiali Hei. An outlier detection scheme for dynamical sequential datasets. Commu-nications in Statistics-Simulation and Computation , 48(5):1450–1502, 2019.

@@ -1,0 +1,268 @@
+Title: Integrating Heterogeneous Digital Twins in Federated Ecosystems
+
+URL Source: https://arxiv.org/pdf/2606.22791v1
+
+Published Time: Tue, 23 Jun 2026 02:35:16 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+# Integrating Heterogeneous Digital Twins in Federated Ecosystems 
+
+Christian Vergara-Marcillo †∗‡ , Rami Bahsoon ‡, Nikos Tziritas §,Wendy Yanez-Pazmino ‡, Panagiotis Oikonomou § and Georgios Theodoropoulos ∗† ∗ Research Institute of Trustworthy Autonomous Systems, Southern University of Science and Technology, Shenzhen, China 
+
+† Department of Computer Science and Engineering, Southern University of Science and Technology, Shenzhen, China 
+
+‡ University of Birmingham, Birmingham, UK 
+
+§ University of Thessaly, Lamia, Greece 
+
+Abstract —Digital Twins (DTs) are increasingly used to virtu-alise physical systems at different scales, enabling monitoring, simulation, and predictions to support decision-making. How-ever, while individual DTs are effective in stand-alone settings, ecosystem-scale deployments require multiple autonomous and distributed DTs to cooperate across system boundaries despite differences in modelling approaches or software technologies, making interoperability and runtime coordination critical chal-lenges. Although Federated Digital Twin Ecosystems have emerged as a promising direction, existing research remains at the conceptual stage, offering high-level architectures while leaving the practical integration of heterogeneous DTs underexplored. This paper proposes the Federation Node Manager , a modular integration mechanism that connects local DTs to a federated environment through controlled capability exposure, protocol and schema adaptation, and timely state and event exchange for coordinated operations. We present a conceptual design and a prototype implementation, and demonstrate their feasibility in the smart mobility domain for emergency response scenarios. The proposed mechanism serves as an enabling component within a broader service-oriented federated DT ecosystem. 
+
+Index Terms —Digital Twins, Federated Digital Twins, System-of-systems 
+
+I. I NTRODUCTION 
+
+Digital Twins (DTs) are driving innovation across diverse industries by surpassing traditional cyber-physical systems and using high-fidelity models to continuously simulate physical behaviour [1]. This enables real-time monitoring, optimisa-tion, and predictive analysis for informed decision-making through a seamless feedback loop between the physical and digital domains [2]. As their adoption expands, stand-alone DTs become insufficient for ecosystem-scale environments that require cooperation across organisational and technical boundaries. This has motivated the notion of DT Ecosystems ,in which multiple cross-domain twins interact within a shared environment to capture distributed system states and the dy-namic interdependencies among connected assets [3]. 
+
+This work was supported by the Research Institute of Trustworthy Au-tonomous Systems (RITAS), the SUSTech-University of Birmingham Joint PhD Programme, the Guangdong Province Innovative and Entrepreneurial Team Programme (No. 2017ZT07X386), and by the MSc programme in Informatics and Computational Biomedicine of the University of Thessaly. Christian Vergara-Marcillo and Georgios Theodoropoulos are the correspond-ing authors. 
+
+Although these ecosystems facilitate cross-organisational data sharing, system-wide optimisation and planning across spatio-temporal resolutions [4], they inherently pose major infrastructural challenges related to heterogeneous DT in-tegration without compromising stakeholder autonomy, data sovereignty and privacy. In response, Federated Digital Twins have emerged as a paradigm for integrating autonomous DTs into interoperable networks in which multiple participants collaborate toward collective objectives that no stand-alone twin could achieve independently [5]. This paradigm can be understood through the lens of the Federation of Systems (FoS) in System-of-Systems (SoS) engineering, where constituent systems re-tain operational and managerial independence and exhibit high degrees of autonomy, heterogeneity, and distribution [6], [7]. This allows DTs developed and managed by distinct stakeholders to share selected data and resources without transferring control, thereby preserving local autonomy while enabling richer system-level capabilities. Consequently, this federated approach enables cross-domain analytics, collab-orative learning, composite modelling, experimentation, and collective decision-making [8]. Despite growing interest in federated DTs, the current landscape remains fragmented, often constrained to concep-tual architectures, high-level models, or capability-specific solutions [9]. As a result, there is limited guidance on how autonomous, heterogeneous DTs can integrate into federated environments while preserving their local sovereignty and stakeholder independence. In particular, interoperability and inter-twin runtime coordination remain major challenges, es-pecially when DTs are conceptualised not only as passive representations (providing only states or telemetry data) but also as active systems capable of local planning and decision-making [10]. The work presented in this paper aspires to address this gap. In [8] we outlined an architecture for constructing Digital Twins Federations, while in [11] we discussed how connec-tionist theory can underpin the development of such systems. Extending this work, this paper investigates interoperability and runtime coordination in federated environments by propos-ing the Federation Node Manager as a modular boundary 
+
+> arXiv:2606.22791v1 [cs.SE] 22 Jun 2026
+
+integration mechanism . This component enables local DTs to participate in a broader service-oriented federated ecosystem through controlled capability exposure, protocol and schema adaptation, and the timely exchange of states, events and coordination-related artefacts. Grounded in Federation of Sys-tems principles, we present its conceptual design and demon-strate its feasibility in a smart mobility context supporting emergency response use cases. The smart mobility domain is particularly suitable for DT federations, as it involves multiple autonomous systems operating under time-constrained, highly dynamic conditions, while requiring cooperation across het-erogeneous DTs that may have been developed separately for distinct operational objectives [10], [12]. This is especially relevant in emergency response scenarios where local DTs must exchange evolving, critical context to respond to urgent events while preserving local autonomy for collision avoidance or anomaly detection. The contributions of this paper are threefold: 1) It frames federated DT ecosystems through core Fed-eration of Systems properties, namely operational and managerial independence, heterogeneity and distribution, deriving autonomy, interoperability and runtime coordi-nation requirements relevant to boundary integration in federated environments. 2) It proposes the Federation Node Manager as a modular integration mechanism that supports federation partici-pation through controlled capability exposure, protocol and schema adaptation, and state- and event-based coor-dination, enabling heterogeneous DT integration without exposing internal DT logic. 3) It demonstrates the feasibility of the proposed mechanism through a prototype implementation in a smart mobility scenario supporting emergency response use cases. The remainder of this paper is structured as follows. Sec-tion II reviews related work on DT Ecosystems and ongoing efforts for federated DTs. Section III outlines the integration requirements for heterogeneous DTs, which inform the design of the proposed Federation Node Manager detailed in Sec-tion IV. Section V validates the mechanism through a smart mobility prototype and emergency response use cases. Finally, Section VI concludes the paper and outlines future work. II. R ELATED WORK 
+
+As Digital Twins mature, the research landscape has shifted toward ecosystem-oriented and System-of-Systems (SoS) ar-chitectures [3]. This transition is evident in large-scale initia-tives currently developing reference frameworks and standards, particularly for the built environment and smart cities. The UK’s National Digital Twin Programme (NDTP) [13] proposes the Information Management Framework and the Foundation Data Model to support DT development and interoperability. Similarly, EU initiatives on Local Digital Twins (LDT) and Networked LDTs [14], [15] promote modular DT ecosys-tems for cross-organisational integration through shared data spaces, minimum interoperability mechanisms, and semantic technologies. Furthermore, the Web of DT s [3] proposes an open, dynamic ecosystem of interconnected DTs, supported by knowledge graphs and semantic interoperability. In the context of Federated Digital Twins , Yu et al. [10] propose a hierarchical framework for integrating distributed DTs, emphasising knowledge sharing and cross-domain syn-chronisation. Similarly, Mahra et al. [9] detailed a roadmap that includes resource taxonomies and gateway-based integra-tion for horizontal and vertical federations. Other approaches address federation through specific DT capabilities, such as federated learning for cooperative model construction [16], or multi-layer edge-cloud mobility frameworks that function-ally federate vehicles and roadside infrastructure to enhance perception and driving strategies, leveraging reinforcement learning algorithms [12]. Collectively, the state of the art shows significant progress in federated ecosystem perspectives, semantic interoperability, and domain-specific architectures. However, there remains a critical lack of concrete boundary mechanisms to integrate autonomous DTs for the active exchange of state, events, and decision-related artefacts necessary for collaborative decision-making. Our previous work laid the conceptual foundations for these ecosystems by articulating federations as enablers for autonomous DTs operating in shared virtual environments [5], proposing a high-level architecture for collaborative decision-making [8] and conceptualising a connectionist model to govern dynamic inter-twin communication [11]. Building upon these conceptual bases, this paper bridges the gap to practical implementation by introducing the Federation Node Manager, a boundary integration mechanism that operationalises interop-erability, protocol adaptation, and runtime coordination across heterogeneous DTs. III. F EDERATED DT E COSYSTEMS REQUIREMENTS 
+
+Federated Digital Twins enable a collaborative network of independent, heterogeneous and distributed DTs [5]. Aligned with the Federation of Systems (FoS) principles [7], one of their defining characteristics is loose coupling, in which constituent DTs retain operational and managerial indepen-dence [6] while contributing to broader system-level objec-tives. This enables emergent, system-wide capabilities that exceed the benefits of isolated DTs [9], [11]. Crucially, feder-ations foster sovereignty and privacy by ensuring that DTs remain locally governed, specialised, and autonomous, and that only selected resources are exposed or exchanged without transferring local control or revealing internal proprietary models and local decision logic. 
+
+A. Local DT Autonomy and Sovereignty 
+
+In federated DT ecosystems, autonomy and sovereignty define the operational boundary between local DTs and the federation. Drawing on autonomy dimensions from founda-tional federated systems [17], we interpret local DT autonomy across four dimensions, which determine how capabilities and resources are exposed while preserving local governance.  
+
+> •
+
+Design Autonomy: The underlying software, models and decision logic remain internally governed by the stakeholder. Participation relies on selectively exposing resources and capabilities rather than granting access to internal DT components.  
+
+> •
+
+Communication Autonomy: Local communication and control flows between the physical system and its local twin are separated from federation-level interactions. The federation must support distinct inter-twin interaction patterns without interfering with local processes or dis-rupting time-critical operations.  
+
+> •
+
+Execution Autonomy: DTs retain authority over local operations, allowing them to delay, constrain or reject execution requests in accordance with internal safety constraints or operational priorities.  
+
+> •
+
+Runtime Participation Autonomy: DTs can dynami-cally establish, suspend, or withdraw federation inter-actions based on evolving local context, connectivity conditions (e.g., relevance, trust), or collaboration needs. 
+
+B. Interoperability Levels 
+
+Interoperability enables cross-organisational integration, which is paramount for inter-twin coordination and collabora-tive decision-making [18]. In federated ecosystems, it bridges heterogeneous technologies and stakeholder boundaries, en-abling mutual information exchange and utilisation [1], [5]. This necessitates a capability that transcends static connec-tivity to facilitate the active consumption of distributed re-sources, such as operational states, event streams, simulation endpoints, and decision-related interfaces. Consequently, fed-erations should address six distinct interoperability levels [18] as summarised in Table I.               
+
+> TABLE I INTEROPERABILITY LEVELS IN FEDERATED DT E COSYSTEMS
+> Level Description & Enabling Technologies Technical Basic connectivity and reliable data transport (e.g., TCP/IP, MQTT, 5G).
+> Syntactic Readable message structures through common for-mats (e.g., CSV, JSON, XML, DTDL).
+> Semantic Shared contextual interpretation via common models (e.g., Ontologies, RDF, OWL [3], FDM [13]).
+> Dynamic Responsive adaptivity under evolving operational conditions (e.g., Microservices, OPC UA, DDS).
+> Pragmatic Alignment of exchanged data with system-specific context and actionable goals.
+> Organisational Alignment of stakeholders, governance models, and policies (e.g., TOGAF, GDPR).
+
+C. Runtime Coordination 
+
+While interoperability is essential for information exchange, it is insufficient if the data is stale or temporally misaligned. In dynamic federations, enforcing strict global state consistency is often unfeasible, as constituent DTs typically require only localised context (e.g., an autonomous vehicle coordinating with nearby systems rather than the entire city). Instead, these systems rely on runtime coordination to maintain operationally relevant state among active participants. This requires a hybrid approach: periodic time-based updates to maintain situational awareness , and event-driven triggers for immediate response to critical conditions. By managing temporal validity and event routing, federated boundary components facilitate dynamic, adaptive cooperation. IV. F EDERATED DT I NTEGRATION : T HE FEDERATION 
+
+NODE MANAGER 
+
+Federated DT ecosystems require more than basic inter-twin connectivity to integrate heterogeneous, pre-existing DTs without compromising their autonomy and sovereignty. Since local DT protocols and data schemas inherently isolate these platforms, direct integration of internal DT components is im-practical. To address this, we conceptualise each participating DT as a distinct Node within a broader collaborative network and introduce the Federation Node Manager as a boundary integration mechanism. Bridging the local DT with a service-oriented federation environment, this unifying abstraction layer adapts and translates local states, events, and other exposed artefacts into a federation-level interaction model. Ultimately, through controlled capability exposure, the Federation Node Manager enables autonomous DTs to collaborate system-wide while preserving local governance, privacy, and operational control (Section III-A). 
+
+A. Internal Modular Architecture 
+
+Following the requirements derived in Section III, the internal architecture of the Federation Node Manager separates orchestration, interoperability, runtime coordination and local governance, relying on shared modules for persistence, meta-data, and federation-level handling. As illustrated in Fig. 1, a central Federation Node Core coordinates five internal concerns to integrate participating DTs without compromising their internal logic:  
+
+> •
+
+Boundary Interfaces. The Intra-Twin Interface connects to the local DT via operator-configured adapters, while the Federation Node Interface connects with the broader federated ecosystem, acting as the local entry and exit point for states, events, and coordination artefacts.  
+
+> •
+
+Core Control and Orchestration. The Federation Node Core orchestrates internal modules and supervises incom-ing and outgoing interactions, deciding whether to prop-agate, cache, defer, or reject federation messages. The 
+
+Communication Manager supports both request-response and publish-subscribe patterns.  
+
+> •
+
+Interoperability Management. Protocol Adaptation nor-malises heterogeneous transports (e.g., MQTT, HTTP, or CoAP), while Schema Mediation translates local data formats into federation-level schemas or ontologies. To-gether, they operationalise technical, syntactic, and se-mantic interoperability at the DT boundary.  
+
+> •
+
+Runtime Coordination Support. The State Manager 
+
+handles periodic state snapshots, while the Event Man-ager supervises discrete events that require prompt federation-wide propagation. The Local Synchronisation Manager evaluates temporal validity to ensure the time-liness and relevance of information needed for runtime Physical      
+
+> System
+> DT Manager
+> Modelling
+> Data Management
+> Digital Interface
+> Federation Environment Federation Node (DT Boundary)
+> Federation
+> Node
+> Manager
+> Physical Interface
+> Federation Node Core
+> Event Manager State Manager
+> Intra-Twin Interface
+> Federation Node Interface
+> Local Digital Twin
+> Federated
+> Integration
+> Supporting
+> Middleware
+> Services
+> Federation
+> Platform
+> Communication
+> Management
+> Federation
+> Core
+> Services
+> Communication Manager
+> Data Management
+> Local Synchronisation
+> Manager
+> Configuration
+> Federation Context
+> Manager
+> Policies
+> Federation Participation
+> Metadata
+> Digital Twin Profile
+> Security
+> Local Health
+> and Lifecycle
+> Protocol
+> Adaptation
+> Schema
+> Mediation
+> External
+> Access and
+> Application
+> Layer
+> DT-level
+> Sensing
+> Actuation
+> State, Events, Request-
+> Response, L ocal
+> Decisions
+> Federation-level
+> Adapted, translated,
+> normalised: State, Events,
+> Request-Response,
+> Coordination artefacts
+
+Fig. 1. Architectural overview of the Federation Node Manager. The operational flow (bottom) illustrates this component as the integration boundary between a local DT and a broader federation environment, adapting DT-level artefacts into federation-level interactions. The expanded view (top) details its internal modular architecture, which combines interoperability, runtime coordination support and shared data persistence. 
+
+operations. The Federation Context Manager maintains awareness of relevant peers, communication endpoints, and active coordination relationships. 
+
+• Local Governance and Shared Support. Security and 
+
+Policies enforce privacy and sovereignty by restricting access to authenticated systems within the federation. 
+
+Configuration stores operator-defined and local exposure rules to instantiate a Federation Node Manager for a specific application context. The Digital Twin Profile and 
+
+Federation Participation Metadata manage identity and discoverability. Local Health and Lifecycle monitors DT operational status, while Data Management provides a shared persistence layer for caches and federation records. 
+
+B. Interoperability Support 
+
+The Federation Node Manager operationalises the most immediate interoperability requirements at the DT boundary, as summarised in Table II. Internal modules enable techni-cal connectivity, normalise syntactic payloads and exchanged data representations, and semantically mediate schemas into a federation-level language. Dynamic interoperability is sup-ported by temporal validity checks and context adaptation under changing conditions. Furthermore, pragmatic and organ-isational interoperability are only partially supported locally; their full realisation relies on broader governance, operational processes, and trust frameworks at the federation level. 
+
+C. Runtime Coordination 
+
+Due to heterogeneous update rates and dynamic partici-pation inherent in federated DT ecosystems, enforcing strict global state consistency is often unfeasible. Consequently, the Federation Node Manager addresses coordination as a boundary-level runtime concern, focusing on managing the exchange of timely states and events. To ensure these ex-changes remain temporally valid and operationally usable for collaborative decisions, the node prioritises temporal validity over global synchronisation. Supervised by the Federation 
+
+TABLE II INTEROPERABILITY SUPPORT 
+
+Int. Level Supported by Federation Node Manager Modules Technical Communication Manager, Intra-Twin Interface, Feder-ation Node Interface, Protocol Adaptation, Federation Context Manager 
+
+Syntactic Protocol Adaptation, Schema Mediation 
+
+Semantic Schema Mediation, Digital Twin Profile, Federation Participation Metadata 
+
+Dynamic State Manager, Event Manager, Local Synchronisation Manager, Federation Context Manager, Local Health & Lifecycle, Data Management 
+
+Pragmatic, Organisa-tional 
+
+Partially supported through Security, Policies, Configu-ration, and Federation Participation Metadata; broader support remains at the federation level. 
+
+Node Core, components such as the State and Event Man-agers, the Local Synchronisation Manager, and the Federation Context Manager utilise timestamp handling, coordination-aware artefacts, validity checks, and local cache management to facilitate context-relevant exchanges among DTs during a specific coordination episode. V. P ROTOTYPE IMPLEMENTATION AND USE CASE 
+
+DEMONSTRATION 
+
+To demonstrate the proposed integration mechanism, we evaluate emergency response scenarios in smart mobility. An emergency vehicle DT (EV-DT) interoperates with multiple smart intersection DTs to enable timely coordination and route preemption. The EV-DT exposes runtime mobility context, including position, lane progress, speed, and estimated arrival time, while each signalised intersection DT executes local pre-emption logic, alongside federated coordination. This setting is highly suitable for federated integration because isolated local preemption, while improving immediate mobility, often causes downstream spillbacks in constrained corridors; thus, system-wide collaboration and prompt coordination are needed without sacrificing local intersection control. I1 I2 I3 EV DT  
+
+> EV Federation Node Manager I1 Federation Node Manager
+> Intersection3 DT
+> I3 Federation Node Manager
+> Intersection1 DT
+> Evaluate signal phase Evaluate queue/ EV arrival time Determine feasible preemption window
+> Intersection2 DT
+> I2 Federation Node Manager
+> Coordination artefacts
+> Emergency response support
+> Coordination artefacts
+> Federation-level messages (MQTT Broker-enabled)
+> PriorityRequest (MQTT) EmergercyVehicleState IntersectionState Preemption Decision
+> Federated Coordination
+> IntersectionState IntersectionState
+> Local preemption decision Local preemption decision Local preemption decision HTTP MQTT MQTT MQTT
+> Physical Space  Digital Twins Space Federated Environment
+> EV/Intersection: States/Events EV/Intersection: States/Events
+> TraCI Interface
+
+(a) Federated DT ecosystem and interaction flows 
+
+(b) SUMO traffic simulation snapshot Fig. 2. Federated Digital Twin Ecosystem for emergency response. (a) Architectural overview and interaction flows illustrating the Federation Node Manager enabling inter-twin runtime coordination. (b) SUMO traffic simula-tion snapshot of the physical environment enforcing the preemption logic. 
+
+A. Prototype and Use Case Demonstration 
+
+We implemented a functional prototype to validate the Federation Node Manager as a practical boundary integration mechanism for heterogeneous DTs 1. The prototype utilises the SUMO simulator [19] over a constrained urban subnetwork in Madrid, Spain. Traffic dynamics are simulated in SUMO, while intersection preemption logic (adapted from [20]) runs in the DTs and is enforced through SUMO control (Fig. 2b). Each EV-DT and intersection DT is coupled with a Python-based Federation Node Manager that bridges local interfaces (e.g., HTTP) to federation-level MQTT messaging. The dynamics for state and event exchange, as well as coordination flow, are illustrated in Fig. 2a. The EV-side Federation Node Manager translates continuous 
+
+EmergencyVehicleState publications into a federation 
+
+PriorityRequest (EVRequest ). The target intersections map incoming artefacts to local interfaces to evaluate preemption feasibility. Furthermore, the Federation Node 
+
+> 1
+
+Source code, including message schemas and runtime coordination logic, available at: https://github.com/asia-lab-sustech/fnm-emergency-response.git 
+
+Manager in the intersections supports inter-twin runtime coordination by exchanging IntersectionState ,
+
+CoordinationRequest , SignalWindowProposal 
+
+and PreemptionDecision artefacts with downstream peers. Each intersection independently verifies feasibility before actuation, preserving local operational autonomy. 
+
+B. Evaluation Methodology 
+
+To quantify the benefits of this federated integration and coordination, we compare three operational modes governing the traffic environment through the intersections: 
+
+• Fixed-Time Control Method (FTCM): The baseline scenario uses a static, pre-programmed signal timing plan, with no DT intervention or preemption capabilities. 
+
+• Locally Interoperable DT Preemption (LIDP): A lo-calised integration model, utilising the proposed Feder-ation Node Manager. The EV-DT interacts only with the immediately approaching intersection, with no state sharing or coordination across downstream neighbours. 
+
+• Federated Coordination DT Preemption (FCDP): 
+
+The federated coordination model, utilising the proposed Federation Node Manager. This mode extends EV-to-intersection interoperability by enabling active, down-stream inter-intersection coordination. 
+
+C. Experimental Results 
+
+Experiments evaluated five random EV routes across three simulated congestion scenarios: moderate (0.5K vehicles), high (1K vehicles), and severe (1.5K vehicles). As detailed in Fig. 3, aggregated results across 225 valid traffic simulations indicate a mean EV travel time of 196.74 s for FTCM, 146.13 s for LIDP, and 133.19 s for FCDP. This corresponds to a 25.72% reduction in travel time when comparing LIDP to FTCM, and a 32.30% reduction when comparing FCDP with FTCM. Crucially, these results evidence an 8.85% improve-ment of FCDP compared with LIDP alone. By congestion profile, FCDP improves over LIDP by 8.75% at moderate congestion (Fig. 3a), 8.00% at high congestion (Fig. 3b), and 9.64% in severe congestion (Fig. 3c). A paired Wilcoxon signed-rank test on matched runs confirms the statistical significance of these gains ( p < 0.001 , Cohen’s d = 0 .75 ). Supported by 95% Confidence Intervals (Fig. 3), the data 
+
+(a) Moderate traffic congestion (b) High traffic congestion (c) Severe traffic congestion Fig. 3. Mean emergency vehicle travel time for five distinct routes. This evaluation compares three operational modes (FTCM, LIDP, FCDP) across Moderate (0.5K), High (1K), and Severe (1.5K) background traffic congestion. Error bars indicate the 95% Confidence Interval. confirms that federation-enabled runtime coordination delivers concrete end-to-end benefits for time-critical mobility, beyond isolated local interoperability. 
+
+Fig. 4. Mean local processing latency per node (Scenario 1.5K, route 5). 
+
+Finally, it is critical to ensure that the boundary mechanism does not introduce computational bottlenecks at the edges (at each intersection). Fig. 4 reports the mean node-level local processing latency for a representative case (Scenario 1.5K, route 5), separating local DT execution (blue) from the Federation Node Manager integration overhead (green). The results demonstrate that this component adds negligible processing latency: whereas the local intersection DTs remain in the 6.19–9.47 ms range, the added federation overhead is sub-millisecond across nodes. Notably, although network coordination inherently introduces transport and queueing de-lays (measured between 168.5 ms and 441.5 ms during our simulations, depending on the intersection), this boundary mechanism introduces minimal processing delay. This ensures that federated tasks do not interfere with time-critical local computations, thereby preserving the local operational auton-omy (detailed in Section III-A) and maintaining the rapid responsiveness required for safe emergency mobility. VI. C ONCLUSIONS 
+
+This paper advances the research landscape of Feder-ated Digital Twins, from conceptual frameworks and high-level architectures to practical implementations. Our primary contribution is the Federation Node Manager, a concrete boundary integration mechanism that connects autonomous, heterogeneous and distributed DTs into a federated ecosys-tem. By enabling controlled capability exposure, protocol and schema adaptation and runtime coordination, this com-ponent achieves seamless interoperability while preserving stakeholder sovereignty and encapsulating local DTs logic. The architecture was validated through a time-constrained smart mobility prototype, demonstrating dynamic runtime co-ordination between an emergency vehicle DT and multiple smart intersections DTs. The prototype successfully executed timely traffic signal preemptions across distributed boundaries without relying on tightly coupled or centralised monolithic architectures. Serving as a foundational enabler for a broader service-oriented federated DT ecosystem, future work will scale the Federation Node Manager to a complex, intelligent transportation network, evaluate middleware under critical time-constrained conditions, and explore different decision-making topologies across diverse application domains. REFERENCES [1] D.-Y. Jeong, M.-S. Baek, T.-B. Lim, Y.-W. Kim, S.-H. Kim, Y.-T. Lee, W.-S. Jung, and I.-B. Lee, “Digital twin: Technology evolution stages and implementation layers with technology elements,” IEEE Access ,vol. 10, pp. 52609–52620, 2022. [2] M. Grieves and J. Vickers, “Digital twin: Mitigating unpredictable, undesirable emergent behavior in complex systems,” Transdisciplinary perspectives on complex systems: New findings and approaches , pp. 85– 113, 2017. [3] A. Ricci, A. Croatti, S. Mariani, S. Montagna, and M. Picone, “Web of digital twins,” ACM Transactions on Internet Technology , vol. 22, no. 4, pp. 1–30, 2022. [4] H. Bennett, M. Birkin, J. Ding, A. Duncan, and Z. Engin, “Towards ecosystems of connected digital twins to address global challenges,” 2023. [5] C. Vergara, R. Bahsoon, G. Theodoropoulos, W. Yanez, and N. Tziritas, “Federated digital twin,” in 2023 IEEE/ACM 27th International Sympo-sium on Distributed Simulation and Real Time Applications (DS-RT) ,pp. 115–116, 2023. [6] M. W. Maier, “Architecting principles for systems-of-systems,” Systems Engineering: The Journal of the International Council on Systems Engineering , vol. 1, no. 4, pp. 267–284, 1998. [7] A. P. Sage and C. D. Cuppan, “On the systems engineering and man-agement of systems of systems and federations of systems,” Information knowledge systems management , vol. 2, no. 4, pp. 325–345, 2001. [8] C. R. Vergara, G. Theodoropoulos, R. Bahsoon, W. Yanez, and N. Tziri-tas, “Federated digital twins as an enabling technology for collaborative decision-making,” in Proceedings of the 38th ACM SIGSIM Conference on Principles of Advanced Discrete Simulation , SIGSIM-PADS ’24, (New York, NY, USA), p. 67–68, Association for Computing Machinery, 2024. [9] H. Marah and M. Challenger, “(re-) engineering digital twins towards federation: Vision and roadmap,” in International Symposium on Lever-aging Applications of Formal Methods , pp. 60–81, Springer, 2024. [10] T. Yu, Z. Li, O. Hashash, K. Sakaguchi, W. Saad, and M. Debbah, “Internet of federated digital twins: Connecting twins beyond borders for society 5.0,” IEEE Internet of Things Magazine , 2024. [11] C. Vergara-Marcillo, R. Bahsoon, N. Tziritas, and G. Theodoropoulos, “A connectionist approach to federated digital twins,” in Computational Science – ICCS 2025 (M. H. Lees, W. Cai, S. A. Cheong, Y. Su, D. Abramson, J. J. Dongarra, and P. M. A. Sloot, eds.), (Cham), pp. 60– 74, Springer Nature Switzerland, 2025. [12] K. Wang, K. Nonomura, Z. Li, T. Yu, K. Sakaguchi, O. Hashash, W. Saad, C. She, and Y. Li, “Augmented intelligence in smart inter-sections: Local digital twins-assisted hybrid autonomous driving,” IEEE Transactions on Intelligent Vehicles , 2024. [13] J. Hetherington and M. West, “The pathway towards an information management framework-a ‘commons’ for digital built britain,” 2020. [14] European Commission, “Knowledge Center — Interoperable Europe Portal,” 2025. [Online]. Available: https://interoperable-europe.ec. europa.eu/collection/ldttoolbox/knowledge-center. Accessed: Jan. 15, 2026. [15] Living-in.EU Technical Sub-group, “MIMs Plus: Technical Specifi-cations version 8.0,” technical specification, European Commission / Living-in.EU Initiative, Jun. 2025. [Online]. Available: https://living-in. eu/group/7/commitments/mims-plus-version-8-2025. Accessed: Jan. 15, 2026. [16] L. Zhou, S. Leng, and Q. Wang, “A federated digital twin framework for uavs-based mobile scenarios,” IEEE Transactions on Mobile Computing ,2023. [17] A. P. Sheth and J. A. Larson, “Federated database systems for managing distributed, heterogeneous, and autonomous databases,” ACM Comput-ing Surveys (CSUR) , vol. 22, no. 3, pp. 183–236, 1990. [18] S. Acharya, A. A. Khan, and T. P¨ aiv¨ arinta, “Interoperability levels and challenges of digital twins in cyber–physical systems,” Journal of Industrial Information Integration , vol. 42, p. 100714, 2024. [19] P. A. Lopez, M. Behrisch, L. Bieker-Walz, J. Erdmann, Y.-P. Fl¨ otter¨ od, R. Hilbrich, L. L¨ ucken, J. Rummel, P. Wagner, and E. Wiessner, “Microscopic traffic simulation using sumo,” in 2018 21st International Conference on Intelligent Transportation Systems (ITSC) , pp. 2575– 2582, 2018. [20] L. Zhong and Y. Chen, “A novel real-time traffic signal control strategy for emergency vehicles,” IEEE Access , vol. 10, pp. 19481–19492, 2022.

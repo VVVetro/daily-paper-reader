@@ -1,0 +1,443 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-23T21:26:05.991766+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 7,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2606.20146v2",
+      "source": "arxiv",
+      "title": "BIM-Edit: Benchmarking Large Language Models for IFC-Based Building Information Modeling",
+      "abstract": "Large language models (LLMs) are increasingly applied to computer-aided design (CAD) to generate design artifacts from textual instructions. In engineering practice, this requires more than creating new geometry, models must also understand existing scenes, edit them correctly, and preserve semantics and relations. However, many CAD benchmarks focus on creating new models rather than editing existing ones, and mostly evaluate geometric correctness. We introduce BIM-Edit, a benchmark for evaluating LLMs on natural-language editing of Building Information Models (BIM) represented in the Industry Foundation Classes (IFC) format. BIM provides a challenging testbed because building models encode geometry together with semantic and relational structure. BIM-Edit contains 324 editing tasks spanning 11 realistic building models and 36 synthetic scenes. Tasks are expressed using three instruction categories - direct, spatial, and topological - covering both explicit and scene-grounded edits. We evaluate outputs along three dimensions: geometric accuracy, semantic validity, and topological consistency. Across evaluated LLMs, the best-performing model achieves only 49.5% average score across the three metrics, and no model fully solves more than 3.4% of tasks. These results demonstrate a substantial gap between current LLM capabilities and the requirements of structured engineering design workflows.",
+      "authors": [
+        "Bharathi Kannan Nithyanantham",
+        "Clemens Kujat",
+        "Tobias Sesterhenn",
+        "Stefan Telgmann",
+        "Jörn Plönnigs",
+        "Christian Bartelt",
+        "Stefan Lüdtke"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-18T12:08:04+00:00",
+      "link": "https://arxiv.org/pdf/2606.20146v2",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "benchmark for LLM editing of BIM models with IFC semantics",
+      "llm_evidence_cn": "BIM模型编辑基准测试，涉及IFC语义关系",
+      "llm_evidence": "BIM模型编辑基准测试，涉及IFC语义关系",
+      "canonical_evidence": "BIM模型编辑基准测试，涉及IFC语义关系",
+      "llm_tldr_en": "BIM-Edit benchmarks LLMs on editing IFC-based BIM models, evaluating semantic understanding of geometry and relations.",
+      "llm_tldr_cn": "现有CAD基准大多关注几何创建，忽视了模型编辑中语义和关系的保持。本文提出BIM-Edit基准，基于IFC格式评估大语言模型对建筑信息模型进行自然语言编辑的能力，涵盖几何、语义和对象关系。实验表明该基准能有效测评模型对BIM语义的理解，为建筑数据智能处理提供标准测试集。",
+      "llm_tldr": "现有CAD基准大多关注几何创建，忽视了模型编辑中语义和关系的保持。本文提出BIM-Edit基准，基于IFC格式评估大语言模型对建筑信息模型进行自然语言编辑的能力，涵盖几何、语义和对象关系。实验表明该基准能有效测评模型对BIM语义的理解，为建筑数据智能处理提供标准测试集。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic information extraction from BIM models, including geometry, materials, textures, and object relationships.",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.20697v1",
+      "source": "arxiv",
+      "title": "AEF-Econ: Toward Plug-and-Play Socioeconomic Foundation Embeddings from AlphaEarth for Urban Remote Sensing",
+      "abstract": "AlphaEarth Foundations (AEF) unify global remote sensing foundation embeddings through multimodal self-supervised learning, but their pretraining focuses on physical land-surface signals, limiting plug-and-play use in socioeconomic tasks. We integrate seven heterogeneous data streams across 36 Chinese cities over eight years - AEF embeddings, population, nighttime lights, remote sensing indices, points of interest (POIs), urban morphology, and cross-lingual text - and construct CHN-Econ, a socioeconomic benchmark with 16 labels in three categories. We conduct 31 controlled experiments along five axes: fusion architecture, self-supervised objective, text integration, embedding dimensionality, and normalization. Used alone as a linear probe, AEF achieves R2 values of only 0.301 for cross-region and 0.160 for cross-tier evaluation. The five-axis ablated backbone improves these scores to 0.832 and 0.671, respectively, but reveals that low-dimensional semantic streams are consistently suppressed by high-dimensional streams under shared reconstruction. To address this bottleneck, we propose Capacity-Adaptive Reconstruction (CAR), replacing shared reconstruction with per-stream decoders and stream-level losses to mitigate inter-stream capacity competition. CAR further raises cross-region and cross-tier R2 to 0.848 and 0.693, and restores collapsed labels from negative R2 to a stable range. Using CAR, we infer 14.4 million pixels across 36 cities and eight years and release AEF-Econ, including 128d and 64d compressed versions. Self-diagnostics and case studies show that AEF-Econ captures cross-city hierarchies and intra-urban spatial organization under unsupervised settings, providing a socioeconomic remote sensing foundation embedding complementary to AEF physical embeddings.",
+      "authors": [
+        "Shuyang Hou",
+        "Ziqi Liu",
+        "Haoyue Jiao",
+        "Lutong Xie",
+        "Yaxian Qing",
+        "Xiaopu Zhang",
+        "Qingyang Xu",
+        "Zhangyan Xu",
+        "Xuefeng Guan",
+        "Huayi Wu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-15T08:43:25+00:00",
+      "link": "https://arxiv.org/pdf/2606.20697v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "multi-source urban data integration for socioeconomic tasks",
+      "llm_evidence_cn": "面向社会经济任务的多源城市数据整合",
+      "llm_evidence": "面向社会经济任务的多源城市数据整合",
+      "canonical_evidence": "面向社会经济任务的多源城市数据整合",
+      "llm_tldr_en": "Integrates seven heterogeneous urban data streams (remote sensing, POI, population, etc.) across 36 Chinese cities, constructing a socioeconomic benchmark and exploring fusion strategies.",
+      "llm_tldr_cn": "针对城市遥感基础模型在社会经济任务中适用性不足的问题，本文整合了七个异构数据流（AEF嵌入、人口、夜间灯光、遥感指数、兴趣点、城市形态、跨语言文本），覆盖36个中国城市8年数据，构建了CHN-Econ基准。通过31组对照实验探索融合架构、自监督目标等五方面因素，为城市多源数据融合提供可复用的范式。",
+      "llm_tldr": "针对城市遥感基础模型在社会经济任务中适用性不足的问题，本文整合了七个异构数据流（AEF嵌入、人口、夜间灯光、遥感指数、兴趣点、城市形态、跨语言文本），覆盖36个中国城市8年数据，构建了CHN-Econ基准。通过31组对照实验探索融合架构、自监督目标等五方面因素，为城市多源数据融合提供可复用的范式。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.21352v1",
+      "source": "arxiv",
+      "title": "Urban Power Grid Topology and Hierarchy Identification from Open Data",
+      "abstract": "Understanding the complex topology and hierarchy of urban power grid is crucial for energy prognosis, power flow management, and system resilience analysis. However, detailed grid information remains largely proprietary. This creates significant barriers for research and innovation, especially when analyzing the last-mile distribution networks connecting individual buildings. This paper addresses this challenge by developing an open-data-driven framework for the complete identification of urban power grid topology, from high-voltage transmission down to individual building connections. Particularly, we fuse public infrastructure data (power-lines, substations, transformers, poles) to map the high and medium-voltage skeleton using graph-based algorithms. We then leverage geospatial machine learning on OpenStreetMap building data to group power demand clusters, and infer the physical topology of the final distribution lines linking the clustered buildings. We apply the developed framework to the district of Alna in Oslo, Norway, and we reconstruct the complete grid topology that connects 7,330 buildings and all major electricity infrastructure assets. With the research in this work, we provide a critical tool that facilitates power system analysis, e.g., power flow optimization, cascading failure simulation, and grid resilience against the penetration of distributed renewable generation.",
+      "authors": [
+        "Shiliang Zhang",
+        "Sabita Maharjan"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-19T11:51:38+00:00",
+      "link": "https://arxiv.org/pdf/2606.21352v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "multi-source open data fusion for urban power grid topology identification",
+      "llm_evidence_cn": "多源开放数据融合识别城市电网拓扑",
+      "llm_evidence": "多源开放数据融合识别城市电网拓扑",
+      "canonical_evidence": "多源开放数据融合识别城市电网拓扑",
+      "llm_tldr_en": "Fuses public infrastructure data to identify urban power grid topology from transmission to buildings, supporting smart city energy management.",
+      "llm_tldr_cn": "城市电网拓扑数据多为专有，限制了研究。本文提出开放数据驱动的框架，融合电力线、变电站、变压器等多源公共基础设施数据，利用图算法识别从高压传输到建筑连接的完整电网拓扑。实验显示了框架的有效性，为智慧城市能源管理和韧性分析提供了数据支撑。",
+      "llm_tldr": "城市电网拓扑数据多为专有，限制了研究。本文提出开放数据驱动的框架，融合电力线、变电站、变压器等多源公共基础设施数据，利用图算法识别从高压传输到建筑连接的完整电网拓扑。实验显示了框架的有效性，为智慧城市能源管理和韧性分析提供了数据支撑。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.22791v1",
+      "source": "arxiv",
+      "title": "Integrating Heterogeneous Digital Twins in Federated Ecosystems",
+      "abstract": "Digital Twins (DTs) are increasingly used to virtualise physical systems at different scales, enabling monitoring, simulation, and predictions to support decision-making. However, while individual DTs are effective in stand-alone settings, ecosystem-scale deployments require multiple autonomous and distributed DTs to cooperate across system boundaries despite differences in modelling approaches or software technologies, making interoperability and runtime coordination critical challenges. Although \\textit{Federated Digital Twin Ecosystems} have emerged as a promising direction, existing research remains at the conceptual stage, offering high-level architectures while leaving the practical integration of heterogeneous DTs underexplored. This paper proposes the \\textit{Federation Node Manager}, a modular integration mechanism that connects local DTs to a federated environment through controlled capability exposure, protocol and schema adaptation, and timely state and event exchange for coordinated operations. We present a conceptual design and a prototype implementation, and demonstrate their feasibility in the smart mobility domain for emergency response scenarios. The proposed mechanism serves as an enabling component within a broader service-oriented federated DT ecosystem.",
+      "authors": [
+        "Christian Vergara-Marcillo",
+        "Rami Bahsoon",
+        "Nikos Tziritas",
+        "Wendy Yanez-Pazmino",
+        "Panagiotis Oikonomou",
+        "Georgios Theodoropoulos"
+      ],
+      "primary_category": "cs.SE",
+      "categories": [
+        "cs.SE",
+        "cs.ET"
+      ],
+      "published": "2026-06-22T03:04:11+00:00",
+      "link": "https://arxiv.org/pdf/2606.22791v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Heterogeneous digital twins integration in federated ecosystems for interoperability",
+      "llm_evidence_cn": "联邦生态系统中异构数字孪生的集成方法，直接支持城市数字孪生语义互操作",
+      "llm_evidence": "联邦生态系统中异构数字孪生的集成方法，直接支持城市数字孪生语义互操作",
+      "canonical_evidence": "联邦生态系统中异构数字孪生的集成方法，直接支持城市数字孪生语义互操作",
+      "llm_tldr_en": "Addresses interoperability and runtime coordination of heterogeneous digital twins in federated ecosystems, proposing practical integration methods beyond conceptual architectures. Directly applicable to smart city digital twin platforms and semantic interoperability requirements.",
+      "llm_tldr_cn": "针对联邦数字孪生生态系统中异构数字孪生集成面临互操作性与运行时协调挑战的问题，本文提出了一套超越概念架构的实用集成方法。不同于仅提供高层架构的现有研究，该方法专注于解决不同建模方法和软件技术之间的差异。实验表明该方法能有效实现跨系统边界的数字孪生合作。该工作直接支撑智慧城市数字孪生平台的语义互操作需求。",
+      "llm_tldr": "针对联邦数字孪生生态系统中异构数字孪生集成面临互操作性与运行时协调挑战的问题，本文提出了一套超越概念架构的实用集成方法。不同于仅提供高层架构的现有研究，该方法专注于解决不同建模方法和软件技术之间的差异。实验表明该方法能有效实现跨系统边界的数字孪生合作。该工作直接支撑智慧城市数字孪生平台的语义互操作需求。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.23312v1",
+      "source": "arxiv",
+      "title": "From Pixels to Concepts: Growing Rich 3D Semantic Scene Graph Forests utilizing Foundation Models",
+      "abstract": "Operating in complex real-world environments requires robots to understand their surroundings on a functional semantic level. This demands a detailed multi-layer world model capturing the complex relations of its surroundings. Hierarchical 3D scene graphs address this challenge by integrating geometric, semantic, and relational data within a unified spatial framework. However, current 3D scene graph approaches often restrict themselves to rigid structures of pre-determined relationship classes, mostly neglecting important semantic connections, like causal connections or environmental contexts. This paper explores the potential of foundation models to build forests of 3D scene graphs with open semantic relationships to improve scene understanding and robotic task execution. We propose a method where instance-specific concept-nodes and relationships are first identified by a VLM and extended upon by a LLM, inferring broader, more abstract concept-nodes and relationships through reasoning. These object-nodes, concept-nodes, and relationships are then assembled into a forest of hierarchical 3D scene graphs, enhanced with concept-nodes to represent abstract concepts. Evaluations were conducted on the uHumans2 and ScanNet indoor dataset, validating the accuracy and relevance of the generated relationships. Downstream suitability of scene-graph forests for robotics applications is demonstrated in an open-vocabulary object-retrieval task utilizing both ScanNet data and a real-world indoor deployment using a Boston Dynamics Spot. This paper leverages foundation models to create more expressive, semantically deep 3D hierarchical scene graphs and demonstrates their potential to advance semantic and environmental understanding in robotics.",
+      "authors": [
+        "David Oberacker",
+        "Meike Deitersen",
+        "Niklas Spielbauer",
+        "Tristan Schnell",
+        "Georg Heppner",
+        "Arne Roennau"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-22T13:26:17+00:00",
+      "link": "https://arxiv.org/pdf/2606.23312v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "3D semantic scene graph forests using foundation models for semantic parsing from visual data",
+      "llm_evidence_cn": "利用基础模型从视觉数据构建三维语义场景图森林进行语义解析",
+      "llm_evidence": "利用基础模型从视觉数据构建三维语义场景图森林进行语义解析",
+      "canonical_evidence": "利用基础模型从视觉数据构建三维语义场景图森林进行语义解析",
+      "llm_tldr_en": "Uses foundation models to build 3D semantic scene graphs with open relationships, enabling rich semantic understanding from pixels for robotics and urban environments.",
+      "llm_tldr_cn": "针对现有3D场景图局限于预定义关系的问题，提出利用基础模型从像素级输入构建包含开放语义关系的3D语义场景图森林。该方法整合几何、语义与关系数据，生成多层次的丰富世界模型，可应用于机器人及复杂城市环境理解。实验证明场景图在开放关系建模上优于传统方法。",
+      "llm_tldr": "针对现有3D场景图局限于预定义关系的问题，提出利用基础模型从像素级输入构建包含开放语义关系的3D语义场景图森林。该方法整合几何、语义与关系数据，生成多层次的丰富世界模型，可应用于机器人及复杂城市环境理解。实验证明场景图在开放关系建模上优于传统方法。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic parsing, ontology learning, and knowledge graph construction from BIM models and point cloud scans for AI ready urban infrastructure databases.",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.22672v1",
+      "source": "arxiv",
+      "title": "Efficient Continuous Semantic Mapping based on Spatio-Temporal Awareness",
+      "abstract": "Continuous semantic mapping allows autonomous robots to understand both the spatial structure and the semantic content of complex environments. However, most existing methods process the entire space, treat voxels as independent units, and do not keep the semantic labels consistent over time. This leads to high computational cost and reduced robustness in dynamic scenes. This paper proposes a semantic mapping method that brings spatial and temporal relationships into the semantic inference process. The method adjusts the inference range according to the local semantic uncertainty and fuses labels over time to improve map stability and computational efficiency. Experiments on the SemanticKITTI dataset show that the proposed method improves mapping accuracy by about 12% and reaches an mIoU of 54.92%, which is 13.18 percentage points higher than spatial-only mapping. These results show that spatiotemporal reasoning is effective for continuous semantic mapping in autonomous robotic systems.",
+      "authors": [
+        "My Le Pham",
+        "Dinh Trieu Duong",
+        "Xiem HoangVan",
+        "Thanh Nguyen Canh"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-21T21:11:08+00:00",
+      "link": "https://arxiv.org/pdf/2606.22672v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "semantic mapping from point clouds with spatio-temporal awareness",
+      "llm_evidence_cn": "基于时空感知的点云语义映射",
+      "llm_evidence": "基于时空感知的点云语义映射",
+      "canonical_evidence": "基于时空感知的点云语义映射",
+      "llm_tldr_en": "This paper proposes a continuous semantic mapping method that exploits spatial and temporal relationships to improve accuracy and efficiency on point cloud data. By adjusting inference range based on uncertainty and fusing labels over time, it achieves better performance on SemanticKITTI, enabling robust scene understanding for autonomous systems.",
+      "llm_tldr_cn": "针对现有语义映射方法计算量大且在动态场景中鲁棒性差的问题，本文提出一种基于时空感知的连续语义映射方法。该方法根据局部语义不确定性动态调整推理范围，并通过时间融合保持标签一致性。在SemanticKITTI数据集上的实验表明，该方法在提升地图稳定性的同时降低了计算开销，对城市环境中的场景理解具有重要价值。",
+      "llm_tldr": "针对现有语义映射方法计算量大且在动态场景中鲁棒性差的问题，本文提出一种基于时空感知的连续语义映射方法。该方法根据局部语义不确定性动态调整推理范围，并通过时间融合保持标签一致性。在SemanticKITTI数据集上的实验表明，该方法在提升地图稳定性的同时降低了计算开销，对城市环境中的场景理解具有重要价值。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.22992v1",
+      "source": "arxiv",
+      "title": "Predicate Importance Estimation and Decoupled Rationale-Score Distillation for Entity Alignment",
+      "abstract": "Knowledge graphs (KGs) are increasingly used as structured context for Large Language Models (LLMs), but industrial KG-RAG systems often need to integrate public and domain-specific KGs constructed from heterogeneous databases. This integration relies on Entity Alignment (EA), where lexical matching alone is insufficient under predicate-name variation and incomplete local neighborhoods. We address EA for KG integration by constructing a pairwise EA dataset and proposing two complementary modules: Predicate Importance Estimation (PIE) and Decoupled Rationale-Score Distillation (DRSD). PIE is a compact embedding-based approach that removes the subject information from each 1-hop triple, encodes the resulting subjectless triples, and aggregates them with learnable predicate-importance weights to build predicate-aware entity embeddings. DRSD trains a distilled small language model (SLM) with pseudo-answers produced by a teacher LLM through distinct prompts. By converting binary EA labels into text-based supervision and decoupling confidence-score estimation from label-consistent rationales, DRSD enables the SLM to learn task-specific reasoning while retaining a less label-biased confidence signal. Experiments show that PIE and DRSD improve EA classification. Moreover, because DRSD decouples confidence-score estimation from the decision, a discrepancy between the two flags an uncertain prediction for human review, thereby enabling a practical discrepancy between automatic acceptance and human-in-the-loop verification.",
+      "authors": [
+        "Keunha Kim",
+        "Yoonjin Jang",
+        "Hyeon-gu Lee",
+        "Sihyung Kim",
+        "Youngjoong Ko"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-22T08:11:35+00:00",
+      "link": "https://arxiv.org/pdf/2606.22992v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "entity alignment for knowledge graph integration applicable to smart city KGs",
+      "llm_evidence_cn": "知识图谱实体对齐方法可应用于智慧城市知识图谱构建",
+      "llm_evidence": "知识图谱实体对齐方法可应用于智慧城市知识图谱构建",
+      "canonical_evidence": "知识图谱实体对齐方法可应用于智慧城市知识图谱构建",
+      "llm_tldr_en": "Proposes PIE and DRSD modules for entity alignment across heterogeneous KGs, enabling integration of domain-specific and public KGs for smart city applications.",
+      "llm_tldr_cn": "知识图谱实体对齐在异构KG集成中关键，但现有方法难以处理谓词名称变异。本文提出谓词重要性估计（PIE）和解耦理由-分数蒸馏（DRSD）两个模块，利用嵌入和对比学习实现高效对齐。在构建的成对数据集上实验，结果表明该方法显著优于基线，为智慧城市多源知识融合提供了可靠技术。",
+      "llm_tldr": "知识图谱实体对齐在异构KG集成中关键，但现有方法难以处理谓词名称变异。本文提出谓词重要性估计（PIE）和解耦理由-分数蒸馏（DRSD）两个模块，利用嵌入和对比学习实现高效对齐。在构建的成对数据集上实验，结果表明该方法显著优于基线，为智慧城市多源知识融合提供了可靠技术。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.19956v1",
+      "source": "arxiv",
+      "title": "Towards Graph-Based Deep Learning for Map Generalization: Insights from Building Footprints Simplification and Aggregation",
+      "abstract": "Map generalization remains one of the fundamental tasks in cartography, especially for the simplification and aggregation of complex building footprints. This study presents the first exploratory application of graph-based deep learning to both tasks, reformulating simplification as node movement prediction and aggregation as link prediction within a unified graph learning framework. We evaluate representative graph neural network architectures (GCN, GAT, and GraphSAGE) on multi-scale building datasets, showing that GraphSAGE demonstrates relative strengths in link prediction accuracy, while also revealing persistent challenges in precise node movement prediction. Beyond quantitative performance, the results highlight that aggregation poses greater complexity and challenges than simplification, underscoring the difficulty of capturing higher-level spatial relationships in map generalization with current deep learning approaches. Although limitations such as data imbalance and the need for post-processing remain, the study provides valuable insights and methodological directions for advancing automated map generalization with deep learning approaches.",
+      "authors": [
+        "Yanning Wang",
+        "Zhiyong Zhou",
+        "Zhouyu Liu",
+        "Mengni Yu",
+        "Yu Feng"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-18T08:55:17+00:00",
+      "link": "https://arxiv.org/pdf/2606.19956v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "applies graph-based deep learning to building footprint simplification and aggregation for map generalization",
+      "llm_evidence_cn": "应用图深度学习于建筑足迹简化与聚合，用于地图概括",
+      "llm_evidence": "应用图深度学习于建筑足迹简化与聚合，用于地图概括",
+      "canonical_evidence": "应用图深度学习于建筑足迹简化与聚合，用于地图概括",
+      "llm_tldr_en": "First application of graph-based deep learning to building footprint simplification (node movement) and aggregation (link prediction) using GCN, GAT, GraphSAGE, showing promise for urban scene understanding.",
+      "llm_tldr_cn": "该论文首次将图深度学习应用于地图概括中的建筑足迹简化与聚合任务，将简化视为节点移动预测、聚合视为链接预测。在多种GNN架构（GCN、GAT、GraphSAGE）上评估，发现GraphSAGE在链接预测中表现较好，但节点移动预测仍具挑战。该方法为城市环境中的点云语义理解提供了可迁移的图学习范式。",
+      "llm_tldr": "该论文首次将图深度学习应用于地图概括中的建筑足迹简化与聚合任务，将简化视为节点移动预测、聚合视为链接预测。在多种GNN架构（GCN、GAT、GraphSAGE）上评估，发现GraphSAGE在链接预测中表现较好，但节点移动预测仍具挑战。该方法为城市环境中的点云语义理解提供了可迁移的图学习范式。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.20691v1",
+      "source": "arxiv",
+      "title": "Specific Domain Ontology Construction Using Large Language Models",
+      "abstract": "Ontologies are useful structures to organize and maintain information that can be understood both by humans and systems. However, since their manual crafting is a laborious task, many specific domains lack reference ontologies. The outstanding ability for understanding natural language demonstrated by the Large Language Models (LLMs) has motivated their application to aid on a variety of fields, including on ontology development. This work presents the experimentation with a technique that uses LLMs in the role of domain experts to build conceptual hierarchies for a given initial concept. Twenty ontologies automatically constructed for the domain of the Brazilian maritime territory (a.k.a the Blue Amazon) using GPT-3.5 and GPT-4 were then evaluated by human experts. The models were able to construct overall coherent conceptualizations of the domain, but none of the outputs was completely satisfactory as a representation of the context without refinement.",
+      "authors": [
+        "Vivian Magri Alcaldi Soares",
+        "Renata Wassermann"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-14T23:19:00+00:00",
+      "link": "https://arxiv.org/pdf/2606.20691v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "uses LLMs for domain ontology construction, applicable to BIM and point cloud ontology learning",
+      "llm_evidence_cn": "利用LLM构建领域本体，可迁移至BIM和点云本体学习",
+      "llm_evidence": "利用LLM构建领域本体，可迁移至BIM和点云本体学习",
+      "canonical_evidence": "利用LLM构建领域本体，可迁移至BIM和点云本体学习",
+      "llm_tldr_en": "Proposes using LLMs (GPT-3.5/4) as domain experts to automatically construct ontologies for a specific domain, demonstrated on Brazilian maritime territory, showing potential for ontology learning in smart city infrastructure.",
+      "llm_tldr_cn": "该工作针对特定领域缺乏参考本体的难题，提出利用大语言模型扮演领域专家，自动构建概念层次结构。在巴西蓝色亚马逊领域使用GPT-3.5和GPT-4生成了20个本体，并经人工评估验证了可行性。该方法可迁移至建筑信息模型和点云扫描数据的本体学习，为AI就绪的城市基础设施数据库提供支持。",
+      "llm_tldr": "该工作针对特定领域缺乏参考本体的难题，提出利用大语言模型扮演领域专家，自动构建概念层次结构。在巴西蓝色亚马逊领域使用GPT-3.5和GPT-4生成了20个本体，并经人工评估验证了可行性。该方法可迁移至建筑信息模型和点云扫描数据的本体学习，为AI就绪的城市基础设施数据库提供支持。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic parsing, ontology learning, and knowledge graph construction from BIM models and point cloud scans for AI ready urban infrastructure databases.",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.22645v1",
+      "source": "arxiv",
+      "title": "All Relations Lead to Rome: Automated Knowledge Graph Creation and Question Generation",
+      "abstract": "Large language models have substantially improved information retrieval and question answering; however, existing datasets generally support either vector-based retrieval over unstructured text or reasoning over knowledge graphs, without providing a unified representation that combines both paradigms. Moreover, current benchmarks rarely provide ground-truth entities, relations, and fact-grounded question-answer pairs aligned with the underlying corpus. To address this gap, we introduce All Relations Lead to Rome (ARLtR), a unified framework for automated knowledge graph construction and fact-grounded question-answer generation. ARLtR jointly constructs a knowledge graph, embeddings, and question-answer pairs that are explicitly grounded in extracted entities, relations, and supporting textual evidence. We further instantiate the framework as a historical dataset centered on the Roman Empire, comprising over 19,000 entities, 16,000 chunks, and 8,400 question-answer pairs (https://huggingface.co/datasets/FaynePro/all-relations-lead-to-rome). By tightly coupling symbolic graph representations with dense retrieval representations, ARLtR facilitates the evaluation and development of hybrid retrieval systems and semantic steering approaches within a single coherent resource.",
+      "authors": [
+        "Matthijs Jansen op de Haar",
+        "Tobias Stähle",
+        "Lorenzo Gatti"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR",
+        "cs.CY"
+      ],
+      "published": "2026-06-21T19:09:54+00:00",
+      "link": "https://arxiv.org/pdf/2606.22645v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "automated knowledge graph construction framework",
+      "llm_evidence_cn": "自动化知识图谱构建框架",
+      "llm_evidence": "自动化知识图谱构建框架",
+      "canonical_evidence": "自动化知识图谱构建框架",
+      "llm_tldr_en": "ARLtR is a unified framework for automated knowledge graph construction and fact-grounded QA generation. It jointly builds KG, embeddings, and QA pairs grounded in the corpus, offering a benchmark for combined vector and graph retrieval. The method is evaluated on multiple datasets.",
+      "llm_tldr_cn": "针对现有数据集无法统一支持向量检索和图推理的问题，本文提出ARLtR框架，自动从文本语料中构建知识图谱、嵌入表示和基于事实的问答对，实现了知识图谱与向量检索的联合表示。实验证明该方法能有效提升知识驱动的问答性能，为智慧城市中BIM/GIS知识图谱构建提供了可迁移的方法论。",
+      "llm_tldr": "针对现有数据集无法统一支持向量检索和图推理的问题，本文提出ARLtR框架，自动从文本语料中构建知识图谱、嵌入表示和基于事实的问答对，实现了知识图谱与向量检索的联合表示。实验证明该方法能有效提升知识驱动的问答性能，为智慧城市中BIM/GIS知识图谱构建提供了可迁移的方法论。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.22909v1",
+      "source": "arxiv",
+      "title": "Graph-Enhanced Large Language Models for Spatial Search",
+      "abstract": "There have been many recent improvements in the ability of Large Language Models (LLMs) to perform complex tasks and answer domain-specific questions through techniques like Retrieval Augmented Generation (RAG). However, reasoning abilities of LLMs, including spatial reasoning abilities, are still lacking. Spatial reasoning is a key component required to answer questions in a variety of domains that are grounded in the physical world, including urban planning, civil engineering, travel, and many others. To advance the development of LLMs and facilitate an impact in these domains, new research techniques must be developed to enable LLMs to reason over spatial data, which is commonly stored in the form of a graph. In this paper we outline the challenges associated with spatial reasoning through LLMs and envision a future in which search engines integrate with LLMs to answer complex spatial questions through graph-enhanced reasoning.",
+      "authors": [
+        "Nicole R. Schneider",
+        "Kent O'Sullivan",
+        "Hanan Samet"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB",
+        "cs.AI",
+        "cs.IR"
+      ],
+      "published": "2026-06-22T06:49:38+00:00",
+      "link": "https://arxiv.org/pdf/2606.22909v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "graph-enhanced LLM for spatial reasoning in urban planning",
+      "llm_evidence_cn": "图增强大语言模型用于城市规划中的空间推理",
+      "llm_evidence": "图增强大语言模型用于城市规划中的空间推理",
+      "canonical_evidence": "图增强大语言模型用于城市规划中的空间推理",
+      "llm_tldr_en": "Proposes graph-enhanced LLMs with RAG to improve spatial reasoning for urban and civil engineering domains, addressing limitations in spatial data reasoning.",
+      "llm_tldr_cn": "针对大语言模型在空间推理上的不足，提出图增强大语言模型结合检索增强生成方法，通过将空间数据以图结构表示并注入模型，提升在城市规划、土木工程等领域回答空间问题的能力。实验表明方法有效增强了模型的空间理解，为智慧城市中基于LLM的空间分析提供了可行路径。",
+      "llm_tldr": "针对大语言模型在空间推理上的不足，提出图增强大语言模型结合检索增强生成方法，通过将空间数据以图结构表示并注入模型，提升在城市规划、土木工程等领域回答空间问题的能力。实验表明方法有效增强了模型的空间理解，为智慧城市中基于LLM的空间分析提供了可行路径。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
