@@ -1,0 +1,4166 @@
+Title: Ontology-Grounded Capability Interaction Graphs: From Knowledge Graphs to Fault Trees
+
+URL Source: https://arxiv.org/pdf/2606.20779v1
+
+Published Time: Tue, 23 Jun 2026 00:07:41 GMT
+
+Number of Pages: 33
+
+Markdown Content:
+> 1
+
+# Ontology-Grounded Capability Interaction Graphs: From Knowledge Graphs to Fault Trees 
+
+Manzi Aimé Ntagengerwa, Georgiana Caltais, Mariëlle Stoelinga, University of Twente, The Netherlands 
+
+Abstract —The development of Cyber-Physical Sys-tems (CPSs) is inherently multidisciplinary, involving expertise from domains such as software engineering, electrical engineering, and mechatronics. throughout the lifecycle of the system, from design to deploy-ment. Ensuring system reliability in Cyber-Physical Systems (CPSs) requires the identification and anal-ysis of potential failures and their cascading effects. However, reliability modeling remains a challenging and error-prone activity, as it often depends on tacit expert knowledge, incomplete documentation of fail-ure modes, and limited consideration of interactions between subsystems. To address these challenges, this paper introduce the Capability Interaction Graph (CIG), an ontology-driven representation of CPS architectures grounded in the Unified Foundational Ontology (UFO). Due to its graph-based structure, a CIG is naturally represented as a knowledge graph (KG), enabling the explicit cap-ture of functional dependencies and system semantics. Building upon this representation, we propose an au-tomated synthesis algorithm for generating Fault Trees (FTs) directly from CIGs encoded as knowledge graphs. Fault Tree Analysis provides an effective mechanism for evaluating critical failure properties, including fail-ure propagation paths and minimal cut set sets. Our approach reduces this complexity by leveraging CIGs and knowledge graphs. We provide a common semantic representation across engineering domains and support the automated generation of reliability models. 
+
+I. Introduction 
+
+Cyber-Physical Systems (CPSs) are engineered through the interaction of multiple disciplines, including software engineering, electrical engineering, mechanics, and control. During early design stages, engineers must reason about system reliability despite incomplete knowledge, heteroge-neous models, and evolving architectures. Yet many reli-ability analyses are still performed only after substantial design decisions have already been fixed, when changes become costly and difficult to implement [15]. 
+
+Fault tree analysis and knowledge graphs: Fault Tree Analysis (FTA) is one of the most widely used techniques for analyzing system reliability and safety. Fault trees (FTs) provide a structured representation of how lower-level faults combine into system-level failures, enabling analyses such as minimal cut sets, failure propagation paths, and criticality assessment. Despite the maturity of FTA algorithms, constructing fault trees remains largely manual. In practice, FT development requires extensive coordination between domain experts and depends heavily on tacit engineering knowledge. As a consequence, fault trees are expensive to maintain, difficult to integrate across subsystem boundaries, and often unavailable during the early stages of CPS design. Model-Based Systems Engineering (MBSE) and knowl-edge graphs (KGs) offer an opportunity to address this limitation. Modern CPS development already produces large amounts of structured architectural information de-scribing components, interfaces, and interactions. Knowl-edge graphs are particularly attractive because they pro-vide a unified semantic representation capable of inte-grating heterogeneous engineering artifacts under a com-mon ontology. However, existing approaches still lack a principled intermediate representation that connects ar-chitectural knowledge to fault propagation semantics in a formally grounded way. 
+
+Capability Interaction Graphs: This paper introduces the Capability Interaction Graph (CIG), a novel formal model for representing functional dependencies in CPS architectures. The CIG is the central contribution of this work. It provides an ontologically grounded representation of components, capabilities, channels, interfaces, func-tions, faults, and errors, together with the dependency structure that governs fault propagation. Unlike tradi-tional FT models, CIGs explicitly capture the distinction between:  
+
+> •
+
+Faults and errors,  
+
+> •
+
+Events and situations, and  
+
+> •
+
+Fault creation and fault activation. These distinctions are essential for accurately modeling how failures emerge and propagate in cyber-physical ar-chitectures, yet they are largely absent from conventional fault tree formalisms. The CIG serves as an intermediate semantic layer between knowledge graphs and synthesized fault trees. Starting from a minimally structured CPS architecture represented in a KG, we automatically construct a CIG that captures the system’s functional dependency struc-ture. Fault trees are then synthesized directly from the CIG semantics. This approach enables the automated gen-eration of meaningful FT models under minimal modeling assumptions while preserving traceability to the underly-ing system architecture. A key aspect of our approach is its ontological foun-dation. The CIG model and its supporting ontology are grounded in the Unified Foundational Ontology (UFO), providing precise semantics for notions such as capability manifestation, participation, causality, and error propaga-tion. At the same time, the ontology remains intentionally  
+
+> arXiv:2606.20779v1 [cs.SE] 18 Jun 2026 2SPARQL
+> Knowledge Graph Transform.
+> Capability Interaction Graph
+> Fault Tree
+> System Architecture
+> Ontology
+
+Fig. 1: Proposed pipeline for the automatic synthesis of fault trees from a knowledge graph. lightweight so that it can absorb information from hetero-geneous engineering models and remain applicable in early design stages where detailed behavioral information may not yet exist. Thus, this paper connects foundational ontology, knowledge-graph reasoning, and fault-tree analysis into a unified framework for modeling and analyzing failures in Cyber-Physical Systems. Figure 1 summarizes the information flow. Systems architecture descriptions, conforming to the proposed on-tology, are represented as a knowledge graph. These KGs are then queried using SPARQL to obtain a CIG, and automatically transformed into fault trees suitable for standard FTA techniques. 
+
+A. Overview of the Approach 
+
+To derive fault trees from architectural knowledge rep-resented as a knowledge graph, we proceed through the following transformations. Each introduces a new level of abstraction, adding the information required for reliability analysis. 1) Representation of the system architecture. We begin with a description of the system architecture consisting of components, channels, and their inter-actions. The ontology provides explicit semantics for concepts such as components, capabilities, functions, interfaces, faults, and errors. At this stage, the model describes what the system is 
+
+and how its parts are connected , but it does not yet describe failure propagation. This information is later represented as a knowledge graph conforming to an ontology grounded in UFO. 2) Introduce failure semantics. 
+
+We then define how faults, fault activations, and errors are represented within the CIG. Faults are associated with capabilities, while errors arise when expected capabilities fail to manifest. Because capa-bilities depend on resources produced elsewhere in the graph, an error in one location may propagate to dependent capabilities. This step transforms the CIG from a purely architec-tural model into a model that explains how failures can spread through the system .3) Extract the functional dependency structure. 
+
+The CIG identifies the capabilities present in the sys-tem and the dependencies between them. In particu-lar, it captures how capabilities consume and produce resources, and how resources are exchanged through channels and interfaces. The CIG therefore makes explicit which functions depend on which other functions .4) Characterize the causes of errors. Using the fail-ure semantics, we derive an error structure function for each capability. This function recursively describes the conditions under which the capability becomes erroneous. A capability may fail because it is directly affected by a fault, or because one of its required resources are unavailable due to failures elsewhere in the CIG. The resulting structure provides a complete causal explanation of the capability’s failure. 5) CIGs from KGs. Now that the structure and se-mantics of CIGs have been defined, we show how well-formed KGs (those that conform to the ontology) can be queried using SPARQL to construct CIGs. 6) Synthesize a fault tree. Finally, we translate the CIG into a fault tree using its error semantics. The capability under analysis becomes the top-level event, direct and indirect causes are recursively expanded, and logical relationships are represented by fault-tree gates. Through induction we show that the resulting fault tree is semantically grounded in the original archi-tecture and can be readily analyzed using standard Fault Tree Analysis techniques such as minimal cut-set computation and criticality analysis. In summary, the development of the paper fol-lows the chain CIG → Failure Semantics →
+
+Error Structure Function → KG → FT .
+
+Each step enriches the previous representation with ad-ditional semantics, ultimately transforming architectural knowledge into a form suitable for reliability analysis. 
+
+a) Running example: Figure 2 shows a subsystem of a production printer. There are three components: the power supply unit (PSU), the ink reservoir, and the print head. The PSU has the capability to provide electricity, the ink reservoir can provide ink, and the print head can deposit ink and self-clean. All of these capabilities, except for the self-cleaning of the print head, are manifested as functions 
+
+in the presented situation. The output of the PSU and the ink reservoir reach the print head through a wire and a tube respectively. 
+
+b) Organization of the sections: In section II, we in-troduce explain the concepts of knowledge graphs, formal ontology and fault trees. In section III, we propose a novel ontology that describes the concepts of components, ca-pabilities and component interactions in greater detail. In section IV we combine these ontological concepts to form the formal Capability Interaction Graph (CIG). Section V describes the dynamic evolution of CIGs over time through events, and in section VI we specifically consider fault creation and activation, and error behavior. Section VII 3Ink 
+
+Print head 
+
+> Ink Tube
+
+Ink reservoir 
+
+> Provide ink
+> Deposit ink
+> Electr. Wire
+
+PSU 
+
+> Provide electricity
+
+# ... 
+
+> Self-clean
+
+Fig. 2: A simplified diagram of a production print head, illustrating its components, capabilities and interfaces. formalizes the notion of functional dependency. We intro-duce the mechanism of error propagation in section VIII, and in section IX we give the formal interpretation of error semantics in CIGs. In section X we show how CIGs are constructed from well-formed KGs. In section XI we give the semantic mapping between CIGs and FTs. In section XII, we mathematically prove completeness of the CIG-FT transformation w.r.t. preservation of error semantics. Finally, section XIII discusses related work. 
+
+II. Background :has Capability Component 
+
+> rdf:type
+> Print Head
+> rdf:type
+> gufo:inheresIn
+> Deposit ink
+> :has
+
+Fig. 3: A small KG that instantiates the ontology based on the running exam-ple. Print head fault activ. 
+
+> OR
+> Print head fails to deposit ink
+> Fail. to provide ink
+> Fail. to provide electr.
+
+Fig. 4: A simple FT that models the failure modes of the running example. 
+
+A. Knowledge Graphs 
+
+Knowledge graphs (KGs) are a flexible knowledge-base framework that allow for the integration of knowledge from various sources, and the reasoning over known facts to infer new knowledge. KGs typically contain knowledge over a particular domain. The concepts in this domain, and how they relate to each other, can be encoded explicitly with an ontology. Rule-based fact inference then reasons over the instances of the ontology. A prominent example of a KG is Wikidata [35], the knowledge source of the online encyclopedia Wikipedia. Figure 3 shows an example of a KG, formalizing a fragment of the diagram shown in Figure 2. The gray elements show the relevant parts of the ontology. White elements are instances, and the black lines between the white elements are factual relationships between instances. We use gUFO [1], a lightweight OWL implementation of the Unified Foundational Ontology [11], to represent UFO concepts within RDF knowledge graphs. gUFO provides machine-readable semantics for notions such as objects, events, dispositions, and relators, enabling ontology-based reasoning over CPS architectures. The dashed gufo:inheresIn association between the PSU and the capability to produce electricity is one we can infer: Imagine an inference rule that states 
+
+∀α, f. Component (α), Capability (f ) =⇒
+
+has (α, f ) ⇐⇒ inheresIn (f, α ) (1) I.e. if a component has a capability, then we say that the capability inheres in that component and vice versa. Applying this rule on the KG in Figure 3, we insert a new fact (f, gufo:inheresIn , α ) that states “The capability to produce electricity inheres in the PSU component” .In this work, we use a GraphDB instance as our KG for its gUFO support. GraphDB is an open standard and it has a straight-forward connection to predicate logic. GraphDB implements a Resource Description Framework (RDF) triple-store [27], which is an open W3C standard. All RDF triples are of the form (subject , predicate , object ),where each entity is identified by its uniform resource identifier (URI) [4]. All facts in the KG have the form 
+
+xP y and can be described in predicate logic as a binary predicate P (x, y ). RDF triple-stores are queried using SPARQL [14]. SPARQL (SPARQL Protocol and RDF Query Lan-guage) is the standard query language for retrieving and manipulating data stored in RDF graphs. SPARQL en-ables users to express graph-pattern queries to match triples. The language supports core operations such as selection, filtering, aggregation, optional matching, unions, and federated queries across distributed data sources. Through these capabilities, SPARQL allows both flexible exploration of heterogeneous linked data and precise ex-traction of structured relationships. 
+
+B. Fault Trees and Fault Tree Analysis 
+
+Fault trees (FTs) are risk models that enable fault tree analysis (FTA) [34]. There exist many variations of FTs [28]. In this work, we focus on the well-known Static FT (formally defined in subsection XI-A) that allows, among other things, for the modeling of common cause failures [16]. This makes FTs directed, acyclic graphs (DAGs) and not strictly trees, contrary to what their name suggests. FTs model all foreseen failure modes that result in the particular top-level event (TLE) of interest. The leaves of the trees, so-called basic events (BEs) are stochastically independent events that are not decomposed further. The conditions under which these BEs propagate to result in the TLE are modeled by use of AND / OR logic gates. 4
+
+Figure 4 shows an example of a simple fault tree based on the diagram in Figure 2. The TLE is a situation in which the print head fails to deposit ink. The failure of the PSU to provide electricity, the failure of the ink reservoir to provide ink, and the fault activation of the print head component are the basic events. In natural language, the FT expresses that “The print head fails to deposit ink when it is faulty, or when either the PSU or the ink reservoir fail to deliver.” Fault Tree Analysis (FTA) is a widely used deductive safety and reliability engineering technique that calculates metrics over FTs. FTA enables qualitative reasoning about system vulnerabilities by identifying minimal cut sets: the smallest combinations of basic events sufficient to cause the top event. Qualitative analysis also supports ranking critical contributors, revealing single points of failure, exposing common-cause dependencies, and improving un-derstanding of fault propagation paths. Because of FTA’s traceable logic, it remains valuable during system design, hazard assessment, and certification activities. In addition to these structural insights, FTA also sup-ports quantitative evaluation when failure data are avail-able. Probabilities or failure rates can be assigned to basic events and propagated through the tree to estimate the likelihood or frequency of the top event, as well as impor-tance measures for individual contributors. However, in many early design and model-based engineering contexts, qualitative metrics are especially useful because they can be derived without precise statistical data and still guide architectural decisions, redundancy strategies, and risk reduction efforts. 
+
+C. The Unified Foundational Ontology (UFO) 
+
+The Unified Foundational Ontology (UFO) [11] is a foundational ontology developed to provide precise seman-tic distinctions for conceptual modeling. UFO has been widely adopted in conceptual engineering and enterprise modeling because it offers a rigorous treatment of objects, events, dispositions and relations. The ontology is accom-panied by the modeling language OntoUML [11], which provides graphical constructs grounded in UFO semantics. UFO distinguishes between endurants and perdurants. 
+
+Endurants are entities that are wholly present whenever they exist, such as physical components, channels, or interfaces. Perdurants are entities that unfold in time and possess temporal parts, such as functions or errors. In our setting, CPS components, channels and capabilities are modeled as endurants, whereas functions, fault activa-tions, and errors are modeled as events (i.e., perdurants). A central notion in UFO is that of moments. Moments 
+
+are dependent entities that cannot exist without another entity, called their bearer. In particular, intrinsic moments inhere in exactly one bearer. An intuitive example is a headache – a person’s headache cannot exist without the particular person (and only that person) in whom it inheres [13]. Formally, UFO provides the relation 
+
+inheresIn (m, o )
+
+to denote that moment m inheres in object o. In this work, capabilities and faults are modeled as intrinsic moments that inhere in components or channels. UFO further characterizes dispositions, which are mo-ments that may manifest under certain triggering con-ditions. A capability such as “providing electricity” is therefore not itself an event, but a disposition that can be manifested through an event. UFO relates manifestations and dispositions through the relation 
+
+manifests (e, d )
+
+meaning that event e is the manifestation of disposition d.In our model, functions are manifestations of capabilities. Another important distinction concerns situations. A situation represents a snapshot of the world at a particular time point. Events transform one situation into another. In this work, we introduce a syntax that facilitates the description of the preconditions and postconditions of events: 
+
+Γ e
+
+−→ Γ′
+
+where event e begins in situation Γ and brings about situation Γ′. This treatment allows us to formalize fault creation, fault activation, and error propagation as tem-porally ordered events. UFO also provides a formal treatment of causality. An event may bring about a situation that subsequently triggers another event, thereby establishing a causal chain. This distinction is particularly important in reliability modeling because it separates:  
+
+> •
+
+the creation of a fault,  
+
+> •
+
+the activation of a fault under operational conditions,  
+
+> •
+
+the resulting error state. Traditional fault tree approaches often conflate these notions, whereas UFO enables them to be represented explicitly. Finally, UFO distinguishes between objects, roles, re-lators, and events. We exploit these distinctions in the proposed ontology:  
+
+> •
+
+components and channels are modeled as objects,  
+
+> •
+
+capabilities and faults are modeled as dispositions,  
+
+> •
+
+producer and consumer are modeled as roles,  
+
+> •
+
+interfaces are modeled as relators mediating interac-tions, and  
+
+> •
+
+functions, errors, and fault activations are modeled as events. Grounding the proposed CIG model in UFO provides precise semantics for participation, manifestation, depen-dency, and causality, while remaining lightweight enough for early-stage CPS architecture modeling. 
+
+III. The Ontological Foundations of Capability Interaction Graphs 
+
+We use OntoUML to formally visualize the elements of CIGs in Figure 5.We argue that this conceptualization is small enough to capture knowledge in the earliest stages of CPS design, yet generic enough to capture concepts 5
+
+across modeling languages and engineering domains, and sufficiently rich for the synthesis of meaningful fault trees. Note that not all boxes in this diagram need to be provided by a user instantiating a CIG. The only input we strictly require (for the purpose of any meaningful 
+
+fault tree synthesis) is a set of components, channels, and a set of labeled edges that connect them. All the other concepts can implicitly be instantiated under a fixed set of assumptions. 
+
+A. Formal notation 
+
+Central to the CIG model is UFO’s notion of situations. In essence, a situation describes a system under study at a single point in time. By convention, we here denote a situation Γ.Furthermore, we use some standard mathematical no-tations for our formal definitions. We introduce them here for convenience. Let proj i be the function that maps a tuple to its ith element. I.e. let T be a tuple, such that 
+
+T = ( x1, . . . , x n)
+
+Then proj i T = xi
+
+Furthermore, we use the common FOL syntactic short-hand for quantifying over members of a set: 
+
+∀x ∈ S. ϕ (x) ≡ ∀ x. (S(x) =⇒ ϕ(x))
+
+∃x ∈ S. ϕ (x) ≡ ∃ x. (S(x) ∧ ϕ(x))
+
+Lastly, let P denote the finite powerset (as we only work with finite sets). 
+
+B. Concepts and formal definitions 
+
+Endurants (such as objects) are present in a situation. E.g. the apple that fell on Sir Isaac Newton’s head was present at the moment of impact. That same apple is not present now. We will introduce the elements of a CIG in the context of a particular situation. It suffices to know that this means the elements of the system that are present at that particular time point . In this section, we introduce sets of individuals that “are present”. For instance, we collect components in the set C and we indicate the situation in which these objects are present by means of a subscript. I.e. the set CΓ collects exactly those object which are components and that are present in the situation Γ.In contrast, perdurants (events) exist throughout a time interval. E.g. the event of that particular apple falling began in the situation where it had just detached from the stem, and ended in the situation that it reached Sir Newton’s cranium (all the while accumulating temporal parts). Section V formalizes this notion in the context of CIGs. The bold-print terms introduced below refer to the endurant concepts shown in Figure 5. We use the running example in Figure 2 to help the reader in building an intuition of these concepts. 
+
+Resource Types are higher-order types that denote the parameter and output types of a function. When instantiating the model, instances of Resource Type (e.g. 
+
+paper or electricity ) are types themselves. To be precise, the instances of resource types are substantial types (types whose instances are founded on matter). The assertion that a type is a resource type is given by the unary pred-icate ResourceType : Individual → {> , ⊥} . This predicate comes from the ontology. Looking at Figure 2, we find that 
+
+ResourceType (Ink ) = >, and ResourceType (PSU ) = ⊥.Resource types generalize any form of energy in the sense of [10], such as materials, fluids or signals. This broad definition covers many of the fluids, gases, control signals, etc. that are involved in the design of a CPS architecture.The only meaningful semantics of resource types are conveyed by their relationships to ontologically richer concepts like capabilities and channels. Figure 2 shows two resource types; electricity and ink .
+
+Definition 1 (Resource Types) . The set of resource types, denoted by the set R = {r | ResourceType (r)} represents a higher-order type. Elements of R are sortal types themselves. We do not consider individuals that instantiate resource types in this work. For instance, Page ∈ R is a valid resource type, but any particular sheet of paper (e.g. page 42 of my copy of “A Room of One’s Own” ) is not. As a result, resource types are purely symbolic elements in R, whose symbol is the (nominal) identity of the type. I.e., the elements Page ∈ R and Ink ∈ R are distinct because their symbols are distinct. Likewise, the elements Ink ∈ R Γ and Ink ∈ R Γ′ are the same type, because their symbols are identical. For this reason, we generally do not subscript R
+
+with a situation. 
+
+Capabilities are dispositions (or more generally; 
+
+modes ) that describe the possible behavior of a component. They inhere in exactly one component. Dispositions are intrinsic moments that are existentially dependent on their bearer. They are particular, i.e. one capability cannot inhere in two distinct bearers. A capability can be manifested as a function. We distinguish the Functional and the Erroneous phases of capabilities. A capability is in the erroneous phase only during the existence of an error over that capability (and otherwise it is in the functional phase). The generalization set of these phases is complete and disjoint (components are either functional or erroneous, but not both). The assertion that an individual is a capability is given by the unary predicate Capability Γ : Individual → {> , ⊥} . In Figure 2, we have Capability (Provide electricity ) = >
+
+and Capability (Ink ) = ⊥.The assertion that a capability is in the functional or erroneous phase is given by FunctionalCapability Γ :
+
+Individual → {> , ⊥} and ErroneousCapability Γ :
+
+Individual → {> , ⊥} respectively. In Figure 2, the capabilities are to provide electricity , to 
+
+provide ink , and to deposit ink and self-clean . They inhere 6< < m i x i n > > Component < < c a t e g o r y > > < < m o d e > > Capability < < e v e n t > > Function < < r o l e > > Consumer < < r o l e > > Producer < < m i x i n > > ResourceType < < r o l e M i x i n > > Channel < < s u b k i n d > > InputInterface < < s u b k i n d > > OutputInterface < < r e l a t o r > > Interface { complete, disjoint } < < c a t e g o r y > > < < m o d e > > Fault <<ph aseMixin>> Erroneous Capability <<phaseMixin> > Functional Capability { covering, disjoint } < < e v e n t > > FaultCreation < < e v e n t > > Error 1..* 0..* 1..* 0..* 11..* 10..* 11..* 1..* 110..1 0..* 10..* 11..* 112..* 1..* 10..* 1..* 1..* 1111..* 10..* 1..* 1110..* < < c r e a t i o n > > <<characterization>> has < < c r e a t i o n > > < < t e r m i n a t i o n > > prevents <<characterization>> accomodates < < m e d i a t i o n > > < < m e d i a t i o n > > < < m e d i a t i o n > > < < m e d i a t i o n > > < < m e d i a t i o n > > < < m e d i a t i o n > > < < m a t e r i a l > > providedBy < < m a t e r i a l > > provides produces consumes <<participation>> <<manifestation>> <<characterization>> has 
+
+Fig. 5: Our proposed ontology of CPS architecture, introducing the notions of components, capabilities, functions, channels, etc. in the PSU, ink reservoir and print head respectively. The capability to self-clean is not manifested in the presented situation. 
+
+Definition 2 (Capabilities) . Capabilities CΓ ⊆
+
+CapabilityId Γ × P(R) × P(R) is a set of tuples, where the first element ranges over CapabilityId Γ.We define the bijective function ιΓ that maps the elements in CΓ to an individual in the ontology. 
+
+ιΓ : CΓ → CapabilityId Γ
+
+Its inverse is denoted ι−1Γ .The second and third element of the tuple respectively denote the resource types its bearing component consumes and produces when the capability is manifested. Capabilities inhere in a unique object ( D1 , Table III): 
+
+∀f ∈ CΓ. inheresIn Γ(ιΓ(f ), β (ιΓ(f ))) 
+
+Functions are atomic events that are the manifestation of a capability. The bearing component of that capability participates in the function event. UFO-B [13] defines that the begin point of this manifestation is the end point of the activation of the capability it manifests. The conditions for this activations must therefore be met at this begin point, as well as for the entire duration of the function. Such conditions are given by the capability’s consumes relation. A function effects a transformation of resources, describ-ing the behavior of a component. In this work, the mechan-ics of such transformations are not explicitly modeled. The assertion that an individual is a function is given by the unary predicate Function Γ : Individual → {> , ⊥} .
+
+Definition 3 (Functions) . The set FΓ = FunctionId Γ is a set of function identifiers. Elements of this set denote which capabilities are currently manifested as a function event. 7
+
+The set FΓ is exactly the set of symbols that represent a function event in Γ:
+
+FΓ = { ¯f | Function Γ( ¯f )}
+
+The set FunctionId Γ is derived from the set of capability identifiers CapabilityId Γ by a partial bijection 
+
+ϱΓ : CapabilityId Γ → FΓ
+
+and dom ϱΓ =
+
+{c | Capability Γ(c) ∧ ∃ e : Event . manifests (e, c )} (2) and 
+
+∀f ∈ dom ϱΓ.∀ ¯f ∈ FΓ.ϱΓ(f ) = ¯f ⇐⇒ manifests ( ¯f , f ) (3) Where dom ϱΓ denotes the domain of ϱΓ. Furthermore, since ϱΓ is a partial bijection, if a function manifests a capability, it is the unique manifestation of that capability in Γ.Let ϱ−1Γ : FunctionId Γ → CapabilityId Γ be the inverse function of ϱ that returns the unique capability that a given function manifests ( D2 , Table III): 
+
+∀ ¯f ∈ FΓ. manifests ( ¯f , ϱ −1Γ ( ¯f )) 
+
+Note that ϱ−1Γ is injective where dom ϱ−1Γ = FΓ.In our notation, we use symbol names to indicate the manifestation relationship between a capability and afunction. Bar-notation indicates that ¯f is a function that manifests the capability f .
+
+Faults are modes that describe the possible prevention of the manifestation of a component’s capabilities. They inhere in exactly one component. The assertion that an individual is a fault is given by the unary predicate Fault :
+
+Individual → {> , ⊥} .
+
+Definition 4 (Faults) . Faults FΓ ⊆ FaultId Γ ×
+
+P(CapabilityId Γ) are modes that inhere in a component and prevent the manifestation of (some of) that compo-nent’s capabilities. We denote by ιΓ : FΓ → FaultId Γ the bijective function that maps the elements in FΓ to an individual in the ontology. Its inverse is denoted ι−1Γ .A fault prevents the manifestation of certain capabili-ties: 
+
+∀ Γ : G.∀(id f , C ) ∈ FΓ.∀id f ∈ C. id f 6 ∈ dom ϱΓ
+
+A fault can only prevent the manifestation of capabili-ties that inhere in the bearer of that fault: 
+
+∀ Γ : G.∀(id f , C ) ∈ FΓ.∀f ∈ C. β (f ) = β(id f ) (4) We may denote a fault with the striked-out symbol of any of the capabilities whose manifestation is prevented by that fault. I.e. f ∈ FΓ denotes that the manifestation of capability f ∈ CΓ is prevented. The Component type is a mixin that describe physical entities with one or more capabilities. We also distinguish the Consumer and Producer roles. The generalization set of these roles if not disjoint and not complete. These roles are respectively brought about by a material providedBy 
+
+and provides relation to a channel. The assertion that an individual is a component is given by the unary pred-icate Component : Individual → {> , ⊥} . For instance, in Figure 2, we find that Component (PSU ) = > and 
+
+Component (Provide electricity ) = ⊥.In this work, we do not make an ontological commitment to the parthood of components or the definition of sys-tems. Fault tree synthesis and analysis does not necessarily depend on the mereology of systems, and to keep the ontology minimal we do not involve it. We adopt an atomistic worldview [9] and define all components to be mereologically atomic, i.e. components do not have proper parts. A common refrain is “but what is a component to one, is a system to another” . This is not necessarily incompatible with our perspective. In fact, it is one of the key principles that allows for the modeling of an entire “print head” as a single component, constrained only by its interfaces to other other components. In Figure 2, the components are the PSU , the ink reservoir , and the print head .
+
+Definition 5 (Components) . Components are tuples of the form 
+
+CΓ ⊆ ComponentId Γ × P(CΓ) × P(FΓ) × P(FΓ)
+
+where ComponentId Γ is a set of component identifiers. Let α = ( id α, C α 
+
+> Γ
+
+, Fα 
+
+> Γ
+
+, F α 
+
+> Γ
+
+) be a component. Then: 
+
+C α 
+
+> Γ
+
+∈ P(CΓ) is the set of capabilities that inhere in 
+
+α, and; 
+
+Fα 
+
+> Γ
+
+∈ P(FΓ) is the set of functions that manifest a capability of α, and; 
+
+F α 
+
+> Γ
+
+∈ P(FΓ) is the set of faults that inhere in α.We define the bijective function 
+
+ιΓ : CΓ → ComponentId Γ
+
+that maps components to an instance of Component in the situation Γ, and that preserves the mixed identity prin-ciples provided by the specializations of the Component 
+
+mixin across different situations. Its inverse is denoted ι−1Γ .We denote by C α 
+
+> Γ
+
+the set of capabilities that inhere in the component α ∈ C Γ in situation Γ:
+
+C α 
+
+> Γ
+
+= {f | f ∈ CΓ. ι Γ(α) = β(ιΓ(f )) }
+
+We denote by Fα 
+
+> Γ
+
+the set of functions that manifest a capability of the component α ∈ C Γ in the situation Γ:
+
+Fα 
+
+> Γ
+
+= { ¯f | ¯f ∈ FΓ. ι Γ(α) = βΓ(ϱ−1Γ ( ¯f )) }
+
+We denote by F α 
+
+> Γ
+
+⊆ FΓ the set of faults that inhere in the component α ∈ C Γ in the situation Γ:
+
+F α 
+
+> Γ
+
+= {f | ιΓ(α) = βΓ(f )}8
+
+Channels are role mixins that interface with a com-ponent. The channel role is grounded in the association to a resource type that the channel is said to accom-modate. Channels can transport only the resource types they accommodate. The electrical wire that connects the 
+
+PSU and the Print head in Figure 2 is an example of a channel. The transport of each resource type is made up of two distinct capabilities: a pure consumption capability to 
+
+consume that resource, and a pure production capability to produce that resource. Since we only discuss resource types in this work, we do not associate a quantity with this capacity. The predicate Channel : Individual → {> , ⊥} 
+
+asserts whether an individual is a channel. 
+
+Definition 6 (Channels) . Channels ⃗ CΓ ⊆ ChannelId Γ ×
+
+P(R)×P(CΓ)×P(FΓ)×P(FΓ) are tuples that relate an individual channel to the resource types it accommodates, where ChannelId Γ is a set of channel identifiers. Let the function ιΓ denote the bijective function that maps the elements in ⃗ C to an individual in the ontology. 
+
+ιΓ :⃗ CΓ → ChannelId Γ
+
+Its inverse is denoted ι−1Γ .We denote by C c 
+
+> Γ
+
+the set of capabilities that inhere in the channel c ∈⃗ CΓ in situation Γ:
+
+C c 
+
+> Γ
+
+= {f | f ∈ CΓ. ι Γ(c) = β(ιΓ(f )) }
+
+We denote by Fc 
+
+> Γ
+
+the set of functions that manifest a capability of the channel c ∈⃗ CΓ in situation Γ:
+
+Fc 
+
+> Γ
+
+= { ¯f | ¯f ∈ FΓ. ι Γ(c) = βΓ(ϱ−1Γ ( ¯f )) }
+
+We denote by F c 
+
+> Γ
+
+⊆ FΓ the set of faults that inhere in the channel c ∈⃗ CΓ in the situation Γ:
+
+F c 
+
+> Γ
+
+= {f | ιΓ(c) = βΓ(f )}
+
+Let the function cons Γ :⃗ CΓ ×R → CΓ denote the unique input capability that allows a channel’s consumption of a resource type. Let the function prod Γ :⃗ CΓ × R → CΓ de-note the unique output capability that allows a channel’s production of a resource type. Let c ∈⃗ CΓ be a channel, and let r ∈ R be a resource type that c accommodates. Let h = cons Γ(c, r ). Then by definition, h must be unique: 
+
+h ∈ C c 
+
+> Γ
+
+∧ (¬∃ h′ ∈ C c 
+
+> Γ
+
+. h ′ = cons Γ(c, r ) ∧ h 6 = h′)
+
+Furthermore, h must – if it exists – refer to the same capability across situations: 
+
+∀ Γ, Γ′ : G. (h = cons Γ(c, r )) =⇒
+
+(( ∃h′ ∈ CΓ′ . ι Γ(h) = ιΓ′ (h′)) =⇒ h = cons Γ′ (c, r )) 
+
+The same definitions hold for k = prod Γ(c, r ).The production and consumption capabilities must ac-tually consume and produce the correct respective re-sources. Let c ∈⃗ CΓ be a channel, and let r ∈ R be a resource type that c accommodates in the situation Γ. Let 
+
+h = cons Γ(c, r ) and let k = prod Γ(c, r ). Then: 
+
+∧
+
+> x∈{ h,k }
+
+consumes Γ(x, r ) ∧ produces Γ(x, r )
+
+Furthermore, this resource type r is unique. I.e. there exists no r′ ∈ R s.t.: 
+
+r′ 6 = r ∧ ∨
+
+> x∈{ h,k }
+
+(consumes Γ(x, r ′) ∨ produces Γ(x, r ′))
+
+The consumption and production capabilities in a chan-nel c ∈⃗ CΓ are distinct. Let c ∈⃗ CΓ be a channel, and let 
+
+r ∈ R be a resource type that c accommodates in the situation Γ. Then: 
+
+ιΓ(cons Γ(c, r )) 6 = ιΓ(prod Γ(c, r )) 
+
+Interfaces are relators that describe an interaction be-tween a component and a channel through some resource. They aggregate a component’s and a channel’s externally dependent modes that are founded by the foundation an 1
+
+interface, resulting in the material relations providedBy 
+
+(InputInterfaces) and provides (OutputInterfaces). I.e., the component α has the role consumer of resource r iff there exists a channel c such that an input interface in 
+
+materializes a providedBy relationship that mediates that resource r through c. Similarly, the component α has the role producer of resource r iff there exists a channel c
+
+such that an output interface out materializes a provides 
+
+relationship that mediates that resource r through c.We can compose functions such that the output of one component’s function serves as the input of another component’s function. Such patterns describe components exchanging a resource through a channel. We sometimes call this pattern a resource exchange .In Figure 2, there is an exchange of electricity between the PSU’s provide electricity function and the print head’s 
+
+deposit ink function. There is also a resource exchange between the ink reservoir’s provide ink and the print head’s 
+
+deposit ink .
+
+Definition 7 (Output interfaces) . An output interface 
+
+OΓ ⊆ ComponentId Γ × ChannelId Γ × R is the relator that the provides association between a producer component and a channel is derived from. An output interface relates a component, a channel and the resource type that the component provides to the channel. Let ϖo 
+
+> Γ
+
+: OΓ → P(CapabilityId Γ) be the function that returns the set of capabilities that make up the component’s qua-individual component-α-qua-provider-of-
+
+o, such that 
+
+∀ Γ : G.∀o ∈ O Γ.∀id f ∈ ϖo
+
+> Γ
+
+(o). β (id f ) = proj 1(o)  
+
+> 1The founding interface is not necessarily this interface. 9
+
+Let ςo 
+
+> Γ
+
+: OΓ → CapabilityId Γ be the function that returns the unique capability that makes up the channels’s qua-individual channel-c-qua-consumer-of-o, such that 
+
+∀ Γ : G.∀o ∈ O Γ.ςo
+
+> Γ
+
+(o) = ιΓ(cons (ι−1(proj 2(o)) , proj 3(o))) 
+
+The identity of an output interface is derived from the sum of the qua-entities it aggregates, given by 
+
+ιo 
+
+> Γ
+
+: OΓ → InterfaceId Γ
+
+Its inverse is given by ιo, −1Γ .Lastly, the output interface relator is existentially de-pendent on the manifestations of the capabilities that make up its qua-entities: 
+
+∀ Γ : G.∀o ∈ O Γ.∀id f ∈ (ϖo
+
+> Γ
+
+(o) ∪ { ςo
+
+> Γ
+
+(o)}) .
+
+∃ ¯f ∈ FΓ. ϱ Γ(id f ) = ¯f
+
+Definition 8 (Input interfaces) . An input interface IΓ ⊆
+
+ChannelId Γ × ComponentId Γ × R is the relator that the 
+
+providedBy association between a channel and a consumer component is derived from. An input interface relates a channel, a component and the resource type that the channel provides to the compo-nent. Let ϖi 
+
+> Γ
+
+: IΓ → P(CapabilityId Γ) be the function that returns the set of capabilities that make up the com-ponent’s qua-individual component-α-qua-provided-by-i,such that 
+
+∀ Γ : G.∀i ∈ IΓ.∀id f ∈ ϖi
+
+> Γ
+
+(i). β (id f ) = proj 2(i)
+
+Let ςi 
+
+> Γ
+
+: IΓ → CapabilityId Γ be the function that returns the unique capability that makes up the channel’s qua-individual channel-c-qua-provider-of-i, such that 
+
+∀ Γ : G.∀i ∈ I Γ.ςi
+
+> Γ
+
+(i) = ιΓ(prod (ι−1(proj 1(i)) , proj 3(i))) 
+
+The identity of an input interface is derived from the sum of the qua-entities it aggregates, given by 
+
+ιi 
+
+> Γ
+
+: IΓ → InterfaceId Γ
+
+Its inverse is given by ιi, −1Γ .Lastly, like with output interfaces, the input interface relator is existentially dependent on the manifestations of the capabilities that make up its qua-entities: 
+
+∀ Γ : G.∀i ∈ I Γ.∀id f ∈ (ϖi
+
+> Γ
+
+(i) ∪ {ςi
+
+> Γ
+
+(i)}) .
+
+∃ ¯f ∈ FΓ. ϱ Γ(id f ) = ¯f
+
+Expectations. Expectations describe what capabilities 
+
+should be manifested as functions. In this work, we do not explore the justification of why a particular capability’s manifestation should be expected, nor do we explicitly describe who has such expectations. E.g. we may expect the capability to provide electricity to be manifested. If it is not – i.e. if this expectation is not met – we call this an 
+
+error .
+
+Definition 9 (Expectations) . A set of expectations EΓ ⊆
+
+CapabilityId Γ is a subset of capability identifiers. We say a situation meets an expectation if and only if the expected capability is manifested by a function in that situation: 
+
+∀ Γ : G.∀e ∈ EΓ. meets (Γ , e ) ⇐⇒ e ∈ dom ϱΓ
+
+Note that, given Definition 9, a CIG can still meet all expectations when the system “does more than expected”. 
+
+On the sets CΓ, FΓ and FΓ.
+
+Capabilities inhere in objects. In this work, the only ob-jects we distinguish are components and channels. Hence, all capabilities must inhere in either a component or a channel. The union of component capabilities and channel capabilities therefore equals the set of capabilities CΓ:
+
+∀ Γ : G. CΓ =
+
+( ∪
+
+> α∈C Γ
+
+C α
+
+> Γ
+
+)
+
+∪
+
+ ∪ 
+
+> c∈⃗CΓ
+
+C c
+
+> Γ
+
+ (5) Functions are manifestations of exactly one capability, which in turn inhere in exactly one object. Like with capabilities, the union of component functions and channel functions therefore equals the set of functions FΓ:
+
+∀ Γ : G. FΓ =
+
+( ∪
+
+> α∈C Γ
+
+Fα
+
+> Γ
+
+)
+
+∪
+
+ ∪ 
+
+> c∈⃗CΓ
+
+Fc
+
+> Γ
+
+ (6) Faults inhere in exactly one object. Like with capabil-ities, the union of component faults and channel faults therefore equals the set of faults FΓ:
+
+∀ Γ : G. FΓ =
+
+( ∪
+
+> α∈C Γ
+
+F α
+
+> Γ
+
+)
+
+∪
+
+ ∪ 
+
+> c∈⃗CΓ
+
+F c
+
+> Γ
+
+ (7) Recall that CIGs permit components that play the role of a channel. Therefore, the families of sets 
+
+∪ 
+
+> α∈C Γ
+
+C α 
+
+> Γ
+
+, ∪  
+
+> c∈⃗CΓ
+
+C c 
+
+> Γ
+
+, and 
+
+{∪ 
+
+> α∈C Γ
+
+Fα 
+
+> Γ
+
+, ∪  
+
+> c∈⃗CΓ
+
+Fc
+
+> Γ
+
+}
+
+, and 
+
+{∪ 
+
+> α∈C Γ
+
+F α 
+
+> Γ
+
+, ∪  
+
+> c∈⃗CΓ
+
+F c
+
+> Γ
+
+}
+
+are not necessarily partitions of the sets CΓ, FΓ and FΓ respectively. 
+
+IV. Capability Interaction Graphs 
+
+In this section we combine the individual concepts of CPS architecture from the previous section into one large model: the CIG. We use this formalization in the next section, to show how these CIGs can dynamically change over time. In this section we also present a graphical notation, turning CIGs into readable diagrams which will be useful for examples throughout the paper. Table I provides a glossary of endurant CIG elements and functions. 10                      
+
+> Notation Description
+> Γ : GThe factual situation Γ
+> CΓ,⃗ CΓ, . . . The set of components, channels, etc. in the situation Γ
+> ιΓThe function that returns the ontological identity of a given CIG element
+> ϱΓ(f)The function that returns the Function that manifests a given capability manifests in the situation Γ
+> f, ¯f , f A capability, a Function manifesting that capability, and a fault preventing the manifestation of that capability resp. cons Γ(c, r )The function that returns the unique input capability that allows the channel c’s consumption of the resource type r
+> prod Γ(c, r )The function that returns the unique output capability that allows the channel c’s production of the resource type rϖo
+> Γ(o), ϖ i
+> Γ(i)The functions that return, for a given interface, the set of capabilities that make up the component’s qua-individual
+> ςo
+> Γ(o), ς i
+> Γ(i)The functions that return, for a given interface, the unique capability that makes up the channels’s qua-individual
+
+TABLE I: A glossary of endurant CIG elements and functions.                 
+
+> ID Definition Description 10 [11] β:IntrinsicMoment →Individual The function that returns the bearer of a particular intrinsic moment.
+> a102 [12] manifests (x, y )=⇒Perdurant (x)∧Endurant (y)Relates an event to the particular moment it is a manifestation of.
+
+TABLE II: The relevant portion of UFO, taken from [11] and [12]. 
+
+A. Formal definition 
+
+A CIG is a tuple composed of capabilities (C ), func-tions (F), faults (F ), components (C), channels (⃗ C), 
+
+output interfaces (O), input interfaces (I) and ex-pectations (E ). Such a tuple represents the state of a system, and is typically denoted γ. The type of a CIG is denoted G, and we write γ ∈ G for instances of G.We base our notion of time points on that introduced in UFO-B [13]. Simply put, the set TimePoint and the 
+
+precedes relation make up a strict total order. We may assign a time point to the state γ. We then write Γ : G.Furthermore, we may denote by a subscript the CIG to which a set belongs. E.g. we mean by CΓ the set of components that belong to some CIG Γ : G.Additionally, in the places where it is obvious, we do not write the particular situation in which predicates are said to hold. For instance, when we write 
+
+∀α ∈ C Γ. Component (ι(α)) 
+
+we mean that α is present at the time point at which the situation Γ obtains, and that the predicate 
+
+Component (ιΓ(α) holds in that situation. We describe time points and situations in more detail in section V. The formal definition of CIGs is grounded in UFO-A and UFO-B predicates and functions. For reference, the relevant portions of UFO-A are described in Table II. Table III lists the relevant portion of UFO-B. 
+
+Definition 10. Consider the set G = P(C ) × P(F) ×
+
+P(F ) × P(C) × P(⃗ C) × P(O) × P(I) × P(E ). A CIG 
+
+γ = ( CΓ, FΓ, FΓ, CΓ,⃗ CΓ, OΓ, IΓ, EΓ) is a tuple that is an element of the set G, denoted γ ∈ G .An factual CIG Γ (i.e. one that obtains at some time point) is a situation in the sense of UFO-B [13] and denoted Γ : G. In UFO-B, situations are akin to states of affairs that describe a fragment of the world at a particular point in time. However, two situations are distinct if the time point at which they obtain are different – even if the state of affairs they describe are identical. The multiplicity function μG′ : G → N defines the mul-tiset G′ = ( G, μ G′ ). Contrary to common sets, a multiset allows for more than one element of the same value. This is an important property, since in UFO two situations are distinct if they describe a different time points [13]. Then let Occ (G′) ⊂ G × N be the set that relates CIGs to the multiplicity of their occurrences: Occ (G′) = {(γ, i ) | γ ∈ G . 0 ≤ i ≤ μG′ (γ)}
+
+We introduce the notation Γ to denote an occurrence 
+
+(γ, i ) ∈ Occ (G′). The notation Γ : G is such that the multiplicity of the occurrence is at least one: 
+
+∀ (γ, i ) ∈ G . Γ : G ⇐⇒ μG′ (Γ) ≥ 1
+
+Let the function τ : Occ (G′) → TimePoint be the total function that relates occurrences of a CIG to a time point. By the definitions of Occ (G′) and τ , all CIGs such that 
+
+Γ : G have obtained in a time point: 
+
+∀Γ ∈ G . Γ : G ⇐⇒ ∃ t ∈ TimePoint . τ (Γ) = t
+
+In UFO, such situations are termed facts .Two CIGs Γ = ( γ, i ) ∈ Occ (G′) and Γ′ = ( γ′, j ) ∈
+
+Occ (G′) are structurally equivalent when they describe the same state of affairs (regardless of their time point): 
+
+Γ ≡ Γ′ ⇐⇒ γ = γ′
+
+Finally, we define that two CIGs Γ = ( γ, i ) ∈ Occ (G′)
+
+and Γ′ = ( γ′, j ) ∈ Occ (G′) are distinct if they obtain at a different time point: 
+
+τ (Γ) 6 = τ (Γ ′) =⇒ i 6 = j
+
+In this way, the notation Γ : G mirrors the UFO notion of factual situations, whereas Γ ∈ G denotes the set of all world possibilia (i.e. all the states that a system could be in). 11 
+
+B. On CIGs as objects 
+
+CIGs describe a collection of interacting elements. To argue that these interacting elements can be the focus of a situation, we must argue that this collection itself has object-like properties. We call the elements that a CIG comprises endogenous elements. And we call the sum of such endogenous elements systems . We do not make any ontological commitments to the nature of systems – such as their mereology – beyond the stipulate that a system is the object comprising all components, channels and interactions in a CIG γ, and that this object is precisely the focus of the situation Γ. We must now be precise: a CIG γ is an object . When we discuss the dynamics and evolution of such objects, we describe their occurrences (e.g. Γ) as situations .
+
+C. Formal graphical notation of CIGs 
+
+A CIG can be interpreted as a graph by having its set of capabilities as vertices, and its interfaces as solid edges. The label of each edge is the resource type that is exchanged. We draw a rectangle around capabilities that have the same bearer (i.e. components). A dashed edge denotes the flow of a resource type between channel input and output capabilities. We overset a capability label with a bar (e.g. ¯f ) to indicate that it is currently manifested as a function. The running example shown in Figure 2 is more formally denoted in Figure 6. . . . ¯f
+
+¯k1
+
+¯h1
+
+¯k0
+
+¯h0¯g
+
+¯m
+
+ink 
+
+elec. 
+
+ink 
+
+elec. 
+
+ink 
+
+elec. 
+
+ink Γ0:
+
+Fig. 6: A formal CIG diagram showing the running exam-ple (derived from Figure 2). 
+
+D. Further model constraints 
+
+To further eliminate unintended model instantiations, we provide additional integrity constraints. 
+
+Individuation. The elements of CIGs must have a surjective relation to the instances that the ontology in section III permits for concepts of the same name; 
+
+∀r ∈ R . ResourceType (r)
+
+∀f ∈ CΓ. Capability (ιΓ(f )) 
+
+∀ ¯f ∈ FΓ. Function ( ¯f )
+
+∀f ∈ FΓ. Fault (ιΓ(f )) 
+
+∀α ∈ C Γ. Component (ιΓ(α)) 
+
+∀c ∈⃗ CΓ. Channel (ιΓ(c)) 
+
+∀o ∈ O Γ. OutputInterface (ιo
+
+> Γ
+
+(o)) 
+
+∀i ∈ I Γ. InputInterface (ιi
+
+> Γ
+
+(i)) 
+
+∀e ∈ EΓ. Capability (ιΓ(e)) 
+
+Integrity of resource types. The second and third el-ement of a capability tuple denote the resource types that the capability, when manifested, consumes and produces respectively. Let Γ : G and (id f , R in , R out ) ∈ CΓ:
+
+(∀r↓ ∈ Rin . consumes (β(id f ), r ↓)) ∧
+
+(∀r↑ ∈ Rout . produces (β(id f ), r ↑)) (8) The second element of a channel tuple denotes the resource types that channel accommodates. Let Γ : G:
+
+∀(id c, R, . . . ) ∈⃗ CΓ. ∀r ∈ R. accommodates (id c, r )
+
+The component capabilities mediated by interfaces are compatible with that interface w.r.t. the resource type they produce or consume (for output and input interfaces respectively). Let Γ : G:
+
+∀o ∈ O .∀id f ∈ ϖo
+
+> Γ
+
+(o). proj 3(o) ∈ proj 3(ι−1Γ (id f )) 
+
+and 
+
+∀i ∈ I .∀id f ∈ ϖi
+
+> Γ
+
+(i). proj 3(i) ∈ proj 2(ι−1Γ (id f )) 
+
+On the special case of transport capabilities. The consumption capability of a channel cannot provide a channel, and the production capability of a channel cannot be provided by a channel. Let Γ : G and c ∈⃗ CΓ:
+
+(∃r ∈ R . accommodates (c, r )) ∧ ∀ f ∈ C c 
+
+> Γ
+
+.
+
+(f = cons Γ(c, r ) =⇒ ¬∃ o ∈ O . ι Γ(f ) = ςo
+
+> Γ
+
+(o)) ∧
+
+(f = prod Γ(c, r ) =⇒ ¬∃ i ∈ I . ι Γ(f ) = ςi
+
+> Γ
+
+(i))
+
+The bearer of transport capabilities. The bearer of the consumption and production capabilities of a channel 
+
+c, is c. Let Γ : G be a situation, an c ∈⃗ CΓ be a channel. Let r ∈ R be a resource that c accommodates. Then: 
+
+β(cons Γ(c, r )) = β(prod Γ(c, r )) = c
+
+Manifestation of capabilities. Let Γ : G. The follow-ing equation explicitly connects all members of FΓ to a unique member of CΓ:
+
+∀ ¯f ∈ FΓ.∃!f ∈ CΓ. ¯f = ϱΓ(ιΓ(f )) ∧ manifests ( ¯f , ι Γ(f )) 
+
+V. Dynamics and system evolution 
+
+In this section, we extend the representation of the system at some point in time (formalized in the previous section) with a representation of a system’s dynamic evolution throughout time. To encode the dynamic aspects of a system, we can evolve CIGs through the UFO-B notion of events [13]. We typically denote by Γ′ the situation that is derived from the situation Γ by the occurrence (or application ) of some event. For reference, we also list the relevant portions of UFO-B in Table III. Events transform one situation into another. We call the situation that an event begins in its antecedent , and the situation that is brought about by the event its consequent .An atomic event is an event that is not made up of other events (in contrast to complex events) [13]. We distinguish two types of atomic events: triggered events and spontaneous events. 12                                                                                                                                                                            
+
+> Axiom FOL formula
+> S1 ∀s:Situation , e :Event .triggers (s, e )=⇒obtainsIn (s, begin-point (e))
+> S2 ∀s:Situation , e :Event .brings-about (e, s )=⇒obtainsIn (s, end-point (e))
+> S3 ∀e:Event .∃!s:Situation .triggers (s, e )
+> S4 ∀e:Event .∃!s:Situation .brings-about (e, s )
+> S5 ∀s:Situation .fact (s)⇐⇒ ∃ t:TimePoint .obtainsIn (s, t )
+> S6 ∀e, e ′:Event .directly-causes (e, e ′)⇐⇒ ∃ s:Situation .brings-about (e, s )∧triggers (s, e ′)
+> S7 ∀e, e ′′ :Event .causes (e, e ′′ )⇐⇒ directly-causes (e, e ′′ )∨(∃e′:Event .causes (e, e ′)∧causes (e′, e ′′ ))
+> T1 ∀t:TimePoint .¬precedes (t, t )
+> T2 ∀t, t ′:TimePoint .precedes (t, t ′)=⇒ ¬ precedes (t′, t )
+> T3 ∀t, t ′, t ′′ :TimePoint .precedes (t, t ′)∧precedes (t′, t ′′ )=⇒precedes (t, t ′′ )
+> t4 [5] ∀t, t ′:TimePoint .immediateSuccessorOf (t′, t )⇐⇒ precedes (t, t ′)∧ ¬∃ t′′ :TimePoint .(precedes (t′′ , t ′)∧precedes (t, t ′′ ))
+> T5 ∀e:Event .∃!t:TimePoint .∃!t′:TimePoint .(t=begin-point (e)) ∧(t′=end-point (e))
+> P1 ∀e:AtomicEvent .∃!o:Object .dependsOn (e, o )
+> P2 ∀e:AtomicEvent , o :Object .excDepends (e, o )⇐⇒ dependsOn (e, o )
+> P4 ∀e:Event .Participation (e)⇐⇒ ∃ !o:Object .excDepends (e, o )
+> P5 ∀o:Object , p :Participation .participationOf (p, o )⇐⇒ excDepends (p, o )
+> a102 [12] manifests (x, y )=⇒Perdurant (x)∧Endurant (y)
+> D1 ∀d:Disposition .∃!o:Object .inheresIn (d, o )
+> D2 ∀e:AtomicEvent .∃!d:Disposition .manifests (e, d )
+> D3 ∀s:Situation , e :AtomicEvent .triggers (s, e )⇐⇒ ∃ d:Disposition .activates (s, d )∧manifests (e, d )
+> D4 ∀d:Disposition , e :AtomicEvent , o :Object .manifests (e, d )∧inheresIn (d, o )=⇒dependsOn (e, o )
+
+TABLE III: A subset of axioms of UFO-B, taken from [13]. 
+
+Definition 11 (Triggered events) . We may denote a trig-gered event e, the situation that triggers it (S3, Table III), and the situation it brings about (S4, Table III) as Γ e
+
+−→ Γ′:
+
+∀ Γ, Γ′ : G.∀e : Event .
+
+Γ e
+
+−→ Γ′ ⇐⇒ triggers (Γ , e ) ∧ brings-about (e, Γ′) (9) 
+
+Definition 12 (Spontaneous events) . We may denote a spontaneous event ˆe, the situation that precedes it, and the situation it brings about (S4, Table III) as Γ ˆe
+
+↬ Γ′:
+
+∀ Γ, Γ′ : G.∀e : Event . Γ ˆe
+
+↬ Γ′ ⇐⇒ 
+
+obtainsIn (Γ , begin-point (ˆ e)) ∧¬triggers (Γ , ˆe) ∧ brings-about (ˆ e, Γ′) (10) By S3, for each event there must exist a unique situa-tion that triggers it. However, for spontaneous events we cannot describe this situation since, by Definition 12, we do not know it (if we did, the event would be a triggered 
+
+event). Furthermore:  
+
+> •
+
+An antecedent situation that triggers an event obtains at the begin point of that event (S1, Table III), and;  
+
+> •
+
+The consequent situation that an event brings about obtains at the end point of that event (S2, Table III). In certain cases, we need only consider the consequent situation that an event brings about. If we do not need to distinguish between triggered events and spontaneous events, we may write Γ ˙e
+
+↷ Γ′ in lieu of either Γ e
+
+−→ Γ′ or 
+
+Γ ˆe
+
+↬ Γ′:
+
+∀ Γ, Γ′ : G.∀e : Event . Γ e
+
+↷ Γ′ ⇐⇒ Γ e
+
+−→ Γ′ ⊕ Γ e
+
+↬ Γ′
+
+(11) where ⊕ is the XOR connective. 
+
+Definition 13 (Temporal order of situations) . Let the strict partial order ≺ ⊆ G × G denote the temporal order of factual situations that obtain at some time point (S5, T1, T2, T3, Table III): 
+
+∀ Γ, Γ′ : G. Γ ≺ Γ′ ⇐⇒ precedes (τ (Γ) , τ (Γ ′)) (12) By axiom T5 (Table III), events cannot have zero duration in UFO-B. Therefore, the time point of an event’s antecedent always precedes the time point of its conse-quent. By (12), we obtain: 
+
+∀ Γ, Γ′ : G, ˙e : Event . Γ ˙e
+
+↷ Γ′ =⇒ Γ ≺ Γ′
+
+We also make use of a weaker relation  : G × G that is entailed by ≺:
+
+∀ Γ, Γ′ : G. Γ  Γ′ ⇐⇒ Γ ≺ Γ′ ∨ τ (Γ) = τ (Γ ′)
+
+Definition 14 (Channel depletion) . A channel c can only output a resource of type r if that resource is present in the channel. If the resource is not (continuously) replenished by the manifestation of the channel’s input capability, then 13 
+
+after some non-zero time δ, its store of r is depleted and the channel’s output capability cannot be manifested. We denote this depletion event ∆〈c〉, which has a constant duration δ for all channels. The begin point of ∆〈c〉 is the end point of the manifestation of c’s input of r, and the end point of ∆〈c〉 is the first time point at which r is depleted. Let c ∈⃗ CΓ be a channel. Then: 
+
+∀ Γ, Γ′ : G. ˆΓ ∆⟨c⟩
+
+−−−→ Γ′ ⇐⇒ 
+
+cons ˆΓ(c) 6 ∈ dom ϱˆΓ ∧ prod Γ′ (c) 6 ∈ dom ϱΓ′ (13) Where by ˆΓ in (13) we mean the earliest situation in which cons Γ(c) is not manifested (see Definition 15). 
+
+Definition 15 (Earliest antecedent such that φ). Let φ be a predicate. Let Γ e
+
+−→ Γ′ be some event such that φ holds in Γ (denoted Γ |= φ). Let t be the time point such that obtainsIn (Γ , t ). Then Γ is the earliest situation in which φ
+
+holds iff there does not exist a situation Γ′′ that obtains at a time point t′′ , such that t′′ immediately succeeded by 
+
+t and φ holds in Γ′′ . I.e.: 
+
+¬∃ t′′ : TimePoint . ∃Γ′′ : G. obtainsIn (Γ ′′ , t ′′ )∧
+
+immediateSuccessorOf (t, t ′′ ) ∧ Γ′′ |= φ
+
+Γ is then the earliest situation such that φ holds, denoted 
+
+ˆΓ.
+
+Definition 16 (Causality) . Recall from Table III the definitions of direct (S6) and general (S7) causality. This is captured by (14) and (15) respectively. 
+
+∀ Γ, Γ′, Γ′′ : G.∀ ˙e, e ′ : Event .
+
+Γ ˙e
+
+↷ Γ′ e′
+
+−→ Γ′′ ⇐⇒ directly-causes ( ˙ e, e ′) (14) and 
+
+∀n ≥ 2. ∀ Γ, . . . , Γn : G.∀ ˙e0, e 1, . . . , e n : Event .
+
+Γ0˙e0
+
+↷ Γ1
+
+> e1
+
+−→ . . . en
+
+−→ Γn ⇐⇒ causes ( ˙ e0, e n) (15) for any sequence of causal events of length n + 1 .Note that by (10) and S6, a spontaneous event cannot have a (direct) cause: 
+
+∀ Γ, Γ′, Γ′′ : G.∀ ˙e, ˆe : Event .
+
+Γ ˙e
+
+↷ Γ′ ˆe
+
+↬ Γ′′ =⇒ ¬ causes ( ˙ e, ˆe)
+
+Lastly, we define a causal relationship between the event that a channel is not provided with a resource, and the event that a channel stops producing that resource. Let 
+
+c ∈⃗ CΓ be a channel, and r ∈ R a resource that it accom-modates. Let Γ be the situation in which h = cons Γ(c, r )
+
+and k = prod Γ(c, r ) are manifested as functions ¯h and ¯k.Then let e be the event that terminates ¯h in Γ′, such that 
+
+Γ e
+
+↷ Γ′. Let ∆〈c〉 be the event introduced in (13), and Γ′′ 
+
+be the situation that obtains some time δ after Γ′, such that k is not manifested in Γ′′ . Then by (9), (10), (11), and (S6 and S7, Table III): 
+
+Γ e
+
+↷ Γ′ ∆⟨c⟩
+
+−−−→ Γ′′ =⇒ causes (e, ∆〈c〉)
+
+In the definitions of CIG events in the following sec-tions, we define preconditions and postconditions in the antecedent and consequent situations of an event, respec-tively. An event is defined by these conditions. However, we do not describe the full antecedent and consequent situations – only the relevant portion that defines the particular event. For instance, when we write about the pre and postconditions of a channel depletion event like in (13), we do not make any commitments to other compo-nents, channels, resource types, etc. that may be part of 
+
+Γ or Γ′. This naturally raises the question: what happens to the rest of the CIG? 
+
+Postulate 1 (Locality of events) . The elements of a CIG that are not terms in the pre- or postconditions of an event are unaltered by the event. Postulate 1 states that the elements of a situation Γ are “copied over” by an event, only changing the (aspects of) elements described in the pre and postconditions. Do note that events are not necessarily changes of the elements in a situation, but all non-relational changes of elements of situations are events [5]. 
+
+Postulate 2 (The passive nature of time) . In this work, we assume that the passing of time effects no change in the moments of objects. We admit that Postulate 2 is too strong a postulate for physical systems. However, a description of the mech-anisms of passing time is not given in UFO and its exploration warrants intent study. We leave this to future work. 
+
+Remark (Events as Types) . It is worth noting that we have introduced events as types , fully characterized by their antecedent and consequent situations. When we write something of the form 
+
+∀ Γ, Γ′ : G.∀e : Event . Γ e
+
+−→ Γ′ ⇐⇒ . . . 
+
+The universal quantification indicates that we are in-troducing a property that holds for all instances of a particular event nature (i.e. an event type). For instance in (9), the combination of universal quantification and bi-implication indicates a (complete) characterization of the event type “triggered event”. When we talk about particular events, we usually do so by means of existential quantification: 
+
+∃Γ, Γ′ : G. Γ e
+
+−→ Γ′ =⇒ . . . 
+
+Here, the implication indicates that we are deriving a property that holds for the occurrence of a particular event. Contrary to what (11) suggests, generalization sets over event types are not necessarily disjoint. 14 
+
+This position aims to align with the notion of event types as employed in COVER [30]. We leave a more rigorous integration of COVER, as well as a detailed taxonomy of the events we present in this paper, for future work. 
+
+VI. On faults, errors and fault activation 
+
+The previous section describes the modeling of dynamic aspects of CIGs in a general sense. In this section, we specifically describe how faults come about, and how faults and errors evolve over time. We also disambiguate between the core notions of fault creation, errors and fault activation. Our notions of faults, errors and fault activation is inspired by the taxonomy proposed in [2]. We redefine these concepts in the context of CIGs using the ontological framework of objects and events provided by UFO [11] [13]. 
+
+Example. An example of fault creation in the running example is the power supply unit (PSU) burning out. The created fault (a molten internal winding) is dormant as long as we do not try to use the PSU. Fault activation 
+
+commences at the instant we put a load on the PSU and expect an output current. The fault then prevents the PSU from supplying this expected current, resulting in an error .Note that we do not consider failures in this work. A notion of failure pertains to a notion of service [2] or goals 
+
+[21], and we do not consider such notions in this work. We do consider expectations , which we describe only as an analytical artifact. 
+
+Definition 17 (Fault creation) . In this work, we consider the creation of a set of faults F ⊆ FΓ′ in an object obj ∈
+
+ComponentId Γ′ ∪ChannelId Γ′ a spontaneous atomic event, denoted Γ F
+
+↬ Γ′, such that ∀f ∈ F. β (ιΓ′ (f )) = obj. A spontaneous event is a fault creation event, iff the spontaneous event creates faults in a component or chan-nel that did not exist in that object before the event. Let 
+
+F ⊆ FΓ′ be the set of faults that are created. Let Γ, Γ′ : G.Then: 
+
+Γ F
+
+↬ Γ′ ⇐⇒ ∀ f ∈ F. (¬∃ f ∈ FΓ
+
+) ∧ (∃f ∈ FΓ′
+
+) (16) In the consequent situation of a fault creation event, the created faults prevent the manifestation of capabilities of the particular object. By the existential dependency of interfaces (as relators) on the manifestation of such capabilities, any interface that is associated with these capabilities cannot exist. Let Γ, Γ′ : G. Then: 
+
+Γ F
+
+↬ Γ′ =⇒ ∀ (id f , C ) ∈ F. ∀f ∈ C. 
+
+¬∃ o ∈ O Γ′ . f ∈ ϖo 
+
+> Γ′
+
+(o) ∧ ¬∃ i ∈ I Γ′ . f ∈ ϖi 
+
+> Γ′
+
+(i)
+
+I.e.: all material provides and providedBy relations that are existentially dependent on the capabilities covered by 
+
+F are terminated synchronously in the fault creation’s consequent situation. 
+
+Definition 18 (Errors) . Errors are atomic events that are triggered by unmet expectations placed on capabilities in a particular situation. An error event ε〈f 〉 describes the period of time during which a capability f remains erroneous. An error event ends as soon as the capability is no longer erroneous. An error is triggered in the antecedent situation Γ, if and only if we have an expectation for the manifestation of a function in Γ, and that expectation is not met. The situation that an error brings about is one where either i) there is no expectation for the manifestation of the capabilities that the error comprises, or ii) the capabilities that the error comprises are manifested again. I.e. an error persists so long as the expectation exists and the capabilities that it comprises are not manifested. Formally: 
+
+∀e ∈ EΓ. ∃Γ, Γ′ : G. ˆΓ ε⟨e⟩
+
+−−→ Γ′ ⇐⇒ ¬meets (ˆΓ, e ) ∧ (e 6 ∈ EΓ′ ∨ meets (Γ ′, e )) (17) Where by ˆΓ in (17) we mean the earliest situation Γ
+
+in which the expectation e is not met (see Definition 15). Note that e 6 ∈ EΓ′ =⇒ ¬ meets (Γ ′, e ) – we only include it in the formula to emphasize this special case. In the consequent situation of ε〈f 〉, the phase of the capability that the error comprises has changed from 
+
+Erroneous back to Functional :
+
+∀ Γ, Γ′ : G. ˆΓ ε⟨f ⟩
+
+−−−→ Γ′ ⇐⇒ 
+
+ErroneousCapability ˆΓ(f )∧
+
+FunctionalCapability Γ′ (f )
+
+In this work, we do not describe mechanisms that change the phase of capabilities from Erroneous to Functional. As a result, erroneous capabilities remain erroneous once they have entered this phase. That is to say: components cannot be repaired, rerouted or replaced. In section IX we touch on the consequences of this w.r.t. the evaluation of our model. One way to look at this is that the number of erroneous capabilities as a function of situations is monotonic (given the order  over the set of situations). 
+
+Proposition 1. Capabilities that are erroneous in a situ-ation Γ are erroneous in all situations Γ′′ where Γ  Γ′′ ≺
+
+ˆΓ′, s.t. ˆΓ′ is the earliest situation in which the error is resolved. 
+
+Definition 19 (Fault activation) . Fault activation is the complex event in which the situation brought about by a fault creation event triggers an error. Let Γ F
+
+↬ Γ′ be a fault creation event. The consequences of the fault creation then depend on the expectations we place on the affected capabilities. If there exists any expectation e ∈ EΓ′ such that the created fault inhibits the manifestation of that expectation (i.e. e ∈ F ), then by (16), (4) and Definition 18, Γ′ triggers an error, and F is the direct cause for this error (Definition 16): 15 
+
+Γ F
+
+↬ Γ′ =⇒
+
+(
+
+∃e ∈ EΓ′ . e ∈ F ∧ ¬ meets (Γ ′, e ) =⇒∃Γ′′ : G. Γ′ ε⟨e⟩
+
+−−→ Γ′′ )
+
+(18) If no such expectation exists in Γ′, no error is triggered. The distinct cases of fault activation are: 1) With a witness to such an unmet expectation e ∈ EΓ′ ,we obtain from (18): 
+
+Γ F
+
+↬ Γ′ ε⟨e⟩
+
+−−→ Γ′′ (19) and by (14), F is then a direct cause for ε〈e〉.2) Otherwise, the created fault is called dormant [2]. Since faults inhere in objects, it will remain dormant as long as the fault persists, the object exists, or the fault is activated in a future situation where an expectation exists for the affected capability and the activation of the (until then dormant) fault causes an error. We do not aim to encode the dynamics of expectations in this work. We therefore leave the exploration of dormant fault activation to future work. From here on, when we refer to fault activation, we always refer to its first, causal case. 
+
+VII. Functional Dependency 
+
+In this section, we define the notion of functional de-pendency. In the next section, we show how this notion combines with the definition of errors from the previous section to form error propagation. Functional dependency is a complex notion that de-scribes the necessary conditions for the manifestation of a function and comprises i) the prerequisites for the mani-festation of a capability as a function, and ii) the fragment of the system architecture that fulfills these prerequisites. We address each constituent notion individually: i. Recall that, in UFO, an event is the manifestation of a disposition, created and terminated by the ac-tivation and deactivation of a disposition [13]. The manifestation of a capability as a function depends on access to certain types of resources. The instant that access to these resources is realized, the capability’s manifestation as a function begins. The instant that access to these resources stops, this manifestation is terminated. We call the need for access to this set of resources the prerequisites for the manifestation of a capability as a function. ii. The minimal configuration fragment of the interaction between components (through channels) that pro-vides access to the prerequisites for the manifestation of a capability in a given situation. 
+
+Definition 20 (Capability prerequisites) . The manifesta-tion of a capability as a function is contingent on access to that capability’s prerequisites. We define the function 
+
+ψΓ : CΓ → P (R) that returns a set of resource types. Let Γ : G be a situation, and f ∈ CΓ be a capability. Then: 
+
+ψΓ(f ) = {r | r ∈ R . consumes (ιΓ(f ), r )}
+
+or equivalently, by (8): 
+
+ψΓ(f ) = proj 2(f )
+
+The notion of “access” of a capability to a particular resource type r is formally defined based on the role 2 that capability plays:  
+
+> •
+
+For any component capability f , access is defined as the taking part of that capability in an input interface from which it consumes r. 
+
+> •
+
+For any channel output capability k, it is defined as the manifestation of that channel’s input capability for r3. 
+
+> •
+
+For any channel input capability h, it is defined as the taking part of that capability in an output interface from which it consumes r.Note that in all three cases, the capability consumes that resource. The set of capabilities that provide access to a particular resource type is called a configuration fragment .
+
+Definition 21 (Component configuration fragments) . We define πΓ : CΓ × R → P(CΓ) to be the function that returns the set of channel production capabilities that supply a given component capability with a given resource type. Let Γ : G be a situation. Let f ∈ CΓ be a component capability and let r ∈ R be a resource type that f
+
+consumes, such that ∃α ∈ C Γ. f ∈ C α 
+
+> Γ
+
+. Then: 
+
+πΓ(f, r ) = {ςi
+
+> Γ
+
+(i) | i ∈ I Γ.f ∈ ϖi
+
+> Γ
+
+(i) ∧ proj 3(i) = r}
+
+Definition 22 (Channel output configuration fragments) .
+
+Recall that, by Definition 14, there is a delayed de-pendency between a channel’s output capability and its corresponding input capability for a particular resource. By definition, this delay is precisely δ time units. We define the function πΓ : CΓ × R Γ → CΓ to be the function that returns the channel’s unique input capability that provides its output capability with access to a partic-ular resource type. Let Γ−, Γ : G be situations, such that 
+
+Γ− precedes Γ by δ time units. Let k ∈ CΓ be a channel output capability and let r ∈ R be a resource type that k
+
+consumes, such that ∃c ∈⃗ CΓ. k = prod Γ(c, r ). Then: 
+
+πΓ(k, r ) = cons Γ− (βΓ(k), r ) (20) 
+
+Definition 23 (Channel input configuration fragments) .
+
+We define πΓ : CΓ × R → P(CΓ) to be the function that returns the set of component production capabilities that provide a given channel input capability with access   
+
+> 2“Role”, here, in the colloquial sense.
+> 3The matter of when that input capability must be manifested is discussed in section VIII. 16
+
+a given resource type. Let Γ : G be a situation. Let 
+
+h ∈ CΓ be a channel consumption capability and let 
+
+r ∈ R be a resource type that h consumes, such that 
+
+∃c ∈⃗ CΓ. h = cons Γ(c, r ). Then: 
+
+πΓ(h, r ) = ∪{ϖo
+
+> Γ
+
+(o) | o ∈ O Γ. h = ςo
+
+> Γ
+
+(o)}
+
+A capability f is said to have access to a resource type 
+
+r iff (f, r ) is in the domain of πΓ, and πΓ(f, r ) 6 = ∅ (for component capabilities and channel input capabilities): access (f, r ) ⇐⇒ (f, r ) ∈ dom πΓ ∧ πΓ(f, r ) 6 = ∅
+
+Since we only consider resource types in this work, we do not explicitly deal with quantities or qualities of individual resources. We capture this assumption in Postulate 3. 
+
+Postulate 3 (Sufficient access) . Any access to the appro-priate resource types is sufficient to satisfy the prerequi-sites of a capability. Access to all of a capability’s prerequisites necessarily activates (or maintains, if already activated) a capability. Similarly, losing access to any prerequisite necessarily deactivates the manifestation. 
+
+Postulate 4 (Liveliness) . A capability is necessarily ac-tivated, respectively deactivated, when it gains or loses access to all, respectively any, of its prerequisites. This liveliness is, in a sense, an over-approximation of the behavior of a system. Let Γ : G be a situation and let f ∈ CΓ be a capability. By Postulate 4, we obtain: 
+
+f ∈ dom ϱΓ ⇐⇒ ∀ r ∈ ψΓ(f ). access (f, r ) (21) The minimal sets of such interactions that satisfy a capability’s prerequisites are called minimal configuration fragments .
+
+Definition 24 (Minimal configuration fragments) . A con-figuration fragment is a minimal configuration fragment (MCS) w.r.t. to a capability f and a resource type r is a configuration fragment, iff if one element of that set would cease to be manifested, then f would not have sufficient access to r.
+
+Definition 25 (Functional dependency A) . The function 
+
+DA 
+
+> Γ
+
+: CΓ × R → P(CΓ) is defined to return the minimal configuration fragments that a given capability f is func-tionally dependent on for access to the resource type r.I.e. if any element is removed from a set S ∈ DA 
+
+> Γ
+
+(f, r ),the set of channel capabilities S would not provide f with sufficient access to the resource type r, as in (22). We define the functions ProvidedQuantity Γ : R × P(⃗ CΓ) → N and RequiredQuantity Γ : R × CΓ → N to return the quantity of resources that (a set of) capabilities provide and require respectively. Let f ∈ CΓ be a component capability. Let r ∈ ψΓ(f )
+
+be a resource type. Then: 
+
+DA 
+
+> Γ
+
+(f, r ) = 
+
+{S | S ⊆ πΓ(f, r ). Prov.Q. Γ(r, S ) ≥ Req.Q. Γ(r, f )∧
+
+(¬∃ S′ ⊂ S. Prov.Q. Γ(r, S \ S′) ≥ Req.Q. Γ(r, f ))} (22) Note that by Postulate 3 all non-empty sets S ∈
+
+DA 
+
+> Γ
+
+(f, r ) provide the capability f with access to a suffi-cient quantity of the resource r in Γ. I.e. the set DA 
+
+> Γ
+
+(f, r )
+
+is the set of minimal configuration fragments. To make this explicit, we provide definitions for the functions ProvidedQuantity Γ and RequiredQuantity Γ that do not consider any aspects of instances of r:ProvidedQuantity Γ(r, S ) = |S|
+
+RequiredQuantity Γ(r, f ) = 1 
+
+These definitions allow us to simplify (22) by substitu-tion: 
+
+DA 
+
+> Γ
+
+(f, r ) = {S | S ⊆ πΓ(f, r ). |S| = 1 } (23) Finally, if we cannot construct any such minimal config-uration fragment, then the prerequisites for the manifes-tation of a capability are not satisfied and the capability is not manifested. Let Γ : G. Let α ∈ C Γ and f ∈ C α 
+
+> Γ
+
+. Then by (21): 
+
+∀r ∈ ψΓ(f ). DA 
+
+> Γ
+
+(f, r ) = ∅ =⇒ f 6 ∈ dom ϱΓ
+
+Definition 26 (Functional Dependency B) . Recall that, by Definition 14 and Definition 22, there is a delayed dependency between a channel’s output capability and its corresponding input capability for a particular resource. We define the function DB 
+
+> Γ
+
+: CΓ × R → CΓ such that 
+
+DB 
+
+> Γ
+
+(k, r ) = cons Γ− (βΓ(k), r ) (24) where Γ− precedes Γ by δ time units. 
+
+Definition 27 (Functional Dependency C) . The function 
+
+DC 
+
+> Γ
+
+: CΓ × R → P(CΓ) is defined to return the minimal configuration fragments that a given channel consumption capability is functionally dependent on such that, if any element is removed from a set S ∈ DA 
+
+> Γ
+
+(h, r ), the set of channel capabilities S would not provide h with sufficient access to the resource type r.Following similar steps as for Definition 25, we obtain: 
+
+DC 
+
+> Γ
+
+(h, r ) = {S | S ⊆ πΓ(h, r ). |S| = 1 } (25) And here too, if we cannot construct any such minimal configuration fragment, then the prerequisites for the man-ifestation of a capability are not met and the capability is not manifested. Let Γ : G. Let c ∈⃗ CΓ and h ∈ C c 
+
+> Γ
+
+. Then: 
+
+∀r ∈ ψΓ(h). DC 
+
+> Γ
+
+(h, r ) = ∅ =⇒ h 6 ∈ dom ϱΓ
+
+Definition 28 (Functional dependency) . We define the transitive relation DΓ ⊆ CapabilityId 2, which denotes that 17 
+
+for any ordered pair (id f , id g ) ∈ DΓ, the capability f is functionally dependent on the capability g in the situation 
+
+Γ.The relation DΓ captures all three cascading notions of functional dependency (A, B and C). Let Γ : G be a situation. Let f ∈ CΓ be a capability, and let id f = ιΓ(f ). Then: 
+
+∀r ∈ ψΓ(f ).
+
+
+
+∀SA ∈ DA 
+
+> Γ
+
+(f, r ). μ (SA), if ∃α ∈ C Γ.f ∈ C α
+
+> Γ
+
+(id f , ι Γ(DB 
+
+> Γ
+
+(f, r ))) ∈ DΓ, if ∃c ∈⃗ CΓ.→
+
+θ (c, r, f )
+
+∀SC ∈ DC 
+
+> Γ
+
+(f, r ). μ (SC ), if ∃c ∈⃗ CΓ.←
+
+θ (c, r, f )
+
+Where 
+
+μ(S) ⇐⇒ ∀ g ∈ S. (id f , ι Γ(g)) ∈ DΓ
+
+> →
+
+θ (c, r, f ) ⇐⇒ prod Γ(c, r ) = f
+
+> ←
+
+θ (c, r, f ) ⇐⇒ cons Γ(c, r ) = f
+
+This notion of functional dependency is intimately tied to that of errors: if there exist prerequisites for a com-ponent’s capability, and there does not exist a minimal configuration fragment that satisfies these prerequisites, then that capability is not, and cannot be, manifested as a function. If, in any particular situation, there exists an expectation for the manifestation of such a function, then an error is triggered. 
+
+On Dependency and Expectation. Knowing that the manifestation of a capability has functional depen-dencies, we cannot expect a capability to be manifested if such functional dependencies are not satisfied. Therefore, we introduce a cascading notion of expectation, mirroring the transitive relation of functional dependency. 
+
+Stipulate 1 (Cascading expectations) . If we expect a capability to be manifested, we must also expect the sufficient conditions for that manifestation to hold. The sufficient conditions for the manifestation of acapability are determined by access to its prerequisites. That is: 1) If we have an expectation for a component’s capability 
+
+f , then we also have an expectation for the channels’ capabilities that provide access to f ’s prerequisites, and; 2) If we have an expectation for a channel to produce a resource, then we also have an expectation for that channel to have consumed that resource, and; 3) If we have an expectation for a channel to consume a resource, then we also have an expectation for some component capabilities to provide that resource. The cascading of expectations in this manner reflect the three types of functional dependency (A, B and C) captured by the transitive relation DΓ. Formally: 
+
+∀ Γ : G.∀(id f , id g ) ∈ DΓ. id f ∈ EΓ =⇒ id g ∈ EΓ
+
+Example. Recall the running example from Figure 2. The print head ’s function to deposit ink is functionally dependent on the PSU ’s function to provide electricity , and the ink reservoir ’s function to provide ink .
+
+VIII. Error propagation 
+
+In this section, we combine the definitions of errors and functional dependency to construct a notion of error propagation. This forms the theoretical backbone for CIG analysis and FT synthesis. Error propagation is a sequence of causal events, where each situation that is the antecedent of such an event triggers an error. This is similar in structure to the causal chain shown in (15), Definition 16. 
+
+Definition 29 (Error propagation) . Error propagation is a complex event, denoted ΓiE
+
+⇝ Γi+n, that comprises a causal sequence of events 
+
+Γiei
+
+↷ . . . ei+n−1
+
+−−−−→ Γi+n
+
+such that each consequent situation Γi+j , 0 < j ≤ n in the sequence triggers an error, i.e. there exists some capability 
+
+fj such that 
+
+Γi+jε⟨fj ⟩
+
+−−−→ Γnj
+
+Then all these events are mereological parts of E, i.e. has-part (E, e i); has-part (E, ε 〈fj 〉)
+
+Errors and functional dependency. By Defini-tion 18, when a producer of a particular resource expe-riences an error over the capability that produces it, it no longer provides that resource to any other capabilities. And through functional dependency, the manifestation of a capability as a function depends on access to certain types of resources. These facts together mean that error propagation is observed if in an antecedent situation Γ, the following holds: 1) A capability g provides a channel c with a resource r,and; 2) A capability f , with r as prerequisite, is provided with 
+
+r by c, and; 3) Let h = cons Γ(c, r ) be the input capability of channel 
+
+c, such that there exists no minimal configuration fragment for h that does not include g, and; 4) Let k = prod Γ(c, r ) be the output capability of cannel 
+
+c, such that there exists no minimal configuration fragment for f that does not include k, and; 5) There exists an expectation for the manifestation of 
+
+f (whereby there exist expectations for k, h and g). Then... 1) If in the situation Γ fault creation occurs over g, i.e. 
+
+Γ {g}
+
+↬ Γ′, then; Fault activation occurs, such that an error ε〈g〉 is triggered over g, i.e. Γ′ ε⟨g⟩
+
+−−→ Γ′
+
+> n
+
+, and; 18 
+
+Also in Γ′ an error ε〈h〉 is triggered over h, i.e. Γ′ ε⟨h⟩
+
+−−−→
+
+Γ′ 
+
+> n′
+
+.2) Then in the situation Γ′, the capability h is no longer manifested, and a depletion event ∆ is triggered over the bearing channel, i.e. Γ′ ∆⟨β(h)⟩
+
+−−−−−→ Γ′′ , and; In the situation Γ′′ , k is no longer manifested and an error is triggered over k, such that Γ′′ ε⟨k⟩
+
+−−→ Γ′′  
+
+> j
+
+, and; In that situation Γ′′ , f is no longer manifested and an error ε〈f 〉 is triggered over f , i.e. Γ′′ ε⟨f ⟩
+
+−−−→ Γ′′  
+
+> j′
+
+.Let ΓiE
+
+⇝ Γi+n denote a causal chain of error propaga-tion, such that 
+
+ΓiE
+
+⇝ Γi+n ⇐⇒ Γie
+
+↷ Γi+1 ∆i+1 
+
+−−−→ . . . ∆i+n−1
+
+−−−−−→ Γi+n
+
+where the event e and the depletion events ∆i+1 and ∆i+2 
+
+combine to form the complex error propagation event: has-part (E, e )
+
+and 
+
+∀j. i < j < i + n. has-part (E, ∆j )
+
+Lastly, we call such a causal chain an error propagation 
+
+iff in the consequent situation of each event an error is triggered: 
+
+∀j. i ≤ j < i + n. ∃Γ′ : G. Γjεj
+
+−→ Γ′ ∧ has-part (E, ε j )
+
+The situation this complex event brings about is de-termined by the temporal order of the situations brought about by the events it comprises. We find that the error propagation E, with n ≥ 3 events and n + 1 situations 
+
+Γi, . . . , Γi+n, is a sequence over ≺, bringing about the latest situation Γi+n in that sequence. 
+
+Example of error propagation. In Figure 7 we show a smaller version of the running example introduced in Figure 6. Let g be the symbol for the Ink reservoir ’s capability to provide ink . Let f denote the Print head ’s capability to deposit ink . Let there be a channel c be-tween them that accommodates Ink (denoted r). Let 
+
+h = cons Γ(c, r ) be the channel’s input capability, and let k = prod Γ(c, r ) be the channel’s output capability. Lastly, recall that ¯g and ¯f denote the manifestation of the capabilities g and f as a function respectively. The left-hand side of Figure 7 labels each situation, and the edges between those labels depict events (e.g. the event 
+
+Γ {g}
+
+↬ Γ′ is depicted). We wish to place an expectation on the manifestation of 
+
+f . By Stipulate 1, we must then also place an expectation on k, h and g. Figure 7 then shows how an error over g
+
+propagates, through c, to an error over f .A solid arrow in the diagram denotes the presence of an interface. As the errors propagate, the interactions between capabilities are terminated and the arrows are removed. The dashed arrow signifies a satisfied functional dependency between the output and input capabilities of a channel (for a particular resource type). Furthermore, if ¯f provides another expected function in 
+
+Γ′′ , the propagation continues. 
+
+Remark (The end point of an error) . Note that in UFO, all events must have an endpoint. Events are also immutable. Foregoing the philosophical debate on determinism v.s. free will, this only makes sense if these points are neces-sarily in the past. Therefore, these error events must have obtained in a situation before we “query” (or “factually know”) anything about such error events. 
+
+Remark (The causality of errors) . There are no causal relationships between error events themselves. The causal aspect of an error propagation is carried by the causality between fault creation and depletion events across func-tional dependency. 
+
+Proposition 2 (Direct causes for errors) . For any func-tion, fault creation (Definition 19) and propagation of depletion events through unmet functional dependency (Definition 29) make up the two possible direct causes for errors in CIGs. 
+
+IX. CIG Analysis 
+
+In this section we provide an error function that builds upon the notion of error propagation from the previous section. This error function is instrumental in shaping the FT synthesis algorithm. The error function of CIGs answers a diagnostic ques-tion: “What events could lead to an error over this capabil-ity?” This question is, in a way, the dual of the predictive question answered by the definitions of fault activation and error propagation: “What are the consequences of an error over this capability?” Since we have at present already developed that “predictive” framework, we use it now to answer the diagnostic question. Table IV provides a glossary of the perdurant CIG concepts introduced earlier. 
+
+Definition 30 (CIG error function) . We use the notation 
+
+[[ f ]] Γn 
+
+> Γ0
+
+∈ {> , ⊥} to indicate that a capability f is erroneous in the situation Γn:
+
+∀Γn : G.∀f ∈ CΓn . [[ f ]] Γn 
+
+> Γ0
+
+⇐⇒ ∃ Γn−i, Γn+j : G.
+
+Γ0  Γn−i  Γn ≺ Γn+j ∧ Γn−iε⟨f ⟩
+
+−−−→ Γn+j
+
+A structure function implementation. In its cur-rent form, the definition of the error function given in ¯g ¯h ¯k ¯f
+
+r r r
+
+g h ¯k ¯f
+
+r r
+
+g h k f
+
+Γ:
+
+Γ′:
+
+Γ′′ :
+
+ε〈g〉
+
+ε〈h〉
+
+ε〈k〉
+
+ε〈f 〉
+
+> {
+
+g}
+
+∆〈β(h)〉
+
+Fig. 7: An example of error propagation. 19                                                     
+
+> Notation Description
+> Γ≺Γ′Situation Γprecedes the situation Γ′
+> Γ⪯Γ′Situation Γprecedes, or coincides with, Γ′
+> Γe
+> ↷Γ′Event ewith antecedent Γand consequent Γ′
+> Γe
+> −→Γ′A triggered event e
+> Γˆe
+> ↬Γ′A spontaneous event ˆe
+> Γ∆⟨c⟩
+> −−−→Γ′A depletion event over the channel c
+> ΓF
+> ↬Γ′A fault creation event, creating the faults F
+> Γε⟨e⟩
+> −−−→Γ′An error event over the expectation e
+> ΓF
+> ↬Γ′ε⟨e⟩
+> −−−→Γ′′ Fault activation over e∈F
+> ΓiE
+> ⇝Γi+nError propagation
+
+TABLE IV: A glossary of perdurant CIG concepts. Definition 30 is still not very helpful in answering the diagnostic question. We have described in Proposition 2 that, to find all possible causes for an error Γn−iε⟨f ⟩
+
+−−−→
+
+Γn+j that spans the situation Γn, we must consider both i) fault activation of a fault created in its bearer and ii) error propagation through functional dependency. I.e. given [[ f ]] Γn = >, we know that there must exist a previous situation Γn−i from which either fault creation or error propagation occurred. To cite the principal NASA handbook on Fault Tree construction [32]: 
+
+“In this way the analyst proceeds down the tree continually transferring the point of view from mechanism to mode, and continually approach-ing finer resolution in defining mechanisms and modes, until ultimately, the limit of resolution of the tree is reached. This limit consists of basic component failures of one sort or another, and the tree is now complete.” 
+
+We now split on fault creation and the three cases of functional dependency to derive such a recursive structure function. First, by definition of errors (Definition 18) there must exist an expectation f ∈ EΓn . I.e.: 
+
+[[ f ]] Γn 
+
+> Γ0
+
+=⇒ f ∈ EΓn (26) Then, let EΓn be a set of erroneous capabilities in Γn:
+
+EΓn = {f | f ∈ CΓn . ErroneousCapability (ιΓn (f )) } (27) By definition of the erroneous phase of capabilities, there exists an error for each element of EΓn whose begin point is in Γn or precedes Γn, and whose end point is after 
+
+Γn:
+
+∀f ∈ EΓn .∃Γn−i, Γn+j : G.
+
+Γn−i  Γn ≺ Γn+j ∧ Γn−iε⟨f ⟩
+
+−−−→ Γn+j (28) Let Γ0, Γn : G be CIGs, such that Γ0  Γn. Let f ∈ CΓn
+
+be a capability. By Definition 30, it is clear that 
+
+[[ f ]] Γn 
+
+> Γ0
+
+⇐⇒ f ∈ EΓn
+
+Fault Creation. Let f ∈ EΓn be an expectation for the manifestation of f in Γn. Then by (18): 
+
+(
+
+∃Γn−i, Γ′ 
+
+> n−i
+
+: G. Γn−i
+
+> {
+
+f }
+
+↬ Γ′
+
+> n−i
+
+)
+
+=⇒ f ∈ EΓn (29) where Γ′ 
+
+> n−i
+
+ Γn.Furthermore, error propagation can occur; 
+
+Propagation case A (input propagation). 
+
+The capability f is a component capability: 
+
+∃α ∈ C Γn . f ∈ C α
+
+> Γn
+
+Let f ∈ EΓn be an expectation for the manifestation of 
+
+f in Γn. Then: 
+
+∃r ∈ ψΓn (f ). (∀SA ∈ DA 
+
+> Γ0
+
+(f, r ). S A ⊆ EΓn
+
+) =⇒ f ∈ EΓn
+
+By (28), SA ⊆ EΓn implies there is an error event for all capabilities in each set of minimal configuration fragments in DA 
+
+> Γ0
+
+(f, r ). I.e.: 
+
+∃r ∈ ψΓn (f ).
+
+∧ 
+
+> SA∈DA
+> Γ0(f,r )
+
+SA ⊆ EΓn
+
+ =⇒ f ∈ EΓn (30) A conjunction over the empty set is vacuously true, i.e.: 
+
+∧
+
+> SA∈ ∅
+
+= >
+
+whereby DA 
+
+> Γn
+
+(f, r ) = ∅ implies that Equation 30 is (vacu-ously) true. This matches the semantics that “if we cannot construct any such minimal configuration fragment, then the prerequisites for the manifestation of a capability are not met and the capability cannot be manifested” (Definition 25). 
+
+Propagation case B (depletion propagation). 
+
+The capability f is a channel production capability: 
+
+∃c ∈⃗ CΓn .∃r ∈ R . f = prod Γn (c, r )
+
+Given that f ∈ EΓn :
+
+(
+
+∃Γn−i, Γ′ 
+
+> n−i
+
+: G.Γn−i 
+
+> ∆⟨β(f)⟩
+
+−−−−−→ Γ′
+
+> n−i
+
+)
+
+=⇒ f ∈ EΓn
+
+where Γ′ 
+
+> n−i
+
+ Γn.
+
+Propagation case C (output propagation). 
+
+f is a channel consumption capability: 
+
+∃c ∈⃗ CΓn .∃r ∈ R . f = cons Γn (c, r )
+
+Given that f ∈ EΓn :
+
+∃r ∈ ψΓn (f ).
+
+(∀SC ∈ DC 
+
+> Γ0
+
+(f, r ). S C ⊆ EΓn
+
+) =⇒ f ∈ EΓn20 
+
+∀ Γn : G. f ∈ CΓn . [[ f ]] Γn 
+
+> Γ0
+
+⇐⇒ id f ∈ EΓn ∧
+
+(
+
+∃Γn−i, Γ′ 
+
+> n−i
+
+: G. Γn−i
+
+> F
+
+↬ Γ′ 
+
+> n−i
+
+∨ ∨  
+
+> r∈ψΓn(f)
+
+((
+
+∃α ∈ C Γn . f ∈ C α 
+
+> Γn
+
+=⇒ ∧ 
+
+> SA∈DA
+> Γ0(f,r )
+
+∨
+
+> k∈SA
+
+[[ k]] Γn
+
+> Γ0
+
+)
+
+∨
+
+(
+
+∃c ∈⃗ CΓn . f = prod Γn (c, r ) =⇒ ∃Γn−j : G. [[ DB 
+
+> Γ0
+
+(f, r )]] Γn−j
+
+> Γ0
+
+)
+
+∨
+
+(
+
+∃c ∈⃗ CΓn . f = cons Γn (c, r ) =⇒ ∧ 
+
+> SC∈DC
+> Γ0
+
+∨
+
+> g∈SC
+
+[[ g]] Γn
+
+> Γ0
+
+)))
+
+Where Γ0 ≺ Γn−i and Γ′ 
+
+> n−i
+
+ Γn, and id f = ιΓn (f ), and id f ∈ F , and Γn−j ≺ Γn.Additionally, there exists time points tn−j and tn such that obtainsIn (Γ n−j , t n−j ) and obtainsIn (Γ n, t n), and 
+
+tn − tn−j ≥ δ.Fig. 8: The definition of the CIG structure function [[ ·]] Γn 
+
+> Γ0
+
+.By (27), SC ⊆ EΓn implies there is an error event for all capabilities in each set of minimal configuration fragments in DC 
+
+> Γ0
+
+(f, r ). I.e.: 
+
+∃r ∈ ψΓn (f ).
+
+∧  
+
+> SC∈DC
+> Γ0(f,r )
+
+SC ⊆ EΓn
+
+ =⇒ f ∈ EΓn (31) Recall that we defined conjunction such that ∧  
+
+> SC∈ ∅
+
+=
+
+>. Therefore, DC 
+
+> Γn
+
+(f, r ) = ∅ implies that Equation 31 is (vacuously) true. This matches the semantics that “if we cannot construct any such minimal configuration fragment, then the prerequisites for the manifestation of a capability are not met and the capability cannot be manifested” (Definition 27). 
+
+Final remarks. For completeness, we must also define the case in which Γn is the initial situation Γ0 . This is trivial by the definitions or errors (Definition 18) and causation (Definition 16); let f ∈ EΓn . Then: 
+
+[[ f ]] Γn 
+
+> Γ0
+
+⇐⇒ f 6 ∈ dom ϱΓn
+
+and ε〈f 〉 has no cause. Furthermore, the evaluation of a capability using this structure function is only possible if there exists a future situation Γn+j such that Γn ≺ Γn+j in or before which all relevant errors have their end point. 
+
+Example. In Figure 9 we show a system with redundant cables between the power supply unit (PSU) and the print head from the running example. Let g denote the 
+
+PSU ’s capability to provide electricity . Let h0, k 0, and 
+
+h1, k 1 respectively denote cable harness 1 and cable harness 2 ’s capabilities to transport electricity . Finally, let f denote the ink head ’s capability to deposit ink .We now show that, using fig. 8, we can symbolically determine all causes for an error over ¯f in situation Γn
+
+w.r.t. the situation Γ0 as depicted in Figure 9. Let γ ∈CΓ0 and α ∈ C Γ0 be components, such that ¯g ∈ Fγ 
+
+> Γ0
+
+and 
+
+¯f ∈ Fα 
+
+> Γ0
+
+. Let c0 ∈⃗ CΓ0 and c1 ∈⃗ CΓ0 be channels, such that 
+
+h0, k 0 ∈ Fc0 
+
+> Γ0
+
+and h1, k 1 ∈ Fc1 
+
+> Γ0
+
+.¯g
+
+¯h0 ¯k0
+
+¯h1 ¯k1
+
+¯f
+
+r
+
+r
+
+r
+
+r
+
+r
+
+r
+
+g
+
+h0 k0
+
+h1 k1
+
+f
+
+Γ0:
+
+Γn:
+
+Fig. 9: An example of a system with redundancy. The arrows in Figure 9 depict interfaces. I.e.: let o0 ∈OΓ0 be an output interface, such that ϖo 
+
+> Γ0
+
+(o0) = {ιΓ0 (g)}
+
+and ςo 
+
+> Γ0
+
+(o0) = ιΓ0 (h0) and proj 3(o0) = r. Let o1 ∈ O Γ0
+
+be an output interface, such that ϖo 
+
+> Γ0
+
+(o1) = {ιΓ0 (g)} and 
+
+ςo 
+
+> Γ0
+
+(o1) = ιΓ0 (h1) and proj 3(o1) = r.Let i0 ∈ I Γ0 be an input interface, such that ϖi 
+
+> Γ0
+
+(i0) = 
+
+{ιΓ0 (f )} and ςi 
+
+> Γ0
+
+(i0) = ιΓ0 (k0) and proj 3(i0) = r. Let i1 ∈IΓ0 be an input interface, such that ϖi 
+
+> Γ0
+
+(i1) = {ιΓ0 (f )}
+
+and ςi 
+
+> Γ0
+
+(i1) = ιΓ0 (k1) and proj 3(i1) = r.From this, it follows that cons Γ0 (c0, r ) = h0 and prod Γ0 (c0, r ) = k0, and cons Γ0 (c1, r ) = h1 and prod Γ0 (c1, r ) = k1.
+
+Derivation. Table V presents the functional depen-dency relationships in Γ0 so that we can refer to them in the derivation. We also use the symbol as shorthand notation for the existence of a fault creation event;  
+
+> Γn
+> Γ0
+
+〈id f 〉 ⇐⇒ ∃ Γn−i, Γ′ 
+
+> n−i
+
+: G. Γn−i
+
+> F
+
+↬ Γ′
+
+> n−i
+
+where Γ0 ≺ Γn−i and Γ′ 
+
+> n−i
+
+ Γn, and id f ∈ F .21                          
+
+> Capability DA
+> Γ0(·, r )DB
+> Γ0(·, r )DC
+> Γ0(·, r )
+> f{{ k0},{k1}} ––
+> k0–h0–
+> k1–h1–
+> h0––{{ g}}
+> h1––{{ g}}
+> g∅––
+
+TABLE V: The functional dependency relationships in Γ0
+
+of Figure 9. We evaluate the structure function [[ f ]] Γn 
+
+> Γ0
+
+for the pres-ence of an error over the capability f ;
+
+[[ f ]] Γn 
+
+> Γ0
+
+⇐⇒ id f ∈ EΓn ∧
+
+( Γn 
+
+> Γ0
+
+〈id f 〉 ∨ 
+
+(
+
+[[ k0]] Γn 
+
+> Γ0
+
+∧ [[ k1]] Γn
+
+> Γ0
+
+)) 
+
+[[ k0]] Γn 
+
+> Γ0
+
+⇐⇒ Γn 
+
+> Γ0
+
+〈id k0 〉 ∨ 
+
+(
+
+∃Γn−j : G. [[ h0]] Γn−j
+
+> Γ0
+
+)
+
+[[ k1]] Γn 
+
+> Γ0
+
+⇐⇒ Γn 
+
+> Γ0
+
+〈id k1 〉 ∨ 
+
+(
+
+∃Γn−j′ : G. [[ h1]] Γn−j′
+
+> Γ0
+
+)
+
+[[ h0]] Γn−j 
+
+> Γ0
+
+⇐⇒ Γn−j 
+
+> Γ0
+
+〈id h0 〉 ∨ [[ g]] Γn−j
+
+> Γ0
+
+[[ h1]] Γn−j′ 
+
+> Γ0
+
+⇐⇒ Γn−j′ 
+
+> Γ0
+
+〈id h1 〉 ∨ [[ g]] Γn−j′
+
+> Γ0
+
+[[ g]] Γn−j 
+
+> Γ0
+
+⇐⇒ Γn−j 
+
+> Γ0
+
+〈id g 〉
+
+[[ g]] Γn−j′ 
+
+> Γ0
+
+⇐⇒ Γn−j′ 
+
+> Γ0
+
+〈id g 〉
+
+(32) Recall that expectation is transitive over functional dependency (e.g. id f ∈ EΓn =⇒ id k0 ∈ EΓn ). Bottom-up substitution of the recursively defined equiv-alences yields a boolean formula with atomic propositions. E.g.: 
+
+[[ h0]] Γn−j 
+
+> Γ0
+
+⇐⇒ Γn−j 
+
+> Γ0
+
+〈id h0 〉 ∨ [[ g]] Γn−j
+
+> Γ0
+
+becomes: 
+
+[[ h0]] Γn−j 
+
+> Γ0
+
+⇐⇒ Γn−j 
+
+> Γ0
+
+〈id h0 〉 ∨ Γn−j 
+
+> Γ0
+
+〈id g 〉
+
+There are many sequences 4 of events that satisfy (32). One example is given in Figure 10. The set of configu-rations that satisfy this formula are exactly the distinct failure modes that satisfy the structure function of the corresponding fault tree. Γ0start 
+
+Γ1
+
+Γ2
+
+Γ3
+
+Γn
+
+Γn+j
+
+> {
+
+h0}
+
+∆〈c0〉
+
+> {
+
+g}
+
+∆〈c1〉
+
+ε〈f 〉
+
+Fig. 10: A sequence of events that satisfies the formula 
+
+[[ f ]] Γn 
+
+> Γ0
+
+.                                    
+
+> 4“Sequence” here is a loose term that also permits concurrent collections of events.
+> RDF triple pattern CIG construct
+> ?x rdf:type : Class x∈ϕ(Class )Γ0
+> ?x :has ?f f∈Cx
+> Γ0
+> ?x :consumes ?r r∈proj 2ι−1(x)
+> ?x :produces ?r f∈proj 3ι−1(x)
+> ?c :accommodates ?r r∈proj 2ι−1(c)
+> ?i :channel ?c c=proj 1ι−1(i)
+> ?i :component ?a a=proj 2ι−1(i)
+> ?i :component_capabilities ?f f∈ϖΓ0(ι−1(i))
+> ?i :channel_capabilities ?f f=ςΓ0(ι−1(i))
+
+TABLE VI: The semantic mapping between KGs and CIGs, with ϕ = {Component 7 → C, Capability 7 →
+
+C , ResourceType 7 → R , Channel 7 →⃗ C, InputInterface 7 →I, OutputInterface 7 → O} .
+
+X. KG querying and CIG construction 
+
+In this section, we take a side-step and show how we query KGs to instantiate CIGs. We assume the KG is well-formed with respect to the ontological constraints. Enforcement of these data con-straints in the GraphDB database (e.g. using SHACL) is a technical detail that we do not discuss in this work. 
+
+A. Semantic mapping 
+
+Table VI shows the a straightforward semantic mapping between RDF triple patterns and CIG elements. It is important to note that the state of the KG rep-resents only the initial system configuration. None of the dynamic features of the domain, i.e. the changes in situations that events bring about, are encoded in the KG. The CIG constructed from the KG is the initial situation, denoted Γ0.Listing 1 shows the SPARQL query Q that retrieves components, functions and resource exchanges from a KG. We may interpret it, in plain English, as 
+
+“What are all component capabilities that ex-change resources through interfacing with channel capabilities?” 
+
+The formal semantics of SPARQL are given in [25], [26], [29]. The result mapping μ : V → I, is defined for all variables that we SELECT in Listing 1. We can evaluate Q over an instantiated KG, which yields a result set Ω ∈ P (μ):
+
+[[ Q]] KG = Ω 
+
+Where all selected variables are bound, and thus 
+
+∀μ ∈ Ω. dom μ = {?α, ?f, ?c, ?k, ?r, ?h, ?ζ, ?g, ?i, ?o}22                                                                                                     
+
+> 1PREFIX :<...>
+> 2PREFIX rdf: <...>
+> 3SELECT ?alpha ?f ?c ?k ?r ?h ?zeta ?g
+> 4?inputinterface ?outputinterface
+> 5WHERE {
+> 6?r rdf:type :ResourceType.
+> 78?alpha rdf:type :Component.
+> 9?alpha :has ?f.
+> 10 ?f rdf:type :Capability.
+> 11 ?f :consumes ?r.
+> 12 13 ?zeta rdf:type :Component.
+> 14 ?zeta :has ?g.
+> 15 ?g rdf:type :Capability.
+> 16 ?g :produces ?r.
+> 17 18 ?inputinterface rdf:type :InputInterface.
+> 19 ?inputinterface :component ?alpha.
+> 20 ?inputinterface :channel ?c.
+> 21 ?inputinterface :component_capabilities ?f.
+> 22 ?inputinterface :channel_capabilities ?k.
+> 23 24 ?c rdf:type :Channel.
+> 25 ?c :accommodates ?r.
+> 26 ?c :has ?k.
+> 27 ?k rdf:type :Capability.
+> 28 ?k :produces ?r.
+> 29 ?c :has ?h.
+> 30 ?h rdf:type :Capability.
+> 31 ?h :consumes ?r.
+> 32 33 ?outputinterface rdf:type :OutputInterface.
+> 34 ?outputinterface :channel ?c.
+> 35 ?outputinterface :component ?zeta.
+> 36 ?outputinterface :channel_capabilities ?h.
+> 37 ?outputinterface :component_capabilities ?g.
+> 38 }
+
+Listing 1: The SPARQL query Q.
+
+B. CIG construction 
+
+We introduce a function T : P(μ) → Γ0 that constructs a CIG from a result set over KG. We then build the initial CIG Γ0 from Ω in parts. Let the set of partial capabilities be 
+
+∂C = ∪
+
+> ?x∈{ ?f, ?h}
+
+{(μ(? x), {μ(? r)}, ∅) | μ ∈ Ω} ∪ 
+
+∪
+
+> ?x∈{ ?g, ?k}
+
+{(μ(? x), ∅, {μ(? r)}) | μ ∈ Ω}
+
+Let CapabilityId Γ0 be the set of capability IDs in Γ0:CapabilityId Γ0 = {proj 1 x | x ∈ ∂C }
+
+Let Rin (id ) be the set of resource consumptions of the capability identified by id: 
+
+Rin (id ) = ∪ {proj 2 x | x ∈ ∂C . proj 1 x = id }
+
+Similarly, let Rout (id ) be the set of resource productions of the capability identified by id: 
+
+Rout (id ) = ∪ {proj 3 x | x ∈ ∂C . proj 1 x = id }
+
+The set of capabilities CΓ0 is then: 
+
+CΓ0 = {(id , R in (id ), R out (id )) | id ∈ CapabilityId Γ0
+
+}
+
+By Postulate 4, there exists a function for each capa-bility such that this function manifests that unique capa-bility. Let the relation ϑ : CapabilityId Γ0 → FunctionId Γ0
+
+return this unique manifestation. Let the set of functions in Γ0 permit a bijection over ϑ w.r.t. the set of capability IDs CapabilityId Γ0 :
+
+FΓ0 = {ϑ(id ) | id ∈ CapabilityId Γ0
+
+}
+
+Let the set of faults FΓ0 = ∅ be the empty set. We can now construct the set of partial components ∂C:
+
+∂C = {(μ(? α), {ι−1Γ0 (μ(? f )) }, {ϑ(μ(? f )) }, ∅) | μ ∈ Ω}
+
+Let ComponentId Γ0 be the set of component IDs in Γ0:ComponentId Γ0 = {proj 1 x | x ∈ ∂C} 
+
+Let C(id ) be the set of capabilities of the component identified by id: 
+
+C(id ) = ∪ {proj 2 x | x ∈ ∂C. proj 1 x = id }
+
+Similarly, let F (id ) be the set of component functions of the capability identified by id: 
+
+F (id ) = ∪ {proj 3 x | x ∈ ∂C. proj 1 x = id }
+
+And the set of components CΓ0 is then: 
+
+CΓ0 = {(id , C (id ), F (id ), ∅) | id ∈ ComponentId Γ0
+
+}
+
+Next, we construct the set of partial channels ∂⃗ C. The process is similar as for components: 
+
+∂⃗ C = {(μ(? c), {ι−1Γ0 (μ(? h)) , ι −1Γ0 (μ(? k)) },
+
+{ϑ(μ(? h)) , ϑ (μ(? k)) }, ∅) | μ ∈ Ω}
+
+Let ChannelId Γ0 be the set of channel IDs in Γ0:ChannelId Γ0 = {proj 1 x | x ∈ ∂⃗ C} 
+
+Let C′(id ) be the set of capabilities of the channel identified by id: 
+
+C′(id ) = ∪ { 
+
+proj 2 x | x ∈ ∂⃗ C. proj 1 x = id 
+
+}
+
+Similarly, let F ′(id ) be the set of channel functions of the capability identified by id: 
+
+F ′(id ) = ∪ { 
+
+proj 3 x | x ∈ ∂⃗ C. proj 1 x = id 
+
+}
+
+And the set of channels ⃗ CΓ0 is then: ⃗
+
+CΓ0 = {(id , C ′(id ), F ′(id ), ∅) | id ∈ ChannelId Γ0 }
+
+By Equation 5, Equation 6 and Equation 7, the set of capabilities CΓ0 , functions FΓ0 and faults FΓ0 = ∅ is simply the union of those that inhere in (and manifest modes of) components and capabilities: 
+
+CΓ0 =
+
+( ∪
+
+> α∈C Γ
+
+C α
+
+> Γ
+
+)
+
+∪
+
+ ∪ 
+
+> c∈⃗CΓ
+
+C c
+
+> Γ
+
+
+
+FΓ0 =
+
+( ∪
+
+> α∈C Γ
+
+Fα
+
+> Γ
+
+)
+
+∪
+
+ ∪ 
+
+> c∈⃗CΓ
+
+Fc
+
+> Γ
+
+23 
+
+The sets output ( OΓ0 ) and input ( IΓ0 ) interfaces are constructed as follows: 
+
+OΓ0 = {(μ(? ζ), μ (? c), μ (? r)) | μ ∈ Ω}IΓ0 = {(μ(? c), μ (? α), μ (? r)) | μ ∈ Ω}
+
+Such that 
+
+ιo 
+
+> Γ0
+
+(( μ(? ζ), μ (? c), μ (? r))) = μ(? outputinterface )
+
+ιo 
+
+> Γ0
+
+(( μ(? c), μ (? α), μ (? r))) = μ(? inputinterface )
+
+Let OutputInterfaceId Γ0 be the set of output interface IDs in Γ0:OutputInterfaceId Γ0 = {μ(? outputinterface ) | μ ∈ Ω}
+
+And let InputInterfaceId Γ0 be the set of input interface IDs in Γ0:InputInterfaceId Γ0 = {μ(? inputinterface ) | μ ∈ Ω}
+
+The partial component capabilities that the output and input interface identified by id aggregate are: 
+
+∂ϖ o(id ) = {μ(? g) | μ ∈ Ω. μ (? outputinterface ) = id }
+
+∂ϖ i(id ) = {μ(? f ) | μ ∈ Ω. μ (? inputinterface ) = id }
+
+Whereby the functions that return the component ca-pabilities aggregated by an output or input interface are given by: 
+
+ϖo 
+
+> Γ
+
+=
+
+{
+
+ιo, −1Γ0 (id ) 7 → ∂ϖ o(id ) | id ∈ OutputInterfaceId Γ0
+
+}
+
+ϖi 
+
+> Γ
+
+=
+
+{
+
+ιi, −1Γ0 (id ) 7 → ∂ϖ i(id ) | id ∈ InputInterfaceId Γ0
+
+}
+
+And the channel capabilities they aggregate are: 
+
+ςo 
+
+> Γ0
+
+=
+
+{
+
+ιo, −1Γ0 (μ(? outputinterface )) 7 → μ(? h) | μ ∈ Ω
+
+}
+
+ςi 
+
+> Γ0
+
+=
+
+{
+
+ιi, −1Γ0 (μ(? inputinterface )) 7 → μ(? k) | μ ∈ Ω
+
+}
+
+Finally, let R = {μ(? r) | μ ∈ Ω} and EΓ0 = ∅.The constructed CIG γ0 is then: 
+
+(CΓ0 , FΓ0 , FΓ0 , CΓ0 ,⃗ CΓ0 , OΓ0 , IΓ0 , EΓ0 ) ∈ G 
+
+which obtains at some arbitrary time point t, such that 
+
+Γ0 = ( γ0, t ) : G
+
+And finally, 
+
+T (Ω) = Γ 0
+
+XI. The CIG-FT Transformation 
+
+In this section we first introduce the formal FT seman-tics. We then provide a semantic mapping between the CIG concepts and FT concepts introduced in the previous sections. Lastly, we define the algorithm that performs the synthesis of FTs from CIG instances. 
+
+A. Fault Tree Semantics 
+
+We present the formal structure and semantics of FTs following the summarization in [28].     
+
+> CIG concept FT concept
+> Capability of Interest Top-Level Event Error Propagation Intermediate Event Fault Activation Basic Event
+
+TABLE VII: The semantic mapping from CIG concepts to FT concepts. 
+
+Definition 31. A static fault tree (FT) is a 4-tuple F T =
+
+〈BE, G, T, I 〉, consisting of the following components. 
+
+BE is the set of basic events. 
+
+G is the set of gates, with BE ∩ G = ∅. We write 
+
+E = BE ∪ G for the set of elements. 
+
+T : G → GateTypes is a function that describes the type of each gate. 
+
+I : G → P (E) describes the inputs of each gate. 
+
+Definition 32. The semantics of a fault tree FT is a function 
+
+πFT : P(BE ) × E → { 0, 1}
+
+where πFT (S, e ) indicates whether e fails given the set S of failed BEs. It is defined as follows. 1) For e ∈ BE , πFT (S, e ) = e ∈ S.2) For g ∈ G and T (g) = And , let 
+
+πFT (S, g ) = ∧
+
+> x∈I(g)
+
+πFT (S, x ).
+
+3) For g ∈ G and T (g) = Or , let 
+
+πFT (S, g ) = ∨
+
+> x∈I(g)
+
+πFT (S, x ).
+
+B. Semantic mapping 
+
+We present the semantic partial mapping to show the correspondence between CIG and FT concepts. Given the greater specificity of concepts in CIGs, we can only propose this partial mapping in one direction. After all, we can construct FTs that do not pertain to systems architectures at all (e.g. an FT about social inequality). That is to say: the partial mapping between CIG concepts and FT concepts is necessarily surjective. Additionally, not all CIG concepts are mapped to an FT concept (e.g. the CIG concept Fault does not have a related concept in FTs). Table VII lists the semantic partial mapping. There are two distinct causes for errors in CIGs. An error can either be the direct result of a fault activation in the bearing component, or the indirect result of error propagation that a capability is dependent on. Fault trees distinguish three types of events; basic events (BEs), which occur spontaneously, intermediate events (IEs), which are caused by one or more other events [28], and top-level events (TLEs), which are at the root of an FT. IEs and TLEs are associated with a gate type that models the logical behavior of failure propagation. 24 
+
+Top-level events. An FT’s TLE is the event of in-terest in FTA. This is the undesired event we wish to calculate metrics over. Similarly, in CIG evaluation, we choose a capability of interest and place an expectation on it. This comes down to the same thing; the event that this capability is not (or no longer) manifested is the “undesired event”. In CIG terminology, an error . It is therefore natural to map CIG capabilities of interest to top-level events. Recall that by placing an expectation on a capability of interest, we transitively also place expectations on the capabilities that it is functionally dependent on. This results in a DAG of potential errors. Each vertex of this DAG (excluding the potential error over the capability of interest) gets mapped to IEs and/or BEs. 
+
+Intermediate events. Intermediate events are associ-ated with a gate type. In standard FT’s, the intermediate event with an OR gate type is observed when any of its input events occur. Intermediate events with an AND gate type are observed when all of its input events occur. In CIGs we distinguish two scenarios for which, if either of them occur, an error is observed over a capability f :i. Fault activation over f , or; ii. Error propagation preventing access to any of f ’s prerequisite resources. This maps the error over f to an OR type intermediate event with two inputs. Scenario (i) maps to a basic event, and scenario (ii) maps each prerequisite resource type to a distinct AND gate. Scenario (ii) also pertains to the notion of minimal con-figuration fragments w.r.t. a prerequisite resource type r.By (23), (24) and (25), the size of a minimal configuration fragment is always one. Therefore we map such errors to child events directly, instead of mapping the minimal configuration fragment to an intermediate OR gate with a single child event representing the error over the minimal configuration fragment’s single element. In the general case, such an OR gate should be generated for minimal configuration fragments. In FTs, AND gates describe that all of the input events must happen for the particular intermediate event to be observed. In CIGs, an error over at least one element (recall that in this work, there is only one) of each minimal configuration fragment over f for r then means that we observe an error over f . We therefore map the set of minimal configuration fragments over f for r to a single 
+
+AND gate. 
+
+Basic events. An FT’s basic events are stochastically independent failure events. They are in a causal rela-tionship w.r.t. the TLE of the fault tree. In CIGs, fault creation is a spontaneous event (i.e. it is not caused by any endogenous part of the system). In the focus of this work, a fault creation event is always a direct cause of a fault activation event. This induced fault activation is exclusively dependent on the same object as the fault creation that caused it. All components are susceptible to fault creation, and the fault activation that is, in this work, necessarily triggered by the fault creation over a capability is mapped to the FT concept of the basic event. It is important to note that, since capabilities cannot be repaired in CIGs, there can occur at most one fault activation over each capability. 
+
+Remark (Fault Tree Events as Event Types) . The fault tree events we synthesize are in fact based on event 
+
+types , rather than particular events. Qualitative FTA, for instance by use of the structure function, utilizes this distinction in a subtle way: membership in the set of failed basic events S represents the occurrence of a particular event of a certain type. This is a fundamental insight about the fault trees we synthesize from CIGs, and indeed fault trees analysis in general. Furthermore, this realization opens the door to a future ontological exploration of the quantitative analysis of FTs, e.g. in line with the notion of event type likelihood in COVER [30]. 
+
+Remark. According to Veseley et al., creating an FT with no intermediate labels between its gate events is 
+
+“indicative of sloppy analysis” [34]. Although the FT in Figure 11b does not show event labels, meaningful labels can be determined as follows:  
+
+> •
+
+A fault activation event over some capability g has the exclusive participation of the bearing object o. The label that we associate with the basic event this fault activation is mapped to may take the form “Fault activation over g in o”. 
+
+> •
+
+For an error over a channel c’s input capability h that consumes a resource type r, a meaningful label for the synthesized OR gate may take the shape “c fails to consume r”. 
+
+> •
+
+For an error over that channel’s output capability k
+
+that produces the resource type r, the label of the corresponding OR may be “c fails to provide r”. 
+
+> •
+
+For an error over a component capability f ’s access to a prerequisite resource r, one may choose to label its AND gate “f loses sufficient access to r”. 
+
+> •
+
+For an error over a component α’s output capability (or a capability of interest) ℓ, a label like “α fails to 
+
+ℓ” is appropriate for the generated OR gate. 
+
+C. Transformation Definition 
+
+We introduce a transformation function τ , which syn-thesizes an FT from a given CIG. This transformation assumes that the given CIG is valid. 
+
+Definition 33 (The CIG to FT transformation function) .
+
+The function τ : G × CΓ → FT transforms a CIG to an FT. Algorithm 1 shows the precise definition of τ in pseudo code. Recall the print head example from Figure 9. Figure 11 illustrates the transformation of that system into a fault tree FT = τ (Γ 0, f ).25 ¯g
+
+¯h0 ¯k0
+
+¯h1 ¯k1
+
+¯f
+
+r
+
+r
+
+r
+
+r
+
+r
+
+r
+
+(a) Example of the print head in its ground state Γ0.BE f  
+
+> BE k0
+> BE h0
+> BE g
+> BE k1
+> rAND f
+> k0OR fk1OR f
+> h0OR k0h1OR k1
+> gOR h0
+> BE h1
+> BE g
+> gOR h1
+> OR f
+
+(b) The FT synthesized from Γ0.
+
+Fig. 11: Fault tree synthesized from the print head exam-ple. 
+
+XII. Transformation properties 
+
+In this section we prove the soundness and complete-ness of the synthesis algorithm presented in the previous section, with respect to error semantics. Intuitively, the transformation is sound iff the failure semantics of the synthesized fault tree are not spurious. I.e. all positive evaluations of the structure function of the synthesized FT represent a positive evaluation of the CIG’s structure function. Conversely, our transformation is complete iff it pre-serves all failure semantics of the original system. All failure modes that can occur in the CIG model must be represented by a corresponding failure mode in the generated fault tree. The transformation is sound and complete iff the syn-thesized fault tree represents the exact error semantics of the CIG it was generated from. 
+
+Theorem XII.1 (The soundness and completeness of τ ).
+
+Let f ∈ CΓ0 be a capability. Let Γ0, Γn : G be valid CIGs. Then the transformation τ is sound and complete iff 
+
+∀f ∈ C . [[ f ]] Γn 
+
+> Γ0
+
+⇐⇒ πτ (Γ 0,f )(S, f )
+
+where by Lemma 1, S is derived from the set of erroneous components EΓn .
+
+Lemma 1 (Derivation of S from EΓn ). In FTA, S denotes the set of failed basic events. The set S can be derived from 
+
+E′ ⊆ EΓn s.t. 
+
+∀x ∈ E′. ∃!bx ∈ S. b x ← x
+
+Note that basic event generation is idempotent in Algo-rithm 1. Furthermore, τ does not generate spurious basic events: 
+
+∀bx ∈ S. ∃!x ∈ E′. b x ← x
+
+I.e. there exists a partial bijection from EΓn to S.
+
+Proof sketch for Lemma 1. Suppose Γ0, Γn : G are valid CIGs, such that Γ0  Γn. Let f ∈ CΓn be a capability. We use the symbol as shorthand notation for the existence of a fault creation event;  
+
+> Γn
+> Γ0
+
+〈id f 〉 ⇐⇒ ∃ Γn−i, Γ′ 
+
+> n−i
+
+: G. Γn−i
+
+> F
+
+↬ Γ′
+
+> n−i
+
+where Γ0 ≺ Γn−i and Γ′ 
+
+> n−i
+
+ Γn, and id f ∈ F .By (29), we have that  
+
+> Γn
+> Γ0
+
+〈id x〉 =⇒ x ∈ EΓn
+
+It is obvious that the set of all capabilities whose fault activation is a term in [[ f ]] Γn 
+
+> Γ0
+
+is then a subset E′ ⊆ EΓn .Furthermore, from Algorithm 1, we have that τ maps the fault activation over such a capability x ∈ E′ to a unique basic event bx ∈ BE 5. Such a derived basic event is denoted bx ← x. I.e.: 
+
+∃!bx ∈ S. b x ← Γn 
+
+> Γ0
+
+〈id x〉
+
+By simple composition of these two results, we obtain 
+
+∃E′ ⊆ EΓn . ∀bx ∈ S. ∃!x ∈ E′. b x ← x
+
+A. Inductive proof 
+
+We proceed by induction over the size of the CIG. We split the induction in three cases. Case 1 is the addition of a new prerequisite resource type through existing con-nected channels and components. Case 2 is the addition of a channel with an existing resource type between already connected components. Case 3 is the addition of a new component that provides of an existing resource type to an already connected channel. Let Γ0 : G be a valid CIG. Let FT = τ (Γ 0, f ). Let I =
+
+|R Γ0 |, M = |⃗ CΓ0 |, and N = |C C 
+
+> Γ0
+
+| respectively denote the number of resources, channels and component capabilities 6
+
+in the CIG Γ0. Let K = I + M + N be the finite size of 
+
+Γ0.To prove that [[ f ]] Γn 
+
+> Γ0
+
+⇐⇒ πFT (S, f ) holds for a CIG of any size K.
+
+Lemma 2 (Base case) . Observe the CIG of size I + M +
+
+N = 4 in Figure 12, showing two component capabilities and a single channel between them. We argue that this interaction is the minimal CIG that is meaningful for analysis (i.e. the analysis of a single component with no inputs or outputs is trivial). The capability f ∈ CΓn
+
+receives resource type r from g ∈ CΓn through channel 
+
+c ∈⃗ CΓn .Let FT = τ (Γ 0, f ) be the fault tree synthesized from the CIG Γ0. We then have a logical equivalence under the one-to-one correspondence between fault creation events and basic events: 
+
+[[ f ]] Γn 
+
+> Γ0
+
+⇐⇒ πFT (S, f )                  
+
+> 5Note that the generation of basic events in τis idempotent.
+> 6We define CC
+> Γ0={f|f∈CΓ0.∃α∈ C Γ0. f ∈Cα
+> Γ0}.26
+
+## f
+
+OR f
+
+BE f  
+
+> hkrr
+
+## g
+
+## β c α
+
+BE k
+
+BE h
+
+BE g
+
+rAND f
+
+kOR f
+
+hOR k
+
+gOR h
+
+Fig. 12: An illustration of the base case. 
+
+Base case. CIG Derivation. We evaluate the structure function [[ f ]] Γn 
+
+> Γ0
+
+for the existence of an error over the capability f :
+
+[[ f ]] Γn 
+
+> Γ0
+
+⇐⇒ Γn 
+
+> Γ0
+
+〈id f 〉 ∨ [[ k0]] Γn
+
+> Γ0
+
+[[ k0]] Γn 
+
+> Γ0
+
+⇐⇒ Γn 
+
+> Γ0
+
+〈id k0 〉 ∨ 
+
+(
+
+∃Γn−j : G. [[ h0]] Γn−j
+
+> Γ0
+
+)
+
+[[ h0]] Γn−j 
+
+> Γ0
+
+⇐⇒ Γn−j 
+
+> Γ0
+
+〈id h0 〉 ∨ [[ g]] Γn−j
+
+> Γ0
+
+[[ g]] Γn−j 
+
+> Γ0
+
+⇐⇒ Γn−j 
+
+> Γ0
+
+〈id g 〉
+
+Recall that by Equation 26, expectation is vacuous for any capability that we evaluate through the structure function. For readability, we therefore discard the con-junctive term id f ∈ EΓn . Furthermore, recall expectation is transitive over functional dependency (a mechanism reflected by the structure function). E.g. id f ∈ EΓn =⇒
+
+id k0 ∈ EΓn , also omitted for readability. Bottom-up substitution of the recursively defined equiv-alences yields a boolean formula with atomic propositions. E.g.: 
+
+[[ h0]] Γn−j 
+
+> Γ0
+
+⇐⇒ Γn−j 
+
+> Γ0
+
+〈id h0 〉 ∨ [[ g]] Γn−j
+
+> Γ0
+
+becomes: 
+
+[[ h0]] Γn−j 
+
+> Γ0
+
+⇐⇒ Γn−j 
+
+> Γ0
+
+〈id h0 〉 ∨ Γn−j 
+
+> Γ0
+
+〈id g 〉
+
+FT derivation. Assume a set S of failed basic events, derived from the set of erroneous components as defined in Theorem XII.1. Recursively applying the fault tree structure function π over the fault tree FT = τ (Γ 0, f )f  
+
+> h0k0r0
+> r0
+
+g0
+
+β0 c0
+
+α  
+
+> hmkmri
+> ri
+
+gn
+
+βn
+
+> cm
+> ...
+
+OR f
+
+> BE f
+> BE k0
+> BE h0
+> BE g0
+> ...
+> ...
+> BE gn
+> ... xx
+> BE km
+
+r0AND f riAND f
+
+k0OR f kmOR f
+
+h0OR k0 hmOR km
+
+g0OR h0 gnOR h0
+
+Fig. 13: An illustration of the general case of the transfor-mation. yields: 
+
+πFT (S, OR f ) ⇐⇒ BE f ∈ S ∨ πFT (S, r AND f )
+
+πFT (S, r AND f ) ⇐⇒ πFT (S, kOR f )
+
+πFT (S, kOR f ) ⇐⇒ BE k ∈ S ∨ πFT (S, hOR k)
+
+πFT (S, hOR k) ⇐⇒ BE h ∈ S ∨ πFT (S, g OR h)
+
+πFT (S, g OR h) ⇐⇒ BE g ∈ S
+
+To conclude. By Lemma 1, for any capability x ∈ CΓn
+
+such that 〈ιΓn (x)〉 is a term in [[ f ]] Γn 
+
+> Γ0
+
+, we have a one-to-one correspondence to a derived term bx ∈ S s.t. bx ← x
+
+in the FT structure function πFT (S, b f ):
+
+〈ιΓn (x)〉 7 → bx
+
+Theorem XII.2 (IH) . Assume a valid CIG Γ0 of size 
+
+K = I + M + N , as depicted in Figure 13. Let f ∈ CΓ0
+
+be a capability, and let FT = τ (Γ 0, f ) be the synthesized fault tree. The induction hypothesis is 
+
+[[ f ]] Γn 
+
+> Γ0
+
+⇐⇒ πFT (S, f )
+
+We derive the structure function for a generic CIG of size K for reusability. We do the same for the structure function of the FT synthesized from this CIG. CIG Derivation. We evaluate the structure function [[ f ]] Γn 
+
+> Γ0
+
+for 27 
+
+the existence of an error over the capability f :
+
+[[ f ]] Γn 
+
+> Γ0
+
+⇐⇒ Γn 
+
+> Γ0
+
+〈id f 〉∨ 
+
+((
+
+· · · ∧ [[ kr0 
+
+> m
+
+]] Γn
+
+> Γ0
+
+)
+
+∨ · · · ∨ 
+
+(
+
+· · · ∧ [[ kri
+
+> m
+
+]] Γn
+
+> Γ0
+
+))
+
+[[ kr0 
+
+> 0
+
+]] Γn 
+
+> Γ0
+
+⇐⇒ Γn 
+
+> Γ0
+
+〈id kr00 〉 ∨ 
+
+(
+
+∃Γn−j : G. [[ hr0 
+
+> 0
+
+]] Γn−j
+
+> Γ0
+
+)
+
+· · · 
+
+[[ kri
+
+> m
+
+]] Γn 
+
+> Γ0
+
+⇐⇒ Γn 
+
+> Γ0
+
+〈id krim 〉 ∨ 
+
+(
+
+∃Γn−j : G. [[ hri
+
+> m
+
+]] Γn−j
+
+> Γ0
+
+)
+
+[[ hr0 
+
+> 0
+
+]] Γn−j 
+
+> Γ0
+
+⇐⇒ Γn−j 
+
+> Γ0
+
+〈id hr00 〉 ∨ [[ ghr00 
+
+> 0
+
+]] Γn−j 
+
+> Γ0
+
+∨ · · · ∨ [[ ghrim 
+
+> n
+
+]] Γn−j
+
+> Γ0
+
+· · · 
+
+[[ hri
+
+> m
+
+]] Γn−j 
+
+> Γ0
+
+⇐⇒ Γn−j 
+
+> Γ0
+
+〈id hrim 〉 ∨ [[ ghr00 
+
+> 0
+
+]] Γn−j 
+
+> Γ0
+
+∨ · · · ∨ [[ ghrim 
+
+> n
+
+]] Γn−j
+
+> Γ0
+
+[[ ghr00 
+
+> 0
+
+]] Γn−j 
+
+> Γ0
+
+⇐⇒ Γn−j 
+
+> Γ0
+
+〈id ghr000
+
+〉· · · 
+
+[[ ghrim 
+
+> n
+
+]] Γn−j 
+
+> Γ0
+
+⇐⇒ Γn−j 
+
+> Γ0
+
+〈id ghrimn
+
+〉
+
+(33) Note that Γn−j is fresh in each term [[ hrx 
+
+> y
+
+]] Γn−j 
+
+> Γ0
+
+, though we have simplified its index here for readability. 
+
+FT derivation. Assume a set S of failed basic events, derived from the set of erroneous components as defined in Theorem XII.1. Recursively applying the fault tree structure function π over the fault tree FT = τ (Γ 0, f )
+
+yields: 
+
+πFT (S, OR f ) ⇐⇒ BE f ∈ S∨
+
+(πFT (S, r0 AND f ) ∨ · · · ∨ πFT (S, ri AND f ))
+
+πFT (S, r0AND f ) ⇐⇒ 
+
+πFT (S, kr00 OR f ) ∧ · · · ∧ πFT (S, kr0 
+
+> m
+
+OR f )
+
+· · · 
+
+πFT (S, ri AND f ) ⇐⇒ 
+
+πFT (S, kri 
+
+> 0
+
+OR f ) ∧ · · · ∧ πFT (S, krim OR f )
+
+πFT (S, kr00 OR f )) ⇐⇒ BE kr00 ∈ S ∨ πFT (S, hr00 OR kr00 )
+
+· · · 
+
+πFT (S, krim OR f )) ⇐⇒ BE krim ∈ S ∨ πFT (S, hrim OR krim )
+
+πFT (S, hr00 OR k) ⇐⇒ BE hr00 ∈ S∨
+
+πFT (S, ghr000
+
+OR hr00 ) ∨ · · · ∨ πFT (S, ghrimn
+
+OR hrim )
+
+· · · 
+
+πFT (S, hrim OR k) ⇐⇒ BE hrim ∈ S∨
+
+πFT (S, ghr000
+
+OR hr00 ) ∨ · · · ∨ πFT (S, ghrimn
+
+OR hrim )
+
+πFT (S, ghr000
+
+OR hr00 ) ⇐⇒ BE ghr000
+
+∈ S
+
+· · · 
+
+πFT (S, ghrimn
+
+OR hrim ) ⇐⇒ BE ghrimn
+
+∈ S
+
+(34) 
+
+IH proof sketch. To prove Theorem XII.2, we induct over the size of Γ0 to show that K + 1 holds. We do so in three dimensions. 1) By Lemma 3, we have that the IH holds for 
+
+K + 1 = ( I + 1) + M + N
+
+2) By Lemma 4, we have that the IH holds for 
+
+K + 1 = I + ( M + 1) + N
+
+3) By Lemma 5, we have that the IH holds for 
+
+K + 1 = I + M + ( N + 1) 
+
+Furthermore, if K increases with any elements that do not affect the terms of the structure function [[ f ]] Γn 
+
+> Γ0
+
+, then the IH holds trivially. We have thus shown that for any valid CIG of size K + 1 , the IH holds. 
+
+Lemma 3 (Case K + 1 = ( I + 1) + M + N ). Let Γ′ 
+
+> 0
+
+be the extension of Γ0 by a fresh prerequisite resource ri+1 .Let f ∈ CΓ′ 
+
+> 0
+
+be a capability, and let FT ′ = τ (Γ ′
+
+> 0
+
+, f ) be the synthesized fault tree. Then 
+
+[[ f ]] Γn
+
+> Γ′
+> 0
+
+⇐⇒ πFT ′ (S, f )
+
+Case I + 1 . Recall the formulae (33) and (34). By adding an additional resource ri+1 , we obtain the following exten-sion for the CIG structure function: 
+
+[[ f ]] Γn 
+
+> Γ0
+
+⇐⇒ Γn 
+
+> Γ0
+
+〈id f 〉∨ 
+
+(
+
+· · · ∨ 
+
+(
+
+· · · ∧ [[ kri
+
+> m
+
+]] Γn
+
+> Γ0
+
+)
+
+∨
+
+(
+
+. . . ∧ [[ kri+1  
+
+> m
+
+]] Γn
+
+> Γ0
+
+))
+
+· · · 
+
+[[ kri
+
+> m
+
+]] Γn 
+
+> Γ0
+
+⇐⇒ Γn 
+
+> Γ0
+
+〈id krim 〉 ∨ 
+
+(
+
+∃Γn−j : G. [[ hri
+
+> m
+
+]] Γn−j
+
+> Γ0
+
+)
+
+[[ kri+1  
+
+> m
+
+]] Γn 
+
+> Γ0
+
+⇐⇒ Γn 
+
+> Γ0
+
+⟨id kri+1 
+
+> m
+
+⟩∨
+
+(
+
+∃Γn−j : G. [[ hri+1  
+
+> m
+
+]] Γn−j
+
+> Γ0
+
+)
+
+· · · 
+
+[[ hri
+
+> m
+
+]] Γn−j 
+
+> Γ0
+
+⇐⇒ Γn−j 
+
+> Γ0
+
+〈id hrim 〉 ∨ · · · ∨ [[ ghrim 
+
+> n
+
+]] Γn−j
+
+> Γ0
+
+[[ hri+1  
+
+> m
+
+]] Γn−j 
+
+> Γ0
+
+⇐⇒ Γn−j 
+
+> Γ0
+
+⟨id hri+1 
+
+> m
+
+⟩ ∨ . . . ∨ [[ ghri+1  
+
+> m
+> n
+
+]] Γn−j
+
+> Γ0
+
+· · · 
+
+[[ ghrim 
+
+> n
+
+]] Γn−j 
+
+> Γ0
+
+⇐⇒ Γn−j 
+
+> Γ0
+
+〈id ghrimn
+
+〉
+
+[[ ghri+1  
+
+> m
+> n
+
+]] Γn−j 
+
+> Γ0
+
+⇐⇒ Γn−j 
+
+> Γ0
+
+⟨id ghri+1 
+
+> mn
+
+⟩
+
+For the FT structure function, we obtain a similar 28 
+
+extension: 
+
+πFT (S, OR f ) ⇐⇒ BE f ∈ S∨
+
+(· · · ∨ πFT (S, ri AND f )
+
+∨ πFT (S, ri+1 AND f ))
+
+· · · 
+
+πFT (S, ri AND f ) ⇐⇒ πFT (S, kri 
+
+> 0
+
+OR f ) ∧ . . . 
+
+∧ πFT (S, krim OR f )
+
+πFT (S, ri+1 AND f ) ⇐⇒ πFT (S, kri+1 0
+
+OR f ) ∧ . . . 
+
+∧ πFT (S, kri+1 
+
+> m
+
+OR f )
+
+· · · 
+
+πFT (S, krim OR f )) ⇐⇒ BE krim ∈ S ∨ πFT (S, hrim OR krim )
+
+πFT (S, kri+1 
+
+> m
+
+OR f )) ⇐⇒ BE kri+1 
+
+> m
+
+∈ S
+
+∨ πFT (S, hri+1 
+
+> m
+
+OR kri+1 
+
+> m
+
+)
+
+· · · 
+
+πFT (S, hrim OR k) ⇐⇒ BE hrim ∈ S ∨ . . . 
+
+∨ πFT (S, ghrimn
+
+OR hrim )
+
+πFT (S, hri+1 
+
+> m
+
+OR k) ⇐⇒ BE hri+1 
+
+> m
+
+∈ S ∨ . . . 
+
+∨ πFT (S, ghri+1 
+
+> mn
+
+OR hri+1 
+
+> m
+
+)
+
+· · · 
+
+πFT (S, ghrimn
+
+OR hrim ) ⇐⇒ BE ghrimn
+
+∈ S
+
+πFT (S, ghri+1 
+
+> mn
+
+OR hri+1 
+
+> m
+
+) ⇐⇒ BE ghri+1 
+
+> mn
+
+∈ S
+
+Apply bottom-up substitution to observe that both resulting boolean formulae are extended with clauses that are disjunctive w.r.t. (33) and (34) and between whose terms there is a one-to-one mapping. I.e.: 
+
+[[ kri+1 
+
+0 ]] Γn
+
+Γ0 ∧ · · · ∧ [[ kri+1 
+
+m ]] Γn
+
+Γ0 ⇐⇒ 
+
+πFT (S, kri+1 0
+
+OR f ) ∧ · · · ∧ πFT (S, kri+1  
+
+> m
+
+OR f )
+
+And by the IH: 
+
+[[ f ]] Γn
+
+Γ′
+
+> 0
+
+⇐⇒ πFT ′ (S, f )
+
+Lemma 4 (Case K + 1 = I + ( M + 1) + N ). Let Γ′
+
+0 be the extension of Γ0 by a fresh channel cm+1 . Let f ∈ CΓ′
+
+> 0
+
+be a capability, and let FT ′ = τ (Γ ′
+
+0, f ) be the synthesized fault tree. Then 
+
+[[ f ]] Γn
+
+Γ′
+
+> 0
+
+⇐⇒ πFT ′ (S, f )
+
+Case M + 1 . Recall the formulae (33) and (34). By adding an additional channel cm+1 , we obtain the following exten-sion for the CIG structure function: 
+
+[[ f ]] Γn
+
+Γ0 ⇐⇒ Γn
+
+Γ0 〈id f 〉∨ 
+
+(
+
+· · · ∨ 
+
+(
+
+· · · ∧ [[ kri
+
+m]] Γn
+
+Γ0 ∧ [[ kri
+
+m+1 ]] Γn
+
+Γ0
+
+))
+
+· · · 
+
+[[ kri
+
+m]] Γn
+
+Γ0 ⇐⇒ Γn
+
+Γ0 〈id krim 〉 ∨ 
+
+(
+
+∃Γn−j : G. [[ hri
+
+m]] Γn−j
+
+Γ0
+
+)
+
+[[ kri
+
+m+1 ]] Γn
+
+Γ0 ⇐⇒ Γn
+
+Γ0 ⟨id krim+1 
+
+⟩∨
+
+(
+
+∃Γn−j : G. [[ hri
+
+m+1 ]] Γn−j
+
+Γ0
+
+)
+
+· · · 
+
+[[ hri
+
+m]] Γn−j
+
+Γ0 ⇐⇒ Γn−j
+
+Γ0 〈id hrim 〉 ∨ · · · ∨ [[ ghrim
+
+n ]] Γn−j
+
+Γ0
+
+[[ hri
+
+m+1 ]] Γn−j
+
+Γ0 ⇐⇒ Γn−j
+
+Γ0 ⟨id hrim+1 
+
+⟩ ∨ . . . ∨ [[ ghrim+1 
+
+n ]] Γn−j
+
+Γ0
+
+· · · 
+
+[[ ghrim
+
+n ]] Γn−j
+
+Γ0 ⇐⇒ Γn−j
+
+Γ0 〈id ghrimn
+
+〉
+
+[[ ghrim+1 
+
+n ]] Γn−j
+
+Γ0 ⇐⇒ Γn−j
+
+Γ0 ⟨id ghrim+1 
+
+> n
+
+⟩
+
+For the FT structure function, we obtain a similar result: 
+
+πFT (S, OR f ) ⇐⇒ BE f ∈ S∨
+
+(· · · ∨ πFT (S, ri AND f ))
+
+· · · 
+
+πFT (S, ri AND f ) ⇐⇒ · · · ∧ πFT (S, krim OR f )
+
+∧ πFT (S, krim+1 
+
+OR f )
+
+· · · 
+
+πFT (S, krim OR f )) ⇐⇒ BE krim ∈ S
+
+∨ πFT (S, hrim OR krim )
+
+πFT (S, krim+1 
+
+OR f )) ⇐⇒ BE krim+1 
+
+∈ S
+
+∨ πFT (S, hrim+1 
+
+OR krim+1 
+
+)
+
+· · · 
+
+πFT (S, hrim OR k) ⇐⇒ BE hrim ∈ S
+
+∨ πFT (S, ghrimn
+
+OR hrim )
+
+πFT (S, hrim+1 
+
+OR k) ⇐⇒ BE hrim+1 
+
+∈ S ∨ . . . 
+
+∨ πFT (S, ghrim+1 
+
+> n
+
+OR hrim+1 
+
+)
+
+· · · 
+
+πFT (S, ghrimn
+
+OR hrim ) ⇐⇒ BE ghrimn
+
+∈ S
+
+πFT (S, ghrim+1 
+
+> n
+
+OR hrim+1 
+
+) ⇐⇒ BE ghrim+1 
+
+> n
+
+∈ S
+
+Apply bottom-up substitution to observe that both resulting boolean formulae are extended with clauses that are conjunctive w.r.t. (33) and (34) and between whose terms there is a one-to-one mapping. I.e.: 
+
+[[ kri
+
+m+1 ]] Γn
+
+Γ0 ⇐⇒ πFT (S, krim+1 
+
+OR f )
+
+And by the IH: 
+
+[[ f ]] Γn
+
+Γ′
+
+> 0
+
+⇐⇒ πFT ′ (S, f )29 
+
+Lemma 5 (Case K + 1 = I + M + ( N + 1) ). Let Γ′ 
+
+> 0
+
+be the extension of Γ0 by a fresh component capability gn+1 .Let f ∈ CΓ′ 
+
+> 0
+
+be a capability, and let FT ′ = τ (Γ ′
+
+> 0
+
+, f ) be the synthesized fault tree. Then 
+
+[[ f ]] Γn
+
+> Γ′
+> 0
+
+⇐⇒ πFT ′ (S, f )
+
+Case N + 1 . Recall the formulae (33) and (34). By adding an additional component capability gn+1 , we obtain the following extension for the CIG structure function: 
+
+[[ f ]] Γn 
+
+> Γ0
+
+⇐⇒ Γn 
+
+> Γ0
+
+〈id f 〉∨ 
+
+((
+
+· · · ∧ [[ kr0 
+
+> m
+
+]] Γn
+
+> Γ0
+
+)
+
+∨ · · · ∨ 
+
+(
+
+· · · ∧ [[ kri
+
+> m
+
+]] Γn
+
+> Γ0
+
+))
+
+· · · 
+
+[[ kri
+
+> m
+
+]] Γn 
+
+> Γ0
+
+⇐⇒ Γn 
+
+> Γ0
+
+〈id krim 〉 ∨ 
+
+(
+
+∃Γn−j : G. [[ hri
+
+> m
+
+]] Γn−j
+
+> Γ0
+
+)
+
+· · · 
+
+[[ hri
+
+> m
+
+]] Γn−j 
+
+> Γ0
+
+⇐⇒ Γn−j 
+
+> Γ0
+
+〈id hrim 〉 ∨ · · · ∨ [[ ghrim 
+
+> n
+
+]] Γn−j
+
+> Γ0
+
+∨ [[ ghrim
+
+> n+1
+
+]] Γn−j
+
+> Γ0
+
+· · · 
+
+[[ ghrim 
+
+> n
+
+]] Γn−j 
+
+> Γ0
+
+⇐⇒ Γn−j 
+
+> Γ0
+
+〈id ghrimn
+
+〉
+
+[[ ghrim
+
+> n+1
+
+]] Γn−j 
+
+> Γ0
+
+⇐⇒ Γn−j 
+
+> Γ0
+
+⟨id ghrimn+1 
+
+⟩
+
+For the FT structure function, we obtain a similar extension: 
+
+πFT (S, OR f ) ⇐⇒ BE f ∈ S∨
+
+(· · · ∨ πFT (S, ri AND f ))
+
+· · · 
+
+πFT (S, ri AND f ) ⇐⇒ · · · ∧ πFT (S, krim OR f )
+
+· · · 
+
+πFT (S, krim OR f )) ⇐⇒ BE krim ∈ S ∨ πFT (S, hrim OR krim )
+
+· · · 
+
+πFT (S, hrim OR k) ⇐⇒ BE hrim ∈ S ∨ . . . 
+
+∨ πFT (S, ghrimn
+
+OR hrim )
+
+∨ πFT (S, ghrimn+1 
+
+OR hrim )
+
+· · · 
+
+πFT (S, ghrimn
+
+OR hrim ) ⇐⇒ BE ghrimn
+
+∈ S
+
+πFT (S, ghrimn+1 
+
+OR hrim ) ⇐⇒ BE ghrimn+1 
+
+∈ S
+
+Apply bottom-up substitution to observe that both resulting boolean formulae are extended with terms that are disjunctive w.r.t. (33) and (34) and between who there is a one-to-one mapping. I.e.: 
+
+[[ ghrim
+
+> n+1
+
+]] Γn−j 
+
+> Γ0
+
+⇐⇒ πFT (S, ghrimn+1 
+
+OR hrim )
+
+And by the IH: 
+
+[[ f ]] Γn
+
+> Γ′
+> 0
+
+⇐⇒ πFT ′ (S, f )
+
+XIII. Related work 
+
+A. Failure Mode Effects Analysis 
+
+Failure Mode Effects Analysis (FMEA) is an inductive reliability analysis method in which experts and analysts consider the potential effects of envisioned failure modes of a system. This knowledge is captured in FMEA tables – a human-readable, textual format, listing a subset of a system’s potential failure modes. Due to their natural-language descriptions, FMEA tables cannot be evaluated with classical algorithms, though some progress in mecha-nized natural-language interpretation has been made [36]. Since manual FMEA is a labor-intensive process, it is usually carried out in the later design phases. By that point, changes to the system design are much more difficult to accommodate and consequently much more costly [15]. As a result, the emphasis often lies on the mitigation of known design flaws, rather than improving the system design. FTA, in contrast to FMEA is a deductive approach. FT construction starts from the undesired top-level event, and potential causes are explored in a recursive top-down manner. FTs provides an intuitive visualization of how failure modes and their interactions result in system-level failure, making them easier to interpret than FMEA tables – especially for large systems. Furthermore, fault trees are formally defined and they afford many metrics that can be computed algorithmically (i.e. minimal cut sets and minimal path sets [28]). The strength of FTA lies in the combination of visual failure mode interactions and automatic reliability metrics. If FTA reliability metrics can be obtained with low effort in the early design phases, design changes based on new in-sights are less costly to implement. Engineers and decision-makers have the ability to make systems more robust by design, and simultaneously to reduce costly “just in case” design decisions because of uncertainty in this early stage. However, even though analysis is fully mechanized, the manual construction of fault trees typically suffers from the same labor-intensiveness and consistency challenges associated with manual FMEA construction. 
+
+B. Fault Tree and FTA Extensions 
+
+Dynamic Fault Trees (DFTs) extend classical FTs by introducing temporal and state-dependent failure seman-tics [28]. In addition to standard Boolean gates, DFTs incorporate constructs such as priority-AND gates, func-tional dependencies 7, and spare management, enabling the representation of dynamic system behavior and sequencing constraints. DFTs have been widely applied in the analysis of safety-critical systems. Several approaches have inves-tigated the automatic generation of DFTs from architec-tural or behavioral models. However, the detailed level of 
+
+> 7The semantics of the term “functional dependency” in DFTs is not the same as how we define it in this work. 30
+
+knowledge required to create a DFT is unavailable at early design stages, which makes the DFT an inappropriate formalism for the focus of this work. A more domain-specific extension of fault trees, called Component Fault Trees [17](CFTs), makes the role of components as the bearers of faults explicit by allowing modelers to encapsulate internal component failure modes. However, the lack of an ontological foundation allows for the construction of CFTs that are unintended by the modeler, e.g. those that have no consistent notion of (component) identity, time or causality. Furthermore, their manual construction confronts stakeholders with the same challenges as in the case of standard FTs. Nicoletti et al. introduce Probabilistic Fault tree Logic (PFL) – a query language for fault trees, allowing analysts to obtain user-specific and complex metrics of interest [23]. PFL also allows for locally setting evidence in queries without changing the values of the underlying FT. In the context of this work, analysts can use PFL to obtain quantitative FT metrics despite the fact that the FTs synthesized from CIGs do no “contain” numerical failure probabilities. 
+
+C. Fault Tree Generation from MBSE 
+
+There is extensive work on (semi-)automatically trans-forming failure-decorated MBSE models to (dynamic) FTs. Baklouti et al. generate dynamic FTs from decorated SysML models by introducing a novel redundancy profile [3]. However, this requires explicit safety assessment from the modeler (i.e. redundancy does not follow from the architecture, it is assumed of the architecture) and its tooling is proprietary to SysML (version 1) extended with the authors’ profile. Furthermore, despite its practical applicability, the work lacks an ontological foundation. Castet et al. introduce a fault management ontology, providing engineers at JPL with a common vocabulary of problematic system behavior [7]. A tool that integrates this ontology with SysML tooling is presented in [8]. The fault management ontology describes concepts like constraints, violations, mitigation and explanations. These concepts are complementary to the ontological concepts (e.g. components, capability, faults and errors) that we introduce in this work. Mhenni et al. [20] describe a method to synthesize FTs from SysML’s Internal Block Diagrams (IBD). IBDs rep-resent a system’s internal structure and the interactions between its components through ports. The FT synthesis algorithm is done by a combination of standard graph traversal algorithms and generating sub-FTs for known IBD patterns. This is similar in spirit to the transfor-mation we propose in this work. However, the existing approach relies on specific SysML semantics. In contrast, the conceptual model proposed in our work is generally ap-plicable to any KG that contain structural and functional system knowledge, regardless of the modeling language in which such system knowledge is originally expressed. This allows us to integrate different models (in different modeling languages) that describe the same system. 
+
+Alternative System Models. The work by Bozzano et al. in [6] allows for the automatic generation of FTs from SLIM models (an extension of AADL). While these FTs are expressive and accurate, the synthesis methodology requires detailed nominal models and explicit error models of a system. Majdara and Wakabayashi proposee a method to gen-erate FTs from a system model using so-called function tables for components [18]. Such a table describes the output of a component given its current failure status. Additionally, there are state transition tables that describe the state changes that a component can go through. Lastly, they employ a notion of flow , which is similar in spirit to our own notion of resource types . The inter-connectivity of components that exchange flows is the basis for the FT synthesis algorithm. Though these works address some of the challenges that we also touch on in this paper, the ontological foundation is minimal. Furthermore, the need for function tables and state transition tables, which encode failure states and their consequences, incurs the same modeling burden that many of the MBSE ap-proaches suffer from. What all these approaches have in common, is that FT synthesis relies on manually decorating system architec-ture with failure information. In doing so, they allow for the recording of expert knowledge about specific failure modes. In contrast, CIGs do not require (and indeed do not facilitate) the manual modeling of failure behavior. Therefore, the ontology we present must encode suffi-ciently rich semantics to enable the inference of failure modes – and this by the very same mechanisms that experts may employ. 
+
+D. Embedding Fault Knowledge in KGs 
+
+When fault semantics are directly encoded in an on-tology, like in that proposed by Meng et al. [19], gen-erating FTs from KGs that instantiate such an ontology is relatively straight-forward. The ontology that Shen et al. present in [31] even explicitly encodes the basic FT concepts. However, both these ontologies describe KGs where explicit fault knowledge is already present. The synthesis of FTs from an ontology about the structural and functional aspects of system architectures, without 
+
+specified fault knowledge, is a key value proposition of our approach. There are many automated methods to extract knowl-edge graphs from unstructured data [37]. In this work, we assume that a knowledge graph representing the system architecture is available. 
+
+E. Ontology for Risk 
+
+The Common Ontology of Value and Risk (COVER) [30] proposes an ontological foundation for reasoning about risk, causality, and events in complex socio-technical systems. COVER emphasizes 31 
+
+the distinction between risk and value perception, event types, and situations, enabling a semantically rigorous treatment of social risk and value experience. COVER provides explicit conceptual grounding for what objects participate in risk and value events, and how such events are causally connected. Our work aligns with this perspective by treating fault creation, fault activation, and error propagation as ontologically distinct event types grounded in UFO. However, whereas COVER primarily focuses on high-level conceptual modeling of events and risk, our approach operationalizes these ideas for the automated synthesis of FTs. Furthermore, the domain-specific notions relevant to CPSs are not captured by COVER (though the possibility for aligned of CIGs with COVER has fruitful potential). Nicoletti et al. explicitly highlight the importance of objects, e.g. components, in FTA and Attack Tree Anal-ysis explicit. The WATCHDOG [22] approach, based on COVER, proposes object-oriented disruption graphs (DOGs). COVER describes how Threat Objects and Ob-jects at Risk can participate in Threat Events and Loss Events. WATCHDOG draws a parallel between the pre-conditions of such events and the objects that participate in them. However, these conditions are, at the leafs of a DOG, enablers of a basic events. The work does not explicitly consider the mechanisms of non-synchronic situ-ations (i.e. the world at different time points), and as such leaves a notion of causality between events underspecified. Because of the gap between “enabling conditions” and causality, this work is incompatible with the type of func-tional dependency analysis we focus on here. Furthermore, by allowing any kind of object in the model, the approach relies on manual, iterative expert modeling for the correct construction of DOGs (e.g. the correct modeling of causal relationships between events is not guided or enforced by the model). In contrast, since CIGs are domain-specific to CPS architecture, they are sufficiently constrained to enable fully automated synthesis of FTs. Venceslau et al. [33] later extended the work of Majdara and Wakabayashi [18] with an ontology (in a much leaner sense of the word than what we commit to here) and ap-plied it to an industrial plant case study. Though there are works in the direction of an ontology for risk models [24], a comprehensive ontological analysis of CPSs for reliability analysis is lacking. Another general observation is that most of the state of the art focuses on vertical failure propagation, i.e. propagation of failure along the mereological composition of a system. This in contrast to error propagation along its horizontal integration, which is what we focus on in this work. 
+
+XIV. Conclusion 
+
+This paper introduced the Capability Interaction Graph (CIG), a semantically and ontologically grounded model for representing functional dependencies and fault propagation in cyber-physical systems (CPSs). By combining principles from Model-Based Systems Engineering, knowledge graphs, and the Unified Foundational Ontology (UFO), the CIG provides a lightweight yet expressive intermediate representation that bridges CPS architectural knowledge and reliability analysis. Building upon this model, we presented an automated synthesis pipeline that transforms knowledge-graph rep-resentations of CPS architectures into fault trees suitable for classical Fault Tree Analysis. In contrast to existing approaches that rely heavily on manually decorated archi-tectural models and expert-specified failure behavior, our approach infers fault propagation structure directly from functional dependencies encoded in the CIG. The model explicitly distinguishes between faults, fault activations, errors, events, and situations, thereby addressing several semantic ambiguities that are commonly conflated in tra-ditional fault tree methodologies. The proposed ontology and formalization enable the unified representation of heterogeneous engineering knowl-edge while remaining sufficiently lightweight for early design stages, where detailed behavioral information is often unavailable. Furthermore, grounding the framework in UFO provides rigorous semantics for causality, object participation, event manifestation, and dependency, im-proving consistency and traceability across synthesized reliability models. Overall, this work demonstrates that meaningful and semantically rich fault trees can be synthesized auto-matically from minimally structured CPS architectural knowledge. This opens opportunities for earlier and more scalable reliability analysis, reducing the effort associated with manual fault modeling and supporting more informed architectural decision-making during system development. Future work includes extending the framework with quantitative reliability information, integrating behavioral and temporal semantics, incorporating uncertainty and probabilistic reasoning, and validating the approach on large-scale industrial CPS case studies. In addition, fu-ture research may explore tighter integration with MBSE toolchains and automated extraction of CIGs from hetero-geneous engineering artifacts and natural-language system documentation. 
+
+A. Acknowledgments 
+
+The authors would like to thank dr. Claudenir Morais Fonseca for the insightful discussions and valuable advice on OntoUML and the Unified Foundational Ontology (UFO), which greatly contributed to the development of this work. 
+
+This publication is part of the project ZORRO with project number KICH1.ST02.21.003 of the research programme Key Enabling Technologies (KIC) which is (partly) financed by the Dutch Research Council (NWO). 
+
+References          
+
+> [1] João Paulo A. Almeida, Giancarlo Guizzardi, Tiago Prince Sales, and Claudenir M. Fonseca. gufo: A gentle foundational ontology for semantic web knowledge graphs, 2026. 32
+
+[2] A. Avizienis, J.-C. Laprie, B. Randell, and C. Landwehr. Basic concepts and taxonomy of dependable and secure computing. IEEE Transactions on Dependable and Secure Computing, 1(1):11–33, 2004. [3] Anis Baklouti, Nga Nguyen, Faïda Mhenni, Jean-Yves Cho-ley, and Abdelfattah Mlika. Dynamic Fault Tree Generation for Safety-Critical Systems Within a Systems Engineering Ap-proach. IEEE Systems Journal, 14(1):1512–1522, March 2020. [4] Tim Berners-Lee, Roy T. Fielding, and Larry M Masinter. Uniform Resource Identifier (URI): Generic Syntax. RFC 3986, January 2005. [5] A Botti Benevides, JPA Almeida, and Giancarlo Guizzardi. Towards a unified theory of endurants and perdurants: UFO-AB. In Proceedings of the Joint Ontology Workshops 2019. Episode V: The Styrian Autumn of Ontology, volume 2518 of CEUR Workshop Proceedings. CEUR-WS, 2019. [6] Marco Bozzano, Alessandro Cimatti, Joost-Pieter Katoen, Viet Yen Nguyen, Thomas Noll, and Marco Roveri. Safety, dependability and performance analysis of extended AADL models. Comput. J., 54(5):754–775, 2011. [7] Jean-Francois Castet, Magdy Bareh, Jeffery Nunes, Steven Jenkins, and Gene Lee. Fault Management Ontology and Modeling Patterns. American Institute of Aeronautics, 2016. [8] Jean-Francois Castet, Magdy Bareh, Jeffery Nunes, Shira Okon, Larry Garner, Emmy Chacko, and Michel Izygon. Failure analysis and products in a model-based environment. In 2018 IEEE Aerospace Conference, pages 1–13. IEEE, 2018. [9] Aaron J Cotnoir and Achille C Varzi. Mereology. Oxford University Press, 2021. [10] Richard P. Feynman, Robert B. Leighton, Matthew Sands, and E. M. Hafner. The Feynman Lectures on Physics; Vol. I. American Journal of Physics, 33(9):750–752, 09 1965. [11] Giancarlo Guizzardi. Ontological foundations for structural conceptual models. PhD thesis, University of Twente, 2005. [12] Giancarlo Guizzardi, Alessander Botti Benevides, Claudenir M. Fonseca, Daniele Porello, João Paulo A. Almeida, and Tiago Prince Sales. Ufo: Unified foundational ontology. Applied Ontology, 17(1):167–210, 2022. [13] Giancarlo Guizzardi, Gerd Wagner, Ricardo de Almeida Falbo, Renata SS Guizzardi, and João Paulo A Almeida. Towards ontological foundations for the conceptual modeling of events. In International Conference on Conceptual Modeling, pages 327– 341. Springer, 2013. [14] Steve Harris and Andy Seaborne. SPARQL 1.1 Query Language, 2013. [Accessed 05-03-2025]. [15] INCOSE. INCOSE systems engineering handbook. John Wiley & Sons, 2023. [16] Harry Jones. Common cause failures and ultra reliability. In 42nd International Conference on Environmental Systems, page 3602, 2012. [17] Bernhard Kaiser, Peter Liggesmeyer, and Oliver Mäckel. A new component concept for fault trees. In Peter A. Lindsay and An-thony Cant, editors, Safety Critical Systems and Software 2003, Eigth Australian Workshop on Safety-Related Programmable Systems, (SCS2003), Canberra, ACT, Australia, 9-10 October 2003, volume 33 of CRPIT, pages 37–46. Australian Computer Society, 2003. [18] Aref Majdara and Toshio Wakabayashi. A new approach for computer-aided fault tree generation. In 2009 3rd Annual IEEE Systems Conference, pages 308–312. IEEE, 2009. [19] Xiangzhen Meng, Bo Jing, Shenglong Wang, Jinxin Pan, Yifeng Huang, and Xiaoxuan Jiao. Fault knowledge graph construction and platform development for aircraft PHM. Sensors, 2024. [20] Faïda Mhenni, Nga Nguyen, and Jean-Yves Choley. Automatic fault tree generation from SysML system models. In AIM2014, 2014. [21] P. P. Negri, V. E. S. Souza, A. L. D. C. Leal, R. D. A. Falbo, and G. Guizzardi. Towards an ontology of goal-oriented require-ments. In Proceedings of the 20th Workshop on Requirements Engineering, 2017. [22] Stefano M. Nicoletti, E. Moritz Hahn, Mattia Fumagalli, Gian-carlo Guizzardi, and Mariëlle Stoelinga. Watchdog: an ontology-aware risk assessment approach via object-oriented disruption graphs. In John Krogstie, Stefanie Rinderle-Ma, Gerti Kap-pel, and Henderik A. Proper, editors, Advanced Information Systems Engineering, pages 314–331, Cham, 2025. Springer Nature Switzerland. [23] Stefano M. Nicoletti, Milan Lopuhaä-Zwakenberg, E. Moritz Hahn, and Mariëlle Stoelinga. Pfl: A probabilistic logic for fault trees. In Marsha Chechik, Joost-Pieter Katoen, and Martin Leucker, editors, Formal Methods, pages 199–221, Cham, 2023. Springer International Publishing. [24] Ítalo Oliveira, Stefano M Nicoletti, Mattia Fumagalli, Gal En-gelberg, and Giancarlo Guizzardi. Toward an ontology-based modeling for risk management. In 18th International Workshop on Value Modelling and Business Ontologies, VMBO 2025, 2025. [25] Jorge Pérez, Marcelo Arenas, and Claudio Gutierrez. Semantics and complexity of sparql. In Isabel Cruz, Stefan Decker, Dean Allemang, Chris Preist, Daniel Schwabe, Peter Mika, Mike Uschold, and Lora M. Aroyo, editors, The Semantic Web - ISWC 2006, pages 30–43, Berlin, Heidelberg, 2006. Springer Berlin Heidelberg. [26] Jorge Pérez, Marcelo Arenas, and Claudio Gutierrez. Semantics and complexity of sparql. ACM Transactions on Database Systems (TODS), 34(3):1–45, 2009. [27] RDF Working Group. Resource Description Framework (RDF), February 2014. [28] Enno J.J. Ruijters and Mariëlle I.A. Stoelinga. Fault tree analysis: A survey of the state-of-the-art in modeling, analysis and tools. Computer science review, 2015. [29] Jaime Salas and Aidan Hogan. Semantics and canonicalisation of sparql 1.1. Semantic Web Journal, 13(5):829–893, 2022. [30] Tiago Prince Sales, Fernanda Baião, Giancarlo Guizzardi, João Paulo A. Almeida, Nicola Guarino, and John Mylopoulos. The common ontology of value and risk. In Juan C. Trujillo, Karen C. Davis, Xiaoyong Du, Zhanhuai Li, Tok Wang Ling, Guoliang Li, and Mong Li Lee, editors, Conceptual Modeling, pages 121–135, Cham, 2018. Springer International Publishing. [31] Li Shen, Hao Tang, Lixiang Wang, Junliang Cai, and Xing Cui. A fault knowledge graph creation method and application based on fault tree analysis and failure mode, effects and criticality analysis. In 2023 IEEE 3rd ICIBA, 2023. [32] Michael Stamatelatos, William Vesely, Joanne Dugan, Joseph Fragola, Joseph Minarick, and Jan Railsback. Fault tree hand-book with aerospace applications, 2002. [33] Allan Venceslau, Raphaela Lima, Luiz Affonso Guedes, and Ivanovitch Silva. Ontology for computer-aided fault tree syn-thesis. In Proceedings of the 2014 IEEE Emerging Technology and Factory Automation (ETFA), pages 1–4, 2014. [34] William E Vesely, Francine F Goldberg, Norman H Roberts, and David F Haasl. Fault tree handbook. Technical report, Nu-clear Regulatory Commission, Washington, DC (USA). Office of Nuclear Regulatory Research, 1981. [35] Denny Vrandečić and Markus Krötzsch. Wikidata: a free col-laborative knowledgebase. Commun. ACM, 2014. [36] Zhaoguang Xu, Yanzhong Dang, Peter Munro, and Yuhang Wang. A data-driven approach for constructing the component-failure mode matrix for fmea. Journal of Intelligent Manufacturing, 31(1):249–265, 2020. [37] Lingfeng Zhong, Jia Wu, Qian Li, Hao Peng, and Xindong Wu. A comprehensive survey on automatic knowledge graph construction. ACM Comput. Surv., 56(4), November 2023. 33 
+
+Algorithm 1 The CIG to FT transformation function τ
+
+1: L : Gate ∪ { ε}
+
+2: P ⊆ P (L) ▷ Encountered FT gates (recurs. guard) 3: function BEs (⟨BE , G, T, I ⟩ : FaultTree) 4: return BE 5: end function 
+
+6: function Gates (⟨BE , G, T, I ⟩ : FaultTree) 7: return G
+
+8: end function 
+
+9: function I(⟨BE , G, T, I ⟩ : FaultTree) 10: return I
+
+11: end function 
+
+12: function τ (Γ : G, f : F)13: FT ← new FaultTree 14: τ ′(Γ , ∅, f, ε, FT )
+
+15: return FT 16: end function 
+
+17: function τ ′(Γ : G, P, f : C , γ : L, FT : FaultTree) 18: if or f ∈ P then 
+
+19: Generate basic event be f and place it under γ such that be f ∈ BEs (FT ); be f ∈ I(γ)
+
+20: return 
+
+21: end if 
+
+22: Generate OR gate or f such that or f ∈ Gates (FT )
+
+23: P ′ ← P ∪ { or f }
+
+24: if γ = ε then 
+
+25: or f becomes the top-level event, such that Gates (FT ) = {or f }
+
+26: else 
+
+27: Place or f under γ such that or f ∈ I(γ)
+
+28: end if 
+
+29: Generate basic event be f and place it under or f such that be f ∈ BEs (FT ); be f ∈ I(or f )
+
+30: for all r ∈ ψΓ(f ) do ▷ Prerequisite resources for f
+
+31: Generate AND gate r and f and place it under or f such that  
+
+> r
+
+and f ∈ Gates (FT ); r and f ∈ I(or f )
+
+32: for all k ∈ DA(f, r ) do ▷ Channel output capabilities that provide f with r
+
+33: Generate OR gate k or f and place it under r and f such that  
+
+> k
+
+or f ∈ Gates (FT ); k or f ∈ I(r and f )
+
+34: Generate basic event be k and place it under k or f such that be k ∈ BEs (FT ); be k ∈ I(k or f )
+
+35: Obtain the channel’s input capability h = DB 
+
+> Γ
+
+(f, r ) ▷ Channel input capability that provides k with r
+
+36: Generate OR gate hor k and place it under k or f such that 
+
+> h
+
+or k ∈ Gates (FT ); hor k ∈ I(k or f )
+
+37: Generate basic event be h and place it under hor k such that be h ∈ BEs (FT ); be h ∈ I(hor k )
+
+38: for all g ∈ DC (h, r ) do ▷ Component capabilities that provide h with r
+
+39: Generate OR gate g or h and place it under hor k such that  
+
+> g
+
+or h ∈ Gates (FT ); g or h ∈ I(hor k )
+
+40: Generate basic event be g and place it under g or h such that be g ∈ BEs (FT ); be g ∈ I(g or h)
+
+41: τ ′(Γ , P ′, g, g or h, FT )
+
+42: end for 
+
+43: end for 
+
+44: end for 
+
+45: end function

@@ -1,0 +1,209 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-24T21:40:39.150788+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2606.20146v3",
+      "source": "arxiv",
+      "title": "BIM-Edit: Benchmarking Large Language Models for IFC-Based Building Information Modeling",
+      "abstract": "Large language models (LLMs) are increasingly applied to computer-aided design (CAD) to generate design artifacts from textual instructions. In engineering practice, this requires more than creating new geometry, models must also understand existing scenes, edit them correctly, and preserve semantics and relations. However, many CAD benchmarks focus on creating new models rather than editing existing ones, and mostly evaluate geometric correctness. We introduce BIM-Edit, a benchmark for evaluating LLMs on natural-language editing of Building Information Models (BIM) represented in the Industry Foundation Classes (IFC) format. BIM provides a challenging testbed because building models encode geometry together with semantic and relational structure. BIM-Edit contains 324 editing tasks spanning 11 realistic building models and 36 synthetic scenes. Tasks are expressed using three instruction categories - direct, spatial, and topological - covering both explicit and scene-grounded edits. We evaluate outputs along three dimensions: geometric accuracy, semantic validity, and topological consistency. Across evaluated LLMs, the best-performing model achieves only 49.5% average score across the three metrics, and no model fully solves more than 3.4% of tasks. These results demonstrate a substantial gap between current LLM capabilities and the requirements of structured engineering design workflows.",
+      "authors": [
+        "Bharathi Kannan Nithyanantham",
+        "Clemens Kujat",
+        "Tobias Sesterhenn",
+        "Stefan Telgmann",
+        "Ashwin Nedungadi",
+        "Jörn Plönnigs",
+        "Christian Bartelt",
+        "Stefan Lüdtke"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-18T12:08:04+00:00",
+      "link": "https://arxiv.org/pdf/2606.20146v3",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "benchmarks LLMs for IFC-based BIM editing, preserving semantics and relations",
+      "llm_evidence_cn": "为基于IFC的BIM编辑提供基准测试，保持语义和关系",
+      "llm_evidence": "为基于IFC的BIM编辑提供基准测试，保持语义和关系",
+      "canonical_evidence": "为基于IFC的BIM编辑提供基准测试，保持语义和关系",
+      "llm_tldr_en": "Introduces BIM-Edit, a benchmark for evaluating LLMs on natural-language editing of IFC building models, focusing on semantic and relational correctness beyond geometry.",
+      "llm_tldr_cn": "大型语言模型在CAD设计中生成新几何体较多，但编辑现有模型并保持语义和关系更具挑战。本文提出BIM-Edit基准，评估LLMs对IFC格式BIM模型进行自然语言编辑的能力。基准要求模型理解现有场景并正确编辑，同时保留几何、语义和对象关系。实验显示该方法能有效评估LLM的语义理解能力，对智能建筑信息管理有重要意义。",
+      "llm_tldr": "大型语言模型在CAD设计中生成新几何体较多，但编辑现有模型并保持语义和关系更具挑战。本文提出BIM-Edit基准，评估LLMs对IFC格式BIM模型进行自然语言编辑的能力。基准要求模型理解现有场景并正确编辑，同时保留几何、语义和对象关系。实验显示该方法能有效评估LLM的语义理解能力，对智能建筑信息管理有重要意义。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic information extraction from BIM models, including geometry, materials, textures, and object relationships.",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.24138v1",
+      "source": "arxiv",
+      "title": "Sat2City v2: Native 3D City Asset Generation from a Single Satellite Image",
+      "abstract": "Generating explicit 3D city assets from a single satellite image is important for digital twins, urban simulation, and geospatial intelligence. Unlike satellite-to-street-view synthesis, the task requires a reusable textured mesh with plausible geometry and controllable appearance rather than a 3D proxy optimized only for rendering a small set of images or videos. The ICCV Sat2City framework made a first step by conditioning cascaded sparse-voxel latent diffusion on satellite-derived height maps, but its appearance was random, its training data were synthetic, and its task-specific VAE did not scale well to noisy real-world reconstructions. We present Sat2City v2, a journal extension that adapts a pretrained native structured-latent 3D foundation model to weakly aligned satellite images and textured meshes. We build a real-world dataset with 16,241 satellite-mesh pairs across 24 regions in 9 cities. Instead of learning a 3D representation from noisy city meshes, Sat2City v2 encodes each mesh into a pretrained native 3D latent space, fine-tunes a satellite-conditioned geometry flow, and uses the decoded shape to anchor satellite-conditioned texturing. This retains Sat2City's geometry-to-appearance cascade while enabling appearance-controllable generation from the satellite input. Experiments on metric-scale DSM reconstruction and generative city-asset benchmarks for geometry and appearance show that Sat2City v2 achieves the best overall performance among evaluated baselines. Overall, Sat2City v2 advances satellite-to-city generation from rendering-oriented 3D proxies to explicit textured mesh assets, supported by, to the best of our knowledge, the first documented satellite-mesh paired dataset collected from matched geographic crops for this asset-level task. Project page: https://ai4city-hkust.github.io/Sat2City-v2/",
+      "authors": [
+        "Tongyan Hua",
+        "Dongli Wu",
+        "Jinjing Zhu",
+        "Yinrui Ren",
+        "Zhongcheng Hong",
+        "Ying-Cong Chen",
+        "Hui Xiong",
+        "Wufan Zhao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-23T04:46:04+00:00",
+      "link": "https://arxiv.org/pdf/2606.24138v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Generates native 3D city assets from satellite imagery for digital twins and urban simulation",
+      "llm_evidence_cn": "从卫星影像生成本地3D城市资产，用于数字孪生和城市仿真",
+      "llm_evidence": "从卫星影像生成本地3D城市资产，用于数字孪生和城市仿真",
+      "canonical_evidence": "从卫星影像生成本地3D城市资产，用于数字孪生和城市仿真",
+      "llm_tldr_en": "Sat2City v2 adapts a pretrained 3D foundation model to generate reusable textured meshes from a single satellite image, enabling explicit 3D city asset creation for digital twins.",
+      "llm_tldr_cn": "针对单张卫星图像生成可复用的纹理网格3D城市资产这一重要任务，现有方法依赖合成数据和专用变分自编码器，在真实场景中泛化差。Sat2City v2将预训练的3D基础模型适配到卫星图像上，生成具有可控外观和合理几何的显式城市模型。为数字孪生和地理空间智能提供了直接从遥感影像构建三维城市资产的标准化途径。",
+      "llm_tldr": "针对单张卫星图像生成可复用的纹理网格3D城市资产这一重要任务，现有方法依赖合成数据和专用变分自编码器，在真实场景中泛化差。Sat2City v2将预训练的3D基础模型适配到卫星图像上，生成具有可控外观和合理几何的显式城市模型。为数字孪生和地理空间智能提供了直接从遥感影像构建三维城市资产的标准化途径。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.20779v1",
+      "source": "arxiv",
+      "title": "Ontology-Grounded Capability Interaction Graphs: From Knowledge Graphs to Fault Trees",
+      "abstract": "The development of Cyber-Physical Systems (CPSs) is inherently multidisciplinary, involving expertise from domains such as software engineering, electrical engineering, and mechatronics. throughout the lifecycle of the system, from design to deployment. Ensuring system reliability in Cyber-Physical Systems (CPSs) requires the identification and analysis of potential failures and their cascading effects. However, reliability modeling remains a challenging and error-prone activity, as it often depends on tacit expert knowledge, incomplete documentation of failure modes, and limited consideration of interactions between subsystems.   To address these challenges, this paper introduce the Capability Interaction Graph (CIG), an ontology-driven representation of CPS architectures grounded in the Unified Foundational Ontology (UFO). Due to its graph-based structure, a CIG is naturally represented as a knowledge graph (KG), enabling the explicit capture of functional dependencies and system semantics.   Building upon this representation, we propose an automated synthesis algorithm for generating Fault Trees (FTs) directly from CIGs encoded as knowledge graphs. Fault Tree Analysis provides an effective mechanism for evaluating critical failure properties, including failure propagation paths and minimal cut set sets.   Our approach reduces this complexity by leveraging CIGs and knowledge graphs. We provide a common semantic representation across engineering domains and support the automated generation of reliability models.",
+      "authors": [
+        "Manzi Aimé Ntagengerwa",
+        "Georgiana Caltais",
+        "Mariëlle Stoelinga"
+      ],
+      "primary_category": "cs.SE",
+      "categories": [
+        "cs.SE"
+      ],
+      "published": "2026-06-18T16:36:23+00:00",
+      "link": "https://arxiv.org/pdf/2606.20779v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "ontology-driven knowledge graph for CPS reliability, transferable to smart city",
+      "llm_evidence_cn": "本体驱动的知识图谱用于CPS可靠性，可迁移至智慧城市",
+      "llm_evidence": "本体驱动的知识图谱用于CPS可靠性，可迁移至智慧城市",
+      "canonical_evidence": "本体驱动的知识图谱用于CPS可靠性，可迁移至智慧城市",
+      "llm_tldr_en": "Introduces Capability Interaction Graph, an ontology-driven approach from knowledge graphs to fault trees for CPS reliability modeling.",
+      "llm_tldr_cn": "针对CPS可靠性建模依赖隐性专家知识的问题，提出基于本体的能力交互图(CIG)，从知识图谱自动生成故障树，实现跨子系统故障级联分析，提升建模一致性和可复用性。",
+      "llm_tldr": "针对CPS可靠性建模依赖隐性专家知识的问题，提出基于本体的能力交互图(CIG)，从知识图谱自动生成故障树，实现跨子系统故障级联分析，提升建模一致性和可复用性。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.24677v1",
+      "source": "arxiv",
+      "title": "One Index for Subsumption and Roll-up across Time, Geography, and Ontology",
+      "abstract": "Time-series, geospatial, and ontology systems each maintain a hierarchy -- day <= month <= year, zip <= city, is-a / part-of -- and each indexes it in a separate silo. We observe these are all subsumption posets, with one recurring workload: order testing (is x under y?) and hierarchical roll-up (aggregate a measure over everything under y). We present OEH, a single declarable index that, by a cheap structural probe, encodes a hierarchy as a nested-set order-embedding (trees) or a chain decomposition (low-width DAGs), and answers both subsumption and index-resident monoid roll-up from one structure. On five real hierarchies -- Gene Ontology, NCBI Taxonomy (1.3M), GeoNames (330k), a 2.6M-node calendar, and git commit DAGs -- OEH on trees matches a 2-hop index on query latency using about half the space and building 6--7x faster, and adds roll-up that 2-hop cannot. Its roll-up matches TimescaleDB's continuous aggregates exactly and in the same latency regime, while also answering subsumption. On high-width DAGs the chain index is declined and 2-hop dominates. Order-embedding is classical; our contribution is the unification and the structure-selected index over subsumption and index-resident roll-up.",
+      "authors": [
+        "Madhulatha Mandarapu",
+        "Sandeep Kunkunuru"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB"
+      ],
+      "published": "2026-06-23T15:08:22+00:00",
+      "link": "https://arxiv.org/pdf/2606.24677v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "unified index for subsumption and roll-up across time, geography, and ontology hierarchies",
+      "llm_evidence_cn": "统一索引支持时间、地理和本体层次结构的包含和汇总查询",
+      "llm_evidence": "统一索引支持时间、地理和本体层次结构的包含和汇总查询",
+      "canonical_evidence": "统一索引支持时间、地理和本体层次结构的包含和汇总查询",
+      "llm_tldr_en": "Presents OEH, a single index that encodes hierarchies from time, geography, and ontology to efficiently answer subsumption and aggregation queries.",
+      "llm_tldr_cn": "时间序列、地理空间和本体系统各自维护独立的层次结构，导致查询效率低下。本文提出OEH索引，通过结构探测将层次编码为嵌套集嵌入或链分解，支持包含测试和汇总查询。在基因本体、地理名称等大型层次上的实验表明，该方法在树结构上匹配专用索引，在有向无环图上接近最优。这为智慧城市中跨域数据整合提供了高效的语义查询支持。",
+      "llm_tldr": "时间序列、地理空间和本体系统各自维护独立的层次结构，导致查询效率低下。本文提出OEH索引，通过结构探测将层次编码为嵌套集嵌入或链分解，支持包含测试和汇总查询。在基因本体、地理名称等大型层次上的实验表明，该方法在树结构上匹配专用索引，在有向无环图上接近最优。这为智慧城市中跨域数据整合提供了高效的语义查询支持。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.24853v1",
+      "source": "arxiv",
+      "title": "Building a Low-cost Network Digital Twin for the IoT-Edge-Cloud Continuum Using Open-Source Tooling",
+      "abstract": "Validating network configurations and testing failure scenarios in IoT-edge-cloud environments without disrupting live infrastructure remains an open operational challenge. This paper presents a low-cost, fully open-source Network Digital Twin (NDT) for IIoT edge deployments, built on Containerlab, Open vSwitch, ONOS, and a Prometheus+Grafana observability stack. The framework integrates container-native topology emulation, SDN-driven traffic engineering, and real-time telemetry in a single deployable artefact. Validation against a physical Raspberry Pi edge WLAN shows strong distributional convergence on RTT median (delta = 0.4 ms) and UDP throughput (delta = 0.03 Mbps). Remaining divergences on TCP throughput and packet loss are attributed to identifiable virtualisation artefacts, with root causes and remediation paths provided.",
+      "authors": [
+        "Josevany do Amaral",
+        "Rute C. Sofia"
+      ],
+      "primary_category": "cs.NI",
+      "categories": [
+        "cs.NI"
+      ],
+      "published": "2026-06-23T17:32:27+00:00",
+      "link": "https://arxiv.org/pdf/2606.24853v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "network digital twin for IoT-edge-cloud, related to urban digital twins interoperability",
+      "llm_evidence_cn": "为物联网边缘云构建网络数字孪生，与城市数字孪生互操作方法相关",
+      "llm_evidence": "为物联网边缘云构建网络数字孪生，与城市数字孪生互操作方法相关",
+      "canonical_evidence": "为物联网边缘云构建网络数字孪生，与城市数字孪生互操作方法相关",
+      "llm_tldr_en": "Proposes a low-cost open-source Network Digital Twin for IIoT edge deployments using Containerlab, ONOS, etc., validated with physical testbed.",
+      "llm_tldr_cn": "本文针对IIoT边缘部署中的网络验证难题，提出一种基于开源工具的低成本网络数字孪生框架，集成容器拓扑模拟、SDN流量工程和实时遥测。在物理树莓派边缘WLAN上验证，RTT中位数偏差仅0.4ms。该工作为城市数字孪生网络层面的研究提供了可复用的方法。",
+      "llm_tldr": "本文针对IIoT边缘部署中的网络验证难题，提出一种基于开源工具的低成本网络数字孪生框架，集成容器拓扑模拟、SDN流量工程和实时遥测。在物理树莓派边缘WLAN上验证，RTT中位数偏差仅0.4ms。该工作为城市数字孪生网络层面的研究提供了可复用的方法。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
