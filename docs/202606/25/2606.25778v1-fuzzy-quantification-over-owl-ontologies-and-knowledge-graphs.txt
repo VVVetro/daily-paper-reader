@@ -1,0 +1,967 @@
+Title: Fuzzy Quantification over OWL Ontologies and Knowledge Graphs
+
+URL Source: https://arxiv.org/pdf/2606.25778v1
+
+Published Time: Thu, 25 Jun 2026 00:58:59 GMT
+
+Number of Pages: 35
+
+Markdown Content:
+# Fuzzy Quantification over OWL Ontologies and Knowledge Graphs 
+
+## Enrique Palac´ ın 1 Fernando Bobillo 12 Ignacio Huitzil 12 
+
+## Francesca A. Lisi 3 Umberto Straccia 41University of Zaragoza, Zaragoza, Spain 
+
+> 2
+
+## Aragon Institute of Engineering Research (I3A), Zaragoza, Spain 
+
+> 3
+
+## University of Bari Aldo Moro, Bari, Italy 
+
+> 4
+
+## CNR-ISTI, Pisa, Italy 
+
+Abstract 
+
+This paper presents a versatile framework for evaluating fuzzy quantifi-cation queries over both standard and fuzzy ontologies as well as knowl-edge graphs. The primary objective is the retrieval of individuals that satisfy queries articulated via Type I or Type II fuzzy quantified expres-sions. A key advantage of the proposed approach is its inherent adapt-ability: it remains entirely agnostic to the quantifier type, the underlying evaluation method, and the specific data source of the ontology (i.e., OWL ontologies or RDFS knowledge graphs). Furthermore, we present Q2S2 ,a publicly accessible implementation of this system developed to support future research. 
+
+# 1 Introduction 
+
+Knowledge Representation and Reasoning (KRR) are foundational pillars of 
+
+Artificial Intelligence (AI), playing a critical role in the development of complex intelligent systems. Currently, the most prominent frameworks for KRR stem from Semantic Web technologies. Notable among these are OWL ontologies ,which provide formal vocabulary specifications for specific domains [1], and 
+
+Knowledge Graphs [19] (KGs), such as RDFS graphs [51], which offer scalable, graph-based models for capturing extensive datasets. Let us note that the logical counterpart of these two formalisms are Description Logics (DLs) [1] and ρdf [32, 33]. Among various extensions of them, let us mention, as relevant to our paper, those that are based on fuzzy logic [56], whose primary aim is to extend these standard, classical logics to represent and reason with vague, imprecise, or uncertain knowledge within structured domains (see, e.g., [3, 4, 5, 6, 8, 10, 11, 41, 42, 43, 44, 58]). For our purposes, it is worth recalling that quantified sentences play a critical role in articulating both the knowledge to be represented (e.g., ‘all humans are 1
+
+> arXiv:2606.25778v1 [cs.AI] 24 Jun 2026
+
+mortal’) and the specific information to be retrieved (e.g., ‘retrieve all parents who have a blonde child’). In classical logic and standard DLs, as well as in ‘almost all’ fuzzy DL literature [43], quantification is strictly limited to the existential ( ∃) and universal ( ∀) quantifiers. However, this binary paradigm is often overly restrictive, and the ability to express more nuanced quantification is highly desirable in many practical scenarios. Ironically, the assertion that ‘almost all’ papers restrict themselves to these standard quantifiers inherently relies on a fuzzy quantifier itself: specifically, the term ‘almost all’. 
+
+Example 1.1 Let us consider an example in the musical domain. Assume that we want to listen to some black metal , so we ask an intelligent recommendation system to suggest bands playing this musical style. We can ask it to recommend bands that have released some black metal album, by using a query involving the 
+
+∃ quantifier. However, many bands started playing black metal, but then evolved to other musical styles, which we are not interesting in. Another option consists in asking to retrieve those bands such that all their albums are black metal, by using a query involving the ∀ quantifier. Unfortu-nately, this query is also not satisfactory. For instance, the Norwegian band 
+
+Darkthrone is widely considered as the black metal band par excellence, but it would not meet the previous restriction, since in the first of their (currently) 23 studio albums they play death metal rather than black metal. A possible solution may consist of asking to retrieve bands such that almost all their albums are black metal and, thus, Darkthrone would satisfy the query with a very high degree. □
+
+So, what we propose in this work is a versatile framework for resolving fuzzy quantification queries over semantic knowledge bases, which includes ontologies and knowledge graphs. The primary objective is the evaluation of Type I or Type II fuzzy quantified queries. A key advantage of the proposed approach is its inherent adaptability: it remains entirely agnostic to the quantifier type, the underlying evaluation method, and the specific data source of the ontology (i.e., OWL ontologies or RDFS knowledge graphs). Furthermore, a publicly accessible implementation of this system (called Q2S2 ) has been developed to support future research. In particular, on the one hand, we discuss how to solve fuzzy quantification queries over classical ontologies and knowledge graphs, by combining classical knowledge with fuzzy datatypes and fuzzy quantifiers, in such a way that classical semantic reasoners or answering systems can be used. On the other hand, we discuss the case of fuzzy ontologies and fuzzy knowledge graphs, requiring non-standard fuzzy tools. The remaining of this paper is organized as follows. Section 2 provides some background. Then, Section 3 presents the different queries that will be supported, and Section 4 explains how to solve them. Next, Section 5 illustrates our prototype implementation. A detailed comparison of our contribution with other previous work can be found in Section 6. Finally, Section 7 concludes and points to some ideas for future work. 22 Background 
+
+This section provides some minimal background on fuzzy logic (Section 2.1), fuzzy quantification (Section 2.2), and Semantic Web technologies (Section 2.3), needed to follow the rest of the paper. 
+
+## 2.1 Fuzzy logic 
+
+Fuzzy logic is widely used to manage imprecise and vague knowledge. It is a generalization of classical logic proposed by Zadeh where statements are not necessarily either true or false, but hold to some degree of truth [56]. The cornerstone of fuzzy logic is the concept of fuzzy set, which is a gener-alization of a classical set (also called crisp ) where elements can have a partial membership. Given a crisp set X = {x1, . . . , x n} (the universe ), a fuzzy set A is characterized by a membership function μA(x), which associates with each ob-ject x ∈ X a real number in [0 , 1] representing the membership degree of x in A.As in classical sets, 0 means no-membership and 1 full membership. But now, an intermediate value between 0 and 1 denotes partial membership to A. The fuzzy set A may also be represented as A = {μA(x1)/x 1, . . . , μ A(xn)/x n}. A
+
+normal fuzzy set is a fuzzy set, where the maximum membership value (height) is exactly 1 .0. An easy way to normalize a fuzzy set A is by redefining it by means of 
+
+μAnorm (x) = μA(x)max y∈X μA(y) .
+
+(a) (b) (c) (d) Figure 1: (a) Trapezoidal ( trz ); (b) Triangular ( tri ); (c) Left-shoulder ( left ); (d) Right shoulder ( right ). To build fuzzy membership functions, common options are the trapezoidal (Fig-ure 1 a), triangular (Figure 1 b), the left-shoulder (Figure 1 c), and the right-shoulder (Figure 1 d) functions. For example, the fuzzy set of SecondAgeHuman 
+
+can be defined as trz (15 , 18 , 60 , 70). If a person is 17 years old, the membership degree to SecondAgeHuman can be evaluated as follows: 
+
+μSecondAgeHuman (p17 ) = trz (15 , 18 , 60 , 70)(17) = 0 .67 . (1) Given a fuzzy set A and a degree α ∈ [0 , 1], the α-cut of A, denoted Aα, is the (crisp) set of elements of the domain of universe that have a membership degree 3to A greater or equal than α. That is: 
+
+Aα = {x ∈ X : μA(x) ≥ α} . (2) The support of a fuzzy set A is the set of elements of X that have a membership degree strictly greater than 0, i.e. 
+
+support (A) = {u ∈ X : μA(u) > 0} . (3) Logical operations over classical sets are also generalized to the fuzzy case. To compute the conjunction, disjunction and complement over fuzzy sets one typ-ically uses families of functions, called t-norm function ( ⊗) for set intersection, 
+
+t-conorm function ( ⊕) for set union, and a negation function ( ⊖) for set comple-ment (see, e.g. [24]). For instance, the minimum and the product are t-norms, and, thus, set intersection is computed as μA∩B (x) = min( μA(x), μ B (x)) and 
+
+μA∩B (x) = μA(x)·μB (x), respectively. The maximum and the algebraic sum are t-conorms and, thus, set union is computed as μA∪B (x) = max( μA(x), μ B (x)) and μA∪B (x) = μA(x) + μB (x) − μA(x) · μB (x), respectively. The comple-ment to one is a negation function and, thus, set complement is computed as 
+
+μ ¯A(x) = μX\A(x) = 1 − μA(x). Another important family of fuzzy functions are Aggregation Operators (AOs) [45]. AOs have been widely used in computational intelligence because of their ability to fuse imprecise pieces of information. In this paper, Ordered Weighted Aver-aging (OWA) operators [53] will be relevant. An OWA operator of dimension 
+
+n is an AO aggregating n values x1, . . . , x n ∈ [0 , 1] such that: 
+
+OWA [w1,...,w n]([ x1, . . . , x n]) = 
+
+> n
+
+X
+
+> i=1
+
+wibi , (4) where bi is the i-th largest value of the xi for each i ∈ [1 , n ]. A possible way to learn the weights of an OWA operator is via a Regular Increasing Monotone 
+
+(RIM) quantifier Q [54], which satisfies the boundary conditions of AOs, namely 
+
+Q(0) = 0 and Q(1) = 1, and is monotonic increasing, i.e., Q(x1) ≤ Q(x2) when 
+
+x1 ≤ x2. Given a RIM Q, the weights of an OWA weighting vector of dimension 
+
+n can be computed as ( i ∈ { 1, ..., n })
+
+wi = Q( in ) − Q( i − 1
+
+n ) . (5) 
+
+## 2.2 Fuzzy quantification 
+
+In the literature, there are two main types of fuzzy quantified sentences (see Example 2.1 below): namely, 
+
+Type I sentences: Q of X are G;
+
+Type II sentences: Q of F are G,4where Q is a fuzzy quantifier, X is a crisp finite set, and F and G are two fuzzy subsets of X.
+
+Example 2.1 Let us consider the following quantified sentences that will be used in the rest of this paper: 
+
+• Type I: Few hotels are cheap; 
+
+• Type II: Most close hotels are cheap. In the first quantified sentence, the fuzzy quantifier Q is ‘few’ and the fuzzy set 
+
+G is ‘cheap hotels’. In the second sentence, the fuzzy quantifier Q is ‘most’, the fuzzy set F is ‘close hotels’, while the fuzzy set G is again ‘cheap hotels’. □
+
+Concerning fuzzy quantifiers, there are two types of fuzzy quantifiers: absolute quantifiers Qa : R+0 → [0 , 1] (such as “few” or “approximately three”) and rel-ative quantifiers Qr : [0 , 1] → [0 , 1] (such as “most” or “almost all”). Both types of sentences can employ absolute and relative sentences. However, follow-ing [31], without loss of generality, it is possible to restrict to Type I sentences with absolute quantifiers and Type II sentences with relative quantifiers only. In particular: 
+
+• the evaluation of a Type I sentence 
+
+Qr of X are G
+
+with a relative quantifier Qr is the same as the evaluation of the Type I sentence 
+
+Qa of X are G,where Qa(i) = Qr ( i 
+
+> |X|
+
+) is an absolute quantifier; 
+
+• the evaluation of a Type II sentence 
+
+Qa of F are G
+
+with an absolute quantifier Qa is equivalent to the evaluation of the Type I sentence 
+
+Qa of X are F ∩ G.Many different methods to evaluate Type I sentences and Type II sentences have been proposed in the literature [16]. They are strongly based on the choice of the definition of cardinality of a fuzzy set [16]. We next illustrate some proposals for the evaluation of quantified sentences. 5Zadeh’s method [57] The evaluation of a Type I sentence of the form ‘ Q of 
+
+X are G’, given a crisp set X = {x1, . . . , x n}, a fuzzy quantifier Q and a fuzzy set G, is given by: 
+
+solveTypeI (Q, X, G ) = Q(card (G)) = Q
+
+> n
+
+X
+
+> i=1
+
+μG(xi)
+
+!
+
+, (6) where the cardinality of a fuzzy set is the so-called sigma count [25]; 
+
+card (G) = 
+
+> n
+
+X
+
+> i=1
+
+μG(xi) . (7) 
+
+Example 2.2 Assume a knowledge base with three hotels with the following prices and distances to the city center: Hotel Price Distance 
+
+h1 100 900 
+
+h2 80 100 
+
+h3 70 400 
+
+Let us now consider the Type I sentence Few hotels have a low price (similar to the Type I sentence in Example 2.1), where the fuzzy quantifier “few” is defined by 
+
+Qfew (x) = left (1 , 3)( x)
+
+and the fuzzy set “low price” is defined as 1
+
+μLowPrice (x) = left (60 , 100)( x) .
+
+Therefore, for X = Hotel = {h1, h 2, h 3} and G = LowP rice = {0.0/h 1, 0.5/h 2, 0.75 /h 3},using Zadeh’s method, we have that 
+
+solveTypeI (Q, X, G ) = Q
+
+> 3
+
+X
+
+> i=1
+
+μG(hi)
+
+!
+
+= Q(0 .0+0 .5+0 .75) = Q(1 .25) = 0 .875 .
+
+□
+
+On the other hand, the evaluation of a Type II sentences is given by: 
+
+solveTypeII (Q, F, G ) = Q cardinality (F ∩ G)
+
+cardinality (G)
+
+!
+
+= Q
+
+Pni=1 μF ∩G(xi)
+
+Pni=1 μF (xi)
+
+!
+
+.
+
+(8) 
+
+Example 2.3 (Example 2.2 cont.) Consider the Type II sentence 
+
+> 1Prices are defined in euros.
+
+6Most hotels with a low distance have a low price ,which is similar to the one in Example 2.1, where now the fuzzy set “low dis-tance” is defined as 2
+
+μLowDistanceHotel (x) = left (100 , 1100)( x)
+
+and the fuzzy quantifier “most” is defined as 
+
+Qmost (x) = right (0 .5, 1)( x) .
+
+Now, as F = LowDistanceHotel = {0.2/h 1, 1/h 2, 0.7/h 3}, and F ∩ G =
+
+{0.5/h 2, 0.7/h 3}, we have that 
+
+solveTypeII (Q, F, G ) = Q    
+
+> Pni=1 μF∩G(xi)
+> Pni=1 μF(xi)
+
+!
+
+= Q 0.5+0 .70.2+1+0 .7
+
+!
+
+= Q( 1.21.9 ) = Q(0 .6316) = 0 .4386 .
+
+□
+
+Yager’s OWA-based method [53] This method assumes a relative RIM quantifier Q. Specifically, given a vector of weights [ w1, . . . , w n] computed using Equation 5, where n = |support (G)|, the evaluation of a Type I sentence is given by: 
+
+solveTypeI (Q, X, G ) = OWA [w1,...,w K ](b1, . . . , b n) , (9) where bi is i-th largest value of G for each i ∈ [1 , n ]. On the other hand, the evaluation of Type II sentences is given by: 
+
+solveTypeII (Q, F, G ) = 
+
+> n
+
+X
+
+> i=1
+
+wi · βi , (10) where wi = Q(Si) − Q(Si−1), Si =   
+
+> Pij=1 fj
+> Pnk=1 fk
+
+, fi is the i-th smallest F (xi), and βi is the largest value of membership to the fuzzy set B(xi) = max(1 −
+
+F (xi), G (xi)) , ∀i ∈ { 1, . . . , n }.
+
+GD method [17] This method is based on the ED fuzzy cardinality to eval-uate Type I sentences. 3 Specifically, the ED fuzzy cardinality of a fuzzy set G
+
+is a fuzzy set defined for each k ∈ [0 , n ], where n = |support (G)|, as follows: 
+
+ED (G, k ) = bk − bk+1 , (11)     
+
+> 2Distances are measured in meters.
+> 3GD and ED are not acronyms: they are the most important examples of the family Gof quantification methods and of the family Eof fuzzy cardinalities, respectively [16].
+
+7where bi is the i-th largest value of G, b0 = 1, and bn+1 = 0. Then, the GD method to evaluate Type I sentences is given by: 
+
+solveTypeI (Q, X, G ) = 
+
+> n
+
+X
+
+> i=0
+
+ED (G, i ) · Q(i) . (12) 
+
+Example 2.4 Let us evaluate Example 2.2 using GD. Let us observe that 
+
+b0 = 1 , b 1 = 0 .75 , b 2 = 0 .5, b 3 = 0 .
+
+Next, let us now compute each value of the summation in Equation 12. 
+
+i=0: ED (G, 0) · Q(0) = ( b0 − b1) · Q(0) = (1 − 0.75) · Q(0) = 0 .25 · 1 = 0 .25 
+
+i=1: ED (G, 1) · Q(1) = ( b1 − b2) · Q(1) = (0 .75 − 0.5) · Q(1) = 0 .25 · 1 = 0 .25 
+
+i=2: ED (G, 2) · Q(2) = ( b2 − b3) · Q(2) = (0 .5 − 0) · Q(2) = 0 .5 · 0.5 = 0 .25 .As a consequence, 
+
+solveTypeI (Q, X, G ) = 
+
+> 2
+
+X
+
+> i=0
+
+ED (G, i ) · Q(i) = 0 .25 + 0 .25 + 0 .25 = 0 .75 .
+
+□
+
+The work [17] also generalized the method to work on Type II sentences, which we illustrate next. We may assume, without loss of generalization, that F is a normal fuzzy set. For convenience, it is useful to introduce some auxiliary value definitions. The 
+
+relative cardinal of G with respect to F and α ∈ [0 , 1] is given by: 
+
+C(G/F, α ) = |(G ∩ F )α||Fα| . (13) The set of relevant α-cuts of a set A is given by: 
+
+cuts (A) = {α ∈ (0 , 1] | ∃ xi ∈ A such that μA(xi) = α} . (14) Let us denote {α0, α 1, . . . , α p} as the reordering of the set cuts (G∩F )∪cuts (F )∪{0} such that αi > α i+1 for each i ∈ { 0, p − 1}. Note that α0 = 1 if F is normal and αp = 0. Finally, following [17, Property 6.1.3], the GD method to evaluate a Type II sentence is defined as: 
+
+solveTypeII (Q, F, G ) = X  
+
+> αi∈cuts (G∩F)∪cuts (F)
+
+(αi −αi+1 )·Q(C(G/F, α i)) . (15) 8Example 2.5 Let us evaluate now Example 2.3 using GD. It can be verified that 
+
+cuts (G ∩ F ) ∪ cuts (F ) = {0.5, 0.7, 0.2, 1} .
+
+and that 
+
+α0 = 1 , α 1 = 0 .7, α 2 = 0 .5, α 3 = 0 .2, α 4 = 0 .
+
+Consequently, we have 
+
+C(G/F, 1) = |(G ∩ F )1||F1| = |∅| |{ h2}| = 0 
+
+C(G/F, 0.7) = |(G ∩ F )0.7||F0.7| = |{ h3}| |{ h2, h 3}| = 0 .5
+
+C(G/F, 0.5) = |(G ∩ F )0.5||F0.5| = |{ h2, h 3}| |{ h2, h 3}| = 1 
+
+C(G/F, 0.2) = |(G ∩ F )0.2||F0.2| = |{ h2, h 3}| |{ h1, h 2, h 3}| = 0 .67 .
+
+Therefore, 
+
+solveTypeII (Q, F, G ) = (1 − 0.7) · Q(C(G/F, 1)) + (0 .7 − 0.5) · Q(C(G/F, 0.7)) + (0 .5 − 0.2) · Q(C(G/F, 0.5)) + (0 .2 − 0) · Q(C(G/F, 0.2)) = 0.3 · Q(0) + 0 .2 · Q(0 .5) + 0 .3 · Q(1) + 0 .2 · Q(0 .67) = 0.3 · 0 + 0 .2 · 0 + 0 .3 · 1 + 0 .2 · 0.34 = 0 .368 .
+
+□
+
+## 2.3 Semantic Web technologies 
+
+This section recalls some basic notions within the Semantic Web domain that will be used in the rest of the paper. 
+
+2.3.1 Ontologies 
+
+An ontology is a formal and shared specification of the knowledge in a do-main [40]. An ontology offers a common vocabulary, terminology, a conceptual model, and reasoning capabilities. OWL (Web Ontology Language) is the rec-ommendation of the World Wide Web Consortium (W3C) to represent ontolo-gies. Its semantics is based on a Description Logics and the current version is OWL 2 [48, 15]. The main ingredients of OWL ontologies to model a domain are concept-s/classes (e.g., the class of hotels Hotel ), instances/individuals (e.g., the hotel 
+
+h1 ), properties (binary relationships between a pair of elements), and datatypes 
+
+(elements that do not belong to the represented domain, but to a domain al-ready known to the machine, e.g., numbers or strings). There are two types 9of properties: object properties , such as hasAlbum , relate a pair of individuals (a music artist/band and an album), whereas data properties , such as price or 
+
+distance , link an individual with a data value of a datatype. Complex classes can be built from previously defined ontology elements. 
+
+Example 2.6 To evaluate the two first queries of Example 1.1, we can consider the classes Band ⊓ ∃ hasAlbum .BlackMetal and Band ⊓ ∀ hasAlbum .BlackMetal (in DL syntax). 4. □
+
+The knowledge in an ontology is organized in axioms (constraints or restric-tions to be satisfied by the elements of the ontology) such as concept assertions 
+
+(stating that an individual is an instance of a concept/class), data property as-sertions (linking an individual and a datatype value via a data property), or 
+
+subclass axioms (stating that a class is more specific than another one). 
+
+Example 2.7 (Example 2.2 cont.) The table can be encoded via the follow-ing ontology (in DL syntax), with 3 class assertions involving the Hotel class and 6 data property assertions involving the price and distance data properties: :                  
+
+> O={Hotel (h1),price (h1,100) ,distance (h1,900) ,
+> Hotel (h2),price (h2,80) ,distance (h2,100) ,
+> Hotel (h3),price (h3,70) ,distance (h3,400) }.
+
+□
+
+Reasoning is one of the most distinguishing features related to ontologies, play-ing an important role both in the development of models (to verify their cor-rectness) and in the deployment of real-world applications (to discover knowl-edge). A reasoner [23] is a software implementation of algorithms that solve some reasoning tasks. In other words, it infers implicit knowledge from explicit knowledge in a logically consistent way. Several semantic reasoners support OWL 2 ontologies and provide different reasoning tasks, such as classification (i.e., computing a concept and property hierarchy based on inferred subclass relationships) or instance retrieval (i.e., retrieving all the instances of a given class) [1]. Fuzzy ontologies are extensions of ontologies with elements from fuzzy logic and fuzzy set theory [43]. For example, fuzzy concepts denote fuzzy sets of individuals, and fuzzy datatypes can be represented using fuzzy membership functions (such as those in Figure 1). Of course, the fuzzy case requires different reasoning algorithms and the definitions of the reasoning tasks are generalized as well. For example, the instance retrieval task now involves retrieving graded instances, i.e., not only the instances of a given class but also their member-ship degrees to the class. Popular fuzzy ontology reasoners are fuzzyDL [8] and DeLorean [5], whereas the most popular fuzzy ontology language is Fuzzy OWL 2 [6].                                 
+
+> 4Technically, Band ⊓ ∃ hasAlbum .BlackMetal is the set of objects othat belong to the Band
+> class and to the ∃hasAlbum .BlackMetal class, i.e., which are related via the binary relation
+> hasAlbum to some object o′being an instance of the BlackMetal class. Moreover, Band ⊓∀hasAlbum .BlackMetal is the class of objects othat belong to the Band class and such that all
+> objects o′related to ovia hasAlbum are instances of the BlackMetal class.
+
+10 2.3.2 Knowledge graphs 
+
+A Knowledge Graph (KG) is “a graph of data intended to accumulate and convey knowledge of the real world, whose nodes represent entities of interest and whose edges represent relations between these entities” [19]. Classical examples of knowledge graphs are DBPedia [2] and Wikidata [46]. In practice, the majority of KGs are RDF graphs. 
+
+RDF (Resource Description Framework) is a standard formalism for data interchange [47] which uses a triple representation ⟨s, p, o ⟩ where s is a subject (a resource), o an object (a resource or literal), and p is a property/predicate , stating that s is related to o via the property p. For example, the property rdf:type states that the triple subject belongs to a certain class (the triple object). There are several syntaxes to serialize RDF triples; in this paper we will use Turtle [50]. 
+
+Example 2.8 (Example 2.2 cont.) The table can be encoded via the follow-ing set of RDF triples (in Turtle syntax):                                         
+
+> 1@PREFIX rdf : < http :// www . w3 . org /1999/02/22 - rdf - syntax - ns # > .
+> 2: h1 rdf : type : Hotel .
+> 3: h1 : price 100 .
+> 4: h1 : distance 900 .
+> 5: h2 rdf : type : Hotel .
+> 6: h2 : price 80 .
+> 7: h2 : distance 100 .
+> 8: h3 rdf : type : Hotel .
+> 9: h3 : price 70 .
+> 10 : h3 : distance 400 .
+
+□
+
+To define the schema that an RDF graph follows, different languages with differ-ent expressivities can be used, ranging from RDF-Schema, also called RDFS [51], to OWL 2 [15]. For example, property rdfs:subclassOf states that a class (the triple subject) is a sublass of another one (the triple object). While using RDFS one can only define hierarchies of concepts and properties, domain and ranges of properties, and the classes that individuals belong to, OWL 2 provides a much richer language (see previous section) [1]. SPARQL is RDF standard query language [49, 34]. Among other things, it is used to retrieve triples from a data graph that satisfy given conditions. ASPARQL query is submitted to a SPARQL endpoint for evaluation (a server capable of processing SPARQL queries). The KGs DBPedia and Wikidata can be accessed/queried through SPARQL endpoints .5
+
+In the literature, there are also fuzzy extensions of KGs. In particular, fuzzy RDF graphs are based on fuzzy RDF statements of the form ⟨s, p, o, α ⟩, where 
+
+α ∈ [0 , 1] [41]. The Fuzzy RDF system, based on a fuzzy extension of ρdf, makes it possible to answer queries over local fuzzy RDF graphs [41]. However, there are currently no public endpoints supporting such fuzzy statements.   
+
+> 5https://dbpedia.org/sparql and http://query.wikidata.org , respectively.
+
+11 3 Fuzzy Quantification over OWL ontologies and KGs 
+
+One of the key concepts behind our approach is the fact that, even if the ontology only contains non-fuzzy information, given a functional numerical data property 
+
+d, such as the price of a hotel room, it is possible to consider a fuzzy linguistic label L (e.g., low price), represented using a fuzzy datatype, to build a fuzzy concept of the form ∃d.L .
+
+Example 3.1 Given a classical ontology about accommodation types, given a datatype property hasPrice , associating to each hotel the price of a room, we can consider the fuzzy linguistic label LowPrice defined as left shoulder function over the crisp set X of hotel prices and build the fuzzy concept 
+
+G = Hotel ⊓ ∃ hasPrice .LowPrice .
+
+To ‘retrieve all hotels whose price is low’, one can solve the fuzzy instance retrieval problem over G.
+
+□
+
+In this section, we will firstly discuss how to obtain and represent such fuzzy linguistic labels and then we will propose different types of quantification queries over semantic knowledge bases. Finally, we will discuss how to represent the queries. 
+
+## 3.1 Representing and computing the fuzzy linguistic la-bels in ontologies 
+
+Fuzzy linguistic labels can be represented using Fuzzy OWL 2 datatypes [6], which includes trapezoidal, triangular, left-shoulder, and right-shoulder fuzzy membership functions. Fuzzy OWL 2 is a language for fuzzy ontology repre-sentation which uses standard OWL 2 files but encodes the fuzzy knowledge using OWL 2 annotations. In particular, a fuzzy datatype is represented by annotating an OWL 2 datatype, using an XML-like syntax to specify the type and parameters of the fuzzy membership function. For example, the following annotation specifies a left-shoulder function with parameters 60 and 100:         
+
+> 1< fuzzyOwl2 fuzzyType =\" datatype \" >
+> 2< Datatype type =\" leftshoulder \" a =\"60\" b =\"100\" / >
+> 3</ fuzzyOwl2 >
+
+It could also be the case that the ontology does not include fuzzy datatypes. This happens, for instance, if we want to query well known ontologies (such as the Music ontology 6). In such cases, it has been shown in the literature how to automatically compute the linguistic labels corresponding to a functional nu-merical data property by learning them from examples included in a classical 
+
+> 6http://purl.org/ontology/mo/
+
+12 Figure 2: Fuzzy sets over centroids, learned from data via c-means clustering algorithm. ontology (see, e.g. [12, 13, 21, 30]). Typically, they employ a centroid-based clustering algorithm and then use the centroids to automatically build member-ship functions (as illustrated in Figure 2). Usually, one learns the membership functions by taking into account all values of a data property. In other cases, we would be interested to restrict only a subset of it, e.g., to the prices of hotel. In this way, for example, the lower prices of hostels affect the prices of hotels if hostels are represented as subclasses of hotels, but they do not affect them if hostels are represented as a disjoint class to hotels (but both are subclasses of the accommodation class). In general, given the data property d, we will compute the list of d range values, store them (e.g., in a column of a CSV file) and apply a membership computation algorithm to it [12, 13, 30] (see Equation 16 later on). In particular, there is an implementation called Datil [21] for this purpose. 
+
+## 3.2 Representing and computing the fuzzy linguistic la-bels in knowledge graphs 
+
+Interestingly, the previous annotations to characterize fuzzy datatypes can also be encoded as triples in a knowledge graph [55]. For example:                                    
+
+> 1@PREFIX ex : < http :// www . example . org / > .
+> 2@PREFIX owl : < http :// www . w3 . org /2002/07/ owl # > .
+> 3@PREFIX rdf : < http :// www . w3 . org /1999/02/22 - rdf - syntax - ns # > .
+> 4@PREFIX rdfs : < http :// www . w3 . org /2000/01/ rdf - schema # > .
+> 5ex : fuzzyLabel rdf : type owl : AnnotationProperty .
+> 6ex : LowPrice rdf : type rdfs : Datatype .
+> 7ex : LowPrice ex : fuzzyLabel """ < fuzzyOwl2 fuzzyType =\" datatype \" >
+> 8< Datatype type =\" leftshoulder \" a =\"60\" b =\"100\" / >
+> 9</ fuzzyOwl2 >""" .
+
+Therefore, fuzzy datatypes and their definitions can also be retrieved using a SPARQL query such as:     
+
+> 1PREFIX rdf : < http :// www . w3 . org /1999/02/22 - rdf - syntax - ns # > .
+
+13 2 SELECT ? x ? y           
+
+> 3WHERE {
+> 4? x rdf : type rdfs : Datatype .
+> 5? x ex : fuzzyLabel ? y
+> 6}
+
+As in the previous OWL ontology case, it is possible that the knowledge graph does not include fuzzy datatypes (for example, if we query DBpedia). Interest-ingly, a similar solution is possible with knowledge graphs: one can retrieve the values of a data property from a data property using a SPARQL query, store them, and use the same algorithms as mentioned at the end of Section 3.1 to learn linguistic labels from them. An example of a query is:                 
+
+> 1PREFIX rdf : < http :// www . w3 . org /1999/02/22 - rdf - syntax - ns # > .
+> 2SELECT ? y
+> 3WHERE {
+> 4? x rdf : type : C .
+> 5? x : d ? y
+> 6}
+
+whose aim is to retrieve all d-values of instances of the class C.
+
+## 3.3 Type I sentences over classical knowledge bases 
+
+Let us recall the previous observation that, given a functional numerical data property d, one can build a fuzzy concept of the form ∃d.L using a fuzzy lin-guistic label L, represented using a fuzzy datatype. Therefore, given a classical (i.e., crisp) semantic knowledge base S, a fuzzy quantifier Q, a crisp class C,a functional numerical data property d, and a fuzzy linguistic label L, Type I sentences are in this case of the following form: 
+
+Type I sentences: Q of C have a value of property d which is L.
+
+Example 3.2 In the Type I sentence “Few hotels have a low price”, “few” is a fuzzy quantifier, “Hotel” is a class, “price” is a numerical data property, and “low” is a fuzzy datatype. □
+
+Clearly, there are four parameters, Q, C, d, and L. We will assume that Q and 
+
+L are represented as Fuzzy OWL 2 datatypes. Furthermore, if Q is relative, the domain of the fuzzy datatype should be [0 , 1], e.g., tri (0 .4, 0.7, 1). Note that 
+
+C does not need to be a so-called atomic class, i.e. a class/concept name. For example, it could be a conjunction or a union of classes. If S is an OWL ontology O, direct instances of C are represented using OWL 2 class assertion axioms, and the value of a property d for an individual can be represented using an OWL 2 data property assertion. However, it is very important to note that there can be indirect instances or property values, i.e., they are not explicitly represented as axioms but can be inferred from the axioms in the ontology. On the other hand, if S is a knowledge graph K, the case is very similar. Now, direct instances of C will be represented using an rdf:type triple, and the value v of a property d for an individual i will be represented using an RDF 14 triple ⟨i, d, v ⟩. Again, there can be indirect instances or property values, and we will assume that Q and L are represented as Fuzzy OWL 2 datatypes. That is, Q and L will be the subjects of a triple related via fuzzyLabel with a Fuzzy OWL 2 annotation. 
+
+## 3.4 Type II sentences over classical knowledge bases 
+
+Given a fuzzy quantifier Q, a crisp concept C, two functional numerical data properties d1 and d2, and two fuzzy linguistic labels L1 and L2, Type II sentences are of the following form: 
+
+Type II sentences: Q of the C with a value of property d1 which is L1, have a value of property d2 which is L2.
+
+Example 3.3 In the Type II sentence “Most hotels with small room size have a low price”, “Most” is a fuzzy quantifier, “Hotel” is a class, “size” and “price” are numerical data properties, and “small” and “low” are fuzzy datatypes. □
+
+Now, there are six parameters, Q, C, d1, d2, L1, and L2. We will assume that Q,
+
+L1, and L2 are represented as Fuzzy OWL 2 datatypes. Again, if Q is relative, the domain of the fuzzy datatype should be [0 , 1], e.g., tri (0 .4, 0.7, 1). 
+
+## 3.5 Type II sentences over fuzzy semantic knowledge bases 
+
+For the sake of completeness, let us also consider the generalization of the cases in Sections 3.3 and 3.4 to fuzzy ontologies and fuzzy knowledge graphs. Given a fuzzy semantic knowledge base S, a fuzzy quantifier Q, and fuzzy classes F, G ,fuzzy quantified sentences are of the following form: 
+
+Type II sentences: Q of F are G.Note that now the sentences have three parameters. A fuzzy class can include a fuzzy linguistic label in its definition (e.g., ∃price .LowPrice ), but that is not necessarily mandatory (e.g., CheapHotel class). Note also that if F is a crisp concept, then the above is a Type I sentence. 
+
+## 3.6 On representing queries 
+
+In some cases, it could be interesting to represent both the domain knowledge and the fuzzy quantified queries using the same language. To do so, we will discuss in this section how to represent such queries using Fuzzy OWL 2, a de-facto standard for fuzzy ontology representation. An option is to extend Fuzzy OWL 2 syntax to include a new constructor, specifying the query type and the values of the relevant parameters. For Type I queries, there are four parameters ( Q, C, d, and L). Therefore, a possible approach is to annotate a named concept (representing the query) as follows: 15 1 < fuzzyOwl2 fuzzyType =" concept " >         
+
+> 2< Concept
+> 3type =" quantificationI "
+> 4quantifier =" < STRING >"
+> 5concept =" < STRING >"
+> 6property =" < STRING >"
+> 7datatype =" < STRING >"
+> 8/ >
+> 9</ fuzzyOwl2 >
+
+where the values of the attributes quantifier and datatypes are the names of two fuzzy datatypes, already defined using Fuzzy OWL 2 syntax, and the values of the attributes concept and property are the names of a concept and a numerical data property in the ontology, respectively. For example:           
+
+> 1< fuzzyOwl2 fuzzyType =" concept " >
+> 2< Concept
+> 3type =" quantificationI "
+> 4quantifier =" Few "
+> 5concept =" Hotel "
+> 6property =" hasPrice "
+> 7datatype =" LowPrice "
+> 8/ >
+> 9</ fuzzyOwl2 >
+
+Note that we use the same attribute ( quantifier ) for both absolute and relative quantifiers. Indeed, from the definition (the domain) of the quantifier, one can see whether the quantifier is absolute or relative. Note also that we have created and annotated a new concept to represent this query. Indeed, we could think of these types of concepts as subclasses of a more general Query concept, denoting more general types of queries over an ontology. 
+
+# 4 Evaluating fuzzy quantified sentences 
+
+## 4.1 Evaluating Type I sentences over classical knowledge bases 
+
+Algorithm 1 describes the process to evaluate a Type I sentence over a knowledge base. The algorithm is agnostic about the knowledge base type (an ontology or a KG). The preprocessing (Line 1), the instance retrieval problem (Line 2), and the retrieval of the values of a property for a given individual (Line 5) is addressed in a different way for an ontology and for a KG. The algorithm is also agnostic about the method used to evaluate a Type I sentence ‘ Q of C are L’(Line 13). For example, one can consider Zadeh’s method (Equation 6) or the GD method (Equation 12). Note that before calling that method, Lines 3–11 compute a fuzzy set 
+
+G = {L(d(i1)) /i 1, . . . , L (d(ik)) /i k} , (16) where i1, . . . , i k are the instances of concept C and d(i) denotes the value of data property d for the individual i. Please note that d is a functional property, 16 Algorithm 1 Evaluating Type I quantified queries over knowledge bases 
+
+Input: A knowledge base S, a classical concept C, a functional numerical data property d, a fuzzy datatype L, and a fuzzy quantifier Q
+
+Output: α ∈ [0 , 1] as the evaluation of ‘Q of C are 
+
+∃d.L ’ 
+
+> 1:
+
+S ← preprocess (S) 
+
+> 2:
+
+X ← getInstances (S, C ) 
+
+> 3:
+
+G ← ∅  
+
+> 4:
+
+for all i ∈ X do  
+
+> 5:
+
+vi ← getPropertyValue (S, i, d ) 
+
+> 6:
+
+if vi̸ = null then  
+
+> 7:
+
+αi ← L(vi) 
+
+> 8:
+
+else  
+
+> 9:
+
+αi ← 0 
+
+> 10:
+
+end if  
+
+> 11:
+
+G ← G ∪ { αi/i } 
+
+> 12:
+
+end for  
+
+> 13:
+
+return solveTypeI (Q, X, G )so the value for a given individual (Line 5) is either unique or undefined ( null ). Another important observation is the fact that the methods to evaluate the Type I sentence ‘ Q of C are L’ assume fuzzy sets (in our case, fuzzy subsets of the set of instances of C) to have a finite number of elements. 
+
+Example 4.1 Let us consider a variant of Example 2.2 with more hotels. As-sume an ontology has 9 hotels (instances of the Hotel class), namely h1, . . . , h 9
+
+with the following prices (per night, in a fixed currency): 50 , 60 , 70 , 80 , 100 ,
+
+120 , 140 , 140 , and 155 , respectively. We want to evaluate the Type I sentence ‘few hotels have a low price’, where ‘few’ is defined as the function left (3 , 4) .Firstly, we fuzzify the domain of price values into three fuzzy labels low ,
+
+medium , and high price. To do so, a clustering algorithm computes the follow-ing three centroids: 60 , 100 , and 145 , respectively. Thereafter, we define the linguistic label LowPriceHotel as the function left (60 , 100) . Rather than com-puting the cardinality of the infinite fuzzy set left (60 , 100) , which is a fuzzy set over the reals, we compute the cardinality of the fuzzy set 
+
+{1.0/h 1, 1.0/h 2, 0.75 /h 3, 0.5/h 4} ,
+
+which is restricted to the instances of Hotel class. Then, using Zadeh’s method to evaluate the Type I sentence (Equation 6), the result is Q(1 .0 + 1 .0 + 0 .75 + 0 .5) = Q(3 .25) = left (3 , 4)(3 .25) = 0 .75 . □
+
+Clearly, the previous algorithm can easily be generalized to the case of several properties and fuzzy datatypes, as shown in Algorithm 2. Note that it is not necessary to consider several input concepts, as C could already be an intersec-tion of concepts. The main difference is that the numerical degrees obtained 17 for each property are combined using some t-norm (Line 9). Since 0 acts as the absorbing element of each t-norm, if the value of some of the data properties is unknown for a given individual, then such individual belongs to the fuzzy set G
+
+with degree 0 (Line 11). 
+
+Algorithm 2 Generalization of Algorithm 1 to several data properties. 
+
+Input: A semantic knowledge base S, a crisp concept C, a list of func-tional numerical data properties D = [ d1, . . . , d n], a list of fuzzy datatypes 
+
+L = [ L1, . . . , L n], and a fuzzy quantifier Q
+
+Output: α ∈ [0 , 1] as the evaluation of ‘Q of C are ∃d1.L 1 ⊓ · · · ⊓ ∃dn.L n’ 
+
+> 1:
+
+S ← preprocess (S) 
+
+> 2:
+
+X ← getInstances (S, C ) 
+
+> 3:
+
+G ← ∅  
+
+> 4:
+
+for all i ∈ X do  
+
+> 5:
+
+αi ← 1 
+
+> 6:
+
+for all data property dj do  
+
+> 7:
+
+vij ← getPropertyValue (S, i, d j ) 
+
+> 8:
+
+if vij ̸ = null then  
+
+> 9:
+
+αi ← αi ⊗ Lj (vij ) 
+
+> 10:
+
+else  
+
+> 11:
+
+αi ← 0 
+
+> 12:
+
+end if  
+
+> 13:
+
+end for  
+
+> 14:
+
+G ← G ∪ { αi/i } 
+
+> 15:
+
+end for  
+
+> 16:
+
+return solveTypeI (Q, X, G )Next, we examine the specific cases of OWL ontologies and RDFS knowledge graphs. 
+
+4.1.1 The case of OWL ontologies 
+
+In this case, preprocessing (Line 1) typically involves an optional classification of the ontology, which speeds future computations up. Line 2 consists of solving the instance retrieval problem for the concept C
+
+(that is, retrieving all instances of C), i.e., 
+
+X = {i ∈ O | O | = C(i)} .
+
+Line 5 retrieves the d-value of an individual i, i.e., 
+
+{v ∈ O | O | = d(i, v )} .7    
+
+> 7Or, equivalently, {v∈ O | O | = ( ∃d. =v)( i)}.
+
+18 All these tasks (ontology classification, instance retrieval problem, and the re-trieval of the values of a property for a given individual) can be solved by using current ontology reasoners. 
+
+4.1.2 The case of RDFS KGs 
+
+Now, rather than using an ontology reasoner, we will submit SPARQL queries to an SPARQL endpoint. Sometimes, SPARQL endpoints and/or RDF triple stores support some type of inference: the main purpose of the preprocessing is not to compute an initial classification but to activate the inference, if possible. 8
+
+Unlike the OWL case, the instance retrieval problem for the class C (Line 2) and the d-value retrieval problem (Line 5) can be achieved by means of a unique SPARQL query                      
+
+> 1PREFIX rdf : < http :// www . w3 . org /1999/02/22 - rdf - syntax - ns # > .
+> 2PREFIX rdfs : < http :// www . w3 . org /2000/01/ rdf - schema # > .
+> 3SELECT ? i ? v
+> 4WHERE {
+> 5? i rdf : type / rdfs : subClassOf * C.
+> 6? i d? v
+> 7}
+
+This query retrieves direct instances and assumes that the SPARQL point pro-vides the direct instances of C or one of its subclasses. 
+
+## 4.2 Evaluating Type II sentences over classical knowledge bases 
+
+Algorithm 3 shows how to adapt the previous Algorithm 1 to solve Type II sentences. Now, the algorithm requires more input parameters, as it needs an additional data property and an additional fuzzy datatype to characterize the fuzzy concept F . The main difference of the code is that now it is not only necessary to compute the membership degree of every individual i to the fuzzy concept G (Lines 13–19) but also to the fuzzy concept F (Lines 6–12). Obviously, in the last part of the algorithm (Line 21), it invokes a method to solve Type II fuzzy quantified sentences rather than Type I sentences. 
+
+## 4.3 Evaluating Type II sentences over fuzzy semantic knowl-edge bases 
+
+Algorithm 4 shows how to evaluate Type II sentences over fuzzy ontologies. The main difference is that now we need a fuzzy ontology reasoner (such as fuzzyDL) to compute the instances of fuzzy concepts (Lines 2–3). Furthermore, the reasoner not only retrieves the instances but also their membership degrees. That is, given a fuzzy concept Z, it retrieves the set of pairs ⟨i, α ⟩ such that i
+
+belongs to Z with degree greater or equal than α, i.e., 
+
+X = {⟨ α/i ⟩ | O | = Z(i) ≥ α} . 
+
+> 8For example, in Virtuoso 9, the ‘Reasoning mode’ is enabled using the option define in-put:inference ”http://www.w3.org/2002/07/owl#”
+
+19 Algorithm 3 Evaluating Type II quantified queries over knowledge bases 
+
+Input: A knowledge base S, a classical concept C, functional numerical data properties d1, d 2, fuzzy datatypes L1, L 2 and and a fuzzy quantifier Q
+
+Output: α ∈ [0 , 1] as the result of evaluating ‘ Q of C ⊓ ∃ d1.L 1 are ∃d2.L 2’ 
+
+> 1:
+
+S ← preprocess (S) 
+
+> 2:
+
+X ← getInstances (S, C ) 
+
+> 3:
+
+F ← ∅  
+
+> 4:
+
+G ← ∅  
+
+> 5:
+
+for all i ∈ X do  
+
+> 6:
+
+v1i ← getPropertyValue (S, i, d 1) 
+
+> 7:
+
+if v1i̸ =null and then  
+
+> 8:
+
+α1i ← L1(v1i) 
+
+> 9:
+
+else  
+
+> 10:
+
+α1i ← 0 
+
+> 11:
+
+end if  
+
+> 12:
+
+F ← F ∪ { α1i/i } 
+
+> 13:
+
+v2i ← getPropertyValue (S, i, d 2) 
+
+> 14:
+
+if v2i̸ =null then  
+
+> 15:
+
+α2i ← L2(v2i) 
+
+> 16:
+
+else  
+
+> 17:
+
+α2i ← 0 
+
+> 18:
+
+end if  
+
+> 19:
+
+G ← G ∪ { α2i/i } 
+
+> 20:
+
+end for  
+
+> 21:
+
+return solveTypeII (Q, F, G )20 In Line 2, we have Z = F1, whereas in Line 3, Z = F2.As additional observations, note that although fuzzy ontology reasoners do not usually start by classifying the ontology, they typically implement some preprocessing, as fuzzyDL does [9, 22]. Furthermore, as in the previous cases, the algorithm is agnostic to the method to solve a quantified sentence (Line 6). 
+
+Algorithm 4 Evaluating Type II quantified queries over fuzzy ontologies 
+
+Input: A fuzzy ontology O, a concept C, two functional numerical data prop-erties d1, d 2, two fuzzy datatypes L1, L 2 and a fuzzy quantifier Q
+
+Output: α ∈ [0 , 1] as the result of evaluating ‘ Q of C ⊓ ∃ d1.L 1 are ∃d2.L 2’ 
+
+> 1:
+
+O ← preprocess (O) 
+
+> 2:
+
+F1 ← C ⊓ ∃ d1.L 1 
+
+> 3:
+
+F2 ← ∃ d2.L 2 
+
+> 4:
+
+F ← getInstances (S, F 1) 
+
+> 5:
+
+G ← getInstances (S, F 2) 
+
+> 6:
+
+return solveTypeII (Q, F, G )
+
+Algorithm 5 Evaluating Type II quantified queries over fuzzy ontologies 
+
+Input: A fuzzy ontology O, two fuzzy concepts F1 and F2 and a fuzzy quantifier 
+
+Q
+
+Output: α ∈ [0 , 1] as the result of evaluating ‘ Q of F1 are F2’ 
+
+> 1:
+
+O ← preprocess (O) 
+
+> 2:
+
+F ← getInstances (O, F 1) 
+
+> 3:
+
+G ← getInstances (O, F 2) 
+
+> 4:
+
+return solveTypeII (Q, F, G )Another important remark is that the algorithm can be adapted to receive di-rectly two fuzzy concepts as an input, as shown in Algorithm 5. Again, Lines 2–3 retrieve graded instances of F1 and F2, respectively. Finally, note that Algorithm 5 can also be applied to fuzzy KGs, provided that there is a method to retrieve graded instances of a given class. For example, given a class C and a local KB, Fuzzy RDF system [41] makes it possible to obtain a fuzzy set X = {⟨ α/i ⟩} as an answer to the query RETRIEVE ?i ? α
+
+WHERE ((?i rdfs:subclassof C) [ α]) .
+
+# 5 Implementation and validation 
+
+Implementation To validate our approach, we have implemented Q2S2 (Quan-tified Query Semantic Solver). 10 This tool enables the querying of both OWL 2 ontologies and KGs (via SPARQL endpoints) using various methods to evaluate fuzzy quantified sentences. Additionally, the prototype features a graphical user interface that allows users to easily select parameters and query terms. 
+
+> 10 https://github.com/umberto-straccia/FuzzyQueries
+
+21 Q2S2 has been implemented in Java, using JavaFX for the graphical inter-face, and has the following dependencies: 
+
+• OWLAPI [20] 11 is a Java library to manage OWL 2 ontologies. In par-ticular, we use it to load and access ontologies, but also as an interface to a reasoner; 
+
+• Apache Jena [14] 12 is a Java framework used to submit SPARQL queries to a remote SPARQL endpoint and manage RDF triples; 
+
+• HermiT [18] 13 is a reasoner for OWL 2 ontologies. It is mainly used to retrieve the instances of a class and the values of datatype properties of an individual; 
+
+• Fuzzy OWL 2 [6] 14 is a Java library to manage fuzzy ontologies. In par-ticular, Q2S2 uses it to parse the OWL 2 annotations describing fuzzy datatypes; 
+
+• Datil [21] 15 is a Java tool for fuzzy ontology learning. In particular, we use it to learn new fuzzy datatypes from the values of numerical data properties. 
+
+Q2S2 employs a modular architecture to facilitate future extensions. For in-stance, we designed a unified data access interface that is currently specialized for OWL ontologies and SPARQL endpoints, but can be readily adapted for other data models. Consequently, integrating new evaluation methods for fuzzy quantified sentences, or swapping in different OWL 2 reasoners and SPARQL APIs, is a relatively straightforward process. From the graphical interface, the user can select an ontology or a SPARQL endpoint. Then, the user can select the type of query (I or II) and the query parameters. In particular, s/he can select classes, numeric properties, fuzzy datatypes, and fuzzy quantifiers (absolute or relative) from the definitions of the knowledge base. Furthermore, it is possible to select the methods to evaluate the query from a predefined list (at the moment of writing, it supports the methods in Section 2.2). Figures 3 and 4 show the interfaces to query ontologies and KGs, respectively. The tool implements an auto–complete function to assist the user when typing the names of the entities, as shown in Figure 5. Given that Fuzzy OWL 2 datatypes are not yet widely adopted in classical ontologies and KGs, Q2S2 includes a feature to export property data values, so that the fuzzy datatypes can be learned from them using e.g. Datil. Then, a local file with the Fuzzy OWL 2 datatypes can be seamlessly imported back into Q2S2 .
+
+> 11 http://owlcs.github.io/owlapi
+> 12 http://jena.apache.org
+> 13 http://www.hermit-reasoner.com
+> 14 www.umbertostraccia.it/cs/software/FuzzyOWL/
+> 15 http://webdiis.unizar.es/~ihvdis/Datil
+
+22 Figure 3: Graphical User Interface: Querying ontologies. 23 Figure 4: Graphical User Interface: Querying KGs. 24 Figure 5: Graphical User Interface: autocomplete function. 
+
+Validation on an OWL ontology To validate Q2S2 , we considered two use cases. It is well known that the different fuzzy quantification methods verify different logical properties. Rather than analyzing which is more appropriate, we cared about ensuring that the tool provides the expected result. The first use case involves an OWL ontology, namely Premierleague, which belongs to the SML-bench dataset, 16 a benchmarking framework for structured machine learning [52]. It is an ontology on the football domain with 10 classes, 14 object properties, 202 data properties, 11 , 859 individuals, and 2 , 130 , 363 logical axioms. The expressivity of the ontology is the DL ALEH (D). Essentially, it makes it possible to represent sets of statistics (members of the Action class) of Premier League matches ( Match class). For example, ac-tion1008910930 is an Action , corresponding to a player ( Petrov Martin ) of a team (Bolton Wanderers ) on a certain match ( match109 ). 17 Examples of the relation-ships of action1008910930 are a passes efficiency of 0 .68 or a shot efficiency of 0. We used Datil to fuzzify some data properties, using k-means algorithm to create 5 clusters. For each data property, we considered its property values and fuzzify them into 5 fuzzy datatypes. In particular, we fuzzified shot efficiency .Then, we evaluated several queries. For the sake of concrete illustration, we will consider here an example of each case. The evaluation was performed on a laptop computer running Windows 7 64-bits, Intel Core i7-8550U 1.8 GHz, 16 GB RAM. Table 1 shows the preprocessing time, the times needed to evaluate the first and the second query, and the result of the evaluation. Numbers were rounded to 3 decimals. As an example of Type I query, we used Q2S2 to check whether in few of the matches, the shot efficiency is high. To do so, we evaluated the sentence Few Actions have a shot efficiency which is HighShot efficiency (Q1) ,
+
+> 16 https://github.com/SmartDataAnalytics/SML-Bench
+> 17 It corresponds to Bolton Wanderers: Chelsea (2011-10-02).
+
+25 where Action is a crisp concept, shot efficiency a data property, and HighShot efficiency 
+
+a fuzzy datatype, and the quantifier “few” is defined as left (0 .2, 0.5). For example, using the GD method, the result of the query is 0 .056 (rounded to 3 decimals), as shown in Figure 6. The preprocessing time and the time needed to solve the first time were relatively high, around 20 and 6 seconds, respectively. However, we must recall that, because of the high number of individuals and axioms, it is a challenging ontology and they are computed just once. Interestingly, for subsequent queries, the evaluation time was about 0 .1seconds. Another query we considered is Most Actions with HighShot efficiency have a HighPass efficiency (Q2), where ‘most’ is defined as right (0 .5, 1). 
+
+Validation on an RDFS knowledge graph We also evaluated Q2S2 by querying the very large DBpedia KG. In particular, we focused on a geograph-ical domain, querying about the population , populationDensity , elevation , area ,etc. of cities ( City class). DBpedia includes 27 , 567 cities, but some of them have unknown values for some of the attributes. For example, it includes the population density of 10 , 204 cities and the elevation of 16 , 980 cities. Again, we fuzzified the data properties, computing 5 fuzzy datatypes for each of them, using Datil. It is worth to note that we discarded some outliers to have more reliable definitions. For example, for the populationDensity property we considered an outlier (Buenos Aires’ population, 3 , 121 , 707) and for the 
+
+elevation property we considered another one (Gunnaur’s elevation, 118 , 88). We considered several Type-I and Type-II queries. For the sake of concrete illustration, we consider the queries Few Cities are HighPopulationDensity (Q3) At least some Cities with HighPopulationDensity are LowElevation (Q4), where ‘at least some’ is defined as right (0 .2, 0.5). For example, using the GD method to solve Q4, the result was 0 .029, as shown in Figure 7. In this case, as shown in Table 1, the preprocessing and the evaluation time are much smaller, and the first query over a KG is not significantly different from the subsequent ones. There are also no significant differences between the methods. 
+
+# 6 Related work 
+
+Fuzzy quantification and ontologies D. S´ anchez and A. Tettamanzi [37, 38, 39] were the first authors to consider fuzzy quantifiers (beyond ∃ and ∀)and fuzzy ontologies. More precisely, they proposed a fuzzy extension of the Description Logic ALCQ D), with fuzzy concepts of the form QR.C , denoting the fuzzy set of elements such that Q of the successors via the fuzzy property 26 Figure 6: Graphical User Interface: Type I query over Premier League ontology. 27 Figure 7: Graphical User Interface: Type II query over DBpedia knowledge graph. 28 Preprocess GD Zadeh Dataset Query Type Time Time (1st) Time (2nd) Result Time (1st) Time (2nd) Result Premierleague Q1 Type I 20160 5515 145 0.056 5267 86 0.0 Premierleague Q2 Type II 20160 6877 124 0.193 5561 144 0.217 DBpedia Q3 Type I 47 1380 798 1.0 996 1095 1.0 DBpedia Q4 Type II 47 1407 1417 0.029 1638 1353 0.052 
+
+Table 1: Evaluation of queries Q1–Q4 using GD and Zadeh’s methods. Times are shown in ms. 
+
+R are members of the fuzzy concept C, which can be seen as Type I or Type II sentences. The authors also discuss how to solve the concept satisfiability problem, which includes using the GD method to evaluate the fuzzy quantified sentences. Instead, our work is focused on the computation of the degree to which a fuzzy quantified sentence holds. Furthermore, our approach can be applied to classical ontologies and KGs and discusses the representation using Fuzzy OWL 2. F. Bobillo and U. Straccia supported some fuzzy quantifiers in fuzzy on-tologies [7]. In particular, they were interested in representing quantifier-based OWA aggregation concepts, where the weights are directly computed from a reg-ularly increasing quantifier. Such concepts can be represented in the language Fuzzy OWL 2 [6] and are supported by the reasoner fuzzyDL [8]. However, this approach does not evaluate Type I or Type II sentences. F. A. Lisi and C. Mencar proposed a granular computing approach to enrich classical OWL 2 ontologies [28, 29]. Their method uses fuzzy clustering and SPARQL to process numerical properties within OWL ontologies, transforming precise data into fuzzy sets and integrating them as new, interpretable asser-tions within the ontology. The authors also discuss how to represent quantified sentences such as ‘ Q of C have a value of property d which is L’. To illustrate the method, a system for building a granular view of individuals over an OWL ontology called GranulO was implemented [27]. 
+
+Fuzzy quantification and KGs Regarding knowledge graphs, O. Pivert et al. [36] discussed how to solve Type I and Type II sentences over fuzzy RDF graphs with statements of the form ⟨s, p, o, α ⟩. To represent the quan-tified queries, they proposed an extension of the FURQL (Fuzzy RDF Query Language) language, a fuzzy extension of SPARQL [35]. The approach is im-plemented in a tool called SURF (SPARQL with fUzzy quantifieRs for rdF data), built on top of Jena Semantic Web Java Framework, although the au-thors needed to implement a new algorithm to compute the satisfaction degree of individual to a FURQL query. The implementation is restricted to three methods (Zadeh’s method and two Yager’s methods) involving relative quanti-fiers. The main differences with our work are that we support standard RDF triples and standard SPARQL queries to retrieve the individuals from the graph. Furthermore, we support fuzzy datatypes and the more complex GD method to evaluate the sentences. 29 G. Li et al. [26] studied fuzzy quantified graph pattern matching given fuzzy RDF statements of the form ⟨s/α 1, p/α 2, o/α 3⟩. The authors implemented Zadeh’s method to solve Type I and Type II sentences. An example of the supported queries, provided by the authors, is “Most of the recent films that actor x starred in, are directed by young directors”, where both “recent” and “young” are fuzzy sets. Instead, we do not assume that triples are fuzzy and we support more methods to solve quantified queries. Moreover, their method lacks the use of fuzzy datatypes for representing both the fuzzy linguistic terms in the query and the quantifiers. 
+
+# 7 Conclusions and future work 
+
+This paper introduces a highly adaptable framework for evaluating Type I and Type II fuzzy quantified queries across both standard and fuzzy ontologies. A major strength of the proposal is its agnostic design, allowing it to operate independently of the quantifier type, evaluation method, or data source (e.g., OWL ontologies or RDFS KGs). For classical data sources (semantic knowledge bases), the framework integrates fuzzy datatypes so that standard semantic reasoners can still be employed. For fuzzy data sources, it leverages specialized fuzzy tools. To facilitate ongoing research, a publicly accessible implementation of the framework called Q2S2 has been released. We confirmed on two uses cases that the evaluation time is appropriate even on large ontologies and KGs. In future research, we aim to expand the proposed framework to support the evaluation of arbitrary nested quantified sentences. This enhancement will enable the system to process complex, multi-layered queries, such as ‘ Few ex-pensive hotels feature many low-price amenities’. 
+
+# Acknowledgment 
+
+I. Huitzil, U. Straccia, and F. Bobillo were partially supported by the I+D+i project PID2024-159530OB-I00, funded by MCIN/AEI/10.13039/501100011033. I. Huitzil and F. Bobillo were also supported by the project UZ2024-IyA-02, funded by University of Zaragoza. 
+
+# References 
+
+[1] F. Baader, I. Horrocks, C. Lutz, and U. Sattler. An Introduction to De-scription Logic . Cambridge University Press, 2017. [2] C. Bizer, J. Lehmann, G. Kobilarov, S. Auer, C. Becker, R. Cyganiak, and S. Hellmann. DBpedia - A crystallization point for the Web of Data. 
+
+Journal of Web Semantics , 7(3):154–165, 2009. [3] F. Bobillo, C. Bobed, E. Mena, and U. Straccia. A fuzzy logic-based ap-proach to semantic query answering with missing values. In Proceedings of 
+
+30 the 2024 IEEE International Conference on Fuzzy Systems (FUZZ-IEEE-24) . IEEE Computer Society, 2024. [4] F. Bobillo, M. Cerami, F. Esteva, `A. Garc´ ıa-Cerda˜ na, R. Pe˜ naloza, and U. Straccia. Fuzzy description logics. In P. Cintula, C. Ferm¨ uller, and C. Noguera, editors, Handbook of Mathematical Fuzzy Logic Volume III ,volume 58 of Studies in Logic, Mathematical Logic and Foundations , chap-ter XVI, pages 1105–1181. College Publications, 2015. [5] F. Bobillo, M. Delgado, and J. G´ omez-Romero. DeLorean: A reasoner for fuzzy OWL 2. Expert Systems with Applications , 39(1):258–272, 2012. [6] F. Bobillo and U. Straccia. Fuzzy ontology representation using OWL 2. 
+
+International Journal of Approximate Reasoning , 52(7):1073–1094, 2011. [7] F. Bobillo and U. Straccia. Aggregation operators for fuzzy ontologies. 
+
+Applied Soft Computing , 13(9):3816–3830, 2013. [8] F. Bobillo and U. Straccia. The fuzzy ontology reasoner fuzzyDL. 
+
+Knowledge-Based Systems , 95:12–34, 2016. [9] F. Bobillo and U. Straccia. Optimising fuzzy description logic reason-ers with general concept inclusions absorption. Fuzzy Sets and Systems ,292:98–129, 2016. [10] F. Bobillo and U. Straccia. Generalizing type-2 fuzzy ontologies and type-2 fuzzy description logics. International Journal of Approximate Reasoning ,87:40 –66, 2017. [11] F. Bobillo and U. Straccia. Reasoning within fuzzy OWL 2 EL revisited. 
+
+Fuzzy Sets and Systems , 351:1–40, 2018. [12] F. A. Cardillo, F. Debole, and U. Straccia. PN-OWL: A two stage algorithm to learn fuzzy concept inclusions from OWL ontologies. Fuzzy Sets and Systems , 490(109048), 2024. [13] F. A. Cardillo and U. Straccia. Fuzzy OWL-BOOST: Learning fuzzy con-cept inclusions via real-valued boosting. Fuzzy Sets and Systems , 438:164– 186, 2022. [14] J. J. Carroll, I. Dickinson, C. Dollin, D. Reynolds, A. Seaborne, and K. Wilkinson. Jena: Implementing the semantic web recommendations. In Proceedings of the 13th International World Wide Web Conference on Alternate Track Papers & Posters , pages 74–83. ACM, 2004. [15] B. Cuenca-Grau, I. Horrocks, B. Motik, B. Parsia, P. F. Patel-Schneider, and U. Sattler. OWL 2: The next step for OWL. Journal of Web Semantics ,6(4):309–322, 2008. [16] M. Delgado, M. D. Ruiz, D. S´ anchez, and M. A. Vila. Fuzzy quantification: a state of the art. Fuzzy Sets and Systems , 242(0):1–30, 2014. 31 [17] M. Delgado, D. S´ anchez, and M. A. Vila. Fuzzy cardinality based evaluation of quantified sentences. International Journal of Approximate Reasoning ,23(1):23–66, 2000. [18] B. Glimm, I. Horrocks, B. Motik, G. Stoilos, and Z. Wang. Hermit: An OWL 2 reasoner. Journal of Automated Reasoning , 53(3):245–269, 2014. [19] A. Hogan, E. Blomqvist, M. Cochez, C. d’Amato, G. de Melo, C. Guti´ errez, S. Kirrane, J. E. Labra Gayo, R. Navigli, S. Neumaier, A.-C. Ngonga Ngomo, A. Polleres, S. M. Rashid, A. Rula, L. Schmelzeisen, J. F. Sequeda, S. Staab, and A. Zimmermann. Knowledge Graphs . Num-ber 22 in Synthesis Lectures on Data, Semantics, and Knowledge. Morgan & Claypool, 2021. [20] M. Horridge and S. Bechhofer. The OWL API: A Java API for OWL ontologies. Semantic Web , 2(1):11–21, 2011. [21] I. Huitzil and F. Bobillo. Fuzzy ontology datatype learning using Datil. 
+
+Expert Systems With Applications , 228:120299, 2023. [22] I. Huitzil, U. Straccia, C. Bobed, E. Mena, and F. Bobillo. The serial-izable and incremental semantic reasoner fuzzyDL. In Proceedings of the 29th IEEE International Conference on Fuzzy Systems (FUZZ-IEEE 2020) .IEEE Press, 2020. [23] A. Khamparia and B. Pandey. Comprehensive analysis of semantic web reasoners and tools: a survey. Education and Information Technologies ,22:3121–3145, 11 2017. [24] G. J. Klir and B. Yuan. Fuzzy sets and fuzzy logic: theory and applications .Prentice-Hall, Inc., 1995. [25] B. Kosko. Counting with fuzzy sets. IEEE Transactions on Pattern Anal-ysis and Machine Intelligence , PAMI-8(4):556–557, 1986. [26] G. Li, L. Yan, and Z. Ma. A method for fuzzy quantified querying over fuzzy resource description framework graph. International Journal of Intelligent Systems , 34(6):1086–1107, 2019. [27] F. A. Lisi and C. Mencar. A system for fuzzy granulation of OWL ontolo-gies. In Fuzzy Logic and Soft Computing Applications - 11th International Workshop, WILF 2016, Naples, Italy, December 19-21, 2016, Revised Se-lected Papers , volume 10147 of Lecture Notes in Computer Science , pages 126–135. Springer, 2016. [28] F. A. Lisi and C. Mencar. Introducing fuzzy quantification in OWL 2 ontologies. In Joint Proceedings of the 18th Italian Conference on Theo-retical Computer Science (ICTCS 2017) and the 32nd Italian Conference on Computational Logic (CILC 2017) , volume 1949 of CEUR Workshop Proceedings , pages 321–325. CEUR-WS.org, 2017. 32 [29] F. A. Lisi and C. Mencar. A granular computing method for OWL ontolo-gies. Fundamenta Informaticae , 159(1-2):147–174, 2018. [30] F. A. Lisi and U. Straccia. Learning in description logics with fuzzy concrete domains. Fundamenta Informaticae , 140(3-4):373–391, 2015. [31] Y. Liu and E. E. Kerre. An overview of fuzzy quantifiers. (II). reasoning and applications. Fuzzy Sets and Systems , 95:135–146, 1998. [32] S. Mu˜ noz, J. P´ erez, and C. Guti´ errez. Simple and efficient minimal RDFS. 
+
+Journal of Web Semantics , 7(3):220–234, 2009. [33] S. Mu˜ noz, J. P´ erez, and C. Guti´ errez. Minimal deductive systems for RDF. In Proceedings of the 4th European Semantic Web Conference (ESWC 2007) , volume 4519 of Lecture Notes in Computer Science , pages 53–67. Springer Verlag, 2007. [34] J. P´ erez, M. Arenas, and C. Guti´ errez. Semantics and complexity of SPARQL. In Proceedings of the 5th International Semantic Web Con-ference (ISWC 2006) , volume 4273 of Lecture Notes in Computer Science ,pages 30–43. Springer, 2006. [35] O. Pivert, O. Slama, and V. Thion. An extension of SPARQL with fuzzy navigational capabilities for querying fuzzy RDF data. In Proceedings of the 2016 IEEE International Conference on Fuzzy Systems (FUZZ-IEEE 2016) , pages 2409–2416. IEEE, 2016. [36] O. Pivert, O. Slama, and V. Thion. Fuzzy quantified queries to fuzzy RDF databases. In Proceedings of the 2017 IEEE International Conference on Fuzzy Systems (FUZZ-IEEE 2017) , pages 1–7. IEEE, 2017. [37] D. S´ anchez and A. G. B. Tettamanzi. Generalizing quantification in fuzzy description logics. In B. Reusch, editor, Proceedings of the 8th Fuzzy Days in Dortmund , volume 33 of Advances in Soft Computing , pages 397–411. Springer-Verlag, October 2005. [38] D. S´ anchez and A. G. B. Tettamanzi. Fuzzy quantification in fuzzy de-scription logics. In E. Sanchez, editor, Fuzzy Logic and the Semantic Web ,volume 1 of Capturing Intelligence , pages 135–159. Elsevier Science, 2006. [39] D. S´ anchez and A. G. B. Tettamanzi. Reasoning and quantification in fuzzy description logics. In Proceedings of the 6th International Workshop on Fuzzy Logic and Applications (WILF 2005) , volume 3849 of Lecture Notes in Computer Science , pages 81–88. Springer-Verlag, 2006. [40] S. Staab and R. Studer, editors. Handbook on Ontologies . International Handbooks on Information Systems. Springer, 2004. 33 [41] U. Straccia. A minimal deductive system for general fuzzy RDF. In Pro-ceedings of the 3rd International Conference on Web Reasoning and Rule Systems (RR 2009) , volume 5837 of Lecture Notes in Computer Science ,pages 166–181. Springer-Verlag, 2009. [42] U. Straccia. Top-k retrieval for ontology mediated access to relational databases. Information Sciences , 198:1–23, 2012. [43] U. Straccia. Foundations of Fuzzy Logic and Semantic Web Languages .CRC Studies in Informatics Series. Chapman & Hall, 2013. [44] U. Straccia. On the top-k retrieval problem for ontology-based access to databases. In S. Pivert, Olivier; Zadro˙ zny, editor, Flexible Approaches in Data, Information and Knowledge Management , volume 497 of Studies in Computational Intelligence , chapter 5, pages 95–114. Springer Verlag, 2014. [45] V. Torra and Y. Narukawa. Modeling decisions - Information fusion and aggregation operators . Springer, 2007. [46] D. Vrandeˇ ci´ c and M. Kr¨ otzsch. Wikidata: a free collaborative knowledge-base. Communications of the ACM , 57(10):78—-85, 2014. [47] W3C. RDF Primer. http://www.w3.org/TR/rdf-primer , 2004. [48] W3C. OWL 2 Web Ontology Language Document Overview . http:// www.w3.org/TR/owl2-overview , 2012. [49] W3C. SPARQL 1.1 Query Language. http://www.w3.org/TR/ sparql11-query , 2013. [50] W3C. RDF 1.1 Turtle. http://www.w3.org/TR/turtle , 2014. [51] W3C. RDF Schema 1.1. http://www.w3.org/TR/rdf-schema , 2014. [52] P. Westphal, L. B¨ uhmann, S. Bin, H. Jabeen, and J. Lehmann. Sml-bench - A benchmarking framework for structured machine learning. Semantic Web , 10(2):231–245, 2019. [53] R. R. Yager. On ordered weighted averaging aggregation operators in mul-ticriteria decisionmaking. IEEE Transactions on Systems, Man and Cyber-netics , 18(1):183–190, 1988. [54] R. R. Yager. Connectives and quantifiers in fuzzy sets. Fuzzy Sets and Systems , 40(1):39–75, 1991. [55] J. F. Yag¨ ue, I. Huitzil, C. Bobed, and F. Bobillo. FUKG: Answering flexi-ble queries over knowledge graphs. The Electronic Library , 42(3):368–392, 2023. [56] L. A. Zadeh. Fuzzy sets. Information and Control , 8(3):338–353, 1965. 34 [57] L. A. Zadeh. A computational approach to fuzzy quantifiers in natural lan-guages. Computers & Mathematics with Applications , 9(1):149–184, 1983. [58] A. Zimmermann, N. Lopes, A. Polleres, and U. Straccia. A general frame-work for representing, reasoning and querying with annotated semantic web data. Journal of Web Semantics , 11:72–95, 2012. 35

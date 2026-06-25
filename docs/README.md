@@ -6,35 +6,35 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-24
-- 运行时间：2026-06-24 21:44:53 UTC
+- 最新运行日期：2026-06-25
+- 运行时间：2026-06-25 22:00:47 UTC
 - 运行状态：成功
 - 本次总论文数：5
-- 精读区：2
-- 速读区：3
+- 精读区：1
+- 速读区：4
 
 ### 今日简报（AI）
-今日涵盖5篇论文，精读聚焦建筑信息建模与单张卫星图3D城市场景生成。最推荐《BIM-Edit》的大语言模型IFC基准测试（9.0分）和《Sat2City v2》的原生3D资产生成（8.0分）。建议优先了解LLM在BIM中的应用潜力及卫星影像到3D城市的自动化流程。
-- 详情：[/202606/24/README](/202606/24/README)
+今日推荐5篇论文，精读1篇《Heterogeneous and Adept Snapshot Distillation for 3D Semantic Segmentation》，速读3篇涉及遥感、机器人感知与知识图谱。最值得看的是精读论文，其异质快照蒸馏方法在3D语义分割上表现突出（9.0分）。建议优先精读该论文，并关注速读中的开放词汇分割与机器人深度感知方向。
+- 详情：[/202606/25/README](/202606/25/README)
 
 ### 精读区论文标签
-1. [BIM-Edit: Benchmarking Large Language Models for IFC-Based Building Information Modeling](/202606/24/2606.20146v3-bim-edit-benchmarking-large-language-models-for-ifc-based-building-information-modeling)  
+1. [Heterogeneous and Adept Snapshot Distillation for 3D Semantic Segmentation](/202606/25/2606.25278v1-heterogeneous-and-adept-snapshot-distillation-for-3d-semantic-segmentation)  
    标签：评分：9.0/10、query:smart-city
-   evidence：为基于IFC的BIM编辑提供基准测试，保持语义和关系
-2. [Sat2City v2: Native 3D City Asset Generation from a Single Satellite Image](/202606/24/2606.24138v1-sat2city-v2-native-3d-city-asset-generation-from-a-single-satellite-image)  
-   标签：评分：8.0/10、query:smart-city
-   evidence：从卫星影像生成本地3D城市资产，用于数字孪生和城市仿真
+   evidence：通过知识蒸馏实现点云3D语义分割，融合多模态信息
 
 ### 速读区论文标签
-1. [Ontology-Grounded Capability Interaction Graphs: From Knowledge Graphs to Fault Trees](/202606/24/2606.20779v1-ontology-grounded-capability-interaction-graphs-from-knowledge-graphs-to-fault-trees)  
+1. [Prompt-Calibrated SAM 3 for Open-Vocabulary Remote Sensing Semantic Segmentation](/202606/25/2606.21863v1-prompt-calibrated-sam-3-for-open-vocabulary-remote-sensing-semantic-segmentation)  
    标签：评分：7.0/10、query:smart-city
-   evidence：本体驱动的知识图谱用于CPS可靠性，可迁移至智慧城市
-2. [One Index for Subsumption and Roll-up across Time, Geography, and Ontology](/202606/24/2606.24677v1-one-index-for-subsumption-and-roll-up-across-time-geography-and-ontology)  
+   evidence：使用校准的SAM 3对遥感图像进行开放词汇语义分割，适用于城市环境
+2. [ShotcreteDepth: A Bi-modal Dataset for Robust Robotic Depth Perception in Shotcrete Construction Environments](/202606/25/2606.23152v1-shotcretedepth-a-bi-modal-dataset-for-robust-robotic-depth-perception-in-shotcrete-construction-environments)  
+   标签：评分：7.0/10、query:smart-city
+   evidence：建筑施工环境深度感知的双模态数据集，包含LiDAR点云
+3. [Fuzzy Quantification over OWL Ontologies and Knowledge Graphs](/202606/25/2606.25778v1-fuzzy-quantification-over-owl-ontologies-and-knowledge-graphs)  
+   标签：评分：7.0/10、query:smart-city
+   evidence：对OWL本体和知识图谱的模糊量化查询，用于语义数据模型
+4. [OmniSpace: Efficient Geometry Awareness for Autonomous Vehicles MLLMs](/202606/25/2606.22617v1-omnispace-efficient-geometry-awareness-for-autonomous-vehicles-mllms)  
    标签：评分：6.0/10、query:smart-city
-   evidence：统一索引支持时间、地理和本体层次结构的包含和汇总查询
-3. [Building a Low-cost Network Digital Twin for the IoT-Edge-Cloud Continuum Using Open-Source Tooling](/202606/24/2606.24853v1-building-a-low-cost-network-digital-twin-for-the-iot-edge-cloud-continuum-using-open-source-tooling)  
-   标签：评分：6.0/10、query:smart-city
-   evidence：为物联网边缘云构建网络数字孪生，与城市数字孪生互操作方法相关
+   evidence：面向空间推理的几何感知多模态大语言模型
 
 
 <div class="dpr-home-promo-card">
