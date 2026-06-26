@@ -1,0 +1,302 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-26T20:48:46.483996+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 7,
+    "quick_skim_target": 11,
+    "quick_selected": 7
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.22496v1",
+      "source": "arxiv",
+      "title": "Enabling Cloud-Level Accuracy in Edge AI through IoT Data Preprocessing",
+      "abstract": "Large language models (LLMs) offer a natural-language interface for interpreting Internet of Things (IoT) sensor data in smart environments; however, cloud deployment introduces latency, privacy, and connectivity concerns. Local LLMs can reduce these limitations, but compact edge-deployable models often show weaker numerical reasoning when raw sensor readings are provided directly. This paper investigates whether prompt-side preprocessing can improve the accuracy-latency trade-off of local LLMs for environmental monitoring. We propose a structured prompt construction framework that transforms raw air-quality and thermal-comfort measurements into progressively enriched textual representations: raw sensor values, threshold-aware descriptions, and compact environmental summary flags. The approach is evaluated using indoor Raspberry Pi/BME680 datasets from Tampere University and outdoor air-quality datasets from Helsinki, Katowice, and Warsaw. We construct a binary LLM query dataset covering air quality, thermal comfort, and joint environmental conditions, and evaluate five local and five cloud LLMs across three prompt variants and two inference modes, with and without chain-of-thought prompting. Results show that prompt enrichment substantially improves local-model accuracy. In No-CoT mode, local accuracy increases from 50.9% to 81.7% indoors and from 63.7% to 89.3% outdoors from the raw to the most enriched prompt. Local No-CoT inference is the fastest configuration, with mean latency close to 0.22 s, while CoT substantially increases inference time. These findings suggest that lightweight prompt-side preprocessing can narrow the local--cloud performance gap and support low-latency IoT analytics in smart environments.",
+      "authors": [
+        "Aygün Varol",
+        "Katarzyna Kołodziej",
+        "Łukasz Sobczak",
+        "Michał Romaszewski",
+        "Przemysław Głomb",
+        "Naser Hossein Motlagh",
+        "Mirka Leino",
+        "Johanna Virkki"
+      ],
+      "primary_category": "cs.PF",
+      "categories": [
+        "cs.PF",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-06-21T13:35:57+00:00",
+      "link": "https://arxiv.org/pdf/2606.22496v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "structured prompt preprocessing framework for IoT data in smart environments",
+      "llm_evidence_cn": "面向智能环境的IoT数据结构化提示预处理框架",
+      "llm_evidence": "面向智能环境的IoT数据结构化提示预处理框架",
+      "canonical_evidence": "面向智能环境的IoT数据结构化提示预处理框架",
+      "llm_tldr_en": "Proposes a structured prompt construction framework that transforms raw IoT data into enriched textual representations, improving local LLM accuracy for edge AI in smart environments.",
+      "llm_tldr_cn": "针对边缘AI中本地LLM对IoT数据处理能力不足的问题，提出一种结构化提示构造框架，将原始传感器数据逐步转化为富含上下文的文本表示，实验表明该预处理方法有效提升了本地LLM的数值推理精度，为智慧城市中的边缘智能应用提供了可行方案。",
+      "llm_tldr": "针对边缘AI中本地LLM对IoT数据处理能力不足的问题，提出一种结构化提示构造框架，将原始传感器数据逐步转化为富含上下文的文本表示，实验表明该预处理方法有效提升了本地LLM的数值推理精度，为智慧城市中的边缘智能应用提供了可行方案。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.20515v1",
+      "source": "arxiv",
+      "title": "S-Agent: Spatial Tool-Use Elicits Reasoning for Spatial Intelligence",
+      "abstract": "Real-world spatial intelligence requires reasoning over a continuous and evolving 3D world, yet existing VLMs and tool-augmented agents largely remain tied to static, stateless inference from isolated visual observations. We introduce \\textbf{\\textsc{S-Agent}}, a spatial tool-use agentic paradigm for understanding and reasoning over continuous multi-view images and videos. By formulating spatial reasoning as spatio-temporal evidence accumulation rather than isolated frame-level prediction, \\textsc{S-Agent} reshapes spatial perception into scene-centric understanding beyond frame-centric recognition. Specifically, \\textsc{S-Agent} casts the VLM as a semantic planner that decides what evidence is needed, while a hierarchy of spatial tools and experts grounds objects in 2D, lifts them into 3D geometric evidence, and aggregates this evidence into high-level spatial knowledge (\\textit{e.g.}, counting, measurement, orientation, and relative position). Additionally, a temporal memory mechanism, including Scene Memory for maintaining the evolving scene state and Agent Memory for accumulating reasoning context, enables evidence integration across frames and reasoning steps. Comprehensive experiments on multi-view and video spatial reasoning benchmarks show that \\textsc{S-Agent} consistently improves both open-source and closed-source VLMs in a training-free manner. Beyond inference-time augmentation, supervised fine-tuning (SFT) on \\textsc{S-Agent}-generated spatial trajectories \\textsc{S-300K} yields \\textsc{S-Agent-8B}, a compact spatial agent that significantly surpasses similar-scale baselines (e.g., Qwen3-VL-8B) and performs comparably to advanced closed-source models (e.g., GPT-5.4 and Gemini 3).",
+      "authors": [
+        "Yalun Dai",
+        "Hao Li",
+        "Shulin Tian",
+        "Runmao Yao",
+        "Yuhao Dong",
+        "Fangzhou Hong",
+        "Zhaoxi Chen",
+        "Fangfu Liu",
+        "Baoliang Tian",
+        "Dingwen Zhang",
+        "Tao Wang",
+        "Kim-Hui Yap",
+        "Ziwei Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-18T17:34:55+00:00",
+      "link": "https://arxiv.org/pdf/2606.20515v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "spatial reasoning with VLM and tools for 3D understanding",
+      "llm_evidence_cn": "利用VLM和工具进行三维空间推理",
+      "llm_evidence": "利用VLM和工具进行三维空间推理",
+      "canonical_evidence": "利用VLM和工具进行三维空间推理",
+      "llm_tldr_en": "Proposes S-Agent, a spatial tool-use agent that reasons over continuous multi-view images/videos using VLM as planner and spatial tools for scene-centric understanding.",
+      "llm_tldr_cn": "该论文提出S-Agent，一种空间工具使用代理范式，将VLM作为语义规划器，结合分层空间工具和专家，对连续多视图图像和视频进行时空证据累积，实现场景中心理解。该方法可用于城市环境的点云和三维场景理解，与智慧城市中的语义分割和场景理解需求相关。",
+      "llm_tldr": "该论文提出S-Agent，一种空间工具使用代理范式，将VLM作为语义规划器，结合分层空间工具和专家，对连续多视图图像和视频进行时空证据累积，实现场景中心理解。该方法可用于城市环境的点云和三维场景理解，与智慧城市中的语义分割和场景理解需求相关。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.25139v1",
+      "source": "arxiv",
+      "title": "Buildrix: An Open Platform for Sharing and Benchmarking Agentic AI Skills in Building Engineering",
+      "abstract": "Agentic AI offers significant potential to automate complex building-engineering workflows. However, most existing applications remain isolated proof-of-concept demonstrations and lack reusable domain capabilities, human-verified evaluation cases, and standardized benchmarking infrastructure. This study presents Buildrix, an open, community-driven platform for developing, sharing, executing, and evaluating agentic AI skills for building engineering. Buildrix integrates three components: a Python command-line package for developing, validating, publishing, installing, and managing skills and test cases; a web-based Hub for organizing open challenges, reusable skills, test cases, reviews, and benchmark results; and a local agent harness that supports skill discovery, external toolchain provisioning, progressive context loading, and multi-step workflow execution. Buildrix skills are organized as standardized, self-contained packages containing task instructions, executable scripts, dependencies, and supporting resources. Quantitative test cases can be verified by domain experts and promoted to golden test cases for reproducible benchmark evaluation. Buildrix provides an open foundation for reusable capability development, transparent evaluation, and community-driven advancement of agentic AI in building engineering.",
+      "authors": [
+        "Zixin Jiang",
+        "Bing Dong"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-06-23T20:08:47+00:00",
+      "link": "https://arxiv.org/pdf/2606.25139v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Platform for building engineering agentic AI skills, relevant to smart city data pipelines and digital twins",
+      "llm_evidence_cn": "建筑工程的智能体AI技能平台，与智慧城市数据管道和数字孪生相关",
+      "llm_evidence": "建筑工程的智能体AI技能平台，与智慧城市数据管道和数字孪生相关",
+      "canonical_evidence": "建筑工程的智能体AI技能平台，与智慧城市数据管道和数字孪生相关",
+      "llm_tldr_en": "Presents Buildrix, an open platform for sharing and benchmarking agentic AI skills in building engineering, including skill development, sharing, and evaluation.",
+      "llm_tldr_cn": "建筑工程的智能体AI应用大多孤立且缺乏可复用技能和标准化基准。本文提出Buildrix开放平台，包含Python命令行工具、Web中心和本地智能体库，支持技能开发、共享、执行和评估。该平台可促进建筑领域AI技能复用，有望用于智慧城市和数字孪生系统。",
+      "llm_tldr": "建筑工程的智能体AI应用大多孤立且缺乏可复用技能和标准化基准。本文提出Buildrix开放平台，包含Python命令行工具、Web中心和本地智能体库，支持技能开发、共享、执行和评估。该平台可促进建筑领域AI技能复用，有望用于智慧城市和数字孪生系统。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.26458v1",
+      "source": "arxiv",
+      "title": "MKG-RAG-Bench: Benchmarking Retrieval in Multimodal Knowledge Graph-Augmented Generation",
+      "abstract": "Retrieval-augmented generation (RAG) over knowledge graphs has emerged as a promising approach for grounding large language models, yet existing benchmarks largely overlook the challenges of retrieval in multimodal knowledge graph RAG (MKG-RAG). In practice, retrieval is a critical bottleneck: multimodal knowledge is heterogeneous, difficult to align across modalities, and often poorly served by retrievers designed for unstructured corpora. To address this gap, we introduce MKG-RAG-Bench, a cross-domain benchmark explicitly designed to evaluate retrieval in MKG-RAG. MKG-RAG-Bench is constructed from two multimodal knowledge graphs spanning general and medical domains, and includes carefully aligned question-answering datasets that support controlled evaluation of both retrieval and downstream generation. The benchmark is built using an LLM-based curation pipeline that filters low-utility knowledge, generates structurally grounded queries with exact supervision, and systematically covers diverse modality configurations. Through extensive experiments across representative retriever families and modality settings, we show that effective multimodal retrieval remains challenging yet crucial for end-to-end MKG-RAG performance, and that retrieval quality strongly determines generation outcomes. By isolating retrieval as a first-class evaluation target, MKG-RAG-Bench provides a principled foundation for diagnosing current limitations and advancing multimodal knowledge graph RAG systems.",
+      "authors": [
+        "Xiaochen Wang",
+        "Bao Hoang",
+        "Han Liu",
+        "Ting Wang",
+        "Fenglong Ma"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-24T23:38:42+00:00",
+      "link": "https://arxiv.org/pdf/2606.26458v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multimodal knowledge graph retrieval benchmark",
+      "llm_evidence_cn": "多模态知识图谱检索基准",
+      "llm_evidence": "多模态知识图谱检索基准",
+      "canonical_evidence": "多模态知识图谱检索基准",
+      "llm_tldr_en": "Introduces MKG-RAG-Bench, a benchmark for retrieval in multimodal knowledge graph RAG, addressing heterogeneous modality alignment challenges.",
+      "llm_tldr_cn": "该论文提出了MKG-RAG-Bench，专为多模态知识图谱增强生成中的检索任务设计的跨领域基准。基准涵盖通用和医学领域，包含对齐的多模态问答数据集，重点解决异构模态对齐困难的问题。虽然不直接针对智慧城市，但其方法可迁移至城市多模态知识图谱构建与检索。",
+      "llm_tldr": "该论文提出了MKG-RAG-Bench，专为多模态知识图谱增强生成中的检索任务设计的跨领域基准。基准涵盖通用和医学领域，包含对齐的多模态问答数据集，重点解决异构模态对齐困难的问题。虽然不直接针对智慧城市，但其方法可迁移至城市多模态知识图谱构建与检索。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.26613v1",
+      "source": "arxiv",
+      "title": "EcoTable: Cost-effective Table Integration in Data Lakes for Natural Language Queries",
+      "abstract": "The diverse formats of CSV and Parquet files in data lakes pose a significant challenge to traditional ETL, which relies on data engineers to pre-define a target database schema and build a complex pipeline for data integration. Moreover, with this approach, the integrated data often cannot support various analytical needs, as the predefined schema does not necessarily satisfy the table format or join relationships required to answer unforeseen queries. To address this, we propose EcoTable, the first natural language-based data integration framework. Given a set of user-specified natural language queries, EcoTable automatically integrates the tables into a form that adequately supports the corresponding SQL queries. EcoTable achieves this by leveraging the semantic understanding and complex reasoning capabilities of LLMs. Moreover, EcoTable addresses the scalability and cost issues introduced by expensive LLM inferences with a set of novel ideas. First, EcoTable introduces a graph to represent the overall search space, where nodes represent tables and edges carry weights indicating join likelihood produced by a lightweight deep learning model. On top of this graph data structure, EcoTable designs three components to achieve our goal: (1) the table identification layer aims to identify relevant tables via a two-stage schema linking based on user queries; (2) the graph-based validation layer aims to discover significant join paths, including necessary data transformations and bridging tables, by modeling the problem as Steiner tree searches; and (3) the table transformation layer generates transformation code to implement the joins using LLMs. We construct 4 real-world benchmark datasets with more than 200 queries. Extensive experiments demonstrate that EcoTable outperforms the state-of-the-art baselines, increasing accuracy by more than 30% and cutting LLM invocation costs by 5 times.",
+      "authors": [
+        "Yuhui Wang",
+        "Jinqi Liu",
+        "Chengliang Chai",
+        "Hangyu Zhao",
+        "Yuhao Deng",
+        "Yuyu Luo",
+        "Xin Tang",
+        "Ye Yuan",
+        "Guoren Wang",
+        "Fengjin Wang",
+        "Lei Cao"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB"
+      ],
+      "published": "2026-06-25T05:18:20+00:00",
+      "link": "https://arxiv.org/pdf/2606.26613v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "proposes a natural language-based table integration framework for data lakes, applicable to multi-source data integration in smart cities",
+      "llm_evidence_cn": "提出基于自然语言的表集成框架，适用于智慧城市中多源数据集成",
+      "llm_evidence": "提出基于自然语言的表集成框架，适用于智慧城市中多源数据集成",
+      "canonical_evidence": "提出基于自然语言的表集成框架，适用于智慧城市中多源数据集成",
+      "llm_tldr_en": "EcoTable automatically integrates tables in data lakes based on natural language queries, supporting unforeseen analytical needs without predefined schemas.",
+      "llm_tldr_cn": "该论文针对数据湖中CSV和Parquet文件格式多样、传统ETL需预定义模式导致灵活性差的问题，提出了EcoTable——首个基于自然语言的数据集成框架。用户只需提供自然语言查询，EcoTable自动将相关表集成为支持相应SQL查询的形式。实验表明，EcoTable在保持低成本的同时，有效支持了未知分析需求。该方法可直接应用于智慧城市中异构数据（如传感器数据、GIS、BIM等表格数据）的灵活集成。",
+      "llm_tldr": "该论文针对数据湖中CSV和Parquet文件格式多样、传统ETL需预定义模式导致灵活性差的问题，提出了EcoTable——首个基于自然语言的数据集成框架。用户只需提供自然语言查询，EcoTable自动将相关表集成为支持相应SQL查询的形式。实验表明，EcoTable在保持低成本的同时，有效支持了未知分析需求。该方法可直接应用于智慧城市中异构数据（如传感器数据、GIS、BIM等表格数据）的灵活集成。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.27202v1",
+      "source": "arxiv",
+      "title": "Graph Neural Networks Applications Across Domains: All Insights You Need",
+      "abstract": "Graph neural networks have moved from a niche representation-learning technique to the default model class wherever data carry relational structure. The interesting question is no longer whether message passing helps on a given dataset, but where graph structure earns its computational cost and where it does not. This survey organises the field around a single design space, derives the spectral and spatial formulations from shared first principles, and connects expressive power to the Weisfeiler-Leman hierarchy with explicit statements of what current architectures can and cannot separate. Against that methodological backbone we examine twelve application domains, among them recommendation and social networks, knowledge graphs and language-model integration, drug discovery and molecular property learning, healthcare and neuroscience, computer vision, traffic and urban computing, power and renewable-energy systems, wireless and sixth-generation networks, fraud and cybersecurity, industrial prognostics, materials science, and climate modelling. For each domain we specify the graph-construction choices and their costs, identify which architecture families dominate and why, and separate reported gains from artefacts of weak baselines or favourable splits. A cross-domain comparison exposes recurring patterns: heterophily and scale undercut the same models almost everywhere, temporal graphs remain harder than their static counterparts, and the architectures that top public leaderboards are seldom the ones that reach deployment. We treat over-smoothing, over-squashing, robustness, distribution shift, fairness, and explainability not as a closing checklist but as the constraints that decide adoption.",
+      "authors": [
+        "Abderaouf Bahi"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-25T16:00:11+00:00",
+      "link": "https://arxiv.org/pdf/2606.27202v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "survey of GNN applications including knowledge graphs, providing methodological foundation for knowledge graph reasoning in smart cities",
+      "llm_evidence_cn": "图神经网络应用综述涵盖知识图谱，为智慧城市知识图谱推理提供方法论基础",
+      "llm_evidence": "图神经网络应用综述涵盖知识图谱，为智慧城市知识图谱推理提供方法论基础",
+      "canonical_evidence": "图神经网络应用综述涵盖知识图谱，为智慧城市知识图谱推理提供方法论基础",
+      "llm_tldr_en": "A comprehensive survey on GNNs across twelve domains, covering knowledge graphs and language-model integration, with a unified design space analysis.",
+      "llm_tldr_cn": "本文系统梳理了图神经网络从谱域到空间域的公式推导，统一了设计空间。涵盖推荐系统、社交网络、知识图谱等十二个应用领域，并讨论了与语言模型的集成。为图结构数据的表示学习提供了全面参考，有助于智慧城市中知识图谱推理的方法选择。",
+      "llm_tldr": "本文系统梳理了图神经网络从谱域到空间域的公式推导，统一了设计空间。涵盖推荐系统、社交网络、知识图谱等十二个应用领域，并讨论了与语言模型的集成。为图结构数据的表示学习提供了全面参考，有助于智慧城市中知识图谱推理的方法选择。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.27342v1",
+      "source": "arxiv",
+      "title": "Understanding Domain-Aware Distribution Alignment in Budgeted Entity Matching",
+      "abstract": "Entity Matching (EM) is a core operation in the data integration pipeline, where records from different sources are compared to determine whether they refer to the same real-world entity. Recent work has incorporated domain information and low-resource learning techniques to better adapt EM systems to realistic settings. While these approaches have demonstrated strong performance, it remains unclear how they behave under varying data constraints and levels of supervision in practice. In this paper, we investigate a state-of-the-art method for low-resource, domain-aware EM--BEACON--and study how its performance is affected by different algorithmic choices and data availability conditions. We conduct a series of targeted experiments to evaluate these variations, providing deeper insight into the role of distribution alignment and the behavior of the BEACON framework.",
+      "authors": [
+        "Nicholas Pulsone",
+        "Gregory Goren",
+        "Roee Shraga"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-06-25T17:49:48+00:00",
+      "link": "https://arxiv.org/pdf/2606.27342v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "entity matching as core data integration operation",
+      "llm_evidence_cn": "实体匹配是数据集成中的核心操作",
+      "llm_evidence": "实体匹配是数据集成中的核心操作",
+      "canonical_evidence": "实体匹配是数据集成中的核心操作",
+      "llm_tldr_en": "Investigates domain-aware entity matching method BEACON under varying data constraints, providing insights for multi-source data integration.",
+      "llm_tldr_cn": "实体匹配是数据集成管道中的关键操作。本文系统研究了低资源领域感知实体匹配方法BEACON在不同数据约束下的行为，分析了算法选择和可用数据条件的影响。实验结果揭示了方法性能的边界条件，为智慧城市多源数据集成中实体匹配技术的选择提供了指导。",
+      "llm_tldr": "实体匹配是数据集成管道中的关键操作。本文系统研究了低资源领域感知实体匹配方法BEACON在不同数据约束下的行为，分析了算法选择和可用数据条件的影响。实验结果揭示了方法性能的边界条件，为智慧城市多源数据集成中实体匹配技术的选择提供了指导。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

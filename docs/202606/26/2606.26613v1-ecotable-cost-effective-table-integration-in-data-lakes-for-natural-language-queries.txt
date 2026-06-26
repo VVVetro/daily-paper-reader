@@ -1,0 +1,2029 @@
+Title: EcoTable: Cost-effective Table Integration in Data Lakes for Natural Language Queries
+
+URL Source: https://arxiv.org/pdf/2606.26613v1
+
+Published Time: Fri, 26 Jun 2026 00:31:09 GMT
+
+Number of Pages: 22
+
+Markdown Content:
+# EcoTable: Cost-effective Table Integration in Data Lakes for Natural Language Queries 
+
+# Yuhui Wang, Jinqi Liu, Chengliang Chai, Hangyu Zhao, Yuhao Deng, Yuyu Luo, Xin Tang, Ye Yuan, Guoren Wang, Fengjin Wang ∗, Lei Cao †
+
+University of Arizona †, Kuaishou Technology ∗, Beijing Institute of Technology USA, China 
+
+## Abstract 
+
+The diverse formats of CSV and Parquet files in data lakes pose a significant challenge to traditional ETL, which relies on data engi-neers to pre-define a target database schema and build a complex pipeline for data integration. Moreover, with this approach, the integrated data often cannot support various analytical needs, as the predefined schema does not necessarily satisfy the table for-mat or join relationships required to answer unforeseen queries. To address this, we propose EcoTable , the first natural language-based data integration framework. Given a set of user-specified natural language queries, EcoTable automatically integrates the tables into a form that adequately supports the corresponding SQL queries. EcoTable achieves this by leveraging the semantic under-standing and complex reasoning capabilities of Large Language Models (LLMs). Moreover, EcoTable addresses the scalability and cost issues introduced by expensive LLM inferences with a set of novel ideas. 
+
+EcoTable first introduces a graph to represent the overall search space, where nodes represent tables and edges carry weights in-dicating join likelihood produced by a lightweight deep learning model. On top of this graph data structure, EcoTable designs three components to achieve our goal: (1) the table identification layer aims to identify relevant tables via a two-stage schema linking based on user queries; (2) the graph-based validation layer aims to discover significant join paths, including necessary data transfor-mations and bridging tables, by modeling the problem as Steiner tree searches; and (3) the table transformation layer generates trans-formation code to implement the joins using LLMs. We construct 4 real-world benchmark datasets with more than 200 queries. Ex-tensive experiments demonstrate that EcoTable outperforms the state-of-the-art baselines, increasing accuracy by more than 30% and cutting LLM invocation costs by 5 times. 
+
+## 1 INTRODUCTION 
+
+Motivation. Data lakes store large collections of files (e.g., in CSV or Parquet formats) that do not fit neatly into relational tables, offering immense potential for data-driven decision making [ 3,21 ]. However, deriving values from such a lightly structured data lake is notoriously difficult. The predominant approach relies on a traditional Extract-Transform-Load (ETL) process, where data engineers first manually define a target schema and then develop a complex pipeline to integrate data into a data warehouse [ 49 ,64 ]. This is challenging. First, it is rather difficult to pre-define an appropriate database schema that meets the diverse analytical needs of an application. Second, even if the schema were defined correctly, it is labor intensive to convert the data lake tables into the desired relational table format. Next, we use a real example to better illustrate this. 
+
+Example 1.1. As shown in Figure 1, consider 5 tables (i.e., 𝑇 1:
+
+Order , 𝑇 2: Revision History , 𝑇 3: Service Types , 𝑇 4: Workflow Steps , and 𝑇 5: Service Pricing ) sampled from a real-world E-Commerce data lake. A data engineer might naturally define a database schema over these tables, where 𝑇 1.order_id joins with 
+
+𝑇 2.id . However, the pre-defined schema does not necessarily satisfy the analytical need of users. For instance, suppose a user wants to check order status and thus issues a query 𝑄 1, “Display the daily tracking information for the order, including the name of the delivery service and workflow step details by date.” This query involves three tables (i.e., 𝑇 1: Order , 𝑇 3: Service Types , and 𝑇 4: Workflow Steps ). However, in the initial database schema, it is impossible to join these tables to answer this query because 𝑇 1 lacks explicit join conditions with either 𝑇 3 or 𝑇 4. Furthermore, integrating tables requires signif-icant manual efforts. To join 𝑇 1, 𝑇 3 and 𝑇 4 for 𝑄 1, a data engineer must: (1) bridge 𝑇 1 and 𝑇 4 via 𝑇 2 with the join between 𝑇 2 and 𝑇 4
+
+on the shared step_id attribute; and (2) transform 𝑇 3 by splitting 
+
+service_type to enable join with 𝑇 4 on service_id . This process is complex, as it necessitates incorporating additional tables into join path and transforming tables. Moreover, the user might want to know more about service fees and thus submit another query 𝑄 2:
+
+“How are delivery services grouped by type, with their process steps and fees?” . To answer 𝑄 2, the data engineer must integrate 𝑇 5: Service Pricing with 𝑇 3 and 𝑇 4 – a new data integration requirement. The key step is to split the service_plan column in 𝑇 5 (e.g., “Regu-lar (Version 1)”) into distinct service_type and version columns. This prepares 𝑇 5 to be joinable with 𝑇 3 on service_type column. This example shows that different queries have different require-ments on the database schema. Therefore, pre-defining a database schema to meet users’ analytical needs tends to be impractical. Instead, data integration has to be tailored to user queries. Targeting this problem, we propose to build an automatic table integration system, called EcoTable . With this system, users only have to provide a set of natural language (NL) queries to intuitively describe their analysis intention. The system will automatically discover a database schema that adequately supports these queries and then perform data integration accordingly. Existing work has proposed techniques to automate data inte-gration such as schema matching [ 22 , 38 , 42 ], entity resolution [ 19 ,39 , 46 , 51 , 59 , 60 ], data transformation [ 43 , 44 , 67 ], discovery of joinable columns [ 12 , 25 ], etc. However, all of these approaches rely on a pre-defined target schema. They do not solve the prob-lem of automatically discovering an appropriate database schema                          
+
+> arXiv:2606.26613v1 [cs.DB] 25 Jun 2026 order_id created_at completed_at change_at service_name step_name
+> N001 2024-02-16 2024-03-01 2024-02-16 NULL NULL
+> N004 2025-07-18 2025-07-30 2025-07-18 Standard Received
+> N004 2025-07-18 2025-07-30 2025-07-21 Priority Packing
+> N004 2025-07-18 2025-07-30 2025-07-24 Priority Dispatched
+
+Integrated Table T id change_type status change_at                                         
+
+> N001 payment COD 2024-02-16
+> N004 step_id S001 2025-07-18
+> N004 step_id S003 2025-07-21
+> N004 step_id S004 2025-07-24
+> order_id created_at completed_at
+> N001 2024/02/16 2024/03/01
+> N002 2025/08/29 NULL
+> N003 2025/09/04 NULL
+> N004 2025/07/18 2025/07/30
+> service_type type_hint service_name
+> P001_Regular payment Standard
+> P002_VIP payment Priority
+> P003_Enterprise step_stage Customized
+> step_id step_name service_id
+> S001 Received P001
+> S002 Review P002
+> S003 Packing P002
+> S004 Dispatched P002
+
+Table T 2：Revision History 
+
+Table T 1：Order 
+
+Table T 3：Service Types 
+
+Table T 4：Workflow Steps                                            
+
+> order_id payment step_id change_at
+> N001 COD NULL 2024-02-16
+> N004 NULL S001 2025-07-18
+> N004 NULL S003 2025-07-21
+> N004 NULL S004 2025-07-24
+> order_id created_at completed_at
+> N001 2024-02-16 2024-03-01
+> N002 2025-08-29 NULL
+> N003 2025-09-04 NULL
+> N004 2025-07-18 2025-07-30
+> service_id service_name service_type
+> P001 Standard Regular
+> P002 Priority VIP
+> P003 Customized Enterprise
+> step_id step_name service_id
+> S001 Received P001
+> S002 Review P002
+> S003 Packing P002
+> S004 Dispatched P002
+
+Table T 2
+
+Table T 1
+
+Table T 3
+
+Table T 4
+
+Natural Language Query Q 1
+
+Display the daily tracking information for 
+
+order, including delivery service name and 
+
+step details by date.     
+
+> Reformat
+> Dates
+> Pivot Data
+> Split Column
+> No Change
+> service plan base_fee
+> Regular (Version 1) 10.00 CNY
+> VIP (Version 2) 25.00 CNY
+> Enterprise (Version 1) 40.00 CNY
+
+Table T 5：Service Pricing         
+
+> service_type version base_fee
+> Regular Version 1 10.00 CNY
+> VIP Version 2 25.00 CNY
+> Enterprise Version 1 40.00 CNY
+
+Table T 5
+
+> Split Column
+
+How are delivery services grouped by type, 
+
+with their process steps and fees? 
+
+Natural Language Query Q 2                
+
+> service_id service_name step_name service_type base_fee
+> P001 Standard Received Regular 10.00 CNY
+> P002 Priority Review VIP 25.00 CNY
+> P003 Customized Packing Enterprise 40.00 CNY
+> Q1
+
+Integrated Table T Q2Figure 1: An Example of Query-driven Table Integration in Data Lakes. 
+
+based on NL queries and tables. On the other hand, a line of re-search [ 29 , 37 , 63 , 64 ] focuses on transforming tables, e.g., spread-sheets or web tables, into relational formats. However, because the relational schema these methods automatically discover is blind to user queries, it tends to be ineffective in supporting the analytical needs of users, as shown in the above example. The semantic understanding and reasoning ability of Large Lan-guage Models (LLMs) make it possible for us to achieve the above goal. First, existing Text-to-SQL research has shown that LLMs excel at identifying the mapping between NL queries and columns in the tables through schema linking [ 4, 10 , 54 , 58 ]. Moreover, with its reasoning ability [ 32 , 61 , 62 , 65 ], an LLM is able to produce a plan that combines multiple operations to collaboratively solve the data transformation problem. 
+
+Challenge. An intuitive method that leverages LLMs to solve this problem is to ask LLMs to (1) identify all tables that are relevant to the NL queries provided by users; (2) check whether every pair of these discover tables is joinable, thus finding a join path for each query; (3) finally, perform data transformation and integration accordingly. However, routinely invoking LLMs to explore all pos-sible join relationships is prohibitively expensive. This is because the number of potential join paths grows exponentially with the number of tables. Therefore, the key challenge lies in how to min-imize the number of LLM calls while still achieving high-quality integration to reliably answer user queries. 
+
+Our Proposal. To address this challenge, we propose EcoTable , a cost-effective query-driven table integration system. The key idea is to combine smaller deep learning models and LLMs to efficiently identify and validate potential join paths. At a high level, deep learn-ing models give prior probabilities of possible join relationships between tables. Then, to minimize LLM invocations, EcoTable pri-oritizes the pairs of tables for the LLMs to validate that are (1) most likely to be joinable and (2) required to answer user queries. 
+
+EcoTable models the search space as a fully connected graph where each node corresponds to a table, and each edge (i.e., the join relationship) connects two tables with a weight indicating the join likelihood initialized with a deep learning model. In this way, the problem of finding a valid join path for each NL query is converted to identify a connected subgraph that covers the tables involved in the query. EcoTable consists of three key components that efficiently discover valid join paths and perform data transformation on top of the graph. 
+
+Table Identification Layer identifies query-related tables (i.e., nodes) from all data lake tables via a two-stage schema linking method that first leverages a lightweight deep learning model for coarse-grained filtering, followed by using LLMs for fine-grained verification. This step effectively reduces the search space to a subset of nodes in the above graph, ensuring that subsequent steps primarily focus on these relevant tables. 
+
+Graph-based Validation Layer. Next, EcoTable discovers valid join paths to integrate these tables. As observed in the above example, 
+
+> 2
+
+joining these tables may require additional bridging tables, which is challenging to discover among a potentially large number of tables. To address this, we model the problem as a Steiner tree search problem, where the goal is to find the minimal-weight tree, i.e., a tree composed of edges with the highest join likelihood, which connects all relevant tables for each query, potential via a set of bridging tables. More specifically, EcoTable gathers edges from Steiner trees w.r.t. various queries and submits them to LLMs for batch ver-ification. This opens the opportunity to leverage shared edges among queries to reduce LLM costs. Then EcoTable updates the edge weights of the graph based on verified results and iteratively searches the Steiner trees until the necessary edges of all queries have been validated. In this way, EcoTable selectively applies LLMs to validate the most promising join relationships and progressively discovers valid join paths with minimal LLM usage. 
+
+Table Transformation Layer. EcoTable then applies the necessary data transformation operations to perform joins and integrate ta-bles. EcoTable uses LLMs to automatically generate transformation code for each valid join path, guided by a ReAct-style reasoning process that alternates between transformation and join validation. To reduce latency, EcoTable further employs a graph-based paral-lelization strategy, which identifies parallelizable transformations by modeling the problem as an edge coloring task on the validated join paths. In summary, we make the following contributions. (1) We propose EcoTable , to the best of our knowledge, the first natural language driven system for table integration that minimizes LLM invocations while adequately supporting user queries. (2) We design a graph-based validation layer that models table relationships as a weighted graph and identifies valid join paths using a Steiner tree–based optimization. (3) We introduce a table transformation layer that employs a ReAct-style reasoning loop to automatically generate transformation code for joinable tables and a graph-based parallelization strategy to further reduce latency and LLM invocation cost. (4) We construct 4 real-world benchmark datasets covering multiple domains with more than 200 natural language queries. Comprehen-sive experiments show that EcoTable surpasses state-of-the-art baselines by achieving over 30% accuracy improvement and reduc-ing LLM invocation costs by 5 times. 
+
+## 2 PROBLEM DEFINITION 
+
+Given a data lake including a large number of tables (e.g., CSV or parquet files) and a set of user-specified natural language queries, we aim to integrate subsets of tables related to these queries such that each query could be well addressed by an integrated table. Due to the heterogeneity of the data lake tables, the integration process might be rather complicated, including transformations and joins over multiple tables. Formally, we define the problem as follows. 
+
+Definition 2.1 (Query-Driven Data Integration). Given 𝑁 tables in a data lake T = {𝑇 1,𝑇 2, . . . ,𝑇 𝑁 } and a set of 𝑀 natural language queries Q = {𝑄 1, 𝑄 2, . . . , 𝑄 𝑀 }, we aim to construct a set of trans-formed tables T ∗ = { ˆ𝑇 1, ˆ𝑇 2, . . . , ˆ𝑇 𝑛 } from T to form a global join graph G∗ = (T ∗, 𝐸 ∗), such that each query 𝑄 𝑘 ∈ Q can be success-fully answered by querying a connected subgraph G∗ 
+
+> 𝑘
+
+= (T ∗ 
+
+> 𝑘
+
+, 𝐸 ∗ 
+
+> 𝑘
+
+)
+
+of G∗, where T ∗ = Ð𝑀 𝑘 =1 T ∗ 
+
+> 𝑘
+
+and 𝐸 ∗ = Ð𝑀 𝑘 =1 𝐸 ∗ 
+
+> 𝑘
+
+, 𝑘 ∈ [ 1, 𝑀 ]. That is, each connected subgraph G∗ 
+
+> 𝑘
+
+corresponds to an integrated ta-ble sufficient for answering query 𝑄 𝑘 and the table is obtained by integrating tables in T ∗ 
+
+> 𝑘
+
+. The nodes and edges are defined as follows: 
+
+Nodes: For each query 𝑄 𝑘 , the node set T ∗ 
+
+> 𝑘
+
+= { ˆ𝑇 1 
+
+> 𝑘
+
+, ˆ𝑇 2 
+
+> 𝑘
+
+, . . . } con-tains the transformed tables required to answer the query. Each 
+
+ˆ𝑇 𝑖 𝑘 ∈ T ∗ 
+
+> 𝑘
+
+is derived from a source table 𝑇 𝑖 𝑘 ∈ T 𝑘 ⊆ T through the transformation 𝜙 𝑖 𝑘 , i.e., ˆ𝑇 𝑖 𝑘 = 𝜙 𝑖 𝑘 (𝑇 𝑖 𝑘 ). In this paper, 𝜙 𝑖 𝑘 (·) includes operations such as reformatting, splitting, and pivoting. 
+
+Edges: For any edge ˆ𝑒 𝑖 𝑗 𝑘 ∈ 𝐸 ∗ 
+
+> 𝑘
+
+, it connects two tables ˆ𝑇 𝑖 𝑘 , ˆ𝑇 𝑗 𝑘 ∈ T ∗
+
+> 𝑘
+
+if they can be joined to answer 𝑄 𝑘 . Note that G∗ 
+
+> 𝑘
+
+is connected, corresponding to the join path, but G∗ might not be when different queries are associated with totally different tables. 
+
+Example 2.2. Based on Example 1.1 and Figure 1, the mapping to the formal graph G∗ is as follows: 
+
+• Query 𝑄 1 is addressed by subgraph G∗ 
+
+> 1
+
+, with nodes T ∗ 
+
+> 1
+
+=
+
+{ ˆ𝑇 1, ˆ𝑇 2, ˆ𝑇 3, ˆ𝑇 4 } and edges 𝐸 ∗ 
+
+> 1
+
+= { ˆ𝑒 12 1 , ˆ𝑒 24 1 , ˆ𝑒 34 1 }. Each ˆ𝑇 𝑖 is the result of the transformation 𝜙 𝑖  
+
+> 1
+
+(e.g., date reformatting for 
+
+𝑇 1, table pivoting for 𝑇 2, and column splitting for 𝑇 3). 
+
+• Query 𝑄 2 is addressed by subgraph G∗ 
+
+> 2
+
+, which involves nodes T ∗ 
+
+> 2
+
+= { ˆ𝑇 3, ˆ𝑇 4, ˆ𝑇 5 } and edges 𝐸 ∗ 
+
+> 2
+
+= { ˆ𝑒 12 2 , ˆ𝑒 13 2 }. Here, ˆ𝑇 5
+
+is the result of the transformation 𝜙 32 (e.g., column splitting for 𝑇 5). 
+
+• The global join graph G∗ = (T ∗, 𝐸 ∗) is defined by the unions T ∗ = Ð𝑀 𝑘 =1 T ∗ 
+
+> 𝑘
+
+and 𝐸 ∗ = Ð𝑀 𝑘 =1 𝐸 ∗ 
+
+> 𝑘
+
+, forming a unified structure that supports all analytical requirements. 
+
+Table Transformation resolves structural and semantic discrep-ancies in data lakes.We focus on three essential operators: 
+
+Normalize standardizes data formats for consistency, e.g., convert-ing the created_at date in Table 𝑇 1 from "2024/02/16" to the ISO standard "2024-02-16" in Table ˆ𝑇 1.
+
+Split decomposes composite columns into atomic ones, e.g., splitting the service_type column in Table 𝑇 5 (e.g., "Regular (Version 1)") into separate service_type and version columns in Table ˆ𝑇 5.
+
+Pivot restructures tables by transposing unique values into new columns, e.g., applying Pivot to 𝑇 2 on the change_type column generates new column headers payment and step_id in Table ˆ𝑇 2.
+
+Join Discovery identifies semantically equivalent columns across tables to form valid join paths. Existing approaches include: 
+
+Deep learning methods (e.g., DeepJoin [ 12 ] and OmniMatch [ 28 ]) encode column profiles into vector representations and predict the join likelihood between columns using PLMs. For example, 
+
+𝑇 2.change_type and 𝑇 3.type_hint might be considered as joinable because PLM-based methods focus more on token overlaps or string similarities. In reality, they refer to different things: change_type 
+
+is a revision category, whereas type_hint is an interface tag (e.g., 
+
+step_stage ) denoting the record’s current workflow stage, so they should not be joined. 
+
+LLM-based methods leverage fine-tuning [ 38 ] or prompt engineer-ing [ 42 ] to understand table semantics and validate join relation-ships. These methods demonstrate strong few-shot learning capabil-ities and can handle complex semantic matching scenarios that are challenging for traditional approaches. By reasoning over column 
+
+> 3Table Identification Layer
+> Graph-based Validation Layer
+> Table Transformation Layer
+> Iteration 1
+
+G1
+
+G2
+
+> validate
+> update
+
+T4
+
+T3
+
+T4 T3 T5
+
+> Schema Linking
+
+T3
+
+T1
+
+T4
+
+T3
+
+T4
+
+T5   
+
+> T1T2
+> T2T3
+> T3T4
+
+T1
+
+T2 
+
+> DL CoT
+
+TQ TQ
+
+Q1 , Q 2  
+
+> T3T4
+> T3T5
+
+TQ TQ
+
+> T2
+
+TQ TQ 
+
+> T4NULL
+> Iteration 2
+> T2
+> T1
+> T3
+> T4
+> T5
+
+G1
+
+G2   
+
+> T2T4
+> T1T2
+> T3T4
+> in parallel
+
+G     
+
+> e12
+> e23
+> e34
+> e35
+> e24
+> 12
+> 1212
+> Batch-1
+> T3T5
+> Batch-2
+> Each Batch
+> Transformation
+> ReAct
+> Transform
+> Validate
+> *
+> *
+
+T3
+
+T
+
+T1 T2
+
+T4 T5 
+
+> T1
+> T2T3
+> T4
+> T3T4
+> T5
+> Parallelization
+
+Figure 2: The Overall Framework of EcoTable .
+
+descriptions and data patterns, LLMs achieve robust performance even on unseen schema or ambiguous relationships. Given T and Q, a straightforward way to construct G∗ is that for each query 𝑄 𝑘 , we enumerate a large number of possible table combinations from T and identify the combination that can satisfy the query, which is prohibitively expensive if we have to call LLMs to verify whether each combination is valid. Thus, in this paper, we propose the EcoTable framework to largely reduce the LLMs costs. 
+
+## 3 OVERVIEW 
+
+As illustrated in Sec. 1, EcoTable formulates the query-driven table integration task as a join path identification and validation problem over a graph, ensuring a balance between integration effectiveness and LLM invocation cost. Specifically, EcoTable first constructs a fully connected graph G = (T , 𝐸 ). Then, EcoTable leverages the following three layers to integrate tables for correctly answering the given queries. As shown in Figure 2, the first table identifica-tion layer takes the queries as input, and outputs the table subsets relevant to these queries. Second, the graph-based validation layer takes these tables as input, and outputs valid join paths through searching within the graph G, so as to connect these relevant tables. Third, the table transformation layer takes as input these identified join paths, applies necessary data transformation operations to actually join each two tables and outputs the integrated tables. 
+
+## 3.1 Table Identification Layer 
+
+In Figure 2, for example, given two queries 𝑄 1 and 𝑄 2, the module applies schema linking to obtain the corresponding relevant table sets T 1 
+
+> 𝑄
+
+= {𝑇 1,𝑇 3,𝑇 4 } and T 2 
+
+> 𝑄
+
+= {𝑇 3,𝑇 4,𝑇 5 }, a well-studied process [ 4,31 , 48 ]. To strike a balance between accuracy and LLMs cost for identifying these tables, we adopt a hybrid approach of combining LLMs and deep learning models. Specifically, we first train a deep learning model 𝑀 𝑠 to predict the relevance between an NL query and a table. This model takes as input the concatenation of the query and the table’s column names (i.e., its schema), embeds them and outputs a relevance score. Tables with high scores are selected as candidates for subsequent verification by LLMs (see Sec. 4.1 for details). 
+
+## 3.2 Graph-based Validation Layer 
+
+As shown in Figure 2, given the identified table subsets T 1 
+
+> 𝑄
+
+and T 2 
+
+> 𝑄
+
+,this module finds valid join paths G1 and G2 that connect them. As outlined in Sec. 1, identifying such join paths is challenging because: (1) making relevant tables joinable often requires appropriate data transformations or added bridge tables, and (2) the search space is large to identify the valid join path. To address this, we formulate it as a Steiner tree search problem based on the fully connected graph G. Initially, EcoTable uses a deep learning model 𝑀 𝐽 to estimate the likelihood of joining pairs of tables and assign these values as edge weights in the graph. After that, for each 𝑄 𝑘 , EcoTable attempts to search a corresponding Steiner tree from G, where (1) the nodes cover the tables in T 𝑘 𝑄 
+
+and (2) the edges have the maximum overall joinable probability. Naturally, this Steiner tree represents the most promising join path in which the tables in T 𝑘 𝑄 could be joined to answer 𝑄 𝑘 (e.g., for 
+
+T 1 
+
+> 𝑄
+
+= {𝑇 1,𝑇 3,𝑇 4 }, a Steiner tree introduces 𝑇 2 as a bridge with edges 
+
+{𝑒 12 , 𝑒 23 , 𝑒 34 }, as shown in Figure 2). However, deep learning is typically not accurate enough, so we collect all edges from the Steiner trees corresponding to different queries and employ LLMs for further verification. This processing leverages the fact that multiple queries may share common edges, thereby saving LLMs costs (e.g., edge 𝑒 34 appears in both T 1 
+
+> 𝑄
+
+and 
+
+> 4
+
+T 2 
+
+> 𝑄
+
+’s Steiner trees and requires only LLM validation once). After-wards, we update the graph by removing edges that are deemed unjoinable by LLMs, while assigning a weight of one to those edges that are confirmed as joinable. We then iteratively recompute the Steiner trees using the updated graph and iterate the validation process until for every query, we either find a join path that makes the query executable or conclude that no such path exists due to insufficient connectivity (see Section 4.2 for details). 
+
+## 3.3 Table Transformation Layer 
+
+Finally, in Figure 2, starting from the valid join paths G1 and G2, the module applies data transformation operations to get G∗ 
+
+> 1
+
+and G∗ 
+
+> 2
+
+,the integrated tables used to answer queries 𝑄 1 and 𝑄 2. To be spe-cific, for each valid edge, EcoTable uses a transformation modular component 𝑀 𝑇 to automatically produce executable code, defined in a formal transformation grammar, for the two tables connected by the edge. To improve accuracy, LLMs verify each transforma-tion using a ReAct-style reasoning process. For all these edges, a straightforward method is to batch multiple tables and ask LLMs to transform them together. However, this would degrade the accuracy due to complex chain dependencies within these tables, which is difficult for LLMs to understand. An alternative is to sequentially process each edge. However, this would incur high latency due to the iterative process of ReAct. To tackle this issue, EcoTable 
+
+further introduces a graph-based parallelization strategy to identify independent transformations that can be executed concurrently based on the edge-coloring framework. The key observation is that two edges can be transformed in parallel if they do not share the same table. For example, in G1, transformations for 𝑒 12 (𝑇 1-𝑇 2) and 
+
+𝑒 34 (𝑇 3-𝑇 4) can be processed in parallel (see Section 5 for details). 
+
+## 4 GRAPH-BASED TABLE INTEGRATION 
+
+In this section, we introduce in details how EcoTable identifies query-related tables (Section 4.1), searches valid join paths (Sec-tion 4.2) and leverages LLMs to verify promising join relationships to produce finally integrated tables (Section 4.2). 
+
+## 4.1 Table Identification Layer 
+
+Stage 1 (PLM Table-level Selection). We fine-tune a lightweight-compact pre-trained language model, 𝑀 𝑆 , as a cross-encoder to compute relevance scores between a query and a table schema. Un-like bi-encoder setups that embed queries and schemas separately, 
+
+𝑀 𝑆 encodes them together in one sequence, allowing full-attention interactions between the query and schema metadata. As a mod-ular component, 𝑀 𝑆 can be instantiated flexibly with various pre-trained backbones; in our implementation, we specifically support RoBERTa [ 41 ], RoBERTa-Large [ 23 ], and DeBERTa-v3-Large [ 20 ]. Subsequently, for each query, i.e., 𝑄 𝑘 ∈ Q , we choose the tables with large relevance scores as candidates, denoted as T 𝑘 
+
+> cand
+
+. To be specific, we train the model on inputs of the form “ query [TAB] 
+
+table_name [COL] col _1 [COL] col _2 [COL], ...”. The training pro-cess optimizes the model to predict binary labels 𝑦 𝑖 ∈ { 0, 1} by minimizing cross-entropy loss: 
+
+L = − [ 𝑦 𝑖 log 𝑠 𝑖 + ( 1 − 𝑦 𝑖 ) log (1 − 𝑠 𝑖 )] (1) where 𝑠 𝑖 denotes the relevance score predicted by the model. Overall, this step retrieves a sufficient number of tables that may answer the queries, i.e., ensuring a high recall. However, exploring the join pairs among this relatively large number of tables is still expensive. 
+
+Stage 2 (LLMs Refinement). To address this, we employ LLMs to refine those candidate tables. Given T 𝑘 
+
+> cand
+
+, EcoTable performs a fine-grained verification using the CoT reasoning capability of LLMs. Specifically, EcoTable prompts the LLMs to reason through the following steps: 
+
+Query Understanding. We utilize the LLMs as a query decomposer following a one-shot prompt setting. Given a natural language query 𝑄 , the LLMs are guided to split it into a sequence of sub-questions 𝑞 1, 𝑞 2, . . . , 𝑞 𝑛 , effectively simplifying the complex request into atomic semantic components such as entities and attributes. For example, for 𝑄 1 in Figure 1, LLMs identify key entities as “order” and 
+
+“delivery service” , attributes such as “order_id” , “service_name” , and 
+
+“step_name” . This decomposition captures what the query focuses on. 
+
+Schema Reasoning and Alignment. For T 𝑘 
+
+> cand
+
+, the LLMs use Chain-of-Thought to evaluate each candidate table step by step. Specifi-cally, for each decomposed semantic component, the LLM tries to find a matching column in the table. It explicitly explains its reason-ing, such as why a column matches a sub-question or why a table is missing the required information. If a candidate table cannot match any necessary components, the LLM rejects it. For example, for 𝑄 1,LLMs reason that the entity “order” from the query is represented by the table 𝑇 1: Order , while its attribute “order_id” corresponds to the column order_id in 𝑇 1. In this way, LLMs reliably identify the final verified table set T 𝑘 𝑄 ⊆ T 𝑘 
+
+> cand
+
+, which contains the tables that are necessary to answer the query. 
+
+## 4.2 Graph-based Validation Layer 
+
+Given the fully-connected global join graph G = (T , 𝐸 ), each edge 𝑒 𝑖 𝑗 ∈ 𝐸 represents a potential join relationship between ta-bles 𝑇 𝑖 and 𝑇 𝑗 , associated with a weight that represents the join-able probability 𝑝 (𝑒 𝑖 𝑗 ) ∈ [ 0, 1] computed by 𝑀 𝐽 . Given queries 
+
+𝑄 = {𝑄 1, 𝑄 2, ..., 𝑄 𝑀 }, EcoTable discover a collection of query-specific join paths {G 1, G2, . . . , G𝑀 }, where each G𝑘 = (T 𝑘 , 𝐸 𝑘 )
+
+connects tables in T 𝑘 𝑄 required to answer 𝑄 𝑘 . Formally, this join path discovery problem can be formulated as: 
+
+max  
+
+> {𝑥 𝑘 𝑖 𝑗 }
+> 𝑀
+
+∑︁ 
+
+> 𝑘 =1
+
+Ö 
+
+> 𝑒 𝑖 𝑗 ∈𝐸
+
+𝑝 (𝑒 𝑖 𝑗 )𝑥 𝑘 𝑖 𝑗 
+
+s.t. ∀𝑘, ∀𝑇 𝑖 ∈ T 𝑘 𝑄 :∑︁    
+
+> 𝑒 𝑖 𝑗 ∈𝛿 (𝑇 𝑖 )
+
+𝑥 𝑘 𝑖 𝑗 ≥ 1,
+
+∀𝑘, ∀𝑆 ⊂ T ′ 
+
+> 𝑘
+
+, 𝑆 ≠ ∅, 𝑆 ≠ T ′ 
+
+> 𝑘
+
+:∑︁    
+
+> 𝑒 𝑖 𝑗 ∈𝜙 (𝑆 )
+
+𝑥 𝑘 𝑖 𝑗 ≥ 1.
+
+(2) where 𝑥 𝑘 𝑖 𝑗 ∈ { 0, 1} is a binary decision variable indicating whether edge 𝑒 𝑖 𝑗 is included in the join path of query 𝑄 𝑘 . 𝛿 (𝑇 𝑖 ) denotes the set of edges corresponding to node 𝑇 𝑖 . T ′ 
+
+> 𝑘
+
+= { 𝑇 𝑖 |∃ 𝑇 𝑗 , 𝑥 𝑘 𝑖 𝑗 = 1},representing the set of tables (including the bridging tables) selected in the join path for query 𝑄 𝑘 . For a subset 𝑆 ⊆ T ′ 
+
+> 𝑘
+
+, 𝜙 (𝑆 ) denotes the cut set of 𝑆 (i.e., the edges connecting 𝑆 to its complement 
+
+> 5
+
+Algorithm 1: Graph-based Validation Algorithm 
+
+Input: Global weighted join graph G = (T , 𝐸 ), relevant tables for each query {T 1 
+
+> 𝑄
+
+, T 2 
+
+> 𝑄
+
+, ..., T 𝑀 𝑄 }.
+
+Output: Validated join paths {G 1, G2, . . . , G𝑀 }. 
+
+> 1
+
+𝐸 + ← ∅ , 𝐸 − ← ∅ ; 
+
+> 2
+
+while ¬ Ð𝑘  
+
+> 1
+
+𝐸 𝑘 ⊆ 𝐸 + ∧ HasTree (G , {T 1 
+
+> 𝑄
+
+, ..., T 𝑀 𝑄 }) do  
+
+> 3
+
+// Step 1: Graph update  
+
+> 4
+
+G𝑢 ← UpdateGraph (G , 𝐸 +, 𝐸 − ); 
+
+> 5
+
+// Steps 2: LLMs validation  
+
+> 6
+
+𝐸 𝑏 ← ∅ ; 
+
+> 7
+
+for 𝑘 ∈ [ 1..𝑀 ] do  
+
+> 8
+
+G𝑘 , T𝑘 , 𝐸 𝑘 = SteinerTree (G 𝑢 , T 𝑘 𝑄 ); 
+
+> 9
+
+𝐸 𝑏 ← 𝐸 𝑏 ∪ 𝐸 𝑘 ; 
+
+> 10
+
+𝐸 𝑛𝑒𝑤 ← 𝐸 𝑏 \ ( 𝐸 + ∪ 𝐸 − ); 
+
+> 11
+
+for each 𝑒 𝑖 𝑗 ∈ 𝐸 𝑛𝑒𝑤 do  
+
+> 12
+
+if LLMValidate (𝑒 𝑖 𝑗 ) = VALID then  
+
+> 13
+
+𝐸 + = 𝐸 + ∪ { 𝑒 𝑖 𝑗 }; 
+
+> 14
+
+else  
+
+> 15
+
+𝐸 − = 𝐸 − ∪ { 𝑒 𝑖 𝑗 }; 
+
+> 16
+
+for 𝑘 ∈ [ 1..𝑀 ] do  
+
+> 17
+
+G𝑘 = (T 𝑘 , 𝐸 + ∩ 𝐸 𝑘 ); 
+
+> 18
+
+return {G 1, G2, . . . , G𝑀 };
+
+T ′ 
+
+> 𝑘
+
+\ 𝑆 ), defined as 𝜙 (𝑆 ) = {𝑒 𝑖 𝑗 ∈ 𝐸 | 𝑇 𝑖 ∈ 𝑆,𝑇 𝑗 ∈ T ′ 
+
+> 𝑘
+
+\ 𝑆 }. The first constraint ensures that the join path includes all tables in T 𝑘 𝑄 
+
+for each query 𝑄 𝑘 , while the second enforces connectivity. This optimization maximizes the sum of the overall joinability of each query, which is computed by multiplying the join likelihoods of edges in the query’s join path, i.e., Î𝑒 𝑖 𝑗 ∈𝐸 𝑝 (𝑒 𝑖 𝑗 )𝑥 𝑘 𝑖 𝑗 . In this way, we prioritize the edges that are likely to be joined to answer queries for LLMs to validate. 
+
+Pairwise Joinability Estimation. Following [ 40 ], EcoTable adopts a deep learning model 𝑀 𝐽 to compute 𝑝 (𝑒 𝑖 𝑗 ). This model serves as an efficient but approximate estimator of joinability, providing a prior probability for each edge. Specifically, given two columns, 𝑀 𝐽 
+
+takes input table features (e.g., metadata and column embeddings) and outputs join probabilities in (0,1]. Designed as a modular com-ponent, 𝑀 𝐽 allows for flexible instantiation. In this work, we utilize three models: Auto-BI [ 40 ], DeepJoin [ 12 ], and OmniMatch [ 28 ]. Formally, let 𝐶 ∈ 𝑇 𝑖 and 𝐶 ′ ∈ 𝑇 𝑗 denote two columns in tables 𝑇 𝑖 
+
+and 𝑇 𝑗 . 𝑀 𝐽 (𝐶 𝑖 , 𝐶 𝑗 ) ∈ ( 0, 1] predicts the probability that 𝐶 and 𝐶 ′
+
+could be joined. Because the joinability between two tables often depends on the presence of at least one pair of aligned columns, we use the maximum pairwise similarity as a joinability score and assign this as the weight, i.e., 𝑝 (𝑒 𝑖 𝑗 ) = max 𝐶 ∈𝑇 𝑖 , 𝐶 ′ ∈𝑇 𝑗 𝑀 𝐽 (𝐶, 𝐶 ′).
+
+Iterative Validation with LLMs. Based on the weighted join graph G, EcoTable utilizes the typical algorithm [ 27 ] with an ap-proximation ratio of 2 (i.e., the KMB algorithm) to efficiently iden-tify a Steiner tree for each query 𝑄 𝑘 . Then EcoTable performs iterative validation with LLMs to refine the accuracy of these dis-covered Steiner trees. Specifically, at the beginning of each iteration, 
+
+EcoTable selects all unverified edges from the Steiner tree of each query. These edges are submitted to LLMs to validate join relation-ship. EcoTable updates the weight of the join graph G = (T , 𝐸 )
+
+accordingly as follows: 
+
+• If an edge 𝑒 𝑖 𝑗 passes validation, its corresponding weight is set to 1, ensuring that EcoTable will only validate one edge at most once. 
+
+• If 𝑒 𝑖 𝑗 is invalid, the edge is removed from the graph and will not be considered in later iterations. For the updated graph, EcoTable recomputes a maximum Steiner tree for each query 𝑄 𝑘 and checks the unverified edges in these new trees. This process repeats until all edges of the obtained trees pass the verification, or no more feasible Steiner trees are available. 
+
+Remark. Since multiple queries often involve overlapping table pairs, EcoTable caches all validated results globally. If an edge has been validated once—either as valid or invalid—the result is reused directly in the Steiner tree searches of other queries, eliminating redundant LLM calls throughout the query set Q.
+
+Algorithm Overview. Algorithm 1 summarizes the whole process of the graph-based validation layer. EcoTable initializes two edge sets 𝐸 + and 𝐸 − to record valid and invalid joins verified before (line 1) In each iteration (line 2), EcoTable updates the join graph 
+
+G by removing invalid edges and setting the weight of valid ones as 1 (line 4). It then searches for a new Steiner tree for each query over the updated graph (line 7-8). Next, the algorithm collects and deduplicates all unverified edges from these new Steiner trees into a candidate set 𝐸 𝑛𝑒𝑤 (line 9-10). Each edge is checked by LLMs. 
+
+EcoTable adds valid edges to 𝐸 + and invalid ones to 𝐸 − (line 11-15). It then uses the updated graph to recompute new Steiner trees for all queries until all edges pass the validation or no feasible tree remains. Finally, the algorithm outputs the validated join paths (line 16- 18). 
+
+Remark. Because LLMs validation is prone to hallucinations, EcoTable 
+
+further leverages majority voting for two types of critical edges: (1) edges that appear in Steiner trees corresponding to multiple queries within the same iteration, and (2) edges whose deletion would prevent constructing a new Steiner tree for a query in the subsequent iteration. EcoTable makes three independent LLM calls for each such edge and then adopts the majority decision. 
+
+Example 4.1. As shown in Figure 3, at the beginning, EcoTable 
+
+constructs the initial weighted graph G = (T , 𝐸 ), where the edge weights represent the joinability score estimated by model 𝑀 𝐽 . For each query, EcoTable first searches a Steiner tree that connects all query-relevant tables with the maximum total joinability score. The initial Steiner tree for 𝑄 1 includes edges {𝑒 12 , 𝑒 23 , 𝑒 34 }, while for 𝑄 2, it covers edges {𝑒 34 , 𝑒 35 }. In the first iteration, EcoTable 
+
+validates all unverified edges of both trees using LLM reasoning. Since 𝑒 34 appears in both trees, EcoTable makes three independent LLM calls for it. Following the majority decision, 𝑒 34 is confirmed as valid. Simultaneously, 𝑒 12 and 𝑒 35 are verified, while 𝑒 23 is rejected and removed. All results are stored in the global cache. The graph 
+
+G is updated accordingly: valid edges are set to weight 1, while invalid edges such as 𝑒 23 are removed. At this point, 𝑄 2 already has a validated join path: G2 = {{ 𝑇 3,𝑇 4,𝑇 5 }, {𝑒 34 , 𝑒 35 }} . In the second iteration, EcoTable recomputes the Steiner tree for 𝑄 1 on the up-dated graph. The new candidate tree contains edges {𝑒 12 , 𝑒 24 , 𝑒 34 }. 
+
+> 6T20.7
+> 0.6
+> 0.7
+> 0.7
+> 0.4
+> 0.2
+> T1
+> T3
+> T4
+> T50.2
+
+G
+
+G2 ={{T 3, T 4, T 5}, {e 34 , e 35 }} 
+
+> 0.2
+
+G1 ={{T 1, T 2, T 3, T4}, {e 12 , e 24 ,e 34 }} 
+
+> T21
+> 1
+> 1
+> 1
+> T1
+> T3
+> T4
+> T50.2
+
+G
+
+> T21
+> 1
+> 1
+> 0.4
+> 0.2
+> T1
+> T3
+> T4
+> T50.2
+
+G
+
+> T20.7
+> 0.6
+> 0.7
+> 0.7
+> 0.4
+> 0.2
+> T1
+> T3
+> T4
+> T50.2
+> T20.7
+> 0.6
+> 0.7
+> 0.7
+> 0.4
+> 0.2
+> T1
+> T3
+> T4
+> T50.2
+
+## Iteration 1 Iteration 2 
+
+update update 
+
+Q2
+
+Q1Figure 3: An Example of Join Path Search and Validation. 
+
+Since 𝑒 12 and 𝑒 34 are already cached as valid, only 𝑒 24 is newly ver-ified. LLMs confirm 𝑒 24 as valid, completing the join path for 𝑄 1:
+
+G1 = {{ 𝑇 1,𝑇 2,𝑇 3,𝑇 4 }, {𝑒 12 , 𝑒 24 , 𝑒 34 }} .
+
+Edge pruning strategy. However, Algorithm 1 can exhibit qua-dratic time complexity 𝑂 (|T | 2) because its search space may grow without bound. In particular, as long as the nodes in T 𝑘 𝑄 remain unconnected by valid edges, EcoTable must iteratively search for additional edges and, in the worst case, which will ultimately per-form an exhaustive traversal of all edges to identify a feasible path. Consequently, in a data lake containing thousands of tables, this may require LLM calls on the order of all edges in the global graph, rendering both execution time and cost impractical. To tackle this problem, we introduce an edge-pruning approach that selects a subgraph G𝑠 = (T , 𝐸 𝑠 ) whose validation performance theoretically approximates that of the full graph G, while restricting the search to a substantially reduced exploration space. The key property of the pruned subgraph G𝑠 is to precisely re-tain high-probability join paths relevant to the given query because these paths are likely to cover the edges in Steiner Trees. In this way, we can still identify the same Steiner Trees in the subgraph with much lower LLMs costs. The key of computing a Steiner Tree for query 𝑄 𝑘 is to calculate the path with maximum overall join-ability (i.e., Î𝑒 𝑖 𝑗 ∈𝜋 𝑝 (𝑒 𝑖 𝑗 )) in G between each pair of tables in T 𝑘 𝑄 .Therefore, the subgraph G𝑠 only needs to include edges on those maximum-joinability paths between all table pairs in T 𝑘 𝑄 . To this end, we leverage the t-spanner algorithm [ 5 ] to selectively prune edges in G that cannot be in the Steiner Tree for any query. The algorithm guarantees that for any table pair (𝑢, 𝑣 ), the maximum joinability of their paths in G𝑠 is at least the 𝑡 -th power of that in 
+
+G. Moreover, because the joinable probability 𝑝 may not perfectly reflect the actual joinability, we additionally employ an 𝑓 -path fault-tolerant mechanism [ 6] that preserves, for each pair of tables, 𝑓 + 1
+
+paths with the high joinabilities. Formally, for any (𝑢, 𝑣 ) in T 𝑘 𝑄 , let PG𝑠 (𝑢, 𝑣 ) and PG (𝑢, 𝑣 ) denote the set of all paths between 𝑢 and 𝑣 in G𝑠 and G, respectively. Let 𝐹 ⊂ P G (𝑢, 𝑣 ) be an arbitrary subset of paths with |𝐹 | ≤ 𝑓 ,representing the situation where as many as 𝑓 candidate paths are removed (for example, because they include edges that do not pass 
+
+Algorithm 2: Edge Pruning Strategy 
+
+Input: G = (T , 𝐸 ), {T 1 
+
+> 𝑄
+
+, T 2 
+
+> 𝑄
+
+, . . . , T 𝑀 𝑄 }, 𝑡 , 𝑓 .
+
+Output: G𝑠 = (T , 𝐸 𝑠 ). 
+
+> 1
+
+𝐸 𝑠 ← ∅ ; E𝑝𝑎𝑡ℎ𝑠 ← ∅ ; 
+
+> 2
+
+// Step 1: Candidate Path Selection  
+
+> 3
+
+for 𝑘 ∈ [ 1..𝑀 ] do  
+
+> 4
+
+for each pair (𝑢, 𝑣 ) ∈ T 𝑘 𝑄 × T 𝑘 𝑄 , 𝑢 ≠ 𝑣 do  
+
+> 5
+
+PG (𝑢, 𝑣 ) ← Find-TopK-Paths (G , 𝑢, 𝑣, 𝑓 + 1); 
+
+> 6
+
+E𝑝𝑎𝑡ℎ𝑠 ← E 𝑝𝑎𝑡ℎ𝑠 ∪ P G (𝑢, 𝑣 ); 
+
+> 7
+
+// Step 2: t-Spanner Pruning  
+
+> 8
+
+E𝑝𝑎𝑡ℎ𝑠 ← Sort-by-Weight (E 𝑝𝑎𝑡ℎ𝑠 ); 
+
+> 9
+
+for 𝜋 𝑢𝑣 ∈ E 𝑝𝑎𝑡ℎ𝑠 do  
+
+> 10
+
+𝑐𝑜𝑢𝑛𝑡 G𝑠 (𝑢, 𝑣 ) ← CountPaths (𝑢, 𝑣, T , 𝐸 𝑠 ); 
+
+> 11
+
+if ExceedStretch (T , 𝐸 𝑠 , 𝜋 𝑢𝑣 , 𝑡 ) or 𝑐𝑜𝑢𝑛𝑡 G𝑠 (𝑢, 𝑣 ) ≤ 𝑓 then  
+
+> 12
+
+𝐸 𝑠 ← 𝐸 𝑠 ∪ Edges (𝜋 𝑢𝑣 ); 
+
+> 13
+
+return G𝑠 = (T , 𝐸 𝑠 );LLM verification). Then, the subgraph G𝑠 satisfies: 
+
+max   
+
+> 𝜋 ∈ P G𝑠 (𝑢,𝑣 )\ 𝐹
+
+Ö 
+
+> 𝑒 𝑖 𝑗 ∈𝜋
+
+𝑝 (𝑒 𝑖 𝑗 ) ≥ ©«
+
+max   
+
+> 𝜋 ∗∈ P G(𝑢,𝑣 )\ 𝐹
+
+Ö 
+
+> 𝑒 𝑖 𝑗 ∈𝜋 ∗
+
+𝑝 (𝑒 𝑖 𝑗 )ª®¬
+
+> 𝑡
+
+(3) Intuitively, G𝑠 is being constructed so that, for each important node pair (𝑢, 𝑣 ), the “good” connectivity of the original graph (i.e., paths not in 𝐹 ) is preserved inside the subgraph. That way, even if you remove up to 𝑓 paths (e.g., the ones rejected by the LLM), the subgraph still correctly reflects the remaining valid paths necessary for answering the query. Algorithm 2 outlines the process of deriving the subgraph G𝑠 .
+
+EcoTable first respectively initializes 𝐸 𝑠 and E𝑝𝑎𝑡ℎ𝑠 (the set of can-didate paths) as empty (line 1). Then, in each iteration (lines 3–4), for each pair of nodes (i.e., tables) in T 𝑘 𝑄 , we compute the top-(𝑓 +1)
+
+paths with the highest joinability in G (line 5) and add them to 
+
+E𝑝𝑎𝑡ℎ𝑠 (line 6). Afterwards, we apply the t-Spanner algorithm to further prune edges in E𝑝𝑎𝑡ℎ𝑠 . We sort the collected paths from highest to lowest joinability (line 8) and greedily add the edges of these paths to 𝐸 𝑠 . Concretely, the edges of the path with the highest joinability will be added. For each subsequent path 𝜋 𝑢𝑣 in E𝑝𝑎𝑡ℎ𝑠 
+
+> 7
+
+(line 9), its edges will be added if (1) the 𝑡 -th power joinability of 
+
+𝜋 𝑢𝑣 exceeds that of any of the top 𝑓 paths in G𝑆 , which indicates that the bound w.r.t the 𝑡 -th power of joinability is satisfied; or (2) there are fewer than 𝑓 paths in G𝑠 between 𝑢 and 𝑣 (the count is computed by line 10), which indicates that the 𝑓 -path fault-tolerant property is satisfied. Finally, the algorithm outputs the subgraph 
+
+G𝑠 (line 13). 
+
+Complexity of the pruning strategy. The computational cost of our pruning method consists of two stages. First, we compute the top-𝑘 join paths for every table pair in T 𝑘 𝑄 . This requires 𝑂 (𝑓 ·
+
+𝑀 · |T 𝑘 𝑄 |2 · | 𝐸 | log |T |) , where 𝑀 is the number of queries and 
+
+(𝑓 · | 𝐸 | log |T |) captures the cost of graph traversal (e.g., running Dijkstra) over |T | tables and |𝐸 | edges. Second, we prune these candidate paths using 𝑡 -spanner, which adds a cost of 𝑂 (𝑓 ·𝑀 ·|T 𝑘 𝑄 |2 ·|𝐸 𝑠 | log |T |)) . Because the spanner is much sparser ( |𝐸 𝑠 | ≪ | 𝐸 |), the first stage dominates the overall runtime. In practice, EcoTable 
+
+discards low-quality joins (e.g., 𝑝 (𝑒 𝑖 𝑗 ) < 0.3) as a pre-processing step, ensuring |𝐸 | ≪ |T | 2, and limits path exploration to at most 5 hops to avoid path explosion in large graphs. 
+
+Complexity of graph-based validation. Eq. 2 reduces to the Minimum Steiner Tree problem, and pruning via Eq. 3 yields the Minimum 𝑡 -Spanner problem; both are NP-hard [5, 27]. 
+
+Proof of Steiner Tree Reduction. Considering a special case when 𝑀 = 1, the problem then simplifies to max {𝑥 1 
+
+> 𝑖 𝑗 }
+
+Î𝑒 𝑖 𝑗 ∈𝐸 𝑝 (𝑒 𝑖 𝑗 )𝑥 1 
+
+> 𝑖 𝑗
+
+.Then, we can convert the problem to find a join path G1 = (T 1, 𝐸 1)
+
+containing all required tables T 1 
+
+> 𝑄
+
+from G:
+
+max  
+
+> {𝑥 1
+> 𝑖 𝑗 }
+
+Ö 
+
+> 𝑒 𝑖 𝑗 ∈𝐸
+
+𝑝 (𝑒 𝑖 𝑗 )𝑥 1 
+
+> 𝑖 𝑗
+
+⇐⇒ max  
+
+> {𝑥 1
+> 𝑖 𝑗 }
+
+ln ©«Ö 
+
+> 𝑒 𝑖 𝑗 ∈𝐸
+
+𝑝 (𝑒 𝑖 𝑗 )𝑥 1 
+
+> 𝑖 𝑗
+
+ª®¬
+
+⇐⇒ min  
+
+> {𝑥 1
+> 𝑖 𝑗 }
+
+∑︁ 𝑒 𝑖 𝑗 ∈𝐸 
+
+− ln 𝑝 (𝑒 𝑖 𝑗 ) 𝑥 1
+
+> 𝑖 𝑗
+
+(4) Next, we prove that the minimum Steiner tree problem [ 27 ] can be reduced to this special case in polynomial time. The minimum Steiner tree problem is defined as follows. Given a weighted graph 
+
+G′ = (T ′, 𝐸 ′) and a set of target nodes 𝑅 ⊆ T ′, the goal is to determine a connected join path G𝑤 = (T 𝑤 , 𝐸 𝑤 ) ⊆ G ′ such that 
+
+𝑅 ⊆ T 𝑤 has the minimum total weight Í𝑒 ∈𝐸 𝑤 𝑤 ′ (𝑒 ), where 𝑤 ′ (𝑒 )
+
+denotes the weight of edge 𝑒 ∈ 𝐸 ′. Let G′ = G, T ′ = T , 𝐸 ′ = 𝐸 ,
+
+𝑤 ′ (·) = − ln 𝑝 (·) , and T𝑤 = T 1 
+
+> 𝑄
+
+. Then, our problems share identical objectives and constraints with the classical minimum Steiner tree problem. Because the classical minimum Steiner tree problem is NP-hard, our problem is also NP-hard. □
+
+Proof of 𝑡 -Spanner Reduction. Considering a special case when 
+
+𝑓 = 0 and the set of terminal nodes for all queries covers all possible pairs in the data lake, i.e., Ð𝑀 𝑘 =1 (T 𝑘 𝑄 × T 𝑘 𝑄 ) = T × T . The pruning problem according to Eq. 3 then simplifies to finding a subgraph 
+
+G𝑠 = (T , 𝐸 𝑠 ) from the global graph G = (T , 𝐸 ) with minimum edges. For any table pair (𝑢, 𝑣 ) ∈ T × T , the maximum joinability path 𝜋 𝑢𝑣 in G𝑠 must satisfy: 
+
+max   
+
+> 𝜋 ∈ P G𝑠 (𝑢,𝑣 )
+
+Ö 
+
+> 𝑒 𝑖 𝑗 ∈𝜋
+
+𝑝 (𝑒 𝑖 𝑗 ) ≥ ©«
+
+max   
+
+> 𝜋 ∗∈ P G(𝑢,𝑣 )
+
+Ö 
+
+> 𝑒 𝑖 𝑗 ∈𝜋 ∗
+
+𝑝 (𝑒 𝑖 𝑗 )ª®¬
+
+> 𝑡
+
+⇐⇒ min   
+
+> 𝜋 ∈ P 𝐺𝑠 (𝑢,𝑣 )
+
+∑︁ 𝑒 𝑖 𝑗 ∈𝜋 
+
+− ln 𝑝 (𝑒 𝑖 𝑗 ) ≤ 𝑡 · min   
+
+> 𝜋 ∗∈ P 𝐺 (𝑢,𝑣 )
+
+∑︁ 𝑒 𝑖 𝑗 ∈𝜋 ∗
+
+− ln 𝑝 (𝑒 𝑖 𝑗 )
+
+(5) Next, we show that the classical minimum 𝑡 -spanner problem reduces to this special case in polynomial time. The minimum 𝑡 -spanner problem is defined as follows: given a weighted graph 
+
+G′ = (T ′, 𝐸 ′) and a stretch factor 𝑡 > 1, find a subgraph G′ 
+
+> 𝑠
+
+=
+
+(T ′, 𝐸 ′ 
+
+> 𝑠
+
+) with the minimum number of edges such that for every pair (𝑢, 𝑣 ) ∈ T ′, the distance in G′ 
+
+> 𝑠
+
+is at most 𝑡 times the distance in G′. Let T ′ = T , 𝐸 ′ = 𝐸 , and 𝑤 ′ (·) = − ln 𝑝 (·) . Then preserving 
+
+𝑡 -th power joinability in the multiplicative space is equivalent to preserving a stretch factor 𝑡 in the additive weight space. Since the minimum 𝑡 -spanner problem is NP-hard for any 𝑡 > 1, the edge pruning problem is also NP-hard. □
+
+Moreover, we analyze the Steiner Tree obtained in G𝑠 . We com-pute Steiner trees using a 2-approximation method (the KMB algo-rithm). Since G𝑠 is a 𝑡 -spanner of G, this implies a 2𝑡 -approximation when working in G𝑠 . Consequently, the Steiner trees obtained in 
+
+G𝑠 achieves joinability within a factor of 2𝑡 of the optimal Steiner trees in G.We also bound the total number of LLM invocations N𝐿𝐿𝑀 for 𝑀 
+
+queries. The lower bound represents an ideal case where only edges truly belonging to the optimal Steiner trees are verified, with no extra or unnecessary checks. In contrast, the upper bound indicates the worst-case in which EcoTable might have to check every edge in the pruned subgraph G𝑠 . The number of edges |𝐸 𝑠 | provides this upper bound, as established by 𝑡 -spanner theory. Therefore, we have: 
+
+Ω
+
+> 𝑀
+
+Ø
+
+> 𝑘 =1
+
+𝐸 𝑂𝑆𝑇 (T 𝑘 𝑄 )
+
+!
+
+≤ N 𝐿𝐿𝑀 ≤ ˜𝑂 𝑓 · |T | · 
+
+> 𝑀
+
+∑︁ 
+
+> 𝑘 =1
+
+|T 𝑘 𝑄 |1+ 2 
+
+> 𝑡 +1
+
+!
+
+(6) where 𝐸 𝑂𝑆𝑇 (T 𝑘 𝑄 ) denotes the edge set of the optimal Steiner tree for query 𝑄 𝑘 .
+
+## 5 TABLE TRANSFORMATION LAYER 
+
+The table transformation layer (1) automatically generates the trans-formation code that enables table joins (Sec. 5.1), and (2) executes these transformations efficiently through a graph-based parallel strategy (Sec. 5.2). 
+
+## 5.1 Transformation Execution 
+
+For each edge 𝑒 𝑖 𝑗 𝑘 ∈ 𝐸 𝑘 , EcoTable uses a transformation module 𝑀 𝑇 
+
+to produce executable code to join the two columns in 𝑇 𝑖 𝑘 and 𝑇 𝑗 𝑘 
+
+specified by the LLM in the last later. Specifically, 𝑀 𝑇 identifies noise that interferes with equi-joins between the two tables and generates transformation code to fix these inconsistencies, thereby enabling an equi-join. As a modular component, 𝑀 𝑇 can be instantiated flexibly with various methods, such as DTT [ 8], TabulaX [ 44 ], or our proposed ReAct-style LLM agent. At a high level, the advantage of our approach is that it enables the agent to autonomously decide 
+
+> 8
+
+Table 1: Transformation Grammar in EcoTable .
+
+Category Operator Operator parameters 
+
+Validate ValidateJoin source_col, target_col Transformation Normalize [18] input_col, target_format Split [56] split_col, delimiter Pivot [55] reshape_type, target_cols 
+
+both when to invoke transformation operations and which specific ones are appropriate. Before proceeding, we must first give formal definitions of the grammars for several required operations. 
+
+Transformation Grammar. As shown in Table 1, we define 4 significant operators, organized into two functional categories: 
+
+Validate ( O𝑣𝑎𝑙 ). Given the two columns corresponding to the ta-bles, the ValidateJoin operator prompts the LLM to determine whether a join between them is feasible. To support this deci-sion, we supply the join containment ratio as a quantitative signal: Containment (𝐴, 𝐵 ) = |𝐴 ∩𝐵 ||𝐴 | By comparing this ratio before and after each transformation, the agent checks whether the latest op-eration resolves inconsistencies. The procedure terminates and returns “joined” if the LLM concludes that no additional improve-ments can be made (for instance, when the ratio reaches 1), or when the maximum number of iterations is reached. Otherwise, the agent proceeds by applying further suitable operators from O𝑡𝑟𝑎𝑛𝑠 .
+
+Transform ( O𝑡𝑟𝑎𝑛𝑠 ). We formally define the set of transformation op-erators used to support table joins as O𝑡𝑟𝑎𝑛𝑠 = {Normalize , Split ,
+
+Pivot }. In particular, the Normalize operator allows the agent to generate distinct transformation functions for different formats within a single column (e.g., standardizing ISO strings and Unix timestamps together). The Split operator breaks a string column into two atomic columns based on a given delimiter (e.g., “_”), which facilitates accurate matching when dealing with composite keys. Lastly, the Pivot operator restructures the table so that schemas are aligned for downstream join operations. 
+
+Iterative ReAct Workflow. To summarize, the agent follows an iterative “Reason-Act-Observe” loop to join the tables. In each iter-ation: (1) The agent analyzes whether the tables need transforma-tions based on the observation from previous iterations as well as current joinability score. If so, it selects the appropriate operators from the grammar. (2) The agent executes this code to apply spe-cific transformations to the tables. (3) The environment captures the execution results and feedbacks the updated state. This loop persists until either the LLM determines as joinable or the maxi-mum iteration limit is reached. Notably, this workflow supports multi-step transformation chains. For example, the agent can first invoke Pivot to align the table’s overall structure. It can then apply 
+
+Normalize to resolve any remaining cell-level inconsistencies. 
+
+## 5.2 Parallelization Strategy 
+
+We obtain the validated Steiner trees {G 1, G2, ..., G𝑀 } in Sec. 4, where each G𝑘 = (T 𝑘 , 𝐸 𝑘 ). These trees are merged to construct the composite graph G𝑣 = (T 𝑣 , 𝐸 𝑣 ), where T𝑣 = Ð𝑀 𝑘 =1 T𝑘 and 𝐸 𝑣 =
+
+Ð𝑀 𝑘 =1 𝐸 𝑘 . A straightforward approach is to input the entire graph 
+
+G𝑣 to the ReAct-style agent and ask it to generate transformation code for every edge in that graph at once. However, this would 
+
+Algorithm 3: Parallel Transformation Algorithm 
+
+Input: Validated composite graph G𝑣 = (T 𝑣 , 𝐸 𝑣 ).
+
+Output: Final integrated join path G∗ = (T ∗, 𝐸 ∗). 
+
+> 1
+
+// Step 1: Edge batching  
+
+> 2
+
+BatchList ← Batch (G 𝑣 ); 
+
+> 3
+
+T ∗ ← T 𝑣 ; 
+
+> 4
+
+𝐸 ∗ ← ∅ ; 
+
+> 5
+
+// Step 2: Execute batches in parallel  
+
+> 6
+
+for each batch 𝐼 𝑡 ∈ BatchList do  
+
+> 7
+
+for each edge 𝑒 𝑖 𝑗 ∈ 𝐼 𝑡 do in parallel 
+
+> 8
+
+  ˆ𝑇 𝑖 , ˆ𝑇 𝑗 , ˆ𝑒 𝑖 𝑗 
+
+ ← ReAct _Transform   T ∗, 𝑒 𝑖 𝑗 
+
+; 
+
+> 9
+
+T ∗ ← (T ∗ \ { 𝑇 𝑖 ,𝑇 𝑗 }) ∪ { ˆ𝑇 𝑖 , ˆ𝑇 𝑗 }; 
+
+> 10
+
+𝐸 ∗ ← 𝐸 ∗ ∪ { ˆ𝑒 𝑖 𝑗 }; 
+
+> 11
+
+return G∗ = (T ∗, 𝐸 ∗);yield suboptimal accuracy. The reason is that the tree structure of join relationships introduces complex sequential dependencies that make it difficult for LLMs to reason about all transformations coherently in a single pass. However, sequentially processing each edge would incur significant latency. To address this, we propose an iterative parallel processing strategy. In each iteration, we iden-tify independent edges—those sharing no common nodes—within 
+
+𝐸 𝑣 and submit them to LLMs for parallel transformation. This ap-proach ensures that transformations for independent edges can be reasoned about concurrently without cognitive interference. The process iterates until all edges in the join path have been processed, effectively balancing transformation quality with computational efficiency. 
+
+Maximizing Average Parallelism. We partition the edge set 𝐸 𝑣 
+
+into 𝐶 disjoint batches {𝐼 1, 𝐼 2, ..., 𝐼 𝐶 }, where each batch 𝐼 𝑡 , 𝑡 ∈ [ 1, 𝐶 ]
+
+contains a set of independent edges that can be transformed in parallel. Then, our goal is to maximize the average parallelism of batches, which is defined as the mean number of transformations executed per batch, i.e., 1
+
+> 𝐶
+
+Í𝐶 𝑡 =1 |𝐼 𝑡 |.Formally, the optimization objective could be formulated as: 
+
+max  
+
+> {𝐼 𝑡 }
+
+1
+
+𝐶 
+
+> 𝐶
+
+∑︁  
+
+> 𝑡 =1
+
+|𝐼 𝑡 |
+
+s.t. 
+
+> 𝐶
+
+Ø
+
+> 𝑡 =1
+
+𝐼 𝑡 = 𝐸 𝑣 ,
+
+∀ 𝑡 ≠ 𝑡 ′ : 𝐼 𝑡 ∩ 𝐼 𝑡 ′ = ∅,
+
+∀ 𝑒 𝑖 𝑗 , 𝑒 𝑢𝑣 ∈ 𝐼 𝑡 : {𝑇 𝑖 ,𝑇 𝑗 } ∩ { 𝑇 𝑢 ,𝑇 𝑣 } = ∅.
+
+(7) The second constraint ensures that the edges do not overlap be-tween batches. The third constraint ensures that no two edges in one batch share the same table. 
+
+Parallel Transformation Algorithm. In Equation 7, our goal is to choose as many independent edges as possible per batch, which corresponds to minimizing the total number of batches. This can be regarded as the classical edge-coloring problem [ 26 , 57 ], which assigns colors to edges such that no two adjacent edges share the same color, equivalent to our problem of finding independent edges.  
+
+> 9Batch-1
+> Batch-2
+> Batch-3
+> T1
+> T2T5
+> T7
+> T6T4
+> T3T2
+> T1
+> T5
+
+G1 T3
+
+> T4
+
+G2 
+
+> T1
+> T5T7
+> T6
+> T3
+> T1
+
+G3
+
+GvFigure 4: Parallelization Strategy 
+
+The goal is to minimize the number of colors used, which corre-sponds to the number of batches in our setting. EcoTable uses the typical edge coloring algorithm, i.e., Vizing [ 57 ] to identify a near-optimal list of batches (line 2, as shown in Algorithm 3). For each batch 𝐼 𝑡 , EcoTable executes all transformations in parallel using the ReAct reasoning loop, updates transformed tables, and records validated edges (line 3 - 10). In the end, all transformed tables and validated edges form the final integrated join path (line 11). Next, we provide an example to demonstrate how EcoTable orga-nizes transformations across multiple queries into parallel batches. 
+
+Example 5.1. As shown in Figure 4, we merge the Steiner tree 
+
+G1, G2, G3 into the composite graph G𝑣 . We then apply the Vizing al-gorithm to color the edges of G𝑣 , which produces three batches of in-dependent edges, i.e., Batch-1 = {𝑒 12 , 𝑒 34 , 𝑒 56 }, Batch-2 = {𝑒 13 , 𝑒 67 },and Batch-3 = {𝑒 15 }. Each batch runs simultaneously. 
+
+## 6 Evaluation 
+
+In this section, we first detail our benchmark construction process (Sec. 6.1), followed by extensive experiments to compare EcoTable 
+
+against 6 baselines in both effectiveness and efficiency, focusing on answering the following research questions (RQs): 
+
+RQ1 (Sec. 6.2): How does EcoTable perform in discovering the correct join paths compared to baseline approaches? 
+
+RQ2 (Sec. 6.3): Can EcoTable improve the accuracy of end-to-end SQL execution when combined with an Text-to-SQL system? 
+
+RQ3 (Sec. 6.4): How do the execution time and token cost of 
+
+EcoTable scale as the total number of tables in the data lake in-creases? 
+
+RQ4 (Sec. 6.5): How effective is the two-stage architecture in the table identification layer at retrieving relevant tables, and what is the impact of different PLM backbones? 
+
+RQ5 (Sec. 6.6): How does the graph-based validation layer perform in estimating joinability and balancing accuracy with cost? 
+
+RQ6 (Sec. 6.7): How effective is the ReAct-style method in generat-ing accurate table transformations, and how does the graph-based parallelization strategy improve execution efficiency? 
+
+RQ7 (Sec. 6.8): What are the main LLM error types in join validation and transformation generation, and what causes these failures in complex data lake settings? 
+
+RQ8 (Sec. 6.9): How do key hyperparameters (e.g., candidate table and training data ratios) impact EcoTable ’s performance? 
+
+## 6.1 Experimental Settings 
+
+Datasets. We evaluate the performance of EcoTable across five benchmark datasets, categorized two groups: four real-world indus-trial benchmarks and a large-scale synthetic data lake. The statistics of these datasets are summarized in Table 2. (i) DBT Benchmarks . We derive four datasets from well-known DBT datasets for table integration and transformation [ 9]. Dataset statistics are shown in Table 2. Specifically, (1) Ad represents adver-tising analytics scenarios and includes 69 tables and 126 natural language queries. Each query typically involves information such as spend, impressions and clicks, with an average of 3.65 joins per query. (2) Engagement captures user engagement and com-munication data, including email campaigns, in-product events, and support ticket records. It contains 56 tables and 38 queries, averaging 2.76 joins per query. (3) Business consists of 90 tables and 28 queries. It integrates financial ledgers, orders, and sales management data, averaging 4.33 joins per query. (4) Platform 
+
+captures engineering and platform activities, such as code reposi-tories, project management, and data pipeline logs. It includes 35 tables and 24 queries, averaging 2.67 joins per query. Our bench-mark features columns ranging from 2 to 389 for each table, with row counts varying significantly from 1 to 4,033, highlighting the complexity of integration. In Figure 5 (left), each DBT dataset includes a set of interrelated tables and SQL statements that serve as the basis for our ground truth generation and query construction. The datasets offer original raw tables in the data lake (green tables 𝑇 1,𝑇 2,𝑇 3), transformed tables derived from these raw tables ( ˆ𝑇 1, ˆ𝑇 2, ˆ𝑇 3), and integrated tables 
+
+𝑇 ∗, created by joining transformed tables (e.g., 𝑇 ∗ from ˆ𝑇 1, ˆ𝑇 2, ˆ𝑇 3). Transformations and joins are defined by SQL statements, detailing how tables like ˆ𝑇 1, ˆ𝑇 2, ˆ𝑇 3 transform from 𝑇 1,𝑇 2,𝑇 3 and how they join to form 𝑇 ∗.To construct our benchmark, overall, we start by translating the provided SQL statements to the ground-truth join paths. We then automatically generate the corresponding natural language queries that semantically align with these join paths. 
+
+Ground Truth Exaction. As shown in Figure 5 (middle), for each join SQL statement that corresponds to an integrated table 𝑇 ∗, we use LLMs to parse the SQL statement, identify the participating tables and join conditions, and then transform it into a ground-truth join path G∗ = (T ∗, 𝐸 ∗), where T ∗ = { ˆ𝑇 1, ˆ𝑇 2, ˆ𝑇 3 } and 𝐸 ∗ denote valid join relationships inferred from the SQL join conditions. To ensure correctness, we ask human experts to check and correct the join paths. 
+
+Query Construction. According to the ground-truth join path, we design two categories of queries based on whether bridge tables are required during integration: 
+
+(1) Queries Requiring Bridge Tables : For this type of query, we begin by randomly selecting multiple subsets of non-leaf nodes from the ground-truth join path to serve as bridge tables. Once the bridge tables are selected (i.e., ˆ𝑇 1 ∈ T ∗ in 𝑄 2 from Figure 5 (right)), they are removed from the join path, and the remaining tables ( ˆ𝑇 2, ˆ𝑇 3 ∈T ∗) are examined to identify relevant columns that will serve as attributes in the user’s query. These selected columns are then fed to LLMs to construct the corresponding natural language query. 
+
+(2) Queries Not Requiring Bridge Tables : Since this type of queries requires columns from all tables in T ∗ involved in the ground truth join path, we can simply translate the join SQL statement into a natural language query using LLMs. Overall, 67.13% of queries require bridge tables (145/216), whereas 32.87% do not (71/216). 
+
+> 10
+
+Table 2: Statistics of Datasets. Dataset #-Tables #-Queries #-Max/Min/Avg. Column #–Max/Min/Avg. Row Avg. #-Tables/Join Relations Per Query                               
+
+> Ad [13] 69 126 86 / 3 / 19.51 2630 / 1 / 99.51 4.65 / 3.65
+> Engagement [15] 56 38 48 / 3 / 14.11 100 / 1 / 20.32 3.76 / 2.76
+> Business [14] 90 28 389 / 2 / 48.66 4033 / 1 / 100.48 5.33 / 4.33
+> Platform [17] 35 24 15 / 3 / 7.43 200 / 1 / 38.29 3.67 / 2.67
+> NYC Data Lake [16] 1214 800 219 / 1 / 19.67 480 / 1 / 183.58 5.04 / 4.14
+
+T1
+
+T2
+
+T3
+
+> Integrated
+> Table
+
+T1
+
+T2
+
+T3
+
+... 
+
+... 
+
+DBT Dataset GT Exaction 
+
+> DAG
+
+T2
+
+T1
+
+T3
+
+> Ground Truth
+
+Query Construction 
+
+Q1 Q2
+
+> T*
+
+T4
+
+G* T2   
+
+> T1
+> T3
+> Daily Instagram
+> carousel and reel
+> metrics with...
+> T2
+> T1
+> T3
+> Daily Instagram post,
+> story, carousel, and
+> reel metrics with ...
+
+Figure 5: DBT Benchmark Datasets Construction. 
+
+(ii) NYC Data Lake . To further test the scalability of EcoTable and its robustness, we introduce a large-scale benchmark constructed from NYC Open Data [ 7]. Unlike the DBT benchmarks, this dataset is generated to simulate a massive, messy data lake environment. It comprises 1,214 tables and 800 queries, featuring different types of noise and a large search space designed to challenge table iden-tification and join path discovery algorithms. Next, we illustrate the concrete process of table generation, join path generation and query construction. 
+
+Real-World Data Lake (Tables & Join Paths) Construction. At a high level, besides the larger size, the constructed data lake should have two key characteristics: (1) it should contain join ambiguity and schema noise to reflect the messy real-world scenario; and (2) it should include a number of tables that support multi-table join to answer our queries. To this end, we first select a set of 100 tables with the largest number of columns from the original large NYC Open Data. Then, for each table 𝑇 , we retrieve top-𝑘 (𝑘 =3) tables from the original Data Lake that are the most joinable with 𝑇 , which is measured by DeepJoin [ 12 ], but the three tables might not successfully join with 𝑇 . This step introduces both join ambiguity and schema noise because the NYC Open Data naturally contains noisy information like incomplete values, unaligned schemes, fuzzy joins, etc. Second, we split each table with large number of columns to multiple sub-tables to form multi-join relationships. We first iden-tify high-cardinality columns (many distinct values) and designate them as join keys, which connect nodes along the join path. All other columns are treated as non–join-key attributes and parti-tioned into disjoint subsets, each assigned to a different sub-table (node) on the path. The number and layout of sub-tables follow the join-path template defined in the DBT project. Adjacent nodes share at least one high-cardinality join-key column, which defines their join condition. To better reflect realistic settings, we conduct the following steps over these sub-tables. (1) Since real-world multi-table joins often produce sparse matches, to simulate this, we restrict the overlap to only 5% of original tables and assign the remaining 95% of rows into different sub-tables. (2) We inject cell-level (e.g., case changes, whitespace removal, typos, or number variations) noise to 37% join columns. (3) We ask humans to identify 8% columns to merge/split to produce column-level noise. (4) We also apply pivot/unpivot op-erations over 4.8% columns. Overall, we construct over 521 joinable tables with explicit join-path ground truth. Third, for all the tables considered above (denoted as the set 
+
+T ), the most direct way to obtain ground truth would be to have humans examine every possible table pair to determine joinability, which is prohibitively costly. To mitigate this, for each table 𝑇 
+
+and each 𝑇 ′ ∈ T , we only send the pair to human evaluators if DeepJoin( 𝑇 , 𝑇 ′) > 0.8; otherwise, we treat the pair as non-joinable. Because some join paths have already been identified as ground truth in the second step above, the amount of required human annotation is substantially reduced. 
+
+Query Construction. In this new benchmark, we create a total of 800 queries, consisting of 100 human-written queries and 700 LLM-generated queries. For the 100 human-written queries, we strictly follow the annotation pipeline described in the “Incorporation of human-written queries” part above. For the 700 LLM-generated queries, we use the same construction process as for the four origi-nal datasets. Specifically, this process involves three steps: (1) For each join path in the data lake, we first prompt LLMs to instanti-ate predefined SQL templates, thereby producing candidate SQL statements. (2) We then execute these SQL statements to validate their effectiveness, directly discarding any that returns excessive NULL values or duplicate rows. (3) Finally, we ask LLMs to convert the remaining valid SQLs into natural language questions. Human annotators subsequently revise these questions by hand to ensure natural fluency while strictly maintaining equivalence with the underlying SQL. 
+
+Baselines. We compare EcoTable with various baselines, including existing methods and variants of our own approach. 
+
+> 11
+
+(1) Auto-BI [ 40 ] identifies a join path using deep learning mod-els given multiple tables. For fair comparison, we apply our table identification layer to capture query-relevant tables. Auto-BI then optimizes the join path by targeting these relevant tables. (2) Auto-Prep [ 29 ] jointly predicts transformations and join paths with dual deep-learning models. It also considers the entire data lake tables rather than focusing on tables specific to an NL query. To ensure a fair comparison, we utilize our table identification layer to identify the tables relevant to the query. Subsequently, 
+
+Auto-Prep performs searches for transformations and joins within these relevant tables. (3) LLMs-Only-EcoTable (LOE) relies exclusively on LLMs for the entire pipeline, performing table identification, join path dis-covery, and transformation code generation without graph-based optimization. (4) Search-with-Greedy-Algorithm (SGA) is a variation of our method that incrementally selects join edges with the highest join-ability scores until all relevant tables are connected. (5) Without-ReAct-Reasoning (WRR) is another variation that removes the ReAct-style loop, utilizing LLMs to produce the final transformation code directly in a single step. (6) EcoTable is our full-fledged solution. It uses DeBERTa-v3-Large for 𝑀 𝑆 , DeepJoin for 𝑀 𝐽 , and the ReAct-style agent for 𝑀 𝑇 .
+
+Metrics. We evaluate the join path accuracy, success rate for Text-to-SQL, average cost and average execution time across all the datasets. (1) Join Path Accuracy. We take F1 score as the evaluation metric. Let G𝑔𝑡 𝑘 = (T 𝑔𝑡 𝑘 , 𝐸 𝑔𝑡 𝑘 ) and G𝑝𝑟𝑒𝑑 𝑘 = (T 𝑝𝑟𝑒𝑑 𝑘 , 𝐸 𝑝𝑟𝑒𝑑 𝑘 ) denote the ground-truth and predicted join paths for query 𝑄 𝑘 , respectively. We employ LLMs to judge whether the two edges represent the same join relation. Then, the precision and recall are computed as Pre 𝑘 = |𝐸 𝑝𝑟𝑒𝑑 𝑘 ∩𝐸 𝑔𝑡 𝑘 ||𝐸 𝑝𝑟𝑒𝑑 𝑘 | and Rec 𝑘 = |𝐸 𝑝𝑟𝑒𝑑 𝑘 ∩𝐸 𝑔𝑡 𝑘 ||𝐸 𝑔𝑡 𝑘 | respectively. The F1 score for 𝑄 𝑘 is 𝐹 1𝑘 = 2×Pre 𝑘 ×Rec 𝑘   
+
+> Pre 𝑘 +Rec 𝑘
+
+. The overall accuracy is 𝐹 1 =
+
+> 1
+> 𝑀
+
+Í𝑀 𝑘 =1 𝐹 1𝑘 , where 𝑀 is the total number of queries. (2) Success Rate for Text-to-SQL. We follow [ 32 ] to adopt the success rate (SR) metric, which is commonly used in Text-to-SQL evaluation [ 32 ]to measure the fraction of queries that are correctly answered. (3) Transformation F1-score. Following [ 8 ], we evaluate transformation quality by comparing the system-generated join cell pairs with the ground-truth pairs . (4) Average Cost. For each query 𝑄 𝑘 , let 𝐶 𝑘 
+
+represent the total expense incurred by all LLM calls, which is calculated based on the API pricing [ 1, 45 ] calculated considering token usage. The average cost is determined as 𝐶 = 1
+
+> 𝑀
+
+Í𝑀 𝑘 =1 𝐶 𝑘 . (5) Cost-Aware Utility score (CAU). This score combines the F1 score and the normalized cost efficiency using a weight factor 𝛼 to balance their importance: 𝐶𝐴𝑈 = 𝛼 ·𝐹 1+ ( 1−𝛼 ) · 
+
+
+
+1 − 𝐶𝑜𝑠𝑡 −𝐶𝑜𝑠𝑡 𝑚𝑖𝑛  
+
+> 𝐶𝑜𝑠𝑡 𝑚𝑎𝑥 −𝐶𝑜𝑠𝑡 𝑚𝑖𝑛
+
+
+
+. We set 𝛼 = 0.8 in this paper. (6) Average Execution Time. We evaluate the average execution time as 𝑡 = 1
+
+> 𝑀
+
+Í𝑀 𝑘 =1 𝑡 𝑘 , where 𝑡 𝑘 denotes the end-to-end execution time. 
+
+## 6.2 Comparison with Baselines (RQ1) 
+
+6.2.1 Join Path Accuracy w.r.t. All Queries. Figure 6 reports the av-erage F1 scores in join path accuracy with baselines. These methods are ranked as follows : EcoTable ≈ LOE ≈ SGA > WRR > Auto-Prep 
+
+> Auto-BI .
+
+EcoTable and LOE achieve the highest F1 scores among all base-lines. LOE performs well because it leverages the powerful reason-ing capabilities of LLMs to perform end-to-end join path discovery. 
+
+EcoTable is competitive to LOE but incurs significantly lower costs. This is achieved by integrating a lightweight deep learning model with a Steiner tree formulation to identify a highly probable join path, which is then validated by LLMs solely on this path, thus reducing unnecessary LLMs calls while preserving high quality. Empirically, SGA and EcoTable achieve similar F1 because SGA also uses LLMs to validate edges but incurs higher costs because of the suboptimal edge selection strategy. Compared to WRR , EcoTable 
+
+attains higher accuracy. because the ReAct mechanism effectively enables LLMs to detect and fix local reasoning errors during the transformation generation process. 
+
+EcoTable performs better than Auto-BI , for instance, on Ad ,
+
+EcoTable achieves an F1 score of 79.2%, significantly outperforming 
+
+Auto-BI (21.5%). This is due to (1) Auto-BI failing to consider table transformations, leading to a failure in joining two tables, and (2) Auto-BI depending solely on a deep model to estimate pairwise joinability. In contrast, EcoTable incorporates both table transformations and join path discovery using LLMs. Notably, on NYC dataset, EcoTable and SGA outperform LOE ,which is different from the observations in other benchmarks. The F1-score of LOE drops to 52% because its initial schema linking step introduces many query-irrelevant tables that significantly reduce precision. In contrast, EcoTable maintains a high F1 score of 65% by using a deep learning model to filter irrelevant tables, which ensures high recall while preventing LLM performance degrada-tion due the large number of noise tables. Consequently, EcoTable 
+
+proves more robust than end-to-end LLM methods when dealing with large-scale data lakes containing noisy data. 
+
+6.2.2 Average Cost. Figure 7 reports the average cost compared with baselines. EcoTable demonstrates a significant advantage in cost-efficiency compared to all baseline methods. 
+
+EcoTable has substantially lower cost than LOE . On average for all datasets, EcoTable reduces token cost by about 5.3× compared to the greedy baseline SGA . This is because EcoTable leverages the Steiner-tree to achieve a global optimal edge selection, i.e., always identifying the most likely join paths for user-specified queries to validate. EcoTable also remains cheaper than LOE , which relies on end-to-end LLM exploration of the entire join space. Auto-BI 
+
+and Auto-Prep use fewer costs because they only use LLMs for relevant table identification. However, they are not accurate enough, as illustrated in Sec. 6.2.1. EcoTable is slightly more expensive than WRR because the ReAct reasoning loop in EcoTable involves multiple iterative LLMs calls per transformation. However, the transformation code generated in a single LLM call often produces erroneous code due to a lack of execution feedback and step-by-step reasoning, resulting in a low F1 score of WRR . On the NYC dataset, the cost of EcoTable rises because the join validation algorithm may exhaustively traverse edges to find a valid path in a large search space. To improve scalability, Section 6.4 presents a variant of EcoTable with a sophisticated edge pruning strategy tailored for massive data lakes.          
+
+> 12 Ad Engagement Business Platform NYC
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> F1 Score
+> Auto-BI Auto-Prep LOE SGA WRR EcoTable
+
+Figure 6: Comparison of Join Path Accuracy (F1 Score). Ad Engagement Business Platform NYC      
+
+> 0
+> 0.5
+> 1
+> 2
+> 5
+> 10
+> 43
+> Cost($)
+> Auto-BI Auto-Prep LOE SGA WRR EcoTable
+
+Figure 7: Comparison of Token Cost per Query. Ad Engagement Business Platform NYC      
+
+> 0.0
+> 0.1
+> 0.2
+> 0.3
+> 0.4
+> 0.5
+> Success Rate
+> B+R P+R L+R S+R W+R Eco+R
+
+Figure 8: End-to-end SQL Success Rate. 
+
+## 6.3 Integration with Text-to-SQL Systems (RQ2) 
+
+We evaluate how our method affects the SQL execution accuracy when integrated with a Text-to-SQL model. We integrate our method with variant Text-to-SQL methods, including ReFoRCE [ 10 ], MAC-SQL [ 58 ], RSL-SQL [ 4] and Spider-Agent [ 32 ]. Due to space limita-tion, we only illustrate the results on the execution accuracy when integrated with ReFoRCE. Furthermore, we compare EcoTable with the following baselines: (1) Auto-BI + ReFoRCE (B+R) combines the join paths identified by Auto-BI with ReFoRCE. (2) Auto-Prep + ReFoRCE (P+R) merges the join paths detected by Auto-Prep with ReFoRCE. (3) LOE + ReFoRCE (L+R) integrates the join paths found by LOE 
+
+with ReFoRCE. (4) SGA + ReFoRCE (S+R) incorporates the join paths generated by SGA with ReFoRCE. (5) WRR + ReFoRCE (W+R) leverages the join paths produced by 
+
+WRR with ReFoRCE. (6) EcoTable + ReFoRCE (Eco+R) uses EcoTable to obtain veri-fied join paths for ReFoRCE. In Figure 8, our approach Eco+R achieves a competitive success rate compared to S+R and L+R across most datasets, but with signif-icantly lower costs as illustrated in Sec. 6.2.2. Eco+R outperforms both B+R and P+R because both methods adopt a deep learning model to estimate pairwise joinability without LLMs validation, thus introducing incorrect join relationships to the Text-to-SQL model. Eco+R outperforms W+R because its ReAct-based transfor-mations effectively resolve data inconsistencies, providing clean tables that enable the Text-to-SQL model to generate executable and 600 1200     
+
+> Table Number
+> 0.1
+> 1
+> 10
+> 100
+> Cost ($)
+> 600 1200
+> Table Number
+> 10
+> 100
+> 1000
+> 10000
+> Latency (s)
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> F1 Score
+> EcoTable
+> EcoTable EP
+> LOE
+> SGA
+> EcoTable EcoTable EP LOE SGA
+
+Figure 9: Scalability Evaluation. Ad NYC     
+
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> F1 Score
+> Ad NYC
+> 0
+> 0.02
+> 0.1
+> 0.5
+> 2
+> 6
+> Cost($)
+> Ad NYC
+> 0.4
+> 0.5
+> 0.6
+> 0.7
+> 0.8
+> 0.9
+> 1.0
+> CAU
+> RoBERTa RoBERTa-Large DeBERTa-v3-Large
+
+Figure 10: Impact of PLM Backbones. 
+
+correct answers for the query. Empirically, L+R and Eco+R achieve similar success rates on DBT benchmarks. However, on the NYC dataset, the performance of L+R drops because it introduces many query-irrelevant tables, which confuses the Text-to-SQL model and leads to incorrect join logic in the generated SQL. 
+
+## 6.4 Scalability Evaluation. (RQ3) 
+
+We evaluate how both the end-to-end runtime and token cost scale with the total number of tables in NYC Data Lake . Specifically, given the 800 queries, besides the tables necessary for answering these queries, we additionally add other tables into the data lake to incrementally expand the data lake size. The x-axis represents the number of added tables. Each query execution is repeated 10 times at each data scale. As illustrated in Figure 9 (a) and (b), we can observe that with the number of table increasing, EcoTable spends much more time and LLM costs than EcoTable EP because EcoTable EP prunes the original graph to a compact subgraph, and thus the search space is much reduced. EcoTable EP is also more efficienct than LOE and 
+
+SGA , which further demonstrates its superior performance. Besides, we can observe that in Figure 9 (c), EcoTable EP achieves a similar performance with EcoTable , which does not sacrifice the accuracy because our pruned graph theoretically preserves the joinability property of the original large graph. 
+
+## 6.5 Eval. of Table Identification Layer (RQ4) 
+
+We evaluate the table identification layer in EcoTable by focusing on two aspects: the impact of the underlying Pre-trained Language Model (PLM) and the effectiveness of our two-stage architecture. 
+
+6.5.1 Impact of PLM Backbones. We compare multiple state-of-the-art models to evaluate how various PLMs influence teh result. In par-ticular, we evaluate RoBERTa , RoBERTa-large , and DeBERTa-v3-Large .As shown in Figure 10, These three models achieve similar accu-racy and cost although DeBERTa-v3-Large uses a larger model, because we subsequently leverage the LLM to verify the results, which demonstrates that EcoTable is robust on the model used for schema linking.       
+
+> 13 Ad NYC
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> F1 Score
+> Ad NYC
+> 0
+> 0.05
+> 0.1
+> 3
+> 10
+> 30
+> Cost($)
+> Ad NYC
+> 0.4
+> 0.5
+> 0.6
+> 0.7
+> 0.8
+> CAU
+> WS1 WS2 PFU EcoTable
+
+Figure 11: Evaluation of Table Identification Layer. Ad NYC      
+
+> 0.4
+> 0.5
+> 0.6
+> 0.7
+> 0.8
+> 0.9
+> 1.0
+> F1 Score
+> Ad NYC
+> 0
+> 0.1
+> 1
+> 4
+> 10
+> 20
+> Cost($)
+> Ad NYC
+> 0.4
+> 0.5
+> 0.6
+> 0.7
+> 0.8
+> CAU
+> Auto-BI XGB Auto-BI MLP DeepJoin OmniMatch
+
+Figure 12: Evaluation of Graph-based Validation Layer. 
+
+6.5.2 Effectiveness of Table Identification Layer. We further eval-uate the effectiveness of EcoTable ’s table identification layer by comparing it against 3 baselines: (1) Without-Stage-1 (WS1) removes the PLM-based coarse fil-tering in stage 1 from EcoTable and directly uses LLMs for schema linking. (2) Without-Stage-2 (WS2) removes the LLMs refinement in stage 2 from EcoTable and keeps only the deep-model filtering. (3) Post-Filtering-Union (PFU) uses LLMs to decompose a complex query into sub-queries, applies PLM-based filtering for each sub-query to find relevant tables, and then unions these sets before the LLM verification. Figure 11 illustrates the Join Path F1-score for all methods. EcoTable 
+
+achieves the best performance across all baselines. EcoTable out-performs WS1 because the deep-model filters irrelevant tables, ensur-ing high recall while preventing unnecessary LLM calls. Compared with WS2 , EcoTable improves the average recall by 8% across all the datasets with only a marginal increase in LLM invocations, as the LLM verification eliminates false positives from the deep-model filtering. EcoTable and PFU are competitive in Join Path F1 (about 61%), but our method is cost-effective, because our method adopts a conservative filter strategy (by setting 𝑘 to a larger value, say 30) to discard tables that are unlikely to be relevant to a query. 
+
+## 6.6 Eval. of Graph-based Validation Layer (RQ5) 
+
+We conduct a comprehensive evaluation of the Graph-based Valida-tion Layer to validate the effectiveness of our joinability estimation module. Specifically, we compare EcoTable against the following methods: (1) Auto-BI MLP [40 ] takes a pair of columns, encodes them with 24 handcrafted features and feeds them into a four-layer MLP to produce a probability. (2) Auto-BI XGB [ 40 ] relies on the same set of 24 manually engi-neered features, but performs classification using a Gradient Boosting Decision Tree estimators. (3) OmniMatch [ 28 ] encodes each table column using statistical features and contextual embeddings learned with a Relational Graph Convolutional Network, which aggregates information from similar columns to refine their vectors and then computes distances between these vectors as a joinability probability. Ad NYC      
+
+> 0.70
+> 0.75
+> 0.80
+> 0.85
+> 0.90
+> 0.95
+> 1.00
+> Transformation F1 Score  DTT TabulaX EcoTable
+> Ad NYC
+> 0.00
+> 0.01
+> 0.02
+> 0.03
+> 0.04
+> 0.05
+> Transformation Cost($)  DTT TabulaX EcoTable
+
+Figure 13: Evaluation of Transformation Generation. 
+
+(4) DeepJoin [12 ] converts table columns into textual sequences. It then applies a pre-trained MPNet model to obtain dense vector embeddings and assesses joinability by computing the cosine similarity between them. We can observe from Figure 12 that DeepJoin and OmniMatch 
+
+achieve a higher accuracy than Auto-BI because the it leverages the pre-trained language model to compute the joinability, while Auto-BI just uses the hand-crafted features. Auto-BI also costs more because its low accuracy causes the LLM to check more edges. 
+
+## 6.7 Eval. of Table Transformation Layer (RQ6) 
+
+6.7.1 Effectiveness of Transformation Generation. To evaluate the accuracy of our ReAct-style method, we conduct a standalone eval-uation comparing it against two automated baselines, i.e., DTT [8]and TabulaX [44] using the Transformation F1-score. 
+
+• DTT [ 8]: A PLM-based baseline for table transformation. Given pairs of target columns that need to be aligned, DTT uses the original cell contents as input and directly produces the desired target values. The source columns are subsequently revised by mapping their cell values to these generated outputs, altering the tables so they satisfy equality-based join conditions. 
+
+• TabulaX [44 ]: An LLM-driven method for multi-class table trans-formations. The baseline first classifies each input column pair into one of four types: string-based, numerical, algorithmic, or general. Based on this, TabulaX uses LLMs to derive transforma-tion rules, which are then applied to convert original cell values into target formats, enabling equality-based joins. As shown in Figure 13, EcoTable achieves a higher Transformation F1-score than both baselines because the ReAct-style reasoning dynamically composes atomic operators to resolve complex in-consistencies, whereas one-shot approaches like DTT and TabulaX 
+
+struggle with unpredictable structural noise. 
+
+6.7.2 Efficiency of Parallelization Strategy. To evaluate the compu-tational efficiency of our graph-based parallelization, we compare 
+
+EcoTable against two execution baselines: 
+
+• Sequential-Execution(SE) executes transformations sequen-tially. For the graph G𝑣 , it sequentially invokes the ReAct-style agent on each edge to transform the table pairs and update the graph. 
+
+• Composite-Graph (CG) feeds the complete graph G𝑣 to the React-style agent and requests it to produce transformation code for all edges in the graph simultaneously. In Figure 14, our method achieves an average execution time of 6.29 seconds per query without compromising accuracy, making it       
+
+> 14 Ad Engagement
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> F1 Score
+> SE CG EcoTable
+> Ad Engagement
+> 0
+> 2
+> 4
+> 6
+> 8
+> Latency(s)
+> SE CG EcoTable
+
+Figure 14: Evaluation of Parallel Execution. 
+
+3.5 times more efficient than SE . This is because our parallel sched-uling mechanism enables the concurrent execution of independent join validations and transformations, thereby optimizing resource utilization. Although CG is highly efficient, it exhibits lower join path accuracy than EcoTable because the complex dependencies among transformations across the join path lead to hallucinations in LLMs or incorrect code for a significant portion of the edges. 
+
+## 6.8 Error Analysis (RQ7) 
+
+To understand where and why the LLM fails, we manually reviewed 100 error cases and categorized the LLM error modes in EcoTable 
+
+into the following three types: (1) Semantics Errors . The LLM fails to understand the underlying semantic meaning of the data due to the contextual ambiguity. (2) Domain Knowledge Errors . The LLM lacks external, domain-specific knowledge to reason correctly. (3) Syntax Errors . The LLM generates transformation code that fails at runtime due to syntax mistakes. As shown in Table 3, we compare the error distributions w.r.t. GPT-4o, Qwen3Max, and Deepseek3.2. These three types of errors manifest differently in our two core tasks: in join validation, the focus is mainly on textual reasoning instead of code execution, so syntax errors are irrelevant. Thus, only the other two error modes are observed in this task. (1) Semantics Errors : for instance, consider an Internal_Part_Number 
+
+in a factory table (i.e., an ID used within a company’s manu-facturing or inventory system) and a Supplier_Part_Number 
+
+in a vendor table (i.e., an ID used by an external supplier in their catalog). Since the column names are similar and share example values (e.g., “PN-8832”), the LLM may treat them as directly joinable. In fact, they are IDs from separate, unrelated systems. (2) Domain Knowledge Errors : for example, a data lake includes a nu-meric Code column (e.g., “541511”) and a textual Course_Name 
+
+column (e.g., “Computer Programming”) that actually refer to the same entity. However, the LLM may still reject this rela-tionship. because it lacks the domain knowledge that “541511” corresponds to “Computer Programming”. In Transformation Generation, we observe all the three error modes: (1) Semantics Errors : for example, given Company_Name column (e.g., “Alphabet Inc”) and Vendor column (e.g., “Google Cloud LLC”), the LLM relies on its prior world knowledge to equate the subsidiary with the parent company. It uses a Normalize 
+
+Table 3: The Percentage of Different LLM Error Modes (%). Task Error Mode Model GPT-4o Qwen3Max DeepSeek3.2 Join Validation Semantics 68 53 45 Domain Knowledge 32 47 55          
+
+> Transformation.
+> Semantics 55 70 67 Domain Knowledge 32 21 25 Syntax 13 98
+
+operator to map “Google Cloud LLC” directly to “Alphabet Inc.”. However, this transformation is invalid because these are two distinct legal entities in corporate tax filings, leading to a logically incorrect aggregation of financial records. (2) Domain Knowledge Errors : for instance, Table A contains a 10-digit BBL_Code (e.g., “1000477501”), while Table B has separate 
+
+Borough , Block , and Lot columns. After splitting the 10-digit code, the LLM must map the first digit (“1”) to “Manhattan”. Without possessing this city-specific knowledge, the LLM can-not generate the correct transformation code to align the two tables. (3) Syntax Errors : for instance, consider a multi-step transformation where the LLM first performs a Split operator on a Full_Address 
+
+column. The execution engine automatically assigns default names to the resulting output columns (e.g., Full_Address_part_1 ). However, in the subsequent step, the generated code mistak-enly refers to a semantic column name that does not exist (e.g., 
+
+Address ) when applying the Normalize operator. This incon-sistency between the column name used in the generated code and the actual intermediate table columns results in a runtime error. We can observe from the above table that the semantic errors occur the most frequently, mainly because (1) the number of am-biguous values in data lake columns is naturally large; (2) LLMs tend to conduct over-reasoning from general language patterns; and (3) database joins require exact logical matches, but LLMs op-erate on probabilistic language patterns that favor broad similarity over strict logic. Domain knowledge errors happen less because LLMs have already memorized extensive knowledge during pre-training, so it is less frequent than the semantic errors. In addition, the number of syntax errors is the smallest because we have an explicit grammar definition and a ReAct-style reasoning process. 
+
+## 6.9 Ablation Studies (RQ8) 
+
+6.9.1 Ratio of Candidate Tables in Stage 1. We evaluate the impact of the ratio of candidate tables T𝑘 𝑐𝑎𝑛𝑑  
+
+> T
+
+. As shown in Figure 15, we observe that a small ratio misses relevant tables, causing incomplete join paths and lower join path accuracy. While too large ratio leads to diminishing join path accuracy gains but significant cost overhead. Based on our empirical observation, setting T𝑘 𝑐𝑎𝑛𝑑  
+
+> T
+
+= 0.3
+
+achieves the best balance between effectiveness and costs. 
+
+6.9.2 Training Data Ratio. We also evaluate how the ratio of train-ing data used to fine-tune the deep model (i.e., RoBERTa [ 41 ]) affects the performance of EcoTable . As shown in Figure 16, with the ratio increases, the average F1 score improves until the ratio reaches 0.6. Therefore, a ratio around 0.6 appears to be suitable based on empirical observations.              
+
+> 15 20 30 40 50 60 70 80
+> Tkcand
+> T
+> 0.60
+> 0.65
+> 0.70
+> 0.75
+> 0.80
+> 0.85
+> 0.90
+> F1 Score
+> %
+> 20 30 40 50 60 70 80
+> Tkcand
+> T
+> 0.00
+> 0.05
+> 0.10
+> 0.15
+> 0.20
+> 0.25
+> 0.30
+> 0.35
+> 0.40
+> Cost($)
+> %
+> Ad Engagement
+
+Figure 15: Effect of the Ratio of Candidate Tables. 20 30 40 50 60 70 80        
+
+> Training Ratio
+> 0.45
+> 0.50
+> 0.55
+> 0.60
+> 0.65
+> 0.70
+> 0.75
+> F1 Score
+> %
+> 20 30 40 50 60 70 80
+> Training Ratio
+> 0.00
+> 0.05
+> 0.10
+> 0.15
+> 0.20
+> 0.25
+> Cost($)
+> %
+> Business Platform
+
+Figure 16: Effect of the Ratio of Training Samples. 
+
+## 7 RELATED WORKS 
+
+Text-to-SQL. Modern Text-to-SQL methods primarily follow two paradigms: fine-tuning, which adapts models to specific database schemas [ 34 , 35 , 50 ] and LLM-based prompting, which leverages in-context reasoning without parameter updates [ 30 , 48 , 66 ]. As more challenging benchmarks such as Spider 2.0 [ 32 ] and BIRD [ 36 ]emerge, recent work increasingly focuses on strengthening reason-ing. For instance, RSL-SQL [ 4 ] targets the semantic gap through schema linking, while MAC-SQL [ 58 ] and ReFoRCE [ 10 ] employ multi-agent interaction and iterative refinement to address ambigu-ous queries. Despite these advances, existing approaches assume that the databases that perfectly support user queries exist apri-ori, while our work targets lightly structured data lakes where no database schema is available beforehand. 
+
+Joinable Table Discovery. Discovering joinable tables in data lakes is essential for data integration. Its key component is to compute the joinability between two tables, which is also a sig-nificant step in our graph-based validation layer. To be specific, early approaches such as Josie [ 68 ] and LSH Ensemble [ 70 ] rely on set-level overlap between column values to measure the join-ability. Pexeso [ 11 ] and DeepJoin [ 12 ] leverage semantic embed-dings from pre-trained language models to capture fuzzy joinability. 
+
+OmniMatch [ 28 ] encodes each table column using statistical fea-tures and contextual embeddings learned with a Relational Graph Convolutional Network, which aggregates information from sim-ilar columns to refine their vectors and then computes distances between these vectors as a joinability probability. Besides, schema matching methods [ 2, 42 , 47 , 52 ] could also be utilized to compute the joinability based on the matching scores between two columns. In contrast to these methods, which use a table to identify join-able tables in a data lake, we focus on processing natural language queries to integrate multiple tables within a data lake. 
+
+Table Transformation. Table transformation methods fall into two main categories: traditional methods [ 8 , 63 , 69 ] and LLM-based methods [ 38 , 44 ]. For the former, early approaches like Auto-Join [ 69 ] and Auto-Pipeline [ 64 ] rely on predefined operators and structural metadata to automate join discovery and pipeline con-struction, but are constrained by fixed operator sets. DTT [ 8] in-stead fine-tunes the PLM in an example-driven way to reformat data values. Among LLM-based methods, TableGPT [ 38 ] improves performance on table-related tasks via instruction tuning, while TabulaX [ 44 ] classifies columns into four transformation types and applies chain-of-thought reasoning to generate interpretable functions. Unlike prior methods, we directly transform two given tables into a unified format that directly supports equi-joins for the specific join needs of each query. 
+
+## 8 Conclusion 
+
+We introduced EcoTable , a cost-effective framework for integrating data lake tables via natural language queries. EcoTable uses a graph-based framework, combining lightweight models with LLMs to efficiently narrow the search space and minimize costly LLM calls through prioritized validation. Experiments show EcoTable 
+
+achieves high integration accuracy but with lower costs. 
+
+Limitation. Our main focus is on queries with acyclic join graphs. We recognize that some complex queries might involve cyclic join graphs. Also, there might be multiple join relationships between a table pair. These are valuable issues that we plan to explore in future work. 
+
+## References 
+
+[1] Anthropic. n.d.. Anthropic API Pricing. https://www.anthropic.com/pricing. [n.d.] Website, accessed Nov. 1, 2025. [2] David Aumueller, Hong Hai Do, Sabine Massmann, and Erhard Rahm. 2005. Schema and ontology matching with COMA++. In Proceedings of the ACM SIG-MOD International Conference on Management of Data, Baltimore, Maryland, USA, June 14-16, 2005 , Fatma Özcan (Ed.). ACM, 906–908. doi:10.1145/1066157.1066283 [3] Sarah Azzabi, Zakiya Alfughi, and Abdelkader Ouda. 2024. Data Lakes: A Sur-vey of Concepts and Architectures. Comput. 13, 7 (2024), 183. doi:10.3390/ COMPUTERS13070183 [4] Zhenbiao Cao, Yuanlei Zheng, Zhihao Fan, Xiaojin Zhang, Wei Chen, and Xiang Bai. 2024. RSL-SQL: Robust Schema Linking in Text-to-SQL Generation. CoRR 
+
+abs/2411.00073 (2024). arXiv:2411.00073 doi:10.48550/ARXIV.2411.00073 [5] Shiri Chechik, Michael Langberg, David Peleg, and Liam Roditty. 2009. Fault-tolerant spanners for general graphs. In Proceedings of the forty-first annual ACM symposium on Theory of computing . 435–444. [6] Shiri Chechik, Michael Langberg, David Peleg, and Liam Roditty. 2009. Fault-tolerant spanners for general graphs. In Proceedings of the forty-first annual ACM symposium on Theory of computing . 435–444. [7] City of New York. n.d.. NYC Open Data. https://opendata.cityofnewyork.us/. Accessed: 2026-03-01. [8] Arash Dargahi Nobari and Davood Rafiei. 2024. Dtt: An example-driven tabular transformer for joinability by leveraging large language models. Proceedings of the ACM on Management of Data 2, 1 (2024), 1–24. [9] dbt Labs. 2025. dbt. https://www.getdbt.com/ Website, accessed Nov. 1, 2025. [10] Minghang Deng, Ashwin Ramachandran, Canwen Xu, Lanxiang Hu, Zhewei Yao, Anupam Datta, and Hao Zhang. 2025. ReFoRCE: A Text-to-SQL Agent with Self-Refinement, Format Restriction, and Column Exploration. CoRR abs/2502.00675 (2025). arXiv:2502.00675 doi:10.48550/ARXIV.2502.00675 [11] Yuyang Dong, Kunihiro Takeoka, Chuan Xiao, and Masafumi Oyamada. 2021. Efficient joinable table discovery in data lakes: A high-dimensional similarity-based approach. In 2021 IEEE 37th International Conference on Data Engineering (ICDE) . IEEE, 456–467. [12] Yuyang Dong, Chuan Xiao, Takuma Nozawa, Masafumi Enomoto, and Masafumi Oyamada. 2022. Deepjoin: Joinable table discovery with pre-trained language models. arXiv preprint arXiv:2212.07588 (2022). [13] EcoTable Contributors. 2025. EcoTable: Ad. https://github.com/yuhuiwang02/ EcoTable/ad. GitHub repository, accessed Nov. 1, 2025. 
+
+> 16
+
+[14] EcoTable Contributors. 2025. EcoTable: Business. https://github.com/ yuhuiwang02/EcoTable/business. GitHub repository, accessed Nov. 1, 2025. [15] EcoTable Contributors. 2025. EcoTable: Engagement. https://github.com/ yuhuiwang02/EcoTable/engagement. GitHub repository, accessed Nov. 1, 2025. [16] EcoTable Contributors. 2025. EcoTable: NYC. https://github.com/yuhuiwang02/ EcoTable/NYC. GitHub repository, accessed Nov. 1, 2025. [17] EcoTable Contributors. 2025. EcoTable: Platform. https://github.com/ yuhuiwang02/EcoTable/platform. GitHub repository, accessed Nov. 1, 2025. [18] Meihao Fan, Ju Fan, Nan Tang, Lei Cao, Guoliang Li, and Xiaoyong Du. 2024. Autoprep: Natural language question-aware data preparation with a multi-agent framework. arXiv preprint arXiv:2412.10422 (2024). [19] Meihao Fan, Xiaoyue Han, Ju Fan, Chengliang Chai, Nan Tang, Guoliang Li, and Xiaoyong Du. 2024. Cost-Effective In-Context Learning for Entity Resolution: A Design Space Exploration. In 40th IEEE International Conference on Data Engi-neering, ICDE 2024, Utrecht, The Netherlands, May 13-16, 2024 . IEEE, 3696–3709. doi:10.1109/ICDE60146.2024.00284 [20] Naman Goyal, Jingfei Du, Myle Ott, Giri Anantharaman, and Alexis Conneau. 2021. Larger-scale transformers for multilingual masked language modeling. 
+
+arXiv preprint arXiv:2105.00572 (2021). [21] Rihan Hai, Christos Koutras, Christoph Quix, and Matthias Jarke. 2023. Data lakes: A survey of functions and systems. IEEE Transactions on Knowledge and Data Engineering 35, 12 (2023), 12571–12590. [22] Benjamin Hättasch, Michael Truong-Ngoc, Andreas Schmidt, and Carsten Bin-nig. 2020. It’s AI Match: A Two-Step Approach for Schema Matching Using Embeddings. In AIDB@VLDB 2020, 2nd International Workshop on Applied AI for Database Systems and Applications, Held with VLDB 2020, Monday, August 31, 2020, Online Event / Tokyo, Japan , Bingsheng He, Berthold Reinwald, and Yingjun Wu (Eds.). https://drive.google.com/file/d/1xCGhHfghJR3DLuA-9o-XQXBS8M1_8a4P/view?usp=sharing [23] Pengcheng He, Jianfeng Gao, and Weizhu Chen. 2021. Debertav3: Improving deberta using electra-style pre-training with gradient-disentangled embedding sharing. arXiv preprint arXiv:2111.09543 (2021). [24] Madelon Hulsebos, Kevin Hu, Michiel Bakker, Emanuel Zgraggen, Arvind Satya-narayan, Tim Kraska, Çagatay Demiralp, and César Hidalgo. 2019. Sherlock: A deep learning approach to semantic data type detection. In Proceedings of the 25th ACM SIGKDD International Conference on knowledge discovery & data mining .1500–1508. [25] Aamod Khatiwada, Roee Shraga, and Renée J. Miller. 2026. Fuzzy Integration of Data Lake Tables. In Proceedings 29th International Conference on Extending Database Technology, EDBT 2026, Tampere, Finland, March 24-27, 2026 , Wolf-gang Lehner, Vanessa Braganholo, Kostas Stefanidis, Zheying Zhang, Alexander Krause, and João Felipe Nicolaci Pimentel (Eds.). OpenProceedings.org, 96–102. doi:10.48786/EDBT.2026.08 [26] Dénes König. 1916. Über graphen und ihre anwendung auf determinantentheorie und mengenlehre. Math. Ann. 77, 4 (1916), 453–465. [27] Lawrence Kou, George Markowsky, and Leonard Berman. 1981. A fast algorithm for Steiner trees. Acta informatica 15, 2 (1981), 141–145. [28] Christos Koutras, Jiani Zhang, Xiao Qin, Chuan Lei, Vasileios Ioannidis, Chris-tos Faloutsos, George Karypis, and Asterios Katsifodimos. 2024. OmniMatch: Effective self-supervised any-join discovery in tabular data repositories. arXiv preprint arXiv:2403.07653 (2024). [29] Eugenie Lai, Yeye He, and Surajit Chaudhuri. 2025. Auto-Prep: Holistic Prediction of Data Preparation Steps for Self-Service Business Intelligence. Proc. VLDB Endow. 18, 7 (2025), 2212–2225. https://www.vldb.org/pvldb/vol18/p2212-he.pdf [30] Dongjun Lee, Choongwon Park, Jaehyuk Kim, and Heesoo Park. 2024. Mcs-sql: Leveraging multiple prompts and multiple-choice selection for text-to-sql generation. arXiv preprint arXiv:2405.07467 (2024). [31] Jihyung Lee, Jin-Seop Lee, Jaehoon Lee, YunSeok Choi, and Jee-Hyong Lee. 2025. DCG-SQL: Enhancing In-Context Learning for Text-to-SQL with Deep Contextual Schema Link Graph. arXiv preprint arXiv:2505.19956 (2025). [32] Fangyu Lei, Jixuan Chen, Yuxiao Ye, Ruisheng Cao, Dongchan Shin, Hongjin Su, Zhaoqing Suo, Hongcheng Gao, Wenjing Hu, Pengcheng Yin, et al . 2024. Spider 2.0: Evaluating language models on real-world enterprise text-to-sql workflows. 
+
+arXiv preprint arXiv:2411.07763 (2024). [33] Haoyang Li, Shang Wu, Xiaokang Zhang, Xinmei Huang, Jing Zhang, Fuxin Jiang, Shuai Wang, Tieying Zhang, Jianjun Chen, Rui Shi, et al . 2025. Omnisql: Synthesizing high-quality text-to-sql data at scale. arXiv preprint arXiv:2503.02240 
+
+(2025). [34] Haoyang Li, Jing Zhang, Cuiping Li, and Hong Chen. 2023. Resdsql: Decoupling schema linking and skeleton parsing for text-to-sql. In Proceedings of the AAAI Conference on Artificial Intelligence , Vol. 37. 13067–13075. [35] Haoyang Li, Jing Zhang, Hanbing Liu, Ju Fan, Xiaokang Zhang, Jun Zhu, Renjie Wei, Hongyan Pan, Cuiping Li, and Hong Chen. 2024. Codes: Towards build-ing open-source language models for text-to-sql. Proceedings of the ACM on Management of Data 2, 3 (2024), 1–28. [36] Jinyang Li, Binyuan Hui, Ge Qu, Jiaxi Yang, Binhua Li, Bowen Li, Bailin Wang, Bowen Qin, Ruiying Geng, Nan Huo, et al . 2023. Can llm already serve as a database interface? a big bench for large-scale database grounded text-to-sqls. 
+
+Advances in Neural Information Processing Systems 36 (2023), 42330–42357. [37] Peng Li, Yeye He, Cong Yan, Yue Wang, and Surajit Chaudhuri. 2023. Auto-Tables: Synthesizing Multi-Step Transformations to Relationalize Tables without Using Examples. Proc. VLDB Endow. 16, 11 (2023), 3391–3403. doi:10.14778/3611479. 3611534 [38] Peng Li, Yeye He, Dror Yashar, Weiwei Cui, Song Ge, Haidong Zhang, Danielle Rifinski Fainman, Dongmei Zhang, and Surajit Chaudhuri. 2024. Table-gpt: Table fine-tuned gpt for diverse table tasks. Proceedings of the ACM on Management of Data 2, 3 (2024), 1–28. [39] Yuliang Li, Jinfeng Li, Yoshihiko Suhara, AnHai Doan, and Wang-Chiew Tan. 2020. Deep Entity Matching with Pre-Trained Language Models. Proc. VLDB Endow. 14, 1 (2020), 50–60. doi:10.14778/3421424.3421431 [40] Yiming Lin, Yeye He, and Surajit Chaudhuri. 2023. Auto-bi: Automatically build bi-models leveraging local join prediction and global schema graph. arXiv preprint arXiv:2306.12515 (2023). [41] Yinhan Liu, Myle Ott, Naman Goyal, Jingfei Du, Mandar Joshi, Danqi Chen, Omer Levy, Mike Lewis, Luke Zettlemoyer, and Veselin Stoyanov. 2019. RoBERTa: A Robustly Optimized BERT Pretraining Approach. CoRR abs/1907.11692 (2019). arXiv:1907.11692 http://arxiv.org/abs/1907.11692 [42] Yurong Liu, Eduardo Peña, Aécio S. R. Santos, Eden Wu, and Juliana Freire. 2025. Magneto: Combining Small and Large Language Models for Schema Matching. 
+
+Proc. VLDB Endow. 18, 8 (2025), 2681–2694. doi:10.14778/3742728.3742757 [43] Arash Dargahi Nobari and Davood Rafiei. 2022. Efficiently Transforming Tables for Joinability. In 38th IEEE International Conference on Data Engineering, ICDE 2022, Kuala Lumpur, Malaysia, May 9-12, 2022 . IEEE, 1649–1661. doi:10.1109/ ICDE53745.2022.00169 [44] Arash Dargahi Nobari and Davood Rafiei. 2025. TabulaX: Leveraging Large Language Models for Multi-Class Table Transformations. Proc. VLDB Endow. 18, 11 (2025), 3826–3839. https://www.vldb.org/pvldb/vol18/p3826-nobari.pdf [45] OpenAI. n.d.. OpenAI API Pricing. https://openai.com/api/pricing. [n.d.] Website, accessed Nov. 1, 2025. [46] George Papadakis, Ekaterini Ioannou, Emanouil Thanos, and Themis Palpanas. 2021. The Four Generations of Entity Resolution . Morgan & Claypool Publishers. doi:10.2200/S01067ED1V01Y202012DTM064 [47] Marcel Parciak, Brecht Vandevoort, Frank Neven, Liesbet M. Peeters, and Stijn Vansummeren. 2025. LLM-Matcher: A Name-Based Schema Matching Tool using Large Language Models. In Companion of the 2025 International Conference on Management of Data, SIGMOD/PODS 2025, Berlin, Germany, June 22-27, 2025 ,Volker Markl, Joseph M. Hellerstein, and Azza Abouzied (Eds.). ACM, 203–206. doi:10.1145/3722212.3725112 [48] Mohammadreza Pourreza and Davood Rafiei. 2023. Din-sql: Decomposed in-context learning of text-to-sql with self-correction. Advances in Neural Informa-tion Processing Systems 36 (2023), 36339–36348. [49] Mattia Di Profio, Mingjun Zhong, Yaji Sripada, and Marcel Jaspars. 2025. FlowETL: An Autonomous Example-Driven Pipeline for Data Engineering. CoRR 
+
+abs/2507.23118 (2025). arXiv:2507.23118 doi:10.48550/ARXIV.2507.23118 [50] Torsten Scholak, Nathan Schucher, and Dzmitry Bahdanau. 2021. PICARD: Parsing incrementally for constrained auto-regressive decoding from language models. arXiv preprint arXiv:2109.05093 (2021). [51] Nima Shahbazi, Jin Wang, Zhengjie Miao, and Nikita Bhutani. 2024. Fairness-Aware Data Preparation for Entity Matching. In 40th IEEE International Conference on Data Engineering, ICDE 2024, Utrecht, The Netherlands, May 13-16, 2024 . IEEE, 3476–3489. doi:10.1109/ICDE60146.2024.00268 [52] Roee Shraga, Avigdor Gal, and Haggai Roitman. 2020. ADnEV: Cross-Domain Schema Matching using Deep Similarity Matrix Adjustment and Evaluation. 
+
+Proc. VLDB Endow. 13, 9 (2020), 1401–1415. doi:10.14778/3397230.3397237 [53] Kaitao Song, Xu Tan, Tao Qin, Jianfeng Lu, and Tie-Yan Liu. 2020. Mpnet: Masked and permuted pre-training for language understanding. Advances in neural information processing systems 33 (2020), 16857–16867. [54] Shayan Talaei, Mohammadreza Pourreza, Yu-Chen Chang, Azalia Mirhoseini, and Amin Saberi. 2024. Chess: Contextual harnessing for efficient sql synthesis. 
+
+arXiv preprint arXiv:2405.16755 (2024). [55] The pandas development team. n.d.. Pivot in Python Pandas. https://pandas. pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.pivot.html. Ac-cessed: 2026-02-28. [56] The pandas development team. n.d.. Python Series Str.split. https://pandas. pydata.org/docs/reference/api/pandas.Series.str.split.html. Accessed: 2026-02-28. [57] Vadim G Vizing. 1965. The chromatic class of a multigraph. Cybernetics 1, 3 (1965), 32–41. [58] Bing Wang, Changyu Ren, Jian Yang, Xinnian Liang, Jiaqi Bai, Linzheng Chai, Zhao Yan, Qian-Wen Zhang, Di Yin, Xing Sun, and Zhoujun Li. 2025. MAC-SQL: A Multi-Agent Collaborative Framework for Text-to-SQL. In Proceedings of the 31st International Conference on Computational Linguistics, COLING 2025, Abu Dhabi, UAE, January 19-24, 2025 , Owen Rambow, Leo Wanner, Marianna Apidianaki, Hend Al-Khalifa, Barbara Di Eugenio, and Steven Schockaert (Eds.). Association for Computational Linguistics, 540–557. https://aclanthology.org/2025.coling-main.36/ 
+
+> 17
+
+[59] Jin Wang and Yuliang Li. 2022. Minun: evaluating counterfactual explanations for entity matching. In DEEM ’22: Proceedings of the Sixth Workshop on Data Management for End-To-End Machine Learning Philadelphia, PA, USA, 12 June 2022 , Matthias Boehm, Paroma Varma, and Doris Xin (Eds.). ACM, 7:1–7:11. doi:10.1145/3533028.3533304 [60] Jin Wang, Yuliang Li, and Wataru Hirota. 2021. Machamp: A Generalized Entity Matching Benchmark. In CIKM ’21: The 30th ACM International Conference on Information and Knowledge Management, Virtual Event, Queensland, Australia, November 1 - 5, 2021 , Gianluca Demartini, Guido Zuccon, J. Shane Culpepper, Zi Huang, and Hanghang Tong (Eds.). ACM, 4633–4642. doi:10.1145/3459637. 3482008 [61] Lei Wang, Wanyu Xu, Yihuai Lan, Zhiqiang Hu, Yunshi Lan, Roy Ka-Wei Lee, and Ee-Peng Lim. 2023. Plan-and-Solve Prompting: Improving Zero-Shot Chain-of-Thought Reasoning by Large Language Models. In Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), ACL 2023, Toronto, Canada, July 9-14, 2023 , Anna Rogers, Jordan L. Boyd-Graber, and Naoaki Okazaki (Eds.). Association for Computational Linguistics, 2609–2634. doi:10.18653/V1/2023.ACL-LONG.147 [62] Zilong Wang, Hao Zhang, Chun-Liang Li, Julian Martin Eisenschlos, Vincent Perot, Zifeng Wang, Lesly Miculicich, Yasuhisa Fujii, Jingbo Shang, Chen-Yu Lee, and Tomas Pfister. 2024. Chain-of-Table: Evolving Tables in the Reasoning Chain for Table Understanding. In The Twelfth International Conference on Learning Representations, ICLR 2024, Vienna, Austria, May 7-11, 2024 . OpenReview.net. https://openreview.net/forum?id=4L0xnS4GQM [63] Cong Yan and Yeye He. 2020. Auto-Suggest: Learning-to-Recommend Data Preparation Steps Using Data Science Notebooks. In Proceedings of the 2020 International Conference on Management of Data, SIGMOD Conference 2020, online conference [Portland, OR, USA], June 14-19, 2020 , David Maier, Rachel Pottinger, AnHai Doan, Wang-Chiew Tan, Abdussalam Alawini, and Hung Q. Ngo (Eds.). ACM, 1539–1554. doi:10.1145/3318464.3389738 [64] Junwen Yang, Yeye He, and Surajit Chaudhuri. 2021. Auto-Pipeline: Synthesize Data Pipelines By-Target Using Reinforcement Learning and Search. Proc. VLDB Endow. 14, 11 (2021), 2563–2575. doi:10.14778/3476249.3476303 [65] Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik R. Narasimhan, and Yuan Cao. 2023. ReAct: Synergizing Reasoning and Act-ing in Language Models. In The Eleventh International Conference on Learn-ing Representations, ICLR 2023, Kigali, Rwanda, May 1-5, 2023 . OpenReview.net. https://openreview.net/forum?id=WE_vluYUL-X [66] Hanchong Zhang, Ruisheng Cao, Lu Chen, Hongshen Xu, and Kai Yu. 2023. ACT-SQL: In-context learning for text-to-SQL with automatically-generated chain-of-thought. arXiv preprint arXiv:2310.17342 (2023). [67] Yong Zhang, Jiacheng Wu, Jin Wang, and Chunxiao Xing. 2020. ATransformation-Based Framework for KNN Set Similarity Search. IEEE Trans. Knowl. Data Eng. 32, 3 (2020), 409–423. doi:10.1109/TKDE.2018.2886189 [68] Erkang Zhu, Dong Deng, Fatemeh Nargesian, and Renée J Miller. 2019. Josie: Overlap set similarity search for finding joinable tables in data lakes. In Proceed-ings of the 2019 International Conference on Management of Data . 847–864. [69] Erkang Zhu, Yeye He, and Surajit Chaudhuri. 2017. Auto-join: Joining tables by leveraging transformations. Proceedings of the VLDB Endowment 10, 10 (2017), 1034–1045. [70] Erkang Zhu, Fatemeh Nargesian, Ken Q Pu, and Renée J Miller. 2016. LSH ensemble: Internet-scale domain search. arXiv preprint arXiv:1603.07410 (2016). 
+
+> 18
+
+## A Training Data Collection For 𝑀 𝑆 
+
+In the table identification layer, the deep learning model 𝑀 𝑆 (i.e., RoBERTa) performs coarse-grained filtering to retrieve query-related tables. The training data consists of (NL query, table) pairs, each assigned a binary label 𝑦 ∈ { 0, 1}. This label denotes whether the table is relevant ( 𝑦 = 1) or irrelevant ( 𝑦 = 0) to the NL query. We construct the initial training dataset through the following three steps: (1) we collect DBT projects and partition them into training and testing subsets; (2) we use LLMs to generate natural language queries from existing SQL in training sets, and then man-ually verify that each query is correctly aligned with its SQL; (3) we leverage sqlparse to identify tables referenced in the SQL and label them as relevant ( 𝑦 = 1), while marking all remaining tables in the same data lake as irrelevant ( 𝑦 = 0). To scale this process, we follow OmniSQL [ 33 ] by generating a step-by-step Chain-of-Thought (CoT) explanation that describes the reasoning from the natural language query to the SQL code. This CoT serves as an automatic consistency check to guarantee semantic alignment be-tween the query and SQL, eliminating manual verification. Using this procedure, we construct a large-scale training set with 200,000 labeled (query, table) pairs. 
+
+## B Details of the Table Identification Layer 
+
+In the table identification layer, the LLM takes the original NL query and the coarse-grained candidate tables as input, and outputs the final verified table set. To achieve this, the LLM executes two guided operations: “Query Understanding” and “Schema Reasoning and Verification”. The detailed prompts used to guide the LLM in both operations are provided as follows. 
+
+Prompt for Table Identification 
+
+You are a data lake schema expert specializing in large-scale, open government data lakes. Your role is to identify, from a pool of candidate tables retrieved by a deep learning model, the minimal and semantically correct set of tables required to answer a given natural language query. You reason at the column level: a table is relevant if and only if its columns directly supply information requested by the query. In this data lake, tables may share naming prefixes and be organized by temporal scope or horizontal data partitioning; your reasoning must account for both aspects. Step 1: Query Understanding Given the following natural language query, decompose it into a structured list of atomic semantic components. Each component should represent one self-contained information need, such as: 
+
+• A key entity or subject (e.g., "taxi trip", "building permit"). 
+
+• A measurable attribute or metric (e.g., "trip duration", "fare"). 
+
+• A filter or scoping condition (e.g., "yellow cab only"). 
+
+• A temporal specification (e.g., "in 2017", "FY 2018–2019"). Pay particular attention to temporal references. If the query men-tions a specific year, fiscal year, or date range, record it explicitly, as it will be used to resolve temporal ambiguity among candidate tables in the verification step. 
+
+Input 
+
+Query: query 
+
+Output Format (JSON Only) 
+
+{"temporal_scope": "<year / fiscal year / date range, or null>", "semantic_components": [ "component 1: <description>", "component 2: <description>" ... ]}
+
+Step 2: Schema Reasoning and Alignment You are given the original query, its decomposed semantic compo-nents (including temporal scope), and a ranked list of candidate tables from the data lake. Each table entry includes its name and a sample of its column names. For each candidate table, reason step-by-step to determine whether the table directly contributes at least one column that satisfies a semantic component of the query. Apply the following principles in order: 
+
+• Column-Level Matching: A table is relevant only if its columns directly provide data requested by the query. Do not rely on table names alone. 
+
+• Temporal Scope Consistency: If a temporal scope exists, discard tables whose names encode a different year or fiscal year, even if schemas match. 
+
+• Partition-Complete Selection: For horizontally partitioned sub-tables (e.g., records , records_1 ), examine and retain each vari-ant independently if they are individually relevant. 
+
+• Non-Redundancy: If two tables have identical schemas and partitions, retain only the one with broader coverage or the lower partition index. 
+
+Input 
+
+Query: {query} Temporal Scope: {temporal_scope} Semantic Components: {semantic_components} Candidate Tables: {candidate_tables_with_columns} 
+
+Output Format (JSON Only) 
+
+{"table_reasoning": { "<table_name>": { "matched_components": ["component i"], "matched_columns": ["col_a"], "temporal_consistent": true/false, "verdict": "keep/discard", "reason": "<one-sentence justification>" }, ... }, "selected_tables": ["table_1", "table_2", ...] }
+
+## C Details of Pairwise Joinability Estimation 
+
+We give details on the deep learning model 𝑀 𝐽 (·) introduced in Section 4.2. Given a pair of columns 𝐶 𝑖 from table 𝑇 𝑖 and 𝐶 𝑗 from table 𝑇 𝑗 , the model acts as a binary classifier to predict their joinabil-ity probability. Subsequently, this score is used to derive the edge weight 𝑝 (𝑒 𝑖 𝑗 ) ∈ ( 0, 1] between the two tables. In EcoTable , this model is a modular component instantiated using three methods: Auto-BI [40], DeepJoin [12], and OmniMatch [28]. 
+
+> 19
+
+Auto-BI [ 40 ]. Auto-BI represents each column pair (𝐶 𝑖 , 𝐶 𝑗 ) with 24 features, categorized into Metadata-features and Data-features .We list these features, and precise definitions are in [40]. 
+
+Metadata-features . These features capture structured information about column pairs, derived from table names and column names. In total, A total of 12 features derived from this metadata are utilized, including: Jaccard_similarity, Jaccard_containment, Edit_distance, Embedding_similarity, Token_count, Char_count, Col_frequency, Col_position, Col_relative_position, Unique_col_position, Table_em-bedding, and Header_jaccard. 
+
+Data-features . 13 features are extracted that relate to the data con-tent of the columns. These features include Max_containment, Min_containment, Left_containment, Right_containment, Value_di-stinct_ratio, Range_overlap, EMD_score, Value_length, Value_type, Row_cnt, Row_ratio, Col_ratio, and Cell_ratio. Given the limited information about the original model, we focus on two regression alternatives. We denote the MLP-based imple-mentation as Auto-BI MLP and also introduce a tree-based ensemble variant, referred to as Auto-BI XGB .
+
+• Auto-BI MLP . We employ a four-layer Multi-Layer Perceptron (MLP) as the regression model. Specifically, we concatenate the 24 features into a single vector and feed it into the MLP with hidden sizes [256 , 256 , 128 , 64 ]. The output layer applies a Sig-moid function to produce a probability between 0 and 1. For our experiments, we train the model by minimizing the binary cross-entropy loss. 
+
+• Auto-BI XGB . We use Auto-BI XGB , a variant that relies on Gradient Boosting Decision Trees implemented via XGBClassifier . In our experiments, we adopt this implementation for training and inference, using 100 decision trees. 
+
+DeepJoin [ 12 ]. DeepJoin leverages a Pre-trained Language Model (PLM) to encode each column as a semantic vector, and then uses cosine similarity to assess whether two columns can be joined. Specifically, for each column of the pair, we present it as a text using the pattern: “ 𝑡𝑎𝑏𝑙𝑒 _𝑡𝑖𝑡𝑙𝑒 . 𝑐𝑜𝑙𝑢𝑚𝑛 _𝑛𝑎𝑚𝑒 contains 𝑛 values ( 𝑚𝑎𝑥 _𝑙𝑒𝑛 ,
+
+𝑚𝑖𝑛 _𝑙𝑒𝑛 , 𝑎𝑣𝑔 _𝑙𝑒𝑛 ): 𝑐𝑒𝑙𝑙 1, 𝑐𝑒𝑙𝑙 2, . . . , 𝑐𝑒𝑙𝑙 𝑛 .”. Here, 𝑛 denotes the num-ber of distinct cell values in the column; 𝑚𝑎𝑥 _𝑙𝑒𝑛 , 𝑚𝑖𝑛 _𝑙𝑒𝑛 , 𝑎𝑣𝑔 _𝑙𝑒𝑛 
+
+are the maximum, minimum, and average numbers of words per cell, respectively; and 𝑐𝑒𝑙𝑙 𝑖 denotes the 𝑖 -th distinct cell value se-lected based on frequency. For this text, we then use MPNet [ 53 ]to compute column embeddings as input representations. For each pair, we denote the input as (𝑋 𝑘 , 𝑌 𝑘 ), where 𝑘 indexes the pairs and 
+
+𝑋 𝑘 , 𝑌 𝑘 are the embedding vectors for the columns in that pair. To optimize this PLM, the Multiple Negative Ranking Loss is adopted in DeepJoin, which computes the negative log-likelihood of softmax-normalized scores: 
+
+L = − 1
+
+𝑁 
+
+> 𝑁
+
+∑︁ 
+
+> 𝑘 =1
+
+"
+
+𝑆 (𝑋 𝑘 , 𝑌 𝑘 ) − log 
+
+> 𝑁
+
+∑︁ 
+
+> 𝑙 =1
+
+exp (𝑆 (𝑋 𝑘 , 𝑌 𝑙 )) 
+
+#
+
+(8) where 𝑆 (· , ·) denotes the cosine similarity, and 𝑁 is the batch size. 
+
+OmniMatch [ 28 ]. Unlike the methods above, OmniMatch builds a feature vector for each column by combining two components: 1) representative statistics from that column, following the design in [ 24 ], and 2) features learned by applying a GNN to a graph of semantically similar columns, so that information can be shared across similar columns. In more detail, OmniMatch defines five pairwise column similarities and uses them to construct a global graph where nodes are columns and edges are weighted by similar-ity scores in (0, 1]. OmniMatch then applies an RGCN on the graph to aggregate information from columns that are similar to a given column. In this way, each column 𝐶 𝑖 gets a final feature vector ℎ𝑖 
+
+that captures these similarity relationships. Finally, to predict the joinability of (𝐶 𝑖 , 𝐶 𝑗 ), we first compute the distance between their feature vectors ℎ𝑖 and ℎ𝑗 , and then apply an exponential decay function exp (−·) , to map this distance to a joinability probability. In our experiments, we train the model parameters using a triplet margin loss. 
+
+## D Details of LLM-based edge validation. 
+
+In this section, we detail priority-aware edge validation and prompt construction. 
+
+Priority-aware edge validation. We agree with the reviewer that if the LLM incorrectly invalidates a critical edge that is essential for table connectivity, other edges would be invalid. To mitigate this, 
+
+EcoTable first identifies critical edges as follows: 1) edges that ap-pear in Steiner trees corresponding to multiple queries within the same iteration, and 2) edges whose deletion would prevent the construction of a new Steiner tree for a query in the subsequent iteration. For such a case, EcoTable makes three independent LLM calls to validate it and uses majority vote to make the final deci-sion. This significantly reduces the impact of hallucinations and preserves reliable graph connectivity. 
+
+Table Serialization in Prompts. We use a two-phase serialization strat-egy that we believe addresses the reviewer’s concern. In the first step, we would like to clarify that we do not involve all rows to avoid noise. Instead, we randomly sample about 50 rows respectively from a pair of tables. Then we feed them to the LLM and ask it to identify several candidate column pairs that are likely to be joinable. Subse-quently, we only consider the semantic relationships between these pairs in the second step. For each pair of tables, we provide all their distinct values for an in-depth comparison. The LLM then outputs a binary decision (1 for valid, 0 for invalid), indicating whether a join relationship exists. This two-phase approach ensures that we collect sufficient overlapping values to avoid incorrect non-joinable decisions. At the same time, it keeps the prompts compact, thus reducing hallucinations and performance degradation. The prompt is detailed as follows: 
+
+Prompt for Join Validation 
+
+> You are a rigorous data architect. Your task is to analyze two given data tables and determine whether there is a reasonable business connection between them.
+> Background
+> The goal of joining tables is to enrich the information used to answer a query. A "valid join" occurs when you combine comple-mentary attributes from different perspectives within the same scope. For example, joining a school’s basic info with its program details for the same year and region allows a query to access both dimensions.
+> 20
+
+Conversely, tables covering different time periods, regions, or categories are "parallel slices." Joining them does not enrich in-formation; it corrupts the coherence of results by mixing data from incompatible scopes (e.g., mixing a 2019 catalog with a 2022 catalog). 
+
+Workflow Explanation 
+
+To ensure accuracy, we follow a two-step verification process: Step 1: Semantic & Scope Alignment Examine the table names and sampled rows to identify if they share the same temporal, spatial, and categorical scope. 
+
+• If scopes differ (e.g., Sales_2021 vs Sales_2023 ), return an empty selected_pairs .
+
+• If scopes align, identify column pairs that refer to the same specific attribute (e.g., emp_id vs staff_code ). Avoid matching different metrics (e.g., max_speed vs avg_speed ). Step 2: Data-Level Validation For the selected pairs, you will be provided with the full set of distinct values. You must determine if they are: 
+
+• Joinable: Columns point to the same real-world entity and values match via exact equality or clear transformation. 
+
+• Unjoinable: Irreconcilable differences in values or business context are revealed. 
+
+Input Data (Step 1) 
+
+Table Names: {TABLE_NAMES} Table 1 Sample (50 rows): {TABLE1_SAMPLE} Table 2 Sample (50 rows): {TABLE2_SAMPLE} Candidate Pairs: {CANDIDATE_LIST} 
+
+Output Format (Step 1 - JSON Only) 
+
+{"same_scope": true/false, "selected_pairs": ["Table1.ColA <-> Table2.ColB"], "reason": "Business logic for semantic matching." }
+
+Input Data (Step 2) 
+
+Selected Pairs: {Table1.ColA <-> Table2.ColB} Table 1 Distinct Values: [val1, val2, ...] Table 2 Distinct Values: [valA, valB, ...] 
+
+Output Format (Step 2 - JSON Only) 
+
+{"can_join": "1/0", "alignment_sample": ["val1 <-> valA", "val2 <-> valB"], "reason": "Final decision based on value overlap." }
+
+## E Comparison of Non-LLM v.s. EcoTable 
+
+In this section, we compare EcoTable with a new baseline without involving LLMs, denoted as Non-LLM . This baseline replaces our LLM-based components with traditional deep learning methods: it employs DeBERTa-v3-large for table identification, DeepJoin to predict join paths, and DTT to execute table transformations. As shown in Figure 17, Non-LLM is more efficient than EcoTable ,as it completely avoids the high latency introduced by LLM infer-ence. However, Non-LLM is not effective on complex integration tasks because its components depend on embeddings, which fails to handle the unpredictable noise present in real-world data lakes. In contrast, EcoTable achieves state-of-the-art performance by leveraging the adaptive reasoning and code-generation capabilities Ad NYC   
+
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> F1 Score
+> (a) F1-score
+> Ad NYC
+> 0
+> 20
+> 40
+> 60
+> Latency (s)
+> (b) Runtime
+> Non-LLM EcoTable
+
+Figure 17: Comparison of Non-LLM v.s. EcoTable .Ad Engagement   
+
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> F1 Score
+> Ad Engagement
+> 0.00
+> 0.02
+> 0.04
+> 0.06
+> 0.08
+> 0.10
+> 0.12
+> 0.14
+> Cost($)
+> MMQA EcoTable
+
+Figure 18: Comparison of MMQA vs EcoTable .
+
+of LLMs. This enables EcoTable to flexibly identify required join paths and resolve complex data inconsistencies during runtime, substantially improving integration quality while only moderately increasing execution time. 
+
+## F Statistics on Join Types and Transformations 
+
+we provide the join and transformation statistics in Table 4. 
+
+Table 4: Statistics on Join Types and Transformations. Dataset # Equi-joins # Fuzzy-joins # Total Transf. Ad 65 17 17 
+
+Engagement 28 10 10 
+
+Business 13 7 7
+
+Platform 11 8 8
+
+NYC Data Lake 248 204 2440 
+
+## G Comparison of MMQA vs EcoTable .
+
+In this section, we incorporate the Multi-Table QA baseline: MMQA re-places our table identification layer with the retriever from MMQA. This method decomposes multi-hop questions into sub-questions and iteratively retrieves tables by jointly considering question-table and table-table relevance. As illustrated in Figure 18, EcoTable achieves a much higher Join Path F1-score (79.2%) than MMQA (25.62%) while incurring only a modest additional cost because MMQA uses a binary relevance score based on exact matches of column values across tables. Such a rigid criterion performs poorly in heterogeneous data lakes, where 
+
+> 21
+
+values are often noisy, inconsistent, or partially mismatched. If no exact overlap is found, its iterative retrieval terminates too early. In contrast, EcoTable is more resilient at filtering out irrelevant tables and preserving accuracy in large-scale settings like the NYC Data Lake. MMQA has a lower cost because it only uses LLMs to decompose queries.
