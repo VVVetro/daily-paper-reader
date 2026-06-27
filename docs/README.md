@@ -6,46 +6,35 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-26
-- 运行时间：2026-06-26 20:56:10 UTC
+- 最新运行日期：2026-06-27
+- 运行时间：2026-06-27 21:28:37 UTC
 - 运行状态：成功
-- 本次总论文数：7
-- 精读区：0
-- 速读区：7
+- 本次总论文数：5
+- 精读区：1
+- 速读区：4
 
 ### 今日简报（AI）
-今日速读7篇论文，聚焦边缘AI预处理、建筑AI技能共享及空间智能工具推理。
-
-最值得关注两篇7分论文：边缘数据预处理实现云端级精度，以及开源平台Buildrix赋能建筑工程AI技能共享与基准测试。
-
-建议优先阅读这两篇：前者适合IoT实战者，后者为AI工程化提供开放生态启发。
-- 详情：[/202606/26/README](/202606/26/README)
+今日精读《From Causal Discovery to Implementation》聚焦德国29城电动滑板车枢纽规划，速读新增LLM增强数据管道与层次归纳等工具。最值得关注因果发现与智能体AI在城市规划中的落地，以及术语中心归纳对异构语料的结构化提炼。建议普通读者优先了解该精读论文的因果推断应用，后续可跟进FlowPipe等数据流水线方法。
+- 详情：[/202606/27/README](/202606/27/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [From Causal Discovery to Implementation: An Agentic AI Framework for E-Scooter Mobility Hub Planning Across 29 German Cities](/202606/27/2606.25484v1-from-causal-discovery-to-implementation-an-agentic-ai-framework-for-e-scooter-mobility-hub-planning-across-29-german-cities)  
+   标签：评分：8.0/10、query:smart-city
+   evidence：利用代理人工智能和因果发现进行城市出行枢纽规划的多源数据整合
 
 ### 速读区论文标签
-1. [Enabling Cloud-Level Accuracy in Edge AI through IoT Data Preprocessing](/202606/26/2606.22496v1-enabling-cloud-level-accuracy-in-edge-ai-through-iot-data-preprocessing)  
+1. [FlowPipe: LLM-Enhanced Conditional Generative Flow Networks for Data Preparation Pipeline Construction](/202606/27/2606.24679v2-flowpipe-llm-enhanced-conditional-generative-flow-networks-for-data-preparation-pipeline-construction)  
    标签：评分：7.0/10、query:smart-city
-   evidence：面向智能环境的IoT数据结构化提示预处理框架
-2. [Buildrix: An Open Platform for Sharing and Benchmarking Agentic AI Skills in Building Engineering](/202606/26/2606.25139v1-buildrix-an-open-platform-for-sharing-and-benchmarking-agentic-ai-skills-in-building-engineering)  
+   evidence：基于LLM的数据准备管道自动构建，可适用于城市建筑数据管道
+2. [Term-Centric Hierarchy Induction from Heterogeneous Corpora](/202606/27/2606.26963v1-term-centric-hierarchy-induction-from-heterogeneous-corpora)  
    标签：评分：7.0/10、query:smart-city
-   evidence：建筑工程的智能体AI技能平台，与智慧城市数据管道和数字孪生相关
-3. [S-Agent: Spatial Tool-Use Elicits Reasoning for Spatial Intelligence](/202606/26/2606.20515v1-s-agent-spatial-tool-use-elicits-reasoning-for-spatial-intelligence)  
+   evidence：从异构语料中归纳术语层次，支持本体学习
+3. [Object-Centric Dataset Resources for Constrained-Data Image Generation and Augmentation](/202606/27/2606.21113v1-object-centric-dataset-resources-for-constrained-data-image-generation-and-augmentation)  
    标签：评分：6.0/10、query:smart-city
-   evidence：利用VLM和工具进行三维空间推理
-4. [MKG-RAG-Bench: Benchmarking Retrieval in Multimodal Knowledge Graph-Augmented Generation](/202606/26/2606.26458v1-mkg-rag-bench-benchmarking-retrieval-in-multimodal-knowledge-graph-augmented-generation)  
+   evidence：智慧城市场景的对象中心数据集，支持多模态数据融合
+4. [Vision-Language Model Reasoning for Contextual Semantic Mapping in Intralogistics](/202606/27/2606.24814v1-vision-language-model-reasoning-for-contextual-semantic-mapping-in-intralogistics)  
    标签：评分：6.0/10、query:smart-city
-   evidence：多模态知识图谱检索基准
-5. [EcoTable: Cost-effective Table Integration in Data Lakes for Natural Language Queries](/202606/26/2606.26613v1-ecotable-cost-effective-table-integration-in-data-lakes-for-natural-language-queries)  
-   标签：评分：6.0/10、query:smart-city
-   evidence：提出基于自然语言的表集成框架，适用于智慧城市中多源数据集成
-6. [Graph Neural Networks Applications Across Domains: All Insights You Need](/202606/26/2606.27202v1-graph-neural-networks-applications-across-domains-all-insights-you-need)  
-   标签：评分：6.0/10、query:smart-city
-   evidence：图神经网络应用综述涵盖知识图谱，为智慧城市知识图谱推理提供方法论基础
-7. [Understanding Domain-Aware Distribution Alignment in Budgeted Entity Matching](/202606/26/2606.27342v1-understanding-domain-aware-distribution-alignment-in-budgeted-entity-matching)  
-   标签：评分：6.0/10、query:smart-city
-   evidence：实体匹配是数据集成中的核心操作
+   evidence：利用视觉语言模型进行上下文语义映射，可迁移至城市环境
 
 
 <div class="dpr-home-promo-card">

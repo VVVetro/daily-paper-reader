@@ -1,0 +1,216 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-27T21:24:47.974291+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2606.25484v1",
+      "source": "arxiv",
+      "title": "From Causal Discovery to Implementation: An Agentic AI Framework for E-Scooter Mobility Hub Planning Across 29 German Cities",
+      "abstract": "Existing approaches to e-scooter mobility hub planning lack city-type-specific causal evidence. Demand models are typically correlational, built on proprietary trip data, and do not distinguish how driver profiles vary across urban typologies. This paper presents a three-phase agentic AI framework that constructs a Causal Template Library from public GBFS data across 29 German cities, encoding which environmental features causally drive hotspot demand for each combination of city type (large, university, industrial, hilly) and cluster type (core, peripheral). A large language model (LLM) orchestrated causal discovery pipeline adapts algorithm selection to local data conditions across 57 city-cluster units. The library reveals systematic variation. Core demand is driven by activity access and transit proximity, while peripheral demand responds to built form, with city-type-specific patterns supporting transferable siting templates. A planning tool built on the library scores candidate sites, calibrates infrastructure recommendations to local demographics, and generates practitioner-ready reports. In Heilbronn, Germany, two hub sites informed by the framework's causal evidence are currently under construction, illustrating how the outputs can support real-world siting decisions.",
+      "authors": [
+        "Meng Jin",
+        "Melanie Handrich",
+        "Simone Martinenz",
+        "Nicholas Hoeser",
+        "Ziyue Li"
+      ],
+      "primary_category": "cs.CY",
+      "categories": [
+        "cs.CY",
+        "econ.GN",
+        "stat.AP"
+      ],
+      "published": "2026-06-24T07:13:15+00:00",
+      "link": "https://arxiv.org/pdf/2606.25484v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "multi-source data integration for urban mobility hub planning using agentic AI and causal discovery",
+      "llm_evidence_cn": "利用代理人工智能和因果发现进行城市出行枢纽规划的多源数据整合",
+      "llm_evidence": "利用代理人工智能和因果发现进行城市出行枢纽规划的多源数据整合",
+      "canonical_evidence": "利用代理人工智能和因果发现进行城市出行枢纽规划的多源数据整合",
+      "llm_tldr_en": "Presents a three-phase agentic AI framework that integrates public GBFS data from 29 German cities for e-scooter hub planning, using LLM-orchestrated causal discovery and a Causal Template Library.",
+      "llm_tldr_cn": "针对电动滑板车出行枢纽规划缺乏城市类型特异性因果证据的问题，该论文提出一个三阶段代理人工智能框架，整合德国29个城市的公开GBFS数据，构建因果模板库。通过大语言模型编排因果发现流程，根据城市类型和聚类类型自适应选择算法，生成环境特征与热点需求的因果图。该方法有效提升了不同城市场景下的需求预测准确性和规划可解释性，为智能城市基础设施管理提供了数据驱动决策支持。",
+      "llm_tldr": "针对电动滑板车出行枢纽规划缺乏城市类型特异性因果证据的问题，该论文提出一个三阶段代理人工智能框架，整合德国29个城市的公开GBFS数据，构建因果模板库。通过大语言模型编排因果发现流程，根据城市类型和聚类类型自适应选择算法，生成环境特征与热点需求的因果图。该方法有效提升了不同城市场景下的需求预测准确性和规划可解释性，为智能城市基础设施管理提供了数据驱动决策支持。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.24679v2",
+      "source": "arxiv",
+      "title": "FlowPipe: LLM-Enhanced Conditional Generative Flow Networks for Data Preparation Pipeline Construction",
+      "abstract": "Data preparation pipelines improve data quality in machine learning by transforming raw tables into learning-ready data through sequential cleaning and feature transformation operators. However, automatically constructing such pipelines is computationally difficult because operator sequences are combinatorial and end-to-end evaluation is expensive. Existing state-of-the-art (SOTA) Multi-DQN methods still face three key limitations: decoupled value estimators weaken long-horizon credit assignment, dataset context is only weakly injected into the policy, and exploration is inefficient in a sparse search space with many invalid states. To address these issues, we propose FlowPipe, a unified framework that formulates pipeline synthesis as conditional probabilistic flow generation over a directed acyclic graph. FlowPipe uses Conditional Generative Flow Networks (C-GFlowNets) with a Trajectory Balance objective to connect terminal validation rewards with early pipeline decisions. It further introduces Deep Semantic Modulation through Feature-wise Linear Modulation (FiLM), allowing LLM-derived logical priors to condition the policy's internal activations according to dataset semantics. In addition, FlowPipe incorporates failure awareness into the flow objective to avoid invalid states and concentrate search on high-potential regions. Experiments on two benchmark suites with 74 real-world datasets show that FlowPipe outperforms SOTA baselines, improving accuracy by 11.96% on average and achieving 12.5x faster training convergence. Source code is available at https://github.com/KunyuNi/FlowPipe.",
+      "authors": [
+        "Kunyu Ni",
+        "Lei Cao",
+        "Jie He",
+        "Xiaotong Zhang",
+        "Jianfeng Jin",
+        "Junyu Dong",
+        "Yanwei Yu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-23T15:10:00+00:00",
+      "link": "https://arxiv.org/pdf/2606.24679v2",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "LLM-enhanced data preparation pipeline construction, can be adapted to urban construction data pipelines",
+      "llm_evidence_cn": "基于LLM的数据准备管道自动构建，可适用于城市建筑数据管道",
+      "llm_evidence": "基于LLM的数据准备管道自动构建，可适用于城市建筑数据管道",
+      "canonical_evidence": "基于LLM的数据准备管道自动构建，可适用于城市建筑数据管道",
+      "llm_tldr_en": "Proposes FlowPipe, an LLM-enhanced framework for automatic data preparation pipeline construction using conditional generative flow networks, outperforming Multi-DQN.",
+      "llm_tldr_cn": "自动构建机器学习数据准备管道存在计算困难。本文提出FlowPipe，利用条件生成流网络和LLM增强，统一解决长期信用分配、上下文注入和探索效率问题。在多种表格数据集上，FlowPipe显著优于现有方法，为自动化数据清洗和特征工程提供了新范式。",
+      "llm_tldr": "自动构建机器学习数据准备管道存在计算困难。本文提出FlowPipe，利用条件生成流网络和LLM增强，统一解决长期信用分配、上下文注入和探索效率问题。在多种表格数据集上，FlowPipe显著优于现有方法，为自动化数据清洗和特征工程提供了新范式。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.21113v1",
+      "source": "arxiv",
+      "title": "Object-Centric Dataset Resources for Constrained-Data Image Generation and Augmentation",
+      "abstract": "Object-centric image generation is important in settings with few labeled examples, including pedestrian analysis in smart-city scenes, traffic-sign inspection, and domain-specific object detection. Synthetic images are most useful for training and evaluation when datasets preserve object structure, bounding boxes, visual diversity, and realistic context. Existing image datasets usually target classification, detection, or scene understanding rather than controlled object-centric generation and augmentation with limited class-specific data. We present a shareable collection of three object-centric dataset resources: Cityscapes-Pedestrian, TrafficSigns, and COCO PottedPlant. The collection standardizes 256-by-256 object-centric crops and bounding-box annotations across three regimes: dense pedestrian scenes with privacy blur and occlusion, cleaner high-contrast traffic signs, and context-diverse potted-plant scenes. The release contains 3,009 TrafficSigns samples, 2,156 Cityscapes-Pedestrian manifest records, and 7,679 COCO PottedPlant manifest records. The larger COCO-derived manifest preserves contextual and multi-instance diversity, while equal-size subsets can be drawn with a fixed random seed for controlled comparisons. The release provides direct TrafficSigns data where redistribution is permitted, together with scripts, manifests, box-level annotation tables, checksums, and reconstruction documentation for the Cityscapes- and COCO-derived subsets. It is available through the Latzi/object-centric-low-data-datasets GitHub repository and Zenodo DOI 10.5281/zenodo.20573001. The collection supports label and split inspection, subset creation, reconstruction from upstream data, and evaluation of object-centric image generation or synthetic-data augmentation methods on shared records.",
+      "authors": [
+        "Vasile Marian",
+        "Yong-Bin Kang",
+        "Alexander Buddery"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-06-19T05:32:30+00:00",
+      "link": "https://arxiv.org/pdf/2606.21113v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "object-centric datasets for smart city scenes, supporting multi-modal data fusion",
+      "llm_evidence_cn": "智慧城市场景的对象中心数据集，支持多模态数据融合",
+      "llm_evidence": "智慧城市场景的对象中心数据集，支持多模态数据融合",
+      "canonical_evidence": "智慧城市场景的对象中心数据集，支持多模态数据融合",
+      "llm_tldr_en": "Provides shareable object-centric dataset resources (Cityscapes-Pedestrian, TrafficSigns, COCO PottedPlant) for constrained-data image generation.",
+      "llm_tldr_cn": "本文提供了一个可共享的对象中心数据集资源集合，包括Cityscapes-Pedestrian、TrafficSigns和COCO PottedPlant，标准化为256x256对象中心裁剪。这些数据集针对小样本条件下的图像生成和增强，特别适用于智慧城市中的行人分析、交通标志检测等场景。该资源可直接用于多模态数据融合中的视觉部分，但本身不提供融合方法。",
+      "llm_tldr": "本文提供了一个可共享的对象中心数据集资源集合，包括Cityscapes-Pedestrian、TrafficSigns和COCO PottedPlant，标准化为256x256对象中心裁剪。这些数据集针对小样本条件下的图像生成和增强，特别适用于智慧城市中的行人分析、交通标志检测等场景。该资源可直接用于多模态数据融合中的视觉部分，但本身不提供融合方法。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.26963v1",
+      "source": "arxiv",
+      "title": "Term-Centric Hierarchy Induction from Heterogeneous Corpora",
+      "abstract": "Organizing knowledge from diverse text sources into interpretable hierarchies is crucial for tasks such as policy analysis, innovation monitoring, and exploratory domain mapping. Existing taxonomy induction methods typically rely on document-level representations that capture entire documents rather than the specific domain concepts relevant for knowledge organization, limiting their ability to generalize across heterogeneous sources. We propose a term-centric framework for inducing hierarchical taxonomies from heterogeneous corpora that scales to massive document collections. Our approach maps documents from diverse sources into a shared representation space using automatic term extraction, enabling robust cross-source alignment. Based on these representations, we construct interpretable hierarchies that integrate domain priors with datadriven clustering. Experiments on a novel English and German multi-source benchmark of over one million documents demonstrate that our method improves cross-source coherence and hierarchy quality over text- and summarybased baselines. A case study on German regional innovation analysis further demonstrates its practical utility for technology landscape mapping.",
+      "authors": [
+        "Elena Senger",
+        "Yuri Campbell",
+        "Jan-Peter Bergmann",
+        "Rob van der Goot",
+        "Barbara Plank"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-25T12:37:33+00:00",
+      "link": "https://arxiv.org/pdf/2606.26963v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "term-centric hierarchy induction from heterogeneous corpora, supports ontology learning",
+      "llm_evidence_cn": "从异构语料中归纳术语层次，支持本体学习",
+      "llm_evidence": "从异构语料中归纳术语层次，支持本体学习",
+      "canonical_evidence": "从异构语料中归纳术语层次，支持本体学习",
+      "llm_tldr_en": "Proposes a term-centric framework for inducing hierarchical taxonomies from heterogeneous corpora using automatic term extraction and cross-source alignment.",
+      "llm_tldr_cn": "本文提出一个以术语为中心的层次归纳框架，从异构语料中自动构建层次化分类体系。通过自动术语提取将文档映射到共享表示空间，实现跨源对齐，并在此基础上归纳出可解释的术语层次。该方法可扩展到大规模文档集合，为智慧城市中来自不同数据源（如BIM、GIS、文档）的本体学习提供了有效工具，推动了AI-ready知识库的构建。",
+      "llm_tldr": "本文提出一个以术语为中心的层次归纳框架，从异构语料中自动构建层次化分类体系。通过自动术语提取将文档映射到共享表示空间，实现跨源对齐，并在此基础上归纳出可解释的术语层次。该方法可扩展到大规模文档集合，为智慧城市中来自不同数据源（如BIM、GIS、文档）的本体学习提供了有效工具，推动了AI-ready知识库的构建。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic parsing, ontology learning, and knowledge graph construction from BIM models and point cloud scans for AI ready urban infrastructure databases.",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.24814v1",
+      "source": "arxiv",
+      "title": "Vision-Language Model Reasoning for Contextual Semantic Mapping in Intralogistics",
+      "abstract": "Autonomous mobile robots operating in intralogistics environments rely on geometric maps for localization and navigation, but lack semantic understanding of objects and their contextual properties. We present a contextual semantic mapping pipeline that combines SLAM-based geometric mapping, SAM-based instance segmentation, instance clustering, and VLM multi-view reasoning to produce a contextual semantic map representation encoding geometric structure, object class, and object movability. By aggregating observations across multiple viewpoints and querying a VLM in a zero-shot, open-vocabulary setting, the pipeline infers contextual object properties--here demonstrated through movability--without requiring task-specific training or predefined object categories. We evaluate three VLMs under two prompting strategies and conduct a component-wise analysis of the pipeline. The proposed pipeline achieves 98.93 % mIoU for semantic classification and 89.17 % mAcc for object movability estimation. Component analysis identifies VLM reasoning as the primary bottleneck for contextual understanding and instance clustering as the main limitation for panoptic performance. The resulting semantic map supports context-aware filtering and robust navigation in dynamic intralogistics environments.",
+      "authors": [
+        "Marvin Rüdt",
+        "Hao Pang",
+        "Constantin Enke",
+        "Zäzilia Seibold",
+        "Kai Furmans"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-23T16:59:52+00:00",
+      "link": "https://arxiv.org/pdf/2606.24814v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "contextual semantic mapping using VLM in intralogistics, transferable to urban",
+      "llm_evidence_cn": "利用视觉语言模型进行上下文语义映射，可迁移至城市环境",
+      "llm_evidence": "利用视觉语言模型进行上下文语义映射，可迁移至城市环境",
+      "canonical_evidence": "利用视觉语言模型进行上下文语义映射，可迁移至城市环境",
+      "llm_tldr_en": "Presents a pipeline for contextual semantic mapping combining SLAM, SAM, clustering, and VLM reasoning to infer object movability in intralogistics.",
+      "llm_tldr_cn": "该论文提出了一种结合SLAM几何建图、SAM实例分割和视觉语言模型多视角推理的上下文语义映射流程。该方法能在零样本下推断物体的可移动性等属性，无需预定义类别。尽管应用于内部物流，其思想可迁移到城市环境中的语义理解任务。",
+      "llm_tldr": "该论文提出了一种结合SLAM几何建图、SAM实例分割和视觉语言模型多视角推理的上下文语义映射流程。该方法能在零样本下推断物体的可移动性等属性，无需预定义类别。尽管应用于内部物流，其思想可迁移到城市环境中的语义理解任务。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

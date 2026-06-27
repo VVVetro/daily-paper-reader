@@ -1,0 +1,341 @@
+Title: Term-Centric Hierarchy Induction from Heterogeneous Corpora
+
+URL Source: https://arxiv.org/pdf/2606.26963v1
+
+Published Time: Fri, 26 Jun 2026 00:56:21 GMT
+
+Number of Pages: 12
+
+Markdown Content:
+# Term-Centric Hierarchy Induction from Heterogeneous Corpora 
+
+Elena Senger 1,2 Yuri Campbell 2 Jan-Peter Bergmann 2 Rob van der Goot 3 Barbara Plank 11MaiNLP, Center for Information and Language Processing, LMU Munich, Germany 
+
+> 2
+
+Fraunhofer Institute for Systems and Innovation Research ISI, Germany 
+
+> 3
+
+Department of Computer Science, IT University of Copenhagen, Denmark 
+
+elena.senger@cis.lmu.de, robv@itu.dk, b.plank@lmu.de {yuri.campbell,jan-peter.bergmann}@isi.fraunhofer.de, 
+
+Abstract 
+
+Organizing knowledge from diverse text sources into interpretable hierarchies is crucial for tasks such as policy analysis, innovation monitoring, and exploratory domain mapping. Existing taxonomy induction methods typically rely on document-level representations that cap-ture entire documents rather than the specific domain concepts relevant for knowledge or-ganization, limiting their ability to generalize across heterogeneous sources. We propose a term-centric framework for inducing hierarchi-cal taxonomies from heterogeneous corpora that scales to massive document collections. Our approach maps documents from diverse sources into a shared representation space us-ing automatic term extraction, enabling robust cross-source alignment. Based on these rep-resentations, we construct interpretable hierar-chies that integrate domain priors with data-driven clustering. Experiments on a novel En-glish and German multi-source benchmark of over one million documents demonstrate that our method improves cross-source coherence and hierarchy quality over text- and summary-based baselines. A case study on German re-gional innovation analysis further demonstrates its practical utility for technology landscape mapping. 
+
+1 Introduction 
+
+Hierarchical representations organize large text cor-pora into interpretable, multi-level structures. Such hierarchies facilitate exploratory search, domain mapping, and trend analysis by enabling users to navigate from broad thematic areas to fine-grained topics. Recent clustering- and LLM-based ap-proaches have shown promise for taxonomy in-duction from scientific literature (Zhu et al., 2025; Katz et al., 2024; Oarga et al., 2024; Gao et al., 2025). In practice, analysing complex domains often requires integrating heterogeneous sources reflecting different contexts. Tasks such as policy foresight, regional innovation analysis, and domain-specific knowledge discovery rely on synthesizing evidence from multiple data sources, for example to identify emerging technologies or monitor strate-gic priorities (Polchar, 2024; Hakiman and Stull-Lane, 2022). Heterogeneous data sources pose two main challenges for hierarchy induction: 1) they differ in style and structure. For example, scientific papers emphasize methods and findings, patents focus on technical claims, and funding records de-scribe strategic objectives. Standard document em-beddings may therefore reflect source boundaries rather than thematic structure. 2) data-driven clus-tering follows the empirical corpus rather than the true structure of the domain. Since methods such as K-Means allocate more centroids to high-density or high-variance regions (Manning et al., 2008), sampling and coverage biases can lead to finer par-titions where documents are abundant while under-represented areas may be merged or fragmented (Ester et al., 1996; McInnes et al., 2017). To address these challenges, we propose 
+
+TERMNET , a scalable term-centric framework for inducing hierarchical taxonomies from hetero-geneous corpora (Figure 1). Unlike prior taxon-omy induction methods that rely on raw–document or summary embeddings, TERMNET maps docu-ments into a shared semantic space using automatic term extraction, reducing source-specific style ef-fects. Based on these representations, we construct hierarchies through a clustering process that inte-grates domain priors with data-driven signals, pro-ducing human-interpretable and domain-balanced taxonomy structures. We evaluate TERMNET on our newly introduced large-scale multi-source benchmark containing over one million English and German documents. It outperforms raw-text and summary baselines in clustering quality, cross-source integration, and human interpretability, as validated by automatic and human evaluation. A policy-oriented case study further demonstrates the 
+
+> arXiv:2606.26963v1 [cs.CL] 25 Jun 2026 Figure 1: Overview of the TERMNET framework. Documents from heterogeneous sources are first mapped to a shared representation via automatic term extraction. The resulting embeddings are organized using a seed-guided hierarchical clustering procedure: predefined seed categories (representing broad scientific and technological domains) initialize the top levels of the hierarchy, which are then expanded in a data-driven manner.
+
+practical utility of the induced hierarchies. Our main contributions are: • We introduce TERMNET , a scalable term-centric framework for hierarchy induction from heterogeneous corpora. • We propose an evaluation protocol for multi-source hierarchy induction, including source entropy and intruder detection, and perform large-scale automatic and human evaluations. • We release a multi-source benchmark of over one million documents spanning publications, patents, and funding records to support re-search on heterogeneous knowledge organiza-tion. 
+
+2 Related Work 
+
+Research on hierarchy induction has traditionally focused on pattern-based hypernym extraction (e.g. Hearst, 1992; Shwartz et al., 2016; Panchenko et al., 2016) and distributional or clustering-based meth-ods that organize semantically related concepts or documents into hierarchical structures (e.g. Wang et al., 2013; Liu et al., 2012; Mimno et al., 2007). More recently, LLMs have been applied either as standalone approaches or integrated into traditional pipelines (e.g. Gao et al., 2025; Zhu et al., 2025; Katz et al., 2024). 
+
+2.1 LLM-Enhanced Hierarchy Induction 
+
+Research on hierarchy induction has largely fo-cused on single-source corpora. One early multi-source example, Zhu et al. (2013),constructs topic hierarchies from blogs, community question-answering sites, and Twitter, but targets narrow topics and small-scale user-generated content. We extend this direction to large-scale institutional data sources and domain-level hierarchies. The work most closely related to ours is SCY-CHIC (Gao et al., 2025), which organizes scientific abstracts into multi-level hierarchies by combining embedding-based K-Means clustering with selec-tive LLM-based summarization. A key insight is that decomposing papers into contribution types yields more coherent structures than treating each paper as a single-topic entity. Oarga et al. (2024) leverage LLMs for zero-shot ontology and knowl-edge graph generation from scientific literature by prompting models to extract vocabulary, infer hier-archical category structures, and extract relations in an end-to-end manner, showing effectiveness in domain-specific settings, e.g. chemistry. Zhu et al. (2025) encode papers along multiple semantic aspects (e.g., methodology, data, evaluation) and cluster each summarized aspect with a probabilistic embedding-based model, followed by a dynamic search to ensure consistent cluster assignments when building a taxonomy. Katz et al. (2024) in-troduce an LLM-guided framework that organizes scientific query results (a few thousand papers) into two-level hierarchies. Their system first embeds and clusters retrieved papers using Gaussian Mix-ture Models, followed by LLM-based naming, fil-tering, and grouping for exploratory browsing. These methods operate on single-source scien-tific corpora and rely on document-level representa-tions, such as raw text, summaries, or aspect-based reformulations.Summaries may preserve source-specific style or hallucinate content.Therefore, we propose to use automatic terms extraction for hier-archy induction. 
+
+2.2 Seed-Guided Hierarchy Induction 
+
+Seed-guided hierarchy construction expands a small initial hierarchy using corpus evidence (Shen et al., 2025). Early approaches rely on embedding-Origin raw text Summary Terms Example                     
+
+> openalex 197.12 71.62 50.34 Marine Anthropogenic Litter; This book describes how ...
+> uspto 107.80 62.57 21.38 a canister vacuum cleaner comprising a main body ...
+> horizon 274.56 80.54 67.01 Redwave: the future of blood pressure measurement ...
+> foekat 16.30 59.77 6.20 Steigerung der Energieeffizienz beim Hochofenbetrieb ...
+> Average 177.82 67.54 36.51 —
+> Table 1: Mean text, summary, and parsed response lengths and example sentences per origin.
+
+based methods that recursively organize concepts or attach new ones to existing nodes (e.g. Zhang et al., 2018; Lee et al., 2022; Huang et al., 2020). More recent work leverages LLMs for seed-guided hierarchy construction. For instance, TAXOIN-STRUCT (Shen et al., 2025) uses instruction-tuned LLMs to generate sibling entities and infer par-ent relations, and other approaches iteratively ex-tend seed hierarchies via prompting strategies (Gao et al., 2025). We use use seed hierarchies in a cross-source setting, combining seed-guided category assignment for the upper layers with data-driven clustering for the lower layers, to approximate the conceptual structure of the domain rather than the empirical distribution of individual datasets. 
+
+3 Source Data 
+
+To evaluate our approach, we construct a multi-source benchmark combining scientific publica-tions, patents, and public research funding records. These sources capture complementary stages of the innovation pipeline: scientific knowledge produc-tion, technological protection, and publicly funded research activity. The dataset focuses primarily on German-affiliated organizations and contains documents in both German and English. The cor-pus integrates four major data sources. It con-tains 578,335 publication abstracts from OpenAlex (openalex ) (Priem et al., 2022), 353,043 patent ab-stracts from the USPTO corpus ( uspto ) (Li et al., 2018), 12,979 project descriptions from EU frame-work programs Horizon 2020 (Publications Office of the European Union, 2015) and Horizon Eu-rope ( horizon ) (Publications Office of the Euro-pean Union, 2022), and 100,655 project descrip-tions from FöKAT ( foekat ), which catalogs re-search projects funded by the German Federal Gov-ernment (Bundesministerium für Forschung, Tech-nologie und Raumfahrt (BMFTR), 2026). The re-sulting dataset comprises 1,044,977 documents. The sources differ substantially in their linguis-tic characteristics and document structure. Publi-cation and patent abstracts typically contain well-structured descriptions of research contributions and technological inventions, whereas funding records are shorter and often contain administra-tive or program-specific terminology. Combining these heterogeneous sources provides a challeng-ing benchmark for methods aiming to capture tech-nological and scientific topics across institutional contexts. Table 1 shows representative example documents and summary statistics for each source. Details on data retrieval, filtering criteria and li-censing are provided in Appendix A. 
+
+4 Methods 
+
+4.1 Problem Formulation 
+
+Let D = {d1, . . . , d N } denote a heterogeneous cor-pus consisting of documents from multiple sources. Each document may differ in structure, style, and length depending on its source. Our goal is to in-duce a hierarchical taxonomy H = ( V, E) over the documents in D, where V represents the set of named taxonomy nodes, also referred to as cate-gories, and E represents the unique parent–child relations between them. Each node has a unique parent, except for the root v0 ∈ V , which has none. The hierarchy organizes documents into increas-ingly specific categories. Each document is asso-ciated with a unique path from the root to a leaf node. For a node v, we use Dv to denote the docu-ments that pass through v along this path, and Cv to denote its direct children. The resulting hierarchy should satisfy two objectives: (i) semantically co-herent clusters, in which sibling nodes are themati-cally distinct and documents within a node share a common topic; and (ii) balanced domain coverage, such that the hierarchy reflects the breadth of the technological and scientific landscape rather than the frequency distribution of the corpus. We fur-ther assume access to domain priors Hp that define coarse-grained categories in the upper layers of H.These priors may guide the hierarchy construction but do not fully determine its structure. 4.2 TERMNET 
+
+We propose TERMNET a term-centric frame-work for inducing scalable and interpretable hi-erarchies from heterogeneous corpora (Figure 1, Algorithm 1). The key motivations are i) to ab-stract away from source-specific linguistic conven-tions and document structures by representing doc-uments through their technological key-terms ii) to ensure interpretability with a guided hierarchy construction procedure that balances domain priors with data-driven discovery. 
+
+Term-centric Representation Documents from different sources may follow distinct stylistic con-ventions, which can cause document representa-tions to reflect source identity rather than thematic structure. We address this by representing docu-ments through their domain-specific terms—words or phrases denoting defined concepts within a spe-cialized domain. We use DiSTER, a fine-tuned model for cross-domain term extraction (Senger et al., 2025), to identify concepts, methods, ma-terials, and technologies in each document. The extracted terms are concatenated and embedded to form the document representation. This maps het-erogeneous texts into a shared representation space based on domain-specific terms. This encourages documents referring to similar concepts to align while reducing source-specific linguistic variation. 
+
+Hierarchy Guidance We construct the hierar-chy using a hybrid strategy that combines domain priors with recursive clustering. The upper lev-els are initialized using predefined seed categories representing broad scientific domains, forming Hp.First, all documents are assigned to the root node 
+
+v0 (Alg. 1, line 2). Then, for each node v with di-rect children, we apply K-Means over term-based embeddings of the documents Dv to obtain fine-grained clusters, where the number of clusters k
+
+is determined as a multiple α of the number of seed categories under node v, that is k = α|C v|.Each cluster is then assigned to one of the existing children of v or to a newly created child using zero-shot LLM classification (Alg. 1, lines 5–14). For this decision, the LLM receives representative key-words and documents retrieved using class-TF–IDF (Grootendorst, 2022). New nodes are created only if the cluster exceeds a minimum relative size smin 
+
+and if the cosine distance (dissimilarity) between the proposed label’s embedding and the closest sib-ling label’s embedding exceeds a threshold τ . smin 
+
+Algorithm 1: TERMNET algorithm                                                                                                     
+
+> Input: Documents {d1, . . . , d n}, hierarchy guidance
+> Hpwith depth P, total layers L, cluster multiplier α, size threshold smin , similarity threshold τ, branching bounds Bm, B M
+> 1Initialization: Extract domain-specific terms for each
+> diand compute embedding ri
+> 2Add all documents dito the root node v0
+> 3for l= 0 to P−1do
+> 4for each node vin Vldo
+> 5k←α· |C v|
+> 6Create kfine-grained clusters Musing K-Means
+> 7for Fine-grained cluster m∈ M do
+> 8Retrieve representative keywords and documents
+> 9Zero-shot classify cluster minto children of
+> v
+> 10 if LLM proposes new category and
+> |m| ≥ smin |Dv|and dissimilarity > τ
+> then
+> 11 Create new child node w∈ C v
+> 12 Assign documents of mto w
+> 13 else
+> 14 Assign documents of mto selected child of v
+> 15 for l=Pto L−1do
+> 16 for each node vin Vldo
+> 17 Cluster document representations of vinto
+> k∈ { Bm, B m+ 1 · · · , B M}clusters
+> 18 Add every cluster as child of v
+> 19 return Hierarchical structure
+
+and τ aim to balance the guidance’s depth granu-larity and suppress sibling explosion due to LLMs eagerness in creating new categories. After reaching the seed depth P , the hierarchy is expanded in a fully data-driven manner using re-cursive top-down K-Means clustering (Alg. 1, lines 15–18). For each node, the number of children is chosen proportional to its document count while remaining within predefined bounds (Bm, B M ).This allows dense nodes to be partitioned more finely while maintaining comparable granularity across hierarchy levels. Overall, the hybrid strat-egy preserves interpretability at higher levels while enabling fine-grained organization at lower levels. 
+
+4.3 Baselines 
+
+We compare against hierarchical k-means cluster-ing and a recent embedding taxonomy induction approach. Algorithms are provided in Appendix B. 
+
+Recursive K-Means We implement recursive K-Means as a hierarchical clustering approach. Start-ing from a global partition, clusters are recursively subdivided in a breadth-first manner until the tar-get granularity is reached. To ensure scalability, we apply Mini-Batch K-Means (Sculley, 2010) for clusters exceeding 10,000 documents and stan-dard K-Means (MacQueen, 1967) otherwise. This approach produces a strictly nested hierarchy in which each document is assigned to a path defined by successive centroid refinements. We apply this baseline to three document representations: raw text, document summaries, and extracted domain-specific terms. 
+
+SCYCHIC Due to compute feasibility, we adapt the SCYCHIC framework (Gao et al., 2025) to our large-scale corpus by using smaller embedding and summarization models (see Section 5.1). To ad-dress token constraints, in the bottom-up phase, we summarize only a representative subset of docu-ments per cluster selected using Maximal Marginal Relevance (MMR), balancing similarity to the clus-ter centroid with semantic diversity. 
+
+5 Experimental Design 
+
+5.1 Setup 
+
+All methods use Qwen3-Embedding-0.6B (Zhang et al., 2025) to generate document embeddings. For document summarization, we employ Meta-Llama-3-8B-Instruct (Grattafiori et al., 2024), and for autmatic term extraction we use DiS-TER with instruction-tuned Meta-Llama-3-8B-Instruct (Grattafiori et al., 2024) following Senger et al. (2025). The hierarchy guidance Hp is fixed with two category layers curated by domain experts and in-spired by the ASJC classification (Elsevier, 2024). Fine-grained clustering uses a multiplier α = 50 
+
+that determines the number of clusters per node. The creation of new categories during guidance is controlled by a minimum relative cluster size 
+
+smin = 1% and a cosine similarity threshold 
+
+τ = 0 .12 to prevent redundant labels. For the data-driven hierarchy expansion phase, the branch-ing factor is bounded by Bm = 3 and BM = 6 .The final hierarchy depth is fixed to L = 4 , re-sulting in hierarchies with approximately k =
+
+{6, 40 , 180 , 680 } clusters from top to bottom. This configuration was selected in consultation with do-main experts to support the downstream case study and analyses (Section 7). However, the method itself is not restricted to a fixed hierarchy depth or number of clusters. 
+
+5.2 Evaluation 
+
+We evaluate the hierarchies with unsupervised, su-pervised, and human-centered metrics to assess clustering quality, cross-source integration, struc-ture and usability. 
+
+Unsupervised Metrics We measure lexical clus-ter distinctiveness at each hierarchy level using topic diversity . Topic diversity is measured us-ing Inverted Rank-Biased Overlap (Webber et al., 2010; Terragni et al., 2021) over the top 10 rep-resentative terms per cluster. Cross-source inte-gration is measured with source entropy for each cluster based on the distribution of document ori-gins. Higher entropy indicates a more balanced source mixture, while lower entropy reflects source dominance. Perfect balance is unattainable due to skewedness in source-sizes and also not neces-sarily desirable, hence we comparatively evaluate reductions in source-driven fragmentation using entropy. Preliminary experiments showed that clus-tering raw documents produced source-separated clusters with low entropy; therefore, higher entropy indicates improved integration. The composition of clusters from different sources is further validated through human evaluation. 
+
+Supervised Metrics To evaluate high-level the-matic alignment, we manually construct a gold standard from source-specific classifications (e.g., OpenAlex fields and IPC codes for patents) and map these categories to induced top-level clusters. Documents are considered correctly assigned if their original categories correspond to the mapped cluster. For example, publications labeled with 
+
+General Immunology and Microbiology and Health Informatics are expected to appear in the corre-sponding Life Sciences or Health Sciences clusters. Since we only have these labels for a subset of the data, we can only measure precision. To evaluate the semantic coherence, we design an intruder detection task inspired by Bhatia et al. (2018). Given a parent cluster and its child clusters, along with one semantically similar intruder cluster drawn from a different parent at the same hierar-chy depth, the task is to identify the non-matching cluster. In a validation study we randomly sampled 60 parent clusters, balanced across hiarchy levels. For each instance, two human annotators indepen-dently identified the intruder cluster. Human inter-annotator agreement reached Cohen’s κ = 0 .73 ,while intruder predictions from an LLM (Llama-Method Precision Diversity Entropy Intruder Structure Validity Composition K-Means (raw) 53.28 99.79 24.50 84.30 2.0 2.5 2.5 K-Means (summary) 47.56 99.41 23.98 91.25 3.5 2.0 4.0 K-Means (terms) 61.12 99.75 30.00 86.42 3.0 1.5 4.0 SCYCHIC 60.52 99.73 23.48 79.02 4.0 3.0 4.0 TERMNET wo. terms 66.39 99.57 33.11 69.94 4.0 2.5 5.0 TERMNET 67.70 99.22 36.70 94.44 4.5 4.5 5.0 
+
+Table 2: Automatic metrics and human evaluation scores across the different hierarchy induction approaches. TERMNET wo. terms differs only in the input representation from the full TERMNET approach by using raw text instead of extracted terms. 
+
+3.3-70B-Instruct (Grattafiori et al., 2024)) matched annotators with mean κ = 0 .76 and higher mean precision, so we use it for large-scale evaluation and report macro-accuracy per layer. 
+
+Human Evaluation Following Hu et al. (2025) and Zhu et al. (2025), we evaluate hierarchies along three dimensions adapted to cross-data source hi-erarchy induction: Structure , Validity and Compo-sition . Structure assesses whether the hierarchy exhibits a clear progression from broad research areas to specific sub-technologies with consistent granularity across levels. Validity evaluates align-ment with experts’ understanding of how concepts are typically grouped and related. Composition ex-amines whether clusters reflect a plausible mix of data sources given the domain (e.g., publication-vs. patent- or project-intensive areas). Each di-mension is rated on a five-point Likert scale (see Appendix C). The mean inter-annotator agreement is Cohen’s κ = 0 .43 . 1
+
+6 Results & Analysis 
+
+6.1 Quantitative Analysis 
+
+Table 2 summarizes automatic metrics and human evaluation scores. Overall, TERMNET achieves the strongest performance across most metrics, ob-taining the highest precision (67.70), intruder ac-curacy (94.44), entropy (36.70), and human eval-uation scores. Topic diversity remains very high for all methods ( ≈ 99 ), indicating that clusters are lexically distinct and largely non-overlapping re-gardless of the clustering strategy. 
+
+Clustering Quality Among the baselines, K-Means with term representations achieves the    
+
+> 1The moderate chance-corrected agreement scores ( κ=0.43 ,α= 0 .57 ) reflect minor calibration differences and low variation. While exact agreement is 44%, 87% of ratings differed by at most one Likert point. Both annotators con-sistently ranked TERMNET highest, indicating disagreement mainly affect absolute ratings rather than system ordering. For per-annotator see Appendix D.
+
+highest precision (61.12), outperforming raw text (53.28) and summaries (47.56), while SCYCHIC reaches 60.52. This suggests that term-centric representations reduce source-specific linguistic variation and better capture technological con-cepts. Seed guidance further improves alignment, TERMNET without terms reaches 66.39 precision and the highest baseline entropy (33.11). The full model performs best overall, with 67.70 precision and 94.44 intruder accuracy. The large improve-ment in intruder accuracy compared to baselines (e.g., 84.30 for K-Means raw and 79.02 for SCY-CHIC) indicates substantially higher semantic co-herence of the generated hierarchy. 
+
+Structure and Validity Table 2 shows that TERMNET obtains the highest expert ratings for Structure and Validity (both 4.5). The strongest baselines reach Structure scores of 4.0 and Validity scores of at most 3.0. Even without term extraction, TERMNET archives Structure = 4.0, indicating that hierarchy guidance alone already improves the organization of domains. 
+
+Cross-Source Integration Term representations substantially increase source entropy, indicating better integration of publications, patents, and fund-ing records. K-Means with terms increases en-tropy to 30.00 compared to 24.50 for raw text. TERMNET further improves integration, achiev-ing the highest entropy (36.70). The human Com-position of 5.0 confirms that it’s clusters contain plausible source mixtures, rather than reflecting source-specific artifacts. 
+
+6.2 Sensitivity Analysis and Practical Guidance 
+
+We analyse the three hyperparameters controlling hierarchy construction: the over-clustering multi-plier α, the minimum relative size smin for creating guided nodes, and the similarity threshold τ for avoiding redundant labels. Figure 2 shows how the Layer 1 Layer 2 Layer 3              
+
+> 100
+> 1,000
+> Number of clusters
+> (a) Vary smin
+> (=50, =0.1)
+> smin
+> 0.003
+> 0.005
+> 0.0075
+> 0.0125
+> 0.015
+> 0.02
+> 0.03
+> Layer 1 Layer 2 Layer 3
+> (b) Vary
+> (smin =0.01, =0.1)
+> 20
+> 30
+> 40
+> 60
+> 70
+> 90
+> Layer 1 Layer 2 Layer 3
+> (c) Vary
+> (=50)
+> smin =0.01 (all )
+> smin =0.003, =0.01
+> smin =0.003, =0.2
+> smin =0.003, =0.4
+
+Figure 2: Sensitivity of the hierarchy shape to the three construction hyperparameters. 
+
+(α, s min , τ ) Entropy Intruder % 
+
+(20 , 0.01 , 0.10) 46.16 96.01 
+
+(40 , 0.003 , 0.10) 44.50 96.28 
+
+(50 , 0.01 , 0.16) 47.20 94.09 
+
+(50 , 0.01 , 0.40) 48.20 92.57 
+
+(70 , 0.02 , 0.10) 48.64 95.11 
+
+Table 3: Evaluation scores for five sensitivity configura-tions. 
+
+parameters affect the hierarchy shape. Reducing 
+
+smin from 0.03 to 0.003 increases cluster counts by about a factor of four, from 32 to 148 at layer 1 and from 639 to 1,768 at layer 3, as smaller candi-date clusters survive the guided merging step. The effect saturates for smin ≥ 0.02 , where further in-creases no longer affect the hierarchy. The seed multiplier α has a weaker but visible effect, smaller values create more clusters, while results stabilize for α ≥ 60 for the given smin and τ . The hyper-parameter are cros-dependent. At smin = 0 .01 ,sweeping τ yields identical cluster counts. In con-trast at smin = 0 .003 , τ = 0 .4 nearly doubles the number of clusters compared to τ ≤ 0.2. Thus, τ
+
+only becomes active when the size threshold is per-missive enough for many small candidate clusters to be considered for new labels. Practically, we therefore recommend choosing smin first, using α
+
+as a secondary density control, and tuning τ only for very low smin .Table 3 supports this interpretation: across five configurations, intruder accuracy remains between 92.57 and 96.28, and normalized source entropy between 44.50 and 48.64. The parameters there-fore control navigational granularity while leaving measured quality comparatively stable. 
+
+6.3 Qualitative Analysis 
+
+Analysis of intruder detection errors reveal subtle hierarchy limitations. TERMNET without terms performs worse at broad levels because some clus-ters include semantically distant subclusters. For example ‘Social and Community Development‘ was placed under ‘Life Sciences‘, causing the model to select it instead of the true intruder, ‘Math-ematics‘.With term extraction, such social-science subclusters are absent from ‘Life Sciences‘, and the true intruder ’Automotive Engineering’ is iden-tified correctly. Such errors illustrate that while the seed-guided hierarchy ensures broad structural coherence, precision at fine-grained levels benefits from term-centric representations. We hypothesize that the high Composition scores are largely driven by term extraction, Structure and 
+
+Validity benefit from hierarchy guidance. The upper layers of the hierarchy are initialized using the seed hierarchy, resulting the upper layers which roughly resemble established scientific hierarchies. This familiar structure helps experts navigate the taxon-omy. In contrast, purely data-driven approaches can deviate from established structures. For ex-ample, K-Means with summaries creates detailed engineering clusters at the top level but omits so-cial sciences and humanities, and deeper clusters such as ‘Policy and Governance Studies‘ appear under ‘Life Sciences‘, reflecting less coherent as-signments without seed guidance. Table 4 further illustrates differences in cluster composition. Raw text K-Means produces clus-ters that are strongly dominated by individual data sources. For example, ’Engineering and Applied Technologies’ contains 275k USPTO documents and 205k FÖKAT records, while other sources are sparsely represented. In contrast, TERMNET pro-duces more balanced clusters. For instance, the ’Engineering’ and ’IT and Computing’ clusters con-tain substantial contributions from both OpenAlex Cluster Example Keywords openalex uspto horizon foekat Method Social Sciences And Humanities [stakeholders, populist, mental] 148.668 4.309 1.806 3.993 K-Means (raw) Materials Science And Advanced Technologies [nanostructures, superconducting] 130.126 53.368 1.935 3.248 K-Means (raw) Engineering And Applied Technologies [reconfigurable, exoskeletons] 16.636 275.257 78 205 K-Means (raw) Biomedical And Molecular Sciences [fibrosis, protein, myelin] 140.317 11.017 1.810 3.526 K-Means (raw) Life Sciences [protein,biomass, genome] 103.866 5.595 1.558 2.586 K-Means (raw) Information And Communication Technologies [5g, innovativ, autonome] 38.722 3.462 5.792 87.097 K-Means (raw) Social Sciences And Humanities [kant, acculturation, unemployment] 55.764 192 671 6.140 TERMNET Natural Sciences [polymerization, phonon, chiral] 168.263 31.326 2.165 6.874 TERMNET Engineering [epitaxial, actuator, doped] 53.877 168.741 1.724 22.927 TERMNET Health Sciences [microglia, ecmo, hfpef] 139.286 16.937 1.696 7.793 TERMNET Life Sciences [isoforms, vesicles, rnas] 117.821 41.472 3.153 24.360 TERMNET IT and Computing [virtualized, subcarriers, ldpc] 43.324 94.340 3.570 32.561 TERMNET 
+
+Table 4: Top-level clusters and document counts per data source for the raw text K-Means baseline and TERMNET. Cluster names for the baseline were generated using an LLM. Keywords represent truncated examples of charac-teristic terms for each cluster. The distribution illustrates how TERMNET produces more balanced cross-source clusters compared to raw text clustering. 
+
+Method Precision Diversity Entropy Intruder % Structure Validity Composition Usefullness K-Means (raw) 33.70 99.81 22.91 98.01 – – – –K-Means (summary) 37.71 99.13 18.07 95.63 – – – –K-Means (terms) 39.96 99.78 28.02 86.34 3.5 4 2 3.5 SCYCHIC 51.71 99.77 20.71 90.24 1 2 3 2TERMNET 64.77 99.88 35.63 92.54 4.5 4.5 3 4
+
+Table 5: Automatic metrics and human evaluation scores for the proprietary dataset. 
+
+Method Entropy Accuracy % K-Means raw text 13.28 80 K-Means summary 11.75 78 K-Means terms 21.49 86 
+
+Table 6: Impact of document representations on source entropy and human-perceived accuracy. 
+
+and USPTO documents, suggesting that documents from different sources referring to similar concepts are aligned more effectively. These observations suggest that TERMNET bal-ances hierarchy guidance with data-driven cluster-ing, producing hierarchies that are interpretable at high levels while capturing fine-grained, semanti-cally coherent subtopics. 
+
+7 Case Study: Structural Change 
+
+To illustrate TERMNET’s utility for regional anal-ysis, we provide induced hierarchies to geographers studying structurally weak German regions. This case study uses in-house data, substituting pub-licly available OpenAlex abstracts with Scopus ab-stracts for higher-quality metadata and PATSTAT replaces USPTO to focus on German affiliations. The horizon and foekat datasets are used as be-fore. TERMNET achieves the highest scores on most metrics(Table 5), demonstrating robust per-formance. For human evaluation, we added a Use-fulness dimension to capture the practical utility of the hierarchies for geographers. Expert annotations were limited to the most promising approaches due to resource constraints. We further evaluate clustering quality and cross-source integration using K-Means with k = 650 
+
+on three input types: raw text, summaries, and terms (Table 6). Only a single clustering layer was generated. From each clustering, 50 documents were randomly sampled for blinded manual assess-ment. A geography expert judged whether each document was thematically consistent with its clus-ter, using the raw document text, representative keywords, representative cluster documents, and an LLM-generated cluster label. Term-centric rep-resentations achieved higher source entropy and human-perceived accuracy, indicating improved cross-source mixing and more coherent clusters. 
+
+8 Conclusion 
+
+We introduced TERMNET, a term-centric frame-work for inducing hierarchical taxonomies from heterogeneous corpora. By combining domain-specific term representations, seed-guided construc-tion, and data-driven clustering, TERMNET pro-duces interpretable hierarchies that align with estab-lished domain structures while integrating multiple data sources. Experiments show consistent gains in thematic alignment, semantic coherence, and cross-source integration across automatic metrics and expert evaluations. Limitations 
+
+While TERMNET demonstrates strong perfor-mance in cross-source hierarchy induction, several limitations remain that offer directions for future research. First, the interpretability and structure of the upper hierarchy levels depend on the quality of the expert-provided seed categories. While this guidance improves alignment with established do-main structures, poorly specified seeds may bias the resulting taxonomy. Second, our evaluation focuses on English and German corpora within scientific and technological domains. The generalizability of the approach to other languages, domains, or document genres remains an open question. Third, the current implementation constructs a static hi-erarchy from a fixed snapshot of documents. In real-world technology monitoring scenarios, cor-pora evolve continuously as new publications and patents appear. Supporting incremental updates and modelling the temporal evolution of hierar-chical structures would therefore be an important extension for future research. 
+
+Ethical Considerations 
+
+This work uses publicly available textual data sources and does not involve personal or sensitive information. Nevertheless, hierarchical represen-tations learned from large corpora may reflect bi-ases present in the underlying data, which could influence how topics or domains are structured and interpreted. Users should therefore treat automati-cally induced hierarchies as exploratory tools rather than authoritative representations of knowledge. Large language models were used to assist with grammar correction, spelling, and refinement of the manuscript text. They were not used to generate experimental results, analyses, or scientific claims. 
+
+References 
+
+Shraey Bhatia, Jey Han Lau, and Timothy Baldwin. 2018. Topic intrusion for automatic topic model eval-uation. In Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing ,pages 844–849, Brussels, Belgium. Association for Computational Linguistics. Bundesministerium für Forschung, Technologie und Raumfahrt (BMFTR). 2026. FöKAT – Federal Cat-alog of Research Projects in Germany. Database. Used and published with permission. The dataset aggregates publicly available information on re-search, development, and innovation projects, in-cluding contact details of German research insti-tutions (see Bundesbericht Forschung und Innova-tion, BuFI, https://www.bmftr.bund.de), available re-search reports via Technische Informationsbibliothek (TIB, https://www.tib.eu), and information on project funding managed by administrative project carriers (https://www.ptnetz.de). Additional federal funding sources include BMFTR, BMWE, BMV, BMUKN, BMJV, BMLEH. Elsevier. 2024. All science journal classification (asjc) codes. https://service.elsevier.com/ app/answers/detail/a_id/15181/supporthub/ scopus/ . Accessed: 2026-03-13. Martin Ester, Hans-Peter Kriegel, J"org Sander, and Xiaowei Xu. 1996. A density-based algorithm for discovering clusters in large spatial databases with noise. In Proceedings of the Second International Conference on Knowledge Discovery and Data Min-ing (KDD’96) , pages 226–231. Muhan Gao, Jash Shah, Weiqi Wang, Kuan-Hao Huang, and Daniel Khashabi. 2025. Science hierarchogra-phy: Hierarchical organization of science literature. 
+
+Preprint , arXiv:2504.13834. Aaron Grattafiori, Abhimanyu Dubey, Abhinav Jauhri, Abhinav Pandey, Abhishek Kadian, Ahmad Al-Dahle, Aiesha Letman, Akhil Mathur, Alan Schel-ten, Alex Vaughan, Amy Yang, Angela Fan, Anirudh Goyal, Anthony Hartshorn, Aobo Yang, Archi Mi-tra, Archie Sravankumar, Artem Korenev, Arthur Hinsvark, and 542 others. 2024. The llama 3 herd of models. Preprint , arXiv:2407.21783. Maarten R. Grootendorst. 2022. Bertopic: Neural topic modeling with a class-based tf-idf procedure. ArXiv ,abs/2203.05794. Kamran Hakiman and Chloe Stull-Lane. 2022. Inno-vation in governance: Integrating technical and con-textual perspectives to address fragility. Technical report, SPARC. Marti A. Hearst. 1992. Automatic acquisition of hy-ponyms from large text corpora. In COLING 1992 Volume 2: The 14th International Conference on Computational Linguistics .Yuntong Hu, Zhuofeng Li, Zheng Zhang, Chen Ling, Raasikh Kanjiani, Boxin Zhao, and Liang Zhao. 2025. Taxonomy tree generation from citation graph. 
+
+Preprint , arXiv:2410.03761. Jiaxin Huang, Yiqing Xie, Yu Meng, Yunyi Zhang, and Jiawei Han. 2020. Corel: Seed-guided topi-cal taxonomy construction by concept learning and relation transferring. In Proceedings of the 26th ACM SIGKDD International Conference on Knowl-edge Discovery and Data Mining , KDD ’20, page 1928–1936. ACM. Uri Katz, Mosh Levy, and Yoav Goldberg. 2024. Knowl-edge navigator: LLM-guided browsing framework for exploratory search in scientific literature. In Find-ings of the Association for Computational Linguistics: EMNLP 2024 , pages 8838–8855, Miami, Florida, USA. Association for Computational Linguistics. Dongha Lee, Jiaming Shen, Seongku Kang, Susik Yoon, Jiawei Han, and Hwanjo Yu. 2022. Taxocom: Topic taxonomy completion with hierarchical discovery of novel topic clusters. In Proceedings of the ACM Web Conference 2022 , WWW ’22, page 2819–2829, New York, NY, USA. Association for Computing Machinery. Shaobo Li, Jie Hu, Yuxin Cui, and Jianjun Hu. 2018. Deeppatent: patent classification with convolutional neural networks and word embedding. Scientomet-rics , 117(2):721–744. Xueqing Liu, Yangqiu Song, Shixia Liu, and Haixun Wang. 2012. Automatic taxonomy construction from keywords. In Proceedings of the 18th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining , KDD ’12, page 1433–1441, New York, NY, USA. Association for Computing Machin-ery. J. B. MacQueen. 1967. Some methods for classification and analysis of multivariate observations , pages :281– 297. University of California Press. Christopher D. Manning, Prabhakar Raghavan, and Hin-rich Sch"utze. 2008. Introduction to Information Retrieval . Cambridge University Press. Leland McInnes, John Healy, and Steve Astels. 2017. hdbscan: Hierarchical density based clustering. The Journal of Open Source Software , 2(11):205. David Mimno, Wei Li, and Andrew McCallum. 2007. Mixtures of hierarchical topics with pachinko alloca-tion. In Proceedings of the 24th International Confer-ence on Machine Learning , ICML ’07, page 633–640, New York, NY, USA. Association for Computing Ma-chinery. Alexandru Oarga, Matthew Hart, Andres M Bran, Mag-dalena Lederbauer, and Philippe Schwaller. 2024. Scientific knowledge graph and ontology generation using open large language models. In AI for Acceler-ated Materials Design - NeurIPS 2024 .Alexander Panchenko, Stefano Faralli, Eugen Ruppert, Steffen Remus, Hubert Naets, Cédrick Fairon, Si-mone Paolo Ponzetto, and Chris Biemann. 2016. TAXI at SemEval-2016 task 13: a taxonomy induc-tion method based on lexico-syntactic patterns, sub-strings and focused crawling. In Proceedings of the 10th International Workshop on Semantic Evaluation (SemEval-2016) , pages 1320–1327, San Diego, Cali-fornia. Association for Computational Linguistics. Jan Polchar. 2024. Using foresight to anticipate emerg-ing critical risks: Proposed methodology. Technical Report 79, OECD Publishing, Paris. Jason Priem, Heather Piwowar, and Richard Orr. 2022. Openalex: A fully-open index of scholarly works, authors, venues, institutions, and concepts. Preprint ,arXiv:2205.01833. Publications Office of the European Union. 2015. CORDIS - EU Research Projects under Horizon 2020 (2014–2020). Accessed: 2026-03-13. Publications Office of the European Union. 2022. CORDIS - EU Research Projects under HORIZON EUROPE (2021–2027). Accessed: 2026-03-13. D. Sculley. 2010. Web-scale k-means clustering. In 
+
+Proceedings of the 19th International Conference on World Wide Web , WWW ’10, page 1177–1178, New York, NY, USA. Association for Computing Machinery. Elena Senger, Yuri Campbell, Rob Van Der Goot, and Barbara Plank. 2025. Crossing domains without la-bels: Distant supervision for term extraction. In 
+
+Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing: Industry Track , pages 1366–1378, Suzhou (China). Associa-tion for Computational Linguistics. Yanzhen Shen, Yu Zhang, Yunyi Zhang, and Jiawei Han. 2025. A unified taxonomy-guided instruction tuning framework for entity set expansion and taxonomy expansion. In Findings of the Association for Com-putational Linguistics: ACL 2025 , pages 3208–3220, Vienna, Austria. Association for Computational Lin-guistics. Vered Shwartz, Yoav Goldberg, and Ido Dagan. 2016. Improving hypernymy detection with an integrated path-based and distributional method. In Proceed-ings of the 54th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers) ,pages 2389–2398, Berlin, Germany. Association for Computational Linguistics. Silvia Terragni, Elisabetta Fersini, and Enza Messina. 2021. Word embedding-based topic similarity mea-sures. In International conference on applications of Natural Language to information systems , pages 33–45. Springer. Chi Wang, Marina Danilevsky, Nihit Desai, Yinan Zhang, Phuong Nguyen, Thrivikrama Taula, and Ji-awei Han. 2013. A phrase mining framework for recursive construction of a topical hierarchy. In Pro-ceedings of the 19th ACM SIGKDD International Conference on Knowledge Discovery and Data Min-ing , KDD ’13, page 437–445, New York, NY, USA. Association for Computing Machinery. William Webber, Alistair Moffat, and Justin Zobel. 2010. A similarity measure for indefinite rankings. ACM Transactions on Information Systems (TOIS) , 28(4):1– 38. Chao Zhang, Fangbo Tao, Xiusi Chen, Jiaming Shen, Meng Jiang, Brian Sadler, Michelle Vanni, and Jiawei Han. 2018. Taxogen: Unsupervised topic taxonomy construction by adaptive term embedding and clus-tering. In Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining , KDD ’18, page 2701–2709, New York, NY, USA. Association for Computing Machinery. Yanzhao Zhang, Mingxin Li, Dingkun Long, Xin Zhang, Huan Lin, Baosong Yang, Pengjun Xie, An Yang, Dayiheng Liu, Junyang Lin, Fei Huang, and Jingren Zhou. 2025. Qwen3 embedding: Advancing text embedding and reranking through foundation models. 
+
+Preprint , arXiv:2506.05176. Kun Zhu, Lizi Liao, Yuxuan Gu, Lei Huang, Xiaocheng Feng, and Bing Qin. 2025. Context-aware hierar-chical taxonomy generation for scientific papers via LLM-guided multi-aspect clustering. In Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing , pages 15627–15645, Suzhou, China. Association for Computational Lin-guistics. Xingwei Zhu, Zhao-Yan Ming, Xiaoyan Zhu, and Tat-Seng Chua. 2013. Topic hierarchy construction for the organization of multi-source user generated con-tents. In Proceedings of the 36th International ACM SIGIR Conference on Research and Development in Information Retrieval , SIGIR ’13, page 233–242, New York, NY, USA. Association for Computing Machinery. 
+
+A Details on the Dataset Creation and Licensing 
+
+A.1 Dataset Creation 
+
+This appendix provides details on the data retrieval, filtering, and text construction steps applied to each source in the dataset. • OpenAlex (Priem et al., 2022): We retrieved publications via the OpenAlex API with at least one German-affiliated author for the period 2015–2023. Only records with a DOI were retained. The text corpus was constructed by concatenating the title and 
+
+abstract fields. • USPTO (Li et al., 2018): We used patent records from the USPTO dataset for the years 2014–2015. The textual content consists of the Abstract field. • CORDIS: We used project data from Hori-zon 2020 (funded 2014-2020) (Publications Office of the European Union, 2015) and Horizon Europe (funded 2021-2027) (Publi-cations Office of the European Union, 2022). The text corpus combines ProjectTitle and 
+
+ProjectObjective .• FöKAT (Bundesministerium für Forschung, Technologie und Raumfahrt (BMFTR), 2026): We used funding records from 2014–2025, with the year determined by Laufzeit von .
+
+Algorithm 2: Recursive K-Means hierar-chy construction                                    
+
+> Input: Set of documents {di, . . . , d n}, number of layers L, target number of clusters
+> (k1, . . . , k L)
+> 1Initialization: Embed each di
+> 2for l= 1 to Ldo
+> 3if l= 1 then
+> 4Cluster all documents into k1clusters
+> 5else
+> 6for each cluster cfrom layer l−1do
+> 7Cluster documents of cinto klsubclusters
+> 8return Hierarchical structure
+
+The text corpus consists of the Thema field. Compared to the other datasets, FOEKAT entries are substantially shorter and fre-quently contain funding-specific terminology or proper names of funding programs without descriptive context. To mitigate this, domain experts excluded selected categories from the FÖKAT taxonomy ( Leistungsplansystematik )and applied additional keyword-based filter-ing to remove highly specific funding instru-ments (e.g., Professorinnenprogramm ). Across all sources, we additionally removed ex-tremely short entries (less than five characters). 
+
+A.2 Licensing 
+
+The benchmark dataset aggregates information from United States Patent and Trademark Office (USPTO) patents (CC BY 4.0), OpenAlex publi-cations (CC0), CORDIS project data (generally available under CC BY 4.0 / PSI reuse terms), and FöKAT records used with permission. To ensure license compatibility and proper attribution require-ments across sources, the compiled benchmark dataset is released under the Creative Commons Attribution 4.0 (CC BY 4.0) license. 
+
+B Algorithms 
+
+In Algorithm 2, we present the classical approach to hierarchical clustering using recursive K-Means. In Algorithm 3, we reproduce the SCYCHIC algo-rithm, introduced by Gao et al. (2025). 
+
+C Details on Human Evaluation 
+
+The four dimonsions for the Likert scale are: • Structure: Does the organization fol-low a clear logical hierarchy, transitioning Algorithm 3: Scychic algorithm                                                                        
+
+> Input: Set of documents {di, . . . , d n}, number of layers L, target number of clusters
+> (k1, . . . , k L)
+> 1Initialization: Embed each di
+> 2for l= 1 to ⌊L/ 2⌋// Top-down phase
+> 3do
+> 4if l= 1 then
+> 5Cluster all documents into k1clusters
+> 6else
+> 7for each cluster cfrom layer l−1do
+> 8Cluster documents of cinto klsubclusters
+> 9for each cluster τat level ⌊L/ 2⌋// Bottom-up phase
+> 10 do
+> 11 for l=Ldown to ⌊L/ 2⌋+ 1 do
+> 12 if l=Lthen
+> 13 E= { embeddings of documents within τ}
+> 14 else
+> 15 E= { embeddings of summaries of cluster
+> l+ 1 }
+> 16 Cluster Einto klsubclusters
+> 17 Generate summary for each subcluster
+> 18 return Hierarchical structure
+
+from broad research areas to specific sub-technologies, or do the clusters maintain a consistent level of granularity on each layer? • Validity: Does the taxonomy align with ex-perts’ understanding of the scientific and tech-nological landscape, including how concepts are commonly grouped, related, or distin-guished? • Composition: Does the clusters reflect an ap-propriate and plausible composition of data sources given the nature of the technology (e.g., publication-dominated scientific fields versus patent- or project-intensive applied do-mains)? • Usefulness (Case Study): How useful is the hierarchy for policy analysts or foresight practitioners seeking to monitor technolog-ical developments, compare signals across data sources, or identify emerging or underex-plored areas? The 1-5 Likert Scale is defined as: 1. Completely inaccurate , with significant fac-tual errors or misrepresentations of the do-main. 2. Mostly inaccurate , capturing only a few cor-rect facts but failing to represent the domain coherently. 3. Moderately accurate , containing some fac-tual correctness but missing important con-cepts or relationships. 4. Mostly accurate , representing the domain well with minor factual inaccuracies or omis-sions. 5. Highly accurate , thoroughly reflecting the domain’s factual structure with no noticeable errors. 
+
+D Per-Annotator Likert Scale Ratings 
+
+Tables 7 and 8 present the per-annotator Likert-scale ratings. TERMNET consistently achieves the highest score, either independently or tied with other approaches, with one exception: for annota-tor 1 in the “Structure” dimension, where it scores one point below the top-rated approach. Item Structure Validity Composition K-Means (raw) 2 3 2K-Means (summary) 4 2 5K-Means (terms) 3 1 4SCYCHIC 5 3 4TERMNET wo. terms 5 2 5TERMNET 4 4 5
+
+Table 7: Likert-scale ratings from Annotator 1                      
+
+> Item Structure Validity Composition K-Means (raw) 223K-Means (summary) 323K-Means (terms) 324SCYCHIC 334TERMNET wo. terms 435TERMNET 555
+
+Table 8: Likert-scale ratings from Annotator 2
