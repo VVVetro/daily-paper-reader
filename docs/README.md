@@ -6,35 +6,30 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-27
-- 运行时间：2026-06-27 21:28:37 UTC
+- 最新运行日期：2026-06-28
+- 运行时间：2026-06-28 21:06:54 UTC
 - 运行状态：成功
-- 本次总论文数：5
-- 精读区：1
-- 速读区：4
+- 本次总论文数：3
+- 精读区：0
+- 速读区：3
 
 ### 今日简报（AI）
-今日精读《From Causal Discovery to Implementation》聚焦德国29城电动滑板车枢纽规划，速读新增LLM增强数据管道与层次归纳等工具。最值得关注因果发现与智能体AI在城市规划中的落地，以及术语中心归纳对异构语料的结构化提炼。建议普通读者优先了解该精读论文的因果推断应用，后续可跟进FlowPipe等数据流水线方法。
-- 详情：[/202606/27/README](/202606/27/README)
+今日速读3篇论文，聚焦数据准备管道自动生成、多智能体元数据交换与边缘移动操作语义表示。最值得关注《FlowPipe》中LLM增强的条件生成流网络，以及《Data Facts》为多智能体设计的结构化元数据模式。建议优先了解AI驱动数据自动化的前沿方法，并关注多智能体系统间数据交换标准的构建思路。
+- 详情：[/202606/28/README](/202606/28/README)
 
 ### 精读区论文标签
-1. [From Causal Discovery to Implementation: An Agentic AI Framework for E-Scooter Mobility Hub Planning Across 29 German Cities](/202606/27/2606.25484v1-from-causal-discovery-to-implementation-an-agentic-ai-framework-for-e-scooter-mobility-hub-planning-across-29-german-cities)  
-   标签：评分：8.0/10、query:smart-city
-   evidence：利用代理人工智能和因果发现进行城市出行枢纽规划的多源数据整合
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [FlowPipe: LLM-Enhanced Conditional Generative Flow Networks for Data Preparation Pipeline Construction](/202606/27/2606.24679v2-flowpipe-llm-enhanced-conditional-generative-flow-networks-for-data-preparation-pipeline-construction)  
+1. [FlowPipe: LLM-Enhanced Conditional Generative Flow Networks for Data Preparation Pipeline Construction](/202606/28/2606.24679v1-flowpipe-llm-enhanced-conditional-generative-flow-networks-for-data-preparation-pipeline-construction)  
    标签：评分：7.0/10、query:smart-city
-   evidence：基于LLM的数据准备管道自动构建，可适用于城市建筑数据管道
-2. [Term-Centric Hierarchy Induction from Heterogeneous Corpora](/202606/27/2606.26963v1-term-centric-hierarchy-induction-from-heterogeneous-corpora)  
+   evidence：使用生成流网络和LLM自动构建数据准备管道
+2. [Data Facts: A Metadata Schema for Structured Data Exchange in the NANDini Multi-Agent Ecosystem](/202606/28/2606.26211v1-data-facts-a-metadata-schema-for-structured-data-exchange-in-the-nandini-multi-agent-ecosystem)  
    标签：评分：7.0/10、query:smart-city
-   evidence：从异构语料中归纳术语层次，支持本体学习
-3. [Object-Centric Dataset Resources for Constrained-Data Image Generation and Augmentation](/202606/27/2606.21113v1-object-centric-dataset-resources-for-constrained-data-image-generation-and-augmentation)  
+   evidence：多智能体生态系统中结构化数据交换的元数据模式
+3. [KRVF: A Source-Aware Semantic Voxel World Representation for Edge Mobile Manipulation](/202606/28/2606.26321v1-krvf-a-source-aware-semantic-voxel-world-representation-for-edge-mobile-manipulation)  
    标签：评分：6.0/10、query:smart-city
-   evidence：智慧城市场景的对象中心数据集，支持多模态数据融合
-4. [Vision-Language Model Reasoning for Contextual Semantic Mapping in Intralogistics](/202606/27/2606.24814v1-vision-language-model-reasoning-for-contextual-semantic-mapping-in-intralogistics)  
-   标签：评分：6.0/10、query:smart-city
-   evidence：利用视觉语言模型进行上下文语义映射，可迁移至城市环境
+   evidence：面向边缘移动操作的语义体素表示，编码占用、颜色、语义证据和时间新鲜度
 
 
 <div class="dpr-home-promo-card">

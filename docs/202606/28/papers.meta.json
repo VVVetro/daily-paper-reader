@@ -1,0 +1,54 @@
+{
+  "label": "2026-06-28",
+  "date": "2026-06-28",
+  "generated_at": "2026-06-28T21:07:02",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202606/28/2606.24679v1-flowpipe-llm-enhanced-conditional-generative-flow-networks-for-data-preparation-pipeline-construction",
+      "section": "quick",
+      "title_en": "FlowPipe: LLM-Enhanced Conditional Generative Flow Networks for Data Preparation Pipeline Construction",
+      "authors": "Kunyu Ni, Lei Cao, Jie He, Xiaotong Zhang, Jianfeng Jin, Junyu Dong, Yanwei Yu",
+      "date": "2026-06-23",
+      "pdf": "https://arxiv.org/pdf/2606.24679v1",
+      "score": "7.0",
+      "evidence": "使用生成流网络和LLM自动构建数据准备管道",
+      "tldr": "数据准备管道构建面临组合搜索空间大和评估昂贵等挑战。现有方法存在长程信用分配弱、上下文注入不足、探索低效问题。FlowPipe采用条件生成流网络，通过轨迹平衡目标连接早期决策与最终奖励，并利用LLM逻辑先验进行深度语义调制，同时引入失效感知聚焦有效搜索。在74个数据集上，平均准确率提升11.96%，训练收敛速度提升12.5倍。",
+      "tags": "query:smart-city",
+      "abstract_en": "Data preparation pipelines improve data quality in machine learning by transforming raw tables into learning-ready data through sequential cleaning and feature transformation operators. However, automatically constructing such pipelines is computationally difficult because operator sequences are combinatorial and end-to-end evaluation is expensive. Existing state-of-the-art (SOTA) Multi-DQN methods still face three key limitations: decoupled value estimators weaken long-horizon credit assignment, dataset context is only weakly injected into the policy, and exploration is inefficient in a sparse search space with many invalid states. To address these issues, we propose FlowPipe, a unified framework that formulates pipeline synthesis as conditional probabilistic flow generation over a directed acyclic graph. FlowPipe uses Conditional Generative Flow Networks (C-GFlowNets) with a Trajectory Balance objective to connect terminal validation rewards with early pipeline decisions. It further introduces Deep Semantic Modulation through Feature-wise Linear Modulation (FiLM), allowing LLM-derived logical priors to condition the policy's internal activations according to dataset semantics. In addition, FlowPipe incorporates failure awareness into the flow objective to avoid invalid states and concentrate search on high-potential regions. Experiments on two benchmark suites with 74 real-world datasets show that FlowPipe outperforms SOTA baselines, improving accuracy by 11.96% on average and achieving 12.5x faster training convergence. Source code is available at https://github.com/KunyuNi/FlowPipe.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/28/2606.26211v1-data-facts-a-metadata-schema-for-structured-data-exchange-in-the-nandini-multi-agent-ecosystem",
+      "section": "quick",
+      "title_en": "Data Facts: A Metadata Schema for Structured Data Exchange in the NANDini Multi-Agent Ecosystem",
+      "authors": "Jin Gao, Maria Gorskikh, Pradyumna Chari, Brittany Box, Mukul Kemla, Pratik Behera, Abhishek Mehta, Ramesh Raskar",
+      "date": "2026-06-24",
+      "pdf": "https://arxiv.org/pdf/2606.26211v1",
+      "score": "7.0",
+      "evidence": "多智能体生态系统中结构化数据交换的元数据模式",
+      "tldr": "多智能体生态系统NANDINI中，现有协议（如A2A、MCP）仅处理身份与通信，缺乏结构化数据交换机制。我们提出Data Facts元数据模式，通过在Agent Facts注册记录中添加data_facts_url指针，编码数据集身份、访问层级、TTL及SHA-256校验和，并实现JWT认证、网关授权和A2A委托的三层安全管道。实验表明，数据驱动智能体准确率从35.2%提升至100%，TTL减少陈旧错误至8.8%，校验和100%检测数据篡改，安全管道成功抵御全部46次伪造攻击。该方案为自主代理间安全、高效的数据共享奠定基础。",
+      "tags": "query:smart-city",
+      "abstract_en": "NANDini (Networked Agents Natural Distillation of Interconnected Nodal Intelligence) envisions an automated ecosystem where intelligent agents independently create, process, and exchange data to drive decisions at scale. Realizing this vision requires infrastructure beyond agent discovery and communication: agents must be able to advertise, evaluate, and verify the datasets they hold.   Current protocols, including NANDA for federated registry and A2A and MCP for inter-agent messaging, address identity and communication but provide no mechanism for structured data exchange. Existing enterprise data-sharing frameworks, such as IDS-RAM, Gaia-X, and Ocean Protocol, assume human-in-the-loop governance that is incompatible with autonomous, real-time agent interactions.   We introduce Data Facts, a core NANDini concept: a lightweight JSON metadata schema that bridges agent discovery and data access through a single pointer, `data_facts_url`, added to an existing Agent Facts registry record. The linked document encodes dataset identity, access tier, whether public, semi-private, or private, endpoint, a time-to-live for freshness validation, and a SHA-256 integrity checksum.   For private and semi-private data, we implement a three-layer security pipeline: JWT authentication, capability-scoped gateway authorization, and an A2A credential delegation protocol. Across 840 decision-making evaluations, data-informed agents achieve 100% accuracy versus 35.2% without data access (p < 0.001); TTL enforcement reduces stale-data errors from 37.6% to 8.8%; checksum verification achieves 100% corruption detection at all injection rates; and the security pipeline blocks all 46 forgery attempts with zero data leakage.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/28/2606.26321v1-krvf-a-source-aware-semantic-voxel-world-representation-for-edge-mobile-manipulation",
+      "section": "quick",
+      "title_en": "KRVF: A Source-Aware Semantic Voxel World Representation for Edge Mobile Manipulation",
+      "authors": "Runfeng Ling",
+      "date": "2026-06-24",
+      "pdf": "https://arxiv.org/pdf/2606.26321v1",
+      "score": "6.0",
+      "evidence": "面向边缘移动操作的语义体素表示，编码占用、颜色、语义证据和时间新鲜度",
+      "tldr": "移动操作机器人需要在边缘计算约束下实时维护语义世界模型。本文提出KRVF，一种源感知语义体素表示，将占用、颜色、语义证据、时间新鲜度和来源编码为任务导向体素，并分离测量占用与语义先验。该方法支持深度失败感知的对象推理，通过渲染先验深度修复实现映射-感知闭环，并提供语义对象和抓取候选查询。在ROS 2中实现，将在线RGB-D观测转化为实时、语义可解释的机器人记忆，适用于边缘移动操作。",
+      "tags": "query:smart-city",
+      "abstract_en": "Mobile manipulators need world models that are current, queryable, semantically meaningful, and usable under edge-compute constraints. This technical report presents KRVF, a source-aware semantic voxel world representation for edge mobile manipulation. Unlike reconstruction-centric mapping pipelines that primarily optimize global geometric fidelity, KRVF represents local world state as task-oriented voxels that encode occupancy, color, semantic evidence, temporal freshness, and evidence source. The representation separates measured occupancy from semantic-prior hypotheses, enabling depth-failure-aware object reasoning without silently corrupting persistent geometry. KRVF also closes a feedback loop between mapping and sensing by rendering map-prior depth for repair, and exposes task-level query operators for semantic objects and grasp candidates. The report formalizes the KRVF representation and documents a ROS 2 implementation that turns online RGB-D observations into a task-facing robot memory.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

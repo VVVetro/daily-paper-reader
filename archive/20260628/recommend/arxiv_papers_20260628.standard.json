@@ -1,0 +1,136 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-28T21:05:24.808254+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.24679v1",
+      "source": "arxiv",
+      "title": "FlowPipe: LLM-Enhanced Conditional Generative Flow Networks for Data Preparation Pipeline Construction",
+      "abstract": "Data preparation pipelines improve data quality in machine learning by transforming raw tables into learning-ready data through sequential cleaning and feature transformation operators. However, automatically constructing such pipelines is computationally difficult because operator sequences are combinatorial and end-to-end evaluation is expensive. Existing state-of-the-art (SOTA) Multi-DQN methods still face three key limitations: decoupled value estimators weaken long-horizon credit assignment, dataset context is only weakly injected into the policy, and exploration is inefficient in a sparse search space with many invalid states. To address these issues, we propose FlowPipe, a unified framework that formulates pipeline synthesis as conditional probabilistic flow generation over a directed acyclic graph. FlowPipe uses Conditional Generative Flow Networks (C-GFlowNets) with a Trajectory Balance objective to connect terminal validation rewards with early pipeline decisions. It further introduces Deep Semantic Modulation through Feature-wise Linear Modulation (FiLM), allowing LLM-derived logical priors to condition the policy's internal activations according to dataset semantics. In addition, FlowPipe incorporates failure awareness into the flow objective to avoid invalid states and concentrate search on high-potential regions. Experiments on two benchmark suites with 74 real-world datasets show that FlowPipe outperforms SOTA baselines, improving accuracy by 11.96% on average and achieving 12.5x faster training convergence. Source code is available at https://github.com/KunyuNi/FlowPipe.",
+      "authors": [
+        "Kunyu Ni",
+        "Lei Cao",
+        "Jie He",
+        "Xiaotong Zhang",
+        "Jianfeng Jin",
+        "Junyu Dong",
+        "Yanwei Yu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-23T15:10:00+00:00",
+      "link": "https://arxiv.org/pdf/2606.24679v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "data preparation pipeline construction using generative flow networks and LLM",
+      "llm_evidence_cn": "使用生成流网络和LLM自动构建数据准备管道",
+      "llm_evidence": "使用生成流网络和LLM自动构建数据准备管道",
+      "canonical_evidence": "使用生成流网络和LLM自动构建数据准备管道",
+      "llm_tldr_en": "FlowPipe uses conditional generative flow networks with LLM enhancement to automatically construct data preparation pipelines, outperforming existing methods in multiple ML datasets.",
+      "llm_tldr_cn": "针对自动数据管道构建中搜索空间巨大、评估代价高的问题，本文提出FlowPipe框架，将管道构建建模为条件生成流网络，结合LLM增强算子选择。实验结果显示，FlowPipe在多个标准数据集上生成了更优的管道，显著提升了数据质量，为数据准备工作流自动化提供了高效解决方案。",
+      "llm_tldr": "针对自动数据管道构建中搜索空间巨大、评估代价高的问题，本文提出FlowPipe框架，将管道构建建模为条件生成流网络，结合LLM增强算子选择。实验结果显示，FlowPipe在多个标准数据集上生成了更优的管道，显著提升了数据质量，为数据准备工作流自动化提供了高效解决方案。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.26321v1",
+      "source": "arxiv",
+      "title": "KRVF: A Source-Aware Semantic Voxel World Representation for Edge Mobile Manipulation",
+      "abstract": "Mobile manipulators need world models that are current, queryable, semantically meaningful, and usable under edge-compute constraints. This technical report presents KRVF, a source-aware semantic voxel world representation for edge mobile manipulation. Unlike reconstruction-centric mapping pipelines that primarily optimize global geometric fidelity, KRVF represents local world state as task-oriented voxels that encode occupancy, color, semantic evidence, temporal freshness, and evidence source. The representation separates measured occupancy from semantic-prior hypotheses, enabling depth-failure-aware object reasoning without silently corrupting persistent geometry. KRVF also closes a feedback loop between mapping and sensing by rendering map-prior depth for repair, and exposes task-level query operators for semantic objects and grasp candidates. The report formalizes the KRVF representation and documents a ROS 2 implementation that turns online RGB-D observations into a task-facing robot memory.",
+      "authors": [
+        "Runfeng Ling"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-24T19:07:42+00:00",
+      "link": "https://arxiv.org/pdf/2606.26321v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "semantic voxel world representation encoding occupancy, color, semantic evidence, temporal freshness for edge mobile manipulation",
+      "llm_evidence_cn": "面向边缘移动操作的语义体素表示，编码占用、颜色、语义证据和时间新鲜度",
+      "llm_evidence": "面向边缘移动操作的语义体素表示，编码占用、颜色、语义证据和时间新鲜度",
+      "canonical_evidence": "面向边缘移动操作的语义体素表示，编码占用、颜色、语义证据和时间新鲜度",
+      "llm_tldr_en": "Presents KRVF, a source-aware semantic voxel representation for edge mobile manipulation that encodes occupancy, color, semantic evidence, temporal freshness, and evidence source, enabling depth-failure-aware object reasoning.",
+      "llm_tldr_cn": "该论文针对边缘移动操作中对实时、可查询语义世界模型的需求，提出了KRVF，一种源感知语义体素表示。与重建型方法不同，KRVF将局部世界状态表示为任务导向的体素，包含占用、颜色、语义证据、时间新鲜度和证据源。该表示支持深度失效感知的对象推理，不破坏持久几何。尽管面向机器人操作，其语义体素方法可迁移到城市基础设施的语义映射和场景理解中。",
+      "llm_tldr": "该论文针对边缘移动操作中对实时、可查询语义世界模型的需求，提出了KRVF，一种源感知语义体素表示。与重建型方法不同，KRVF将局部世界状态表示为任务导向的体素，包含占用、颜色、语义证据、时间新鲜度和证据源。该表示支持深度失效感知的对象推理，不破坏持久几何。尽管面向机器人操作，其语义体素方法可迁移到城市基础设施的语义映射和场景理解中。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.26211v1",
+      "source": "arxiv",
+      "title": "Data Facts: A Metadata Schema for Structured Data Exchange in the NANDini Multi-Agent Ecosystem",
+      "abstract": "NANDini (Networked Agents Natural Distillation of Interconnected Nodal Intelligence) envisions an automated ecosystem where intelligent agents independently create, process, and exchange data to drive decisions at scale. Realizing this vision requires infrastructure beyond agent discovery and communication: agents must be able to advertise, evaluate, and verify the datasets they hold.   Current protocols, including NANDA for federated registry and A2A and MCP for inter-agent messaging, address identity and communication but provide no mechanism for structured data exchange. Existing enterprise data-sharing frameworks, such as IDS-RAM, Gaia-X, and Ocean Protocol, assume human-in-the-loop governance that is incompatible with autonomous, real-time agent interactions.   We introduce Data Facts, a core NANDini concept: a lightweight JSON metadata schema that bridges agent discovery and data access through a single pointer, `data_facts_url`, added to an existing Agent Facts registry record. The linked document encodes dataset identity, access tier, whether public, semi-private, or private, endpoint, a time-to-live for freshness validation, and a SHA-256 integrity checksum.   For private and semi-private data, we implement a three-layer security pipeline: JWT authentication, capability-scoped gateway authorization, and an A2A credential delegation protocol. Across 840 decision-making evaluations, data-informed agents achieve 100% accuracy versus 35.2% without data access (p < 0.001); TTL enforcement reduces stale-data errors from 37.6% to 8.8%; checksum verification achieves 100% corruption detection at all injection rates; and the security pipeline blocks all 46 forgery attempts with zero data leakage.",
+      "authors": [
+        "Jin Gao",
+        "Maria Gorskikh",
+        "Pradyumna Chari",
+        "Brittany Box",
+        "Mukul Kemla",
+        "Pratik Behera",
+        "Abhishek Mehta",
+        "Ramesh Raskar"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-06-24T17:35:26+00:00",
+      "link": "https://arxiv.org/pdf/2606.26211v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "metadata schema for structured data exchange in multi-agent ecosystem",
+      "llm_evidence_cn": "多智能体生态系统中结构化数据交换的元数据模式",
+      "llm_evidence": "多智能体生态系统中结构化数据交换的元数据模式",
+      "canonical_evidence": "多智能体生态系统中结构化数据交换的元数据模式",
+      "llm_tldr_en": "Proposes a metadata schema for structured data exchange in multi-agent ecosystems, enabling automated data advertising, evaluation, and verification without human intervention.",
+      "llm_tldr_cn": "在多智能体数据生态系统中，现有协议缺乏结构化数据交换机制，企业框架依赖人工治理。本文提出Data Facts元数据模式，定义结构化数据交换的格式和语义，使智能体能自动发布、评估和验证数据集。该模式为自动化数据共享提供了基础设施，可支撑智慧城市中多源异构数据的无缝集成。",
+      "llm_tldr": "在多智能体数据生态系统中，现有协议缺乏结构化数据交换机制，企业框架依赖人工治理。本文提出Data Facts元数据模式，定义结构化数据交换的格式和语义，使智能体能自动发布、评估和验证数据集。该模式为自动化数据共享提供了基础设施，可支撑智慧城市中多源异构数据的无缝集成。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing unified data standards and semantic data models for integrating heterogeneous smart city construction data, including BIM, GIS, documents, images, videos, point clouds, and structured databases.",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
