@@ -6,30 +6,40 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-28
-- 运行时间：2026-06-28 21:06:54 UTC
+- 最新运行日期：2026-06-29
+- 运行时间：2026-06-29 21:53:31 UTC
 - 运行状态：成功
-- 本次总论文数：3
-- 精读区：0
-- 速读区：3
+- 本次总论文数：6
+- 精读区：2
+- 速读区：4
 
 ### 今日简报（AI）
-今日速读3篇论文，聚焦数据准备管道自动生成、多智能体元数据交换与边缘移动操作语义表示。最值得关注《FlowPipe》中LLM增强的条件生成流网络，以及《Data Facts》为多智能体设计的结构化元数据模式。建议优先了解AI驱动数据自动化的前沿方法，并关注多智能体系统间数据交换标准的构建思路。
-- 详情：[/202606/28/README](/202606/28/README)
+今日聚焦6篇论文，精读2篇分别涉及6DoF定位与数字孪生社会模型。
+最值得关注的是利用语义3D城市模型实现航空6DoF定位（SemCityLoc）以及混合数字孪生社会中的认知-空间关联量化方法。
+普通读者可优先精读这两篇8分论文，速读中GraphRAG与城市模拟框架GenWorld也值得了解。
+- 详情：[/202606/29/README](/202606/29/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [SemCityLoc: Aerial 6DoF Localization Using Semantic 3D City Models](/202606/29/2606.27444v1-semcityloc-aerial-6dof-localization-using-semantic-3d-city-models)  
+   标签：评分：8.0/10、query:smart-city
+   evidence：利用语义3D城市模型进行航空定位
+2. [Toward a Hybrid Digital Twin of Society: Quantifying Cognitive-Spatial Linkages Through Online-Offline Feedback Networks](/202606/29/2606.27513v1-toward-a-hybrid-digital-twin-of-society-quantifying-cognitive-spatial-linkages-through-online-offline-feedback-networks)  
+   标签：评分：8.0/10、query:smart-city
+   evidence：社会混合数字孪生，关联线上线下反馈，直接涉及城市数字孪生和语义互操作
 
 ### 速读区论文标签
-1. [FlowPipe: LLM-Enhanced Conditional Generative Flow Networks for Data Preparation Pipeline Construction](/202606/28/2606.24679v1-flowpipe-llm-enhanced-conditional-generative-flow-networks-for-data-preparation-pipeline-construction)  
+1. [Is GraphRAG Needed? From Basic RAG to Graph-/Agentic Solutions with Context Optimization](/202606/29/2606.25656v1-is-graphrag-needed-from-basic-rag-to-graph-agentic-solutions-with-context-optimization)  
    标签：评分：7.0/10、query:smart-city
-   evidence：使用生成流网络和LLM自动构建数据准备管道
-2. [Data Facts: A Metadata Schema for Structured Data Exchange in the NANDini Multi-Agent Ecosystem](/202606/28/2606.26211v1-data-facts-a-metadata-schema-for-structured-data-exchange-in-the-nandini-multi-agent-ecosystem)  
+   evidence：比较不同检索增强生成变体（包括图RAG和代理RAG）的框架，支持知识图谱推理
+2. [GenWorld: Empirically Grounded Urban Simulation Infrastructure for Scalable LLM-Agent Studies](/202606/29/2606.27650v1-genworld-empirically-grounded-urban-simulation-infrastructure-for-scalable-llm-agent-studies)  
    标签：评分：7.0/10、query:smart-city
-   evidence：多智能体生态系统中结构化数据交换的元数据模式
-3. [KRVF: A Source-Aware Semantic Voxel World Representation for Edge Mobile Manipulation](/202606/28/2606.26321v1-krvf-a-source-aware-semantic-voxel-world-representation-for-edge-mobile-manipulation)  
+   evidence：多源城市模拟基础设施，使用人口普查、地理空间和手机数据，与智慧城市数据集成相关
+3. [KG2Cypher: Data-Centric Pipeline for Building Enterprise Text-to-Cypher Systems](/202606/29/2606.27742v1-kg2cypher-data-centric-pipeline-for-building-enterprise-text-to-cypher-systems)  
    标签：评分：6.0/10、query:smart-city
-   evidence：面向边缘移动操作的语义体素表示，编码占用、颜色、语义证据和时间新鲜度
+   evidence：构建文本到Cypher系统的数据中心流水线
+4. [Ontology-Guided Evidence Path Inference for Multi-hop Knowledge Graph Question Answering](/202606/29/2606.28076v1-ontology-guided-evidence-path-inference-for-multi-hop-knowledge-graph-question-answering)  
+   标签：评分：6.0/10、query:smart-city
+   evidence：基于本体的知识图谱问答推理，与智慧城市中知识图谱构建和推理相关
 
 
 <div class="dpr-home-promo-card">
