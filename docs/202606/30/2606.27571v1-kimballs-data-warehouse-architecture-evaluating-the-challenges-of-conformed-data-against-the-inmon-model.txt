@@ -1,0 +1,140 @@
+Title: Kimball's Data Warehouse Architecture: Evaluating the Challenges of Conformed Data against the Inmon Model
+
+URL Source: https://arxiv.org/pdf/2606.27571v1
+
+Published Time: Mon, 29 Jun 2026 00:11:50 GMT
+
+Number of Pages: 5
+
+Markdown Content:
+# Kimball’s Data Warehouse Architecture: Evaluating the Challenges of Conformed Data against the Inmon Model 
+
+J´ ulio Rocha 1,3,∗, Salviano Soares 2,3, Ant´ onio Valente 1,3, Filipe Cabral Pinto 4
+
+> 1
+
+INESC TEC – INESC Technology and Science , Porto, Portugal 
+
+> 2
+
+IEETA / LASI, University of Aveiro , Aveiro, Portugal 
+
+> 3
+
+Department of Engineering, School of Sciences and Technology, UTAD , Vila Real, Portugal 
+
+> 4
+
+Altice Labs , Aveiro, Portugal Emails: al83013@alunos.utad.pt, salblues@utad.pt, avalente@utad.pt, filipe-c-pinto@alticelabs.com 
+
+Abstract —In recent decades, driven by rapid data growth, organisations have faced the need to restructure their storage frameworks to efficiently handle queries requested by employees through available enterprise applications. Investigating this need involves examining the classic approaches of William H. Inmon, widely known as the father of Data Warehousing, and Ralph Kimball. Although both shared the same core concerns, Kimball later suggested an alternative architecture focused primarily on user needs. According to Ariyachandra and Watson [1], Inmon’s ”hub-and-spoke” architecture and Kimball’s data bus framework featuring conformed dimensions stand out among alternative approaches. A comparison across these architectures highlights four key aspects: Information Quality, System Quality, Individual Impacts, and Organisational Impacts. Although Kimball and Inmon proposed contrasting solutions, they did not view each other as rivals. For instance, in one of the editions of the book ”The Data Warehouse Toolkit”, published by Kimball in 1996, the back cover features a note by Inmon stating that it is ”one of the definitive books of our industry. If you take time to read only one professional book, make it this book.” 
+
+Index Terms —data warehouse, Kimball, Inmon, data marts, data bus, conformed dimensions 
+
+I. I NTRODUCTION 
+
+This paper addresses the concept of Data Warehousing and its structural layers, focusing specifically on the archi-tecture proposed by Ralph Kimball. Within this architectural framework, we examine its main purpose, advantages, and disadvantages, alongside the emergence of the dimensional bus model and the star schema as direct responses to user requirements. Furthermore, a concise comparative analysis is drawn against the architecture proposed by Bill Inmon, the ”father” of Data Warehousing, taking into account that Inmon’s paradigm focused heavily on the corporate-wide context, whereas Kimball prioritised the end-users. Accordingly, this work is organised as follows: Section 2 covers the general design principles of a data warehouse. Sec-tion 3 presents the architectural framework proposed by Ralph Kimball. Section 4 describes Inmon’s solution, incorporating 
+
+*Corresponding author. All authors contributed equally to this work. 
+
+a comparative analysis between both methodologies. Finally, Section 5 presents the conclusions. II. D ATA WAREHOUSE DESIGN 
+
+In simple terms, a Data Warehouse is a centralized reposi-tory of data. According to several authors and researchers [2] [3] [4], the development process of a Data Warehouse architec-ture transforms standard repositories into platforms capable of generating efficient corporate reports and supporting Decision Support Systems (DSS) through Online Analytical Processing (OLAP) over historical data. 
+
+Fig. 1. Data Warehouse Architecture 
+
+Fig. 1 [5] illustrates the layers or levels that comprise a Data Warehouse, which are detailed below. Although five levels are visually distinguishable, data storage may represent both the Data Warehouse and individual Data Marts within the same logical layer.  
+
+> •
+
+Data Source: This layer hosts the raw source data con-tained within internal and external corporate applications and systems. The primary data sources for building a Data Warehouse are operational databases.  
+
+> •
+
+Data Staging: In this layer, data is extracted from all source systems to be cleaned, validated, aligned with business rules, mathematically transformed, and inte-grated before being loaded into the Data Warehouse (the ETL process: Extraction, Transformation, and Loading).  
+
+> arXiv:2606.27571v1 [cs.DB] 25 Jun 2026 •
+
+Data Storage: Depending on how the Data Warehouse is designed, the data processed in the staging layer may be sent to a single consolidated database, individual Data Marts, or operational data stores. When analytical queries are executed, the required data is accessed directly from this storage layer.  
+
+> •
+
+Data Presentation: This final layer is the interface through which end-users interact to meet their Business Intelli-gence requirements. Queries are executed at this stage to analyse reports and assist in corporate decision-making. III. T HE ARCHITECTURE PROPOSED BY RALPH KIMBALL 
+
+Prior to discussing the architecture proposed by Ralph Kimball, it is essential to understand his background. Ralph Kimball, PhD, is one of the leading pioneers of Data Ware-housing and Business Intelligence concepts. Since the 1980s, Kimball has developed research and models that are now embedded across numerous software tools in the industry. Kimball is widely known for his conviction that a Data Warehouse must be designed to be highly comprehensible and fast. His methodology, known as dimensional modelling or the Kimball methodology, is frequently deployed to en-able the sharing of conformed dimensions [6]. The Kimball model differs in several key aspects from traditional relational database models. A striking difference is that data warehouses employ a unique data modelling method specifically tailored for analytical storage. Another distinction is that the overall architecture features multiple databases that must be highly interoperable, meaning they must communicate seamlessly with one another [7]. The data bus framework within the Data Warehouse is the blueprint that makes this connection possible, as shown in Fig. 2 [8].  
+
+> Fig. 2. Data Warehouse Architecture by Kimball
+
+Dimensional modelling can initially seem counterintuitive to Information Technology professionals who are accustomed to traditional Entity-Relationship (ER) models. Dimensional modelling begins with flattened tables rather than fully nor-malised ER models. These tables are categorised as either fact tables or dimension tables. Fact tables contain quantita-tive metrics, whereas dimension tables contain descriptive at-tributes and are linked directly to the fact tables. Consequently, this model deliberately violates standard normalisation rules to achieve high query performance in the Data Warehouse while keeping it easily accessible to the end-user [7]. In addition to this architectural choice, data updates may introduce inconsistencies because de-normalisation purpose-fully adds redundant data to the database. However, within an analytical environment heavily focused on read operations, this redundancy is strictly controlled and managed via the ETL process. Based on requirements gathering, it is necessary to identify the required Data Marts, determining the dimensions and facts for each one. In parallel, a data bus matrix can be constructed. This matrix serves as the foundation for future data integra-tions because it maps the dimensions shared across each Data Mart. Armed with an understanding of business processes — gleaned, for example, through manager interviews — one proceeds to the dimensional modelling proposed by Kimball. This results in a star schema, which features a central fact table containing foreign keys linked to surrounding dimension tables alongside various business metrics, as illustrated in Fig. 3 [9] [10].  
+
+> Fig. 3. Example of a Kimball Star Schema
+
+In Kimball’s architecture, data is copied from the source operational systems into a staging area. In this staging layer, the data is cleansed, made consistent, and prepared for end-user queries. From this staging area, data is directly loaded into specific Data Marts. The integrated Data Warehouse emerges naturally as the collective sum of these created Data Marts. This strategy is termed a ”Bottom-Up” approach, as illustrated in Fig. 4. Data Marts serve as the primary data source for user queries. Each Data Mart is anchored around a single business process; however, that process may share common dimensions with other business processes across the organisation. The Data Warehouse bus is the component within Kimball’s architecture that allows the collection of Data Marts to function truly as a unified whole. A bus architecture simply implies that all Data Marts must utilise standardised, conformed dimensions. The baseline requirements for conformed dimensions include con-sistent keys, column names, attribute definitions, and attribute Fig. 4. Bottom-Up Architecture by Kimball 
+
+values across all business processes. In short, two dimensions are conformed when they are completely identical or when one represents a perfect subset of the other [7]. Fig. 5 [11] shows a general overview of multiple fact tables interconnected via shared, conformed dimensions.  
+
+> Fig. 5. Interconnection between Data Models
+
+Before drawing comparisons with Inmon’s earlier solution, it is important to underscore that Kimball views the creation of a Data Bus Matrix as one of the very first steps in a Bottom-Up design. This matrix maps out the organisation’s core business processes and highlights their overlapping dimensions, as exemplified by Kimball in his literature and illustrated in Fig. 6 [12].  
+
+> Fig. 6. Data Warehouse Bus Matrix
+
+Consequently, each row in the matrix represents a distinct Data Mart matching the primary activities of the organisation based on source information, while the columns represent the common enterprise dimensions. This matrix is vital for conforming dimensions and scheduling ETL workflows. If unstandardised Data Marts already exist due to legacy im-plementations, Kimball advises either building new ones or undertaking a massive data re-engineering effort, though the latter often demands immense additional effort without guar-antees of a definitive fix. Despite the distinct advantages of Kimball’s bus architec-ture, the practical implementation of conformed dimensions and facts introduces a complex set of challenges, divided into two main vectors: organisational and technical. On the organisational front, defining a conformed dimension (such as ”Customer” or ”Time”) requires absolute consensus across different business departments, which frequently employ con-flicting business rules for the same underlying concept. On the technical front, the challenge of conformed facts lies in ensur-ing that metrics shared across multiple Data Marts (e.g., profit margin or net revenue) strictly utilise identical mathematical formulas, measurement units, and temporal granularities. The absence of this rigorous alignment defeats the purpose of the data bus, resulting in inconsistent reporting and undermining the integrity of the analytical ecosystem. In summary, Kimball recommends a development method-ology tailored specifically for analytical data storage. The four steps of the dimensional design process are defined as:  
+
+> •
+
+Identifying the core business processes, as mapped in the matrix.  
+
+> •
+
+Declaring the grain, which specifies the lowest level of detail for the business processes.  
+
+> •
+
+Choosing the dimensions that describe the process.  
+
+> •
+
+Identifying the quantitative facts and metrics. IV. B ILL INMON VERSUS RALPH KIMBALL 
+
+This section briefly outlines the architectural solution pre-sented by Bill Inmon, drawing a direct comparison with the Kimball methodology detailed previously. In 1990, Bill Inmon earned the moniker ”Father of Data Warehousing” after formalising the term in his book ”Building the Data Warehouse”. The industry rapidly began adopting Inmon’s strategy with varying degrees of success. In the third edition of his work (2002), Inmon describes a logical architecture that extracts detailed, time-stamped information from disparate operational databases. This data is subsequently transformed and stored within a single, centralized Data Ware-house. Specific data extracts are then pulled from this central repository to feed smaller databases tailored to specific corpo-rate departments or subjects. End-users and decision-support applications then query these departmental data repositories [7]. To achieve this, Inmon advocates for a ”Top-Down” approach, as illustrated in Fig. 7. In Inmon’s model, the Data Warehouse (DW) is fed by Online Transaction Processing (OLTP) systems and acts as the central data repository. For Inmon, a Data Warehouse must be: Fig. 7. Top-Down Architecture by Inmon  
+
+> •
+
+Subject-oriented: Data is organised so that all related data elements are linked to the same real-world object or event.  
+
+> •
+
+Integrated: The database consolidates data from across the operational systems of the entire organisation, ensur-ing absolute consistency.  
+
+> •
+
+Time-variant: Changes in data are tracked and recorded chronologically so that trends can be analysed over time.  
+
+> •
+
+Non-volatile: Data is never altered or deleted; once committed, records are static, read-only, and retained for future reporting. The central Data Warehouse in Inmon’s model is structured in the Third Normal Form (3NF). Individual Data Marts (DM) are then provisioned downstream out of the central Data Warehouse as and when required [13]. Fig. 8 depicts this complete architectural life cycle [8].  
+
+> Fig. 8. Data Warehouse Architecture by Inmon
+
+Data Marts within Inmon’s paradigm are also structured following 3NF design principles, meaning they are fully normalised to minimise data redundancy and maximise con-sistency. Fig. 9 [14] highlights the structural contrast between the layout models advocated by Kimball and Inmon [15]. V. C ONCLUSIONS 
+
+The paradigms proposed by Inmon and, later, Kimball exhibit several core distinctions. Despite these differences, it is  
+
+> Fig. 9. Architectural Layout Proposed by Kimball and Inmon
+
+highly interesting to note that both share two required pillars for decision-making: time-stamped historical data and robust ETL frameworks. Development workflows within the Top-Down approach carry a high degree of structural complexity, even though its logical layout appears deceptively simple. In contrast to Inmon, Kimball’s development methodology is far more accessible to corporate users who require analytical data for decision support without needing to master the deep technical intricacies of data warehousing. These users can easily grasp moderate technical concepts like the data bus and conformed dimensions without intensive training. Regarding data modelling, the two methodologies diverge on data orientation and design constraints. Inmon adopts a subject-oriented, data-driven approach; the nature of the data aligns naturally with traditional ER diagrams. Conversely, Kimball champions a process-oriented modelling style, mean-ing data design acts as a direct digital twin of real-world business activities. Because these business processes naturally share data across departments, it yields a dimensional frame-work where the business activity itself dictates which metrics (facts) and attributes (dimensions) must be integrated into a Data Mart, and subsequently, into the wider Enterprise Data Warehouse. In summary, this paper evaluated the architectural frame-work proposed by Ralph Kimball as a robust response to corporate analytical challenges, detailing its dimensional mod-elling mechanics, the bus matrix, and the star schema. While Inmon focuses heavily on the structural ingestion needs of the Enterprise Data Warehouse, Kimball positions dimensional modelling as a high-performance, user-centric vehicle to effi-ciently serve decision-makers. REFERENCES 
+
+[1] Thilini Ariyachandra and Hugh Watson. “Which data warehouse architecture is most successful?” In: Busi-ness Intelligence Journal 11.1 (2006), p. 4. [2] Bikramjit Pal. “COMPARISON OF DATA WAREHOUSE ARCHITECTURE BASED ON DATA MODEL”. In: International Journal of Information Technology and Knowledge Management 2 (July 2010), pp. 303–304. [3] F.N.R. Machado. Tecnologia e Projeto de Data Ware-house . Saraiva Educac ¸ ˜ ao S.A. ISBN : 9788536525174. 
+
+> URL
+
+: https : / / books . google . pt / books ? id = 1YqwDwAAQBAJ. [4] Joseph Firestone. “Dimensional Modeling and E-R Modeling In The Data Warehouse”. In: (May 2022). [5] Data Mart vs. Data Warehouse: The Difference with Examples . visited on 2023-05-12. URL : https://panoply. io / data - warehouse - guide / data - mart - vs - data -warehouse/. [6] R. Kimball et al. The Kimball Group Reader: Relent-lessly Practical Tools for Data Warehousing and Busi-ness Intelligence . Wiley, 2010. ISBN : 9780470633922. 
+
+> URL
+
+: https : / / books . google . pt / books ? id = tCr5sMmkiPAC. [7] Mary Breslin. Comparing the Basics of the Kimball and Inmon Models .[8] Bill Inmon vs. Ralph Kimball . visited on 2023-06-12. 
+
+> URL
+
+: https://arjunjune.wordpress.com/2017/03/20/bill-inmon-vs-ralph-kimball/. [9] Mohd Ridzwan Yaakub, Yuefeng Li, and Yanming Feng. “Integration of Opinion into Customer Analysis Model”. In: 2011 IEEE 8th International Conference on e-Business Engineering . 2011, pp. 90–95. DOI : 10. 1109/ICEBE.2011.53. [10] Ricardo Sim˜ oes. “BUSINESS INTELLIGENCE EM APLICAC ¸ ˜ OES FCUL”. In: (2016). [11] Fact Constellation in Data Warehouse modelling . vis-ited on 2023-05-12. URL : https://www.geeksforgeeks. org/fact-constellation-in-data-warehouse-modelling/. [12] Ralph kimball. Enterprise Data Warehouse Bus Ar-chitecture . visited on 2023-05-12. URL : https : / / www . kimballgroup . com / data - warehouse - business -intelligence - resources / kimball - techniques / kimball -data-warehouse-bus-architecture/. [13] Ian Abramson. Data Warehouse: The Choice of Inmon versus Kimball . visited on 2022-05-12. URL : https : / / www. ismll . uni - hildesheim . de / lehre / bi - 10s / script / Inmon-vs-Kimball.pdf. [14] Decoding Data Warehousing Definitions: Kimball vs. Inmon . visited on 2023-06-12. URL : https : / / medium . com / @felipe . ramires . terrazas / decoding - data -warehousing - definitions - kimball - vs - inmon -1af1aa252b61. [15] Benny Austin. Kimball and Inmon DW Models . visited on 2022-05-12. URL : https://bennyaustin.com/2010/05/ 02/kimball-and-inmon-dw-models/.

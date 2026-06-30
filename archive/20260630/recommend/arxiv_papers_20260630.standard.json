@@ -1,0 +1,400 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-30T22:14:05.263364+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 3,
+    "deep_cap": 6,
+    "deep_selected": 3,
+    "quick_candidates": 7,
+    "quick_skim_target": 11,
+    "quick_selected": 7
+  },
+  "deep_dive": [
+    {
+      "id": "2606.24129v1",
+      "source": "arxiv",
+      "title": "OmniPath: A Multi-Modal Agentic Framework for Auditing Wheelchair Accessibility",
+      "abstract": "For a wheelchair user, a standard blue line on a map is often a broken promise. While platforms like OpenStreetMap (OSM) successfully capture where a path is, they frequently fail to convey how it physically feels to travel on it. This information barrier is problematic for wheelchair users. To solve this issue, we present OmniPath, a system that moves from passive mapping to proactive environmental auditing. Our framework fuses the network topology of OSM with the submeter precision of high-density aerial LiDAR (USGS 3DEP) to create a high-fidelity 3D model of the pedestrian environment. Rather than simply routing a user, our agent virtually traverses the network, analyzing the surface in 0.5 meter increments. It rigorously quantifies physical friction points specifically running slope, cross slope, and vertical discontinuities against ADA compliance standards, calculating a weighted severity score to categorize hazards from ``Mild'' to ``Critical.'' To ensure real world reliability, we validated the system against 200 physical ground truth field surveys across the National Mall using stratified random sampling. The framework demonstrated strong diagnostic reliability for high-severity hazards, achieving F1-scores of 0.60 for Severe and 0.58 for critical categories. By automating this micro-scale inspection, OmniPath identifies the ``invisible'' barriers that standard maps miss, effectively transforming a static dataset into accessibility data source that anticipates accessibility challenges before the user ever leaves home.",
+      "authors": [
+        "ASM Mobarak Hossain",
+        "Nadim Mahmud",
+        "Vaskar Raychoudhury",
+        "Md Osman Gani"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-23T04:23:44+00:00",
+      "link": "https://arxiv.org/pdf/2606.24129v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "multi-modal fusion of OSM and LiDAR for urban environmental auditing",
+      "llm_evidence_cn": "融合OSM和LiDAR多模态数据进行城市环境审计",
+      "llm_evidence": "融合OSM和LiDAR多模态数据进行城市环境审计",
+      "canonical_evidence": "融合OSM和LiDAR多模态数据进行城市环境审计",
+      "llm_tldr_en": "OmniPath fuses OSM network topology with aerial LiDAR to create high-fidelity 3D models for auditing wheelchair accessibility, demonstrating practical multi-modal data fusion for urban infrastructure.",
+      "llm_tldr_cn": "现有地图平台缺乏对物理环境的精细描述，无法满足轮椅用户需求。本文提出OmniPath框架，融合OSM网络拓扑与高密度机载LiDAR数据，构建高保真3D行人环境模型。代理以0.5米增量虚拟遍历网络，量化表面物理特性，实现了从被动地图到主动环境审计的转变。该方法体现了多模态数据（GIS地图与点云）在城市基础设施管理中的有效融合，可直接服务于智慧城市建设。",
+      "llm_tldr": "现有地图平台缺乏对物理环境的精细描述，无法满足轮椅用户需求。本文提出OmniPath框架，融合OSM网络拓扑与高密度机载LiDAR数据，构建高保真3D行人环境模型。代理以0.5米增量虚拟遍历网络，量化表面物理特性，实现了从被动地图到主动环境审计的转变。该方法体现了多模态数据（GIS地图与点云）在城市基础设施管理中的有效融合，可直接服务于智慧城市建设。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.27571v1",
+      "source": "arxiv",
+      "title": "Kimball's Data Warehouse Architecture: Evaluating the Challenges of Conformed Data against the Inmon Model",
+      "abstract": "In recent decades, driven by rapid data growth, organisations have faced the need to restructure their storage frameworks to efficiently handle queries requested by employees through available enterprise applications. Investigating this need involves examining the classic approaches of William H. Inmon, widely known as the father of Data Warehousing, and Ralph Kimball. Although both shared the same core concerns, Kimball later suggested an alternative architecture focused primarily on user needs. According to Ariyachandra and Watson, Inmon's \"hub-and-spoke\" architecture and Kimball's data bus framework featuring conformed dimensions stand out among alternative approaches. A comparison across these architectures highlights four key aspects: Information Quality, System Quality, Individual Impacts, and Organisational Impacts. Although Kimball and Inmon proposed contrasting solutions, they did not view each other as rivals. For instance, in one of the editions of the book \"The Data Warehouse Toolkit\", published by Kimball in 1996, the back cover features a note by Inmon stating that it is \"one of the definitive books of our industry. If you take time to read only one professional book, make it this book.",
+      "authors": [
+        "Júlio Rocha",
+        "Salviano Soares",
+        "António Valente",
+        "Filipe Cabral Pinto"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB"
+      ],
+      "published": "2026-06-25T21:58:15+00:00",
+      "link": "https://arxiv.org/pdf/2606.27571v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Data warehouse architecture for multi-source data integration with conformed dimensions",
+      "llm_evidence_cn": "数据仓库架构通过一致性维度实现多源数据集成",
+      "llm_evidence": "数据仓库架构通过一致性维度实现多源数据集成",
+      "canonical_evidence": "数据仓库架构通过一致性维度实现多源数据集成",
+      "llm_tldr_en": "Evaluates Kimball's data warehouse architecture with conformed dimensions against Inmon model, highlighting challenges for integrated data management.",
+      "llm_tldr_cn": "数据集成需要统一架构。论文对比了Kimball和Inmon数据仓库模型，重点分析Kimball的一致性维度架构在多源数据整合中的优势和挑战。该架构直接适用于智慧城市中异构数据（BIM、GIS等）的统一管理，为构建标准化数据仓库提供理论指导。",
+      "llm_tldr": "数据集成需要统一架构。论文对比了Kimball和Inmon数据仓库模型，重点分析Kimball的一致性维度架构在多源数据整合中的优势和挑战。该架构直接适用于智慧城市中异构数据（BIM、GIS等）的统一管理，为构建标准化数据仓库提供理论指导。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.29781v1",
+      "source": "arxiv",
+      "title": "UrbanCDNet: Appearance-Robust and Boundary-Aware Bitemporal Change Detection for Korean Urban Building Monitoring",
+      "abstract": "Urban building change detection from bi-temporal aerial imagery is important for redevelopment monitoring, infrastructure management, and unauthorized-construction screening, but Korean urban scenes remain difficult because changed regions are often sparse, appearance varies strongly between acquisition dates, and useful outputs must follow building footprints rather than coarse blobs. This paper presents UrbanCDNet, a task specific Siamese CNN that combines appearance-robust multi-cue comparison, alignment-aware middle-scale differencing, lightweight context refinement, scene calibration, and auxiliary boundary supervision. Experiments use a corrected AIHub-based Korean benchmark with 3,998 training, 503 validation, and 499 test pairs, and report changed-class precision, recall, F1, and IoU. On the locked test split, UrbanCDNet achieves 0.7335 precision, 0.7696 recall, 0.7511 F1, and 0.6014 IoU, outperforming a strong Siamese U-Net baseline (0.7108 F1, 0.5514 IoU) and the strongest external competitor, ChangeFormer-MIT-B0 (0.7107 F1, 0.5512 IoU). Additional diagnostic slicing shows that the gain is concentrated in the operating regimes that motivated the design: on the sparse-change subset with less than 5% changed area, F1 improves from 0.4765 to 0.6175, and on the high photometric-gap subset it improves from 0.6349 to 0.7285. Boundary F1 at 3-pixel tolerance rises from 0.3445 to 0.4447, while object F1 at IoU 0.3 rises from 0.0690 to 0.2258. These results indicate that, on this Korean benchmark, task-shaped temporal comparison and boundary-aware supervision matter more than generic model scale alone",
+      "authors": [
+        "Abdirashid Omar",
+        "Jonghyuk Park"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-29T04:52:33+00:00",
+      "link": "https://arxiv.org/pdf/2606.29781v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "urban building change detection for infrastructure management using bi-temporal aerial imagery",
+      "llm_evidence_cn": "基于双时相航空影像的城市建筑变化检测，用于基础设施管理",
+      "llm_evidence": "基于双时相航空影像的城市建筑变化检测，用于基础设施管理",
+      "canonical_evidence": "基于双时相航空影像的城市建筑变化检测，用于基础设施管理",
+      "llm_tldr_en": "Presents UrbanCDNet for appearance-robust and boundary-aware change detection in Korean urban buildings, aiding redevelopment and infrastructure monitoring.",
+      "llm_tldr_cn": "针对韩国城市建筑变化检测中外观变化大、边界模糊等挑战，本文提出UrbanCDNet，一种结合多线索比较、对齐感知差异和边界监督的孪生CNN网络。在修正的AIHub数据集上训练，实现了鲁棒的变化检测。该工作直接服务于智慧城市的建筑监测与基础设施管理。",
+      "llm_tldr": "针对韩国城市建筑变化检测中外观变化大、边界模糊等挑战，本文提出UrbanCDNet，一种结合多线索比较、对齐感知差异和边界监督的孪生CNN网络。在修正的AIHub数据集上训练，实现了鲁棒的变化检测。该工作直接服务于智慧城市的建筑监测与基础设施管理。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.28062v1",
+      "source": "arxiv",
+      "title": "Single and Multi Truth Data Fusion using Large Language Models",
+      "abstract": "Data fusion, also known as truth discovery, is a data integration problem that aims to determine the correct value or set of values for each attribute of an object when presented with potentially conflicting values from multiple sources. Data fusion tasks belong to two main categories: single-truth scenarios, where each attribute has only one correct value, and multi-truth scenarios, where multiple values can be valid simultaneously. This paper investigates the use of Large Language Models (LLMs) in data fusion tasks for tabular data. Various prompting strategies, encompassing both single-truth and multi-truth scenarios, are investigated empirically. Domain-dependent, domain-independent, zero-shot and one-shot prompts are evaluated on three different benchmark datasets. Experimental results demonstrate that LLM-based approaches outperform traditional unsupervised truth discovery methods, such as DART and LTM, across all datasets. The codebase of this study has been made publicly available on GitHub.",
+      "authors": [
+        "Hira Beril Kucuk",
+        "Norman W Paton",
+        "Jiaoyan Chen",
+        "Zhenyu Wu"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB",
+        "cs.AI",
+        "cs.CL",
+        "cs.IR"
+      ],
+      "published": "2026-06-26T13:10:11+00:00",
+      "link": "https://arxiv.org/pdf/2606.28062v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "LLM-based data fusion for multi-source data integration, relevant to smart city heterogeneous data",
+      "llm_evidence_cn": "基于LLM的数据融合方法用于多源数据整合，适用于智慧城市异构数据",
+      "llm_evidence": "基于LLM的数据融合方法用于多源数据整合，适用于智慧城市异构数据",
+      "canonical_evidence": "基于LLM的数据融合方法用于多源数据整合，适用于智慧城市异构数据",
+      "llm_tldr_en": "Investigates LLMs for single-truth and multi-truth data fusion tasks on tabular data, evaluating various prompting strategies on benchmarks.",
+      "llm_tldr_cn": "针对单真值与多真值场景的数据融合问题，本文探索了使用大型语言模型（LLM）进行表格数据真值发现的方法。系统评估了领域依赖/独立、零样本/单样本等多种提示策略。结果显示LLM能够有效处理冲突数据。该方法可直接迁移至智慧城市多源数据整合，解决BIM、GIS、传感器等异构数据的真值确定问题。",
+      "llm_tldr": "针对单真值与多真值场景的数据融合问题，本文探索了使用大型语言模型（LLM）进行表格数据真值发现的方法。系统评估了领域依赖/独立、零样本/单样本等多种提示策略。结果显示LLM能够有效处理冲突数据。该方法可直接迁移至智慧城市多源数据整合，解决BIM、GIS、传感器等异构数据的真值确定问题。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.29151v1",
+      "source": "arxiv",
+      "title": "CADENZA: Compiling Natural-Language Intent into Task-Specific Operator DAGs for Semantic Query Processing",
+      "abstract": "Semantic query processing engines (SQPEs) extend relational query processing with semantic operators that are executed via model inference over unstructured data. Optimizing such queries is inherently multi-objective: model inference dominates latency and monetary cost, and outputs are stochastic and backend-dependent, so quality must be optimized alongside efficiency. Existing SQPE optimizers do not expose each semantic operator instance's intermediate task outputs as a relational optimization object, leaving optimization unable to filter, reorder, route, threshold, or jointly tune them. We present CADENZA, which compiles each semantic operator instance--a template bound to a natural-language intent--into an intent-specific plan space of typed task DAGs and selects an executable plan under user-specified quality-latency-cost trade-offs. CADENZA introduces task-extended relational algebra (TxRA), a conservative extension of relational algebra with task-specific operators. The logical planner synthesizes seed TxRA plans, applies structural rewrites whose safety conditions are checked from operator dependencies, and enumerates semantics-guided alternatives from alternative-generation templates. The physical planner compiles each task-specific operator into a router over heterogeneous backends and jointly tunes routing cutpoints, backend parameters, and relational thresholds with Bayesian optimization. On SemBench, CADENZA improves the scenario-level averages of quality, latency, and cost by up to +0.49, 165.7x, and 310.3x, respectively, relative to state-of-the-art.",
+      "authors": [
+        "Jaehyun Ha",
+        "Yongjoo Park",
+        "Wook-Shin Han"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB"
+      ],
+      "published": "2026-06-28T02:13:13+00:00",
+      "link": "https://arxiv.org/pdf/2606.29151v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "semantic query compilation method for heterogeneous data integration",
+      "llm_evidence_cn": "面向异构数据整合的语义查询编译方法",
+      "llm_evidence": "面向异构数据整合的语义查询编译方法",
+      "canonical_evidence": "面向异构数据整合的语义查询编译方法",
+      "llm_tldr_en": "Presents CADENZA, a compiler that translates natural-language intents into task-specific operator DAGs for semantic query processing, enabling efficient multi-objective optimization over unstructured data.",
+      "llm_tldr_cn": "现有语义查询引擎无法有效优化多目标查询（延迟、成本、质量）。本文提出CADENZA，将自然语言意图编译为任务特定的算子DAG，支持对中间结果进行过滤、重排序等优化。该方法解耦了语义算子与执行后端，为异构数据源上的语义查询提供了灵活高效的处理框架，可应用于智慧城市中多源数据的统一查询与互操作。",
+      "llm_tldr": "现有语义查询引擎无法有效优化多目标查询（延迟、成本、质量）。本文提出CADENZA，将自然语言意图编译为任务特定的算子DAG，支持对中间结果进行过滤、重排序等优化。该方法解耦了语义算子与执行后端，为异构数据源上的语义查询提供了灵活高效的处理框架，可应用于智慧城市中多源数据的统一查询与互操作。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.28390v1",
+      "source": "arxiv",
+      "title": "Automated Quality Assessment of Geospatial Vector Data: A GeoAI Approach using Spatial Representation Learning",
+      "abstract": "Geospatial vector data quality is a foundational research topic in GIS, yet classic rule-based quality assessment algorithms often struggle with diverse urban morphologies and massive data volumes. Recently, Geospatial Artificial Intelligence (GeoAI) shows promising potential for automating geospatial analysis, while its application to native vector data remains largely underexplored. To fill this research gap, we proposed Topo4Vec, an automated GeoAI framework, designed for scalable vector data quality assessment via advanced Spatial Representation Learning (SRL). Specifically, Topo4Vec relax the labor-intensive manual annotation process via topological error simulation, such as overlapping polygons and street network connectivity errors e.g., overshoots and undershoots. Then, it leverages state-of-the-art SRL approaches to encode complex, native vector geometries (e.g., polylines and polygons) into a latent space where topological errors are isolated from valid ones. A systematic performance evaluation across three study areas (Los Angeles, Munich, and Singapore) demonstrates the effectiveness and robustness of Topo4Vec, achieving a peak accuracy of 0.99 for detecting overlapping building footprints and 0.60 for overshoots and undershoots in street networks. Moreover, lessons learned from Topo4Vec shed a promising light into a scalable and autonomous GeoAI approach for large-scale vector data consistency and quality monitoring within the fast-growing geospatial data ecosystems. The code and data used in the paper are made openly available in https://figshare.com/s/612148eeb4bccadbd715.",
+      "authors": [
+        "Hao Li",
+        "Chen Chu",
+        "Filip Biljecki",
+        "Cyrus Shahabi",
+        "Wenwen Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-06-23T09:41:59+00:00",
+      "link": "https://arxiv.org/pdf/2606.28390v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "GeoAI and spatial representation learning for geospatial data quality assessment applicable to smart city GIS data integration",
+      "llm_evidence_cn": "GeoAI与空间表示学习用于地理空间数据质量评估，可应用于智慧城市GIS数据整合",
+      "llm_evidence": "GeoAI与空间表示学习用于地理空间数据质量评估，可应用于智慧城市GIS数据整合",
+      "canonical_evidence": "GeoAI与空间表示学习用于地理空间数据质量评估，可应用于智慧城市GIS数据整合",
+      "llm_tldr_en": "Proposes Topo4Vec, a GeoAI framework using spatial representation learning to automatically assess geospatial vector data quality, addressing scalability and diversity issues in urban morphologies.",
+      "llm_tldr_cn": "传统地理空间数据质量评估方法难以应对多样化的城市形态和海量数据。本文提出Topo4Vec，一种基于空间表示学习的GeoAI框架，通过拓扑错误模拟自动生成训练样本，实现可扩展的矢量数据质量评估。该方法缓解了人工标注负担，为智慧城市中GIS数据的自动化质量控制提供了有效方案，有助于保障多源数据整合的可靠性。",
+      "llm_tldr": "传统地理空间数据质量评估方法难以应对多样化的城市形态和海量数据。本文提出Topo4Vec，一种基于空间表示学习的GeoAI框架，通过拓扑错误模拟自动生成训练样本，实现可扩展的矢量数据质量评估。该方法缓解了人工标注负担，为智慧城市中GIS数据的自动化质量控制提供了有效方案，有助于保障多源数据整合的可靠性。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.29180v1",
+      "source": "arxiv",
+      "title": "Measuring Graph-to-Graph Semantic Similarity in Knowledge Graphs: An Empirical Evaluation of Knowledge Graph Embeddings",
+      "abstract": "A Knowledge Graph (KG) represents facts as structured triples and is widely used to organize relational knowledge across diverse domains. Just as textual information ranges from words and sentences to complete documents, KG information can be interpreted at multiple levels, from entities, relations, and triples to subgraphs and entire KGs. However, existing KG embedding methods mainly focus on entities, relations, and triples, leaving graph-level semantics largely unaddressed. Conventional graph-level methods, which typically compare graphs based on structural patterns, are also insufficient because structural similarity alone cannot guarantee semantic similarity between KGs. To evaluate how well different methods capture such graph-level semantic information, we study graph-to-graph semantic similarity, which determines whether a pair of KGs represents semantically corresponding underlying information. To obtain reliable ground-truth correspondences, we construct a semantic matching dataset by modifying text documents, extracting KGs from both original and modified documents, and transferring their known correspondences to KG pairs. We compare text-based, structure-based, and KG embedding-based approaches on each dataset. For the KG embedding-based approach, we introduce two scoring functions: \\textit{EmbPairSim}, which uses maximal pairwise entity similarity, and \\textit{AvgEmbSim}, which uses a frequency-weighted centroid. Experiments on WikiText-2 and CC-News show that \\textit{EmbPairSim} achieves up to 5.3 pp higher MRR than Sentence-BERT while using substantially fewer parameters. These results suggest that KGE representations can serve as compact and effective signals for graph-to-graph semantic similarity in KGs. Our code is available at https://github.com/SeungRyeolBaek/KG-to-KG-Semantic-Similarity.",
+      "authors": [
+        "Seungryeol Baek",
+        "Wooseok Sim",
+        "Hogun Park"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-28T03:55:22+00:00",
+      "link": "https://arxiv.org/pdf/2606.29180v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Evaluates KG embeddings for graph-level semantic similarity, relevant to KG reasoning in smart city",
+      "llm_evidence_cn": "评估知识图谱嵌入在图级语义相似性上的表现，对智慧城市知识图谱推理有参考价值",
+      "llm_evidence": "评估知识图谱嵌入在图级语义相似性上的表现，对智慧城市知识图谱推理有参考价值",
+      "canonical_evidence": "评估知识图谱嵌入在图级语义相似性上的表现，对智慧城市知识图谱推理有参考价值",
+      "llm_tldr_en": "Empirical study evaluating how well different KG embeddings capture graph-level semantic similarity, highlighting gaps in current methods.",
+      "llm_tldr_cn": "当前知识图谱嵌入主要关注实体和关系级语义，缺乏图级语义相似性的度量。本文系统评估了多种嵌入方法在图级相似性任务上的表现，发现现有方法不足以精确捕获语义等价性。该研究为智慧城市中大规模知识图谱的推理与集成提供了方法论指导。",
+      "llm_tldr": "当前知识图谱嵌入主要关注实体和关系级语义，缺乏图级语义相似性的度量。本文系统评估了多种嵌入方法在图级相似性任务上的表现，发现现有方法不足以精确捕获语义等价性。该研究为智慧城市中大规模知识图谱的推理与集成提供了方法论指导。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.28780v1",
+      "source": "arxiv",
+      "title": "Multimodal Graph RAG for Long-range Visually Rich Document Understanding",
+      "abstract": "Multimodal large language models (MLLMs) are widely applied to visual document understanding. However, comprehending long documents remains an issue by the limited context window. Though recent multimodal retrieval-augmented generation (MMRAG) can address this challenge by retrieving relevant pages. It still struggles with the visual question answering (VQA) requiring holistic comprehension of a document. To cope with this, knowledge graph (KG) that summarizes global knowledge of a document can provide an effective solution. However, most existing LLM-based KG construction methods handle only the language modality, leaving the automatic creation of multimodal KGs (MMKGs) for visually rich documents largely unexplored. In this paper, we introduce a multimodal graph-based RAG approach to tackle this problem. Existing LLM-based KG methods evaluate the QA performance relying on indirect evidence such as comprehensiveness, diversity, empowerment, and so on. The lack of annotated datasets for comprehensive document-level VQA poses a significant challenge to effective model evaluation. To overcome this limitation, we also introduce a new benchmark, DLVQA (document-level VQA), which provides reference summaries and corresponding supporting facts for global document-level questions. Experimental results show that our approach outperforms existing MMRAG or KG-based approaches on multi-hop QA/VQA benchmarks and DLVQA.",
+      "authors": [
+        "Yi-Cheng Wang",
+        "Chu-Song Chen"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR",
+        "cs.CV"
+      ],
+      "published": "2026-06-27T07:14:31+00:00",
+      "link": "https://arxiv.org/pdf/2606.28780v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "multimodal knowledge graph construction method transferable to smart city KG",
+      "llm_evidence_cn": "多模态知识图谱构建方法可迁移至智慧城市知识图谱",
+      "llm_evidence": "多模态知识图谱构建方法可迁移至智慧城市知识图谱",
+      "canonical_evidence": "多模态知识图谱构建方法可迁移至智慧城市知识图谱",
+      "llm_tldr_en": "Proposes a multimodal graph RAG approach that automatically creates multimodal knowledge graphs from visually rich documents, addressing limitations of single-modality KG construction.",
+      "llm_tldr_cn": "针对现有大语言模型知识图谱构建仅处理语言模态的局限，本文提出一种多模态图RAG方法，自动从视觉丰富文档中创建多模态知识图谱。该方法通过融合文本和视觉信息，增强了对长文档的整体理解能力，为多模态知识图谱在文档理解中的应用提供了新思路，其方法可借鉴到智慧城市中多源异构数据的知识图谱构建。",
+      "llm_tldr": "针对现有大语言模型知识图谱构建仅处理语言模态的局限，本文提出一种多模态图RAG方法，自动从视觉丰富文档中创建多模态知识图谱。该方法通过融合文本和视觉信息，增强了对长文档的整体理解能力，为多模态知识图谱在文档理解中的应用提供了新思路，其方法可借鉴到智慧城市中多源异构数据的知识图谱构建。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.30093v1",
+      "source": "arxiv",
+      "title": "Efficient Retrieval-Augmented Generation via Token Co-occurrence Graphs",
+      "abstract": "Retrieval-Augmented Generation (RAG) mitigates hallucinations in Large Language Models (LLMs) by grounding the generation process on external knowledge. However, standard RAG approaches struggle with multi-hop reasoning. While recent graph-based RAG methods improve the retrieval of interconnected chunks, they often rely on computationally expensive and error-prone LLM-based extraction pipelines. To address these issues, we propose TIGRAG (Token-Induced GraphRAG), an efficient graph-augmented RAG framework based on a token co-occurrence Knowledge Graph. TIGRAG directly models topological relationships between tokens using sliding-window co-occurrence statistics, thus enabling scalable graph construction. During inference, it combines graph-based semantic expansion and neural reranking to retrieve interconnected evidence for multi-hop reasoning. Specifically, it introduces an iterative entity-driven retrieval strategy that progressively expands the query using bridging entities extracted from previously retrieved contexts. We evaluated TIGRAG on three widely adopted multi-hop Question Answering (QA) benchmarks. Experimental results demonstrated that our framework consistently outperforms dense retrieval and graph-based RAG methods in both retrieval and downstream QA tasks, while substantially reducing indexing time, inference latency, and prompt footprint.",
+      "authors": [
+        "Gianluca Bonifazi",
+        "Christopher Buratti",
+        "Michele Marchetti",
+        "Federica Parlapiano",
+        "Giulia Quaglieri",
+        "Davide Traini",
+        "Domenico Ursino",
+        "Luca Virgili"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.IR"
+      ],
+      "published": "2026-06-29T10:29:51+00:00",
+      "link": "https://arxiv.org/pdf/2606.30093v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Token co-occurrence KG for efficient RAG, transferable to smart city KG construction",
+      "llm_evidence_cn": "基于Token共现的知识图谱构建方法，可迁移至智慧城市知识图谱",
+      "llm_evidence": "基于Token共现的知识图谱构建方法，可迁移至智慧城市知识图谱",
+      "canonical_evidence": "基于Token共现的知识图谱构建方法，可迁移至智慧城市知识图谱",
+      "llm_tldr_en": "Proposes TIGRAG, a graph-augmented RAG framework using token co-occurrence knowledge graphs for scalable construction without expensive LLM extraction.",
+      "llm_tldr_cn": "针对标准RAG在多跳推理中的不足以及图RAG依赖昂贵LLM提取的问题，提出TIGRAG框架，基于滑动窗口词共现统计直接构建Token共现知识图谱，无需LLM参与。在推理时结合图语义和检索增强生成，实验表明该方法在效率与效果上均有提升。该工作为智慧城市知识图谱构建提供了轻量化可迁移的方法。",
+      "llm_tldr": "针对标准RAG在多跳推理中的不足以及图RAG依赖昂贵LLM提取的问题，提出TIGRAG框架，基于滑动窗口词共现统计直接构建Token共现知识图谱，无需LLM参与。在推理时结合图语义和检索增强生成，实验表明该方法在效率与效果上均有提升。该工作为智慧城市知识图谱构建提供了轻量化可迁移的方法。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.30371v1",
+      "source": "arxiv",
+      "title": "MaDI-Bench: An End-to-End Data Integration Benchmark",
+      "abstract": "Data integration combines heterogeneous data sets into a single, coherent representation. Data integration involves a sequence of interdependent tasks including schema matching, value normalization, entity blocking, entity matching, and data fusion. Existing benchmarks either evaluate these steps in isolation or cover only incomplete versions of the data integration pipeline, omitting specific steps. The lack of public end-to-end data integration benchmarks hinders research on data integration methods that address the integration process as a whole. This paper fills this gap by introducing the Mannheim Data Integration Benchmark (MaDI-Bench), the first benchmark for the end-to-end integration of relational tables covering all steps of the integration process. MaDI-Bench contributes (i) a set of base end-to-end data integration tasks spanning several application domains, each requiring the full schema matching, value normalization, entity matching, and conflict resolution pipeline; and (ii) a generic method for deriving task variants that mitigates rapid benchmark saturation as data integration systems advance. We validate the benchmark using human-engineered pipelines, a best-of-breed pipeline, and an LLM-based pipeline. The validation demonstrates the utility of the benchmark for measuring the step-wise as well as the end-to-end performance of data integration pipelines. All benchmark artifacts are available for public download.",
+      "authors": [
+        "Aaron Steiner",
+        "Ralph Peeters",
+        "Christian Bizer"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB",
+        "cs.CL"
+      ],
+      "published": "2026-06-29T14:34:22+00:00",
+      "link": "https://arxiv.org/pdf/2606.30371v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "end-to-end data integration benchmark covering schema matching, entity resolution, and data fusion",
+      "llm_evidence_cn": "涵盖模式匹配、实体解析和数据融合的端到端数据集成基准",
+      "llm_evidence": "涵盖模式匹配、实体解析和数据融合的端到端数据集成基准",
+      "canonical_evidence": "涵盖模式匹配、实体解析和数据融合的端到端数据集成基准",
+      "llm_tldr_en": "Introduces MaDI-Bench, the first end-to-end benchmark for relational table integration, covering all steps from schema matching to data fusion.",
+      "llm_tldr_cn": "针对数据集成领域缺少端到端基准的问题，本文提出MaDI-Bench，首个覆盖模式匹配、值归一化、实体阻塞、实体匹配和数据融合全流程的基准。该基准为评估和比较数据集成方法提供了标准化平台，可应用于智慧城市异构数据（如BIM、GIS、传感器数据）的整合研究。",
+      "llm_tldr": "针对数据集成领域缺少端到端基准的问题，本文提出MaDI-Bench，首个覆盖模式匹配、值归一化、实体阻塞、实体匹配和数据融合全流程的基准。该基准为评估和比较数据集成方法提供了标准化平台，可应用于智慧城市异构数据（如BIM、GIS、传感器数据）的整合研究。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
