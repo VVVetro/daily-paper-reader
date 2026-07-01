@@ -6,54 +6,41 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-30
-- 运行时间：2026-06-30 22:20:31 UTC
+- 最新运行日期：2026-07-01
+- 运行时间：2026-07-01 21:54:40 UTC
 - 运行状态：成功
-- 本次总论文数：10
-- 精读区：3
-- 速读区：7
+- 本次总论文数：7
+- 精读区：2
+- 速读区：5
 
 ### 今日简报（AI）
-今日阅读10篇，精读《OmniPath: 轮椅无障碍多模态审计框架》与《Kimball与Inmon数据仓库架构挑战》，速读聚焦多模态图RAG与空间数据质量评估。
-
-最值得关注：多模态智能体在无障碍场景的应用，以及数据仓库中一致性维度与模型选择的权衡。
-
-建议下一步：优先阅读精读论文以理解框架设计，再结合速读中的融合与质量评估技术，应用于实际数据治理项目。
-- 详情：[/202606/30/README](/202606/30/README)
+今日推荐7篇，精读2篇：异步视觉语言智能体用于增量3D场景图（9.0）和3D空间模式匹配（8.0）。重点看：增量3D场景图与异步视觉语言建模，空间模式匹配。建议关注视觉语言智能体与3D环境交互的最新进展。
+- 详情：[/202607/01/README](/202607/01/README)
 
 ### 精读区论文标签
-1. [OmniPath: A Multi-Modal Agentic Framework for Auditing Wheelchair Accessibility](/202606/30/2606.24129v1-omnipath-a-multi-modal-agentic-framework-for-auditing-wheelchair-accessibility)  
+1. [Think While You Map: Asynchronous Vision-Language Agents for Incremental 3D Scene Graphs](/202607/01/2606.31471v1-think-while-you-map-asynchronous-vision-language-agents-for-incremental-3d-scene-graphs)  
+   标签：评分：9.0/10、query:smart-city
+   evidence：增量式3D场景图构建方法，直接适用于城市环境点云语义理解
+2. [3D Spatial Pattern Matching](/202607/01/2606.26465v1-3d-spatial-pattern-matching)  
    标签：评分：8.0/10、query:smart-city
-   evidence：融合OSM和LiDAR多模态数据进行城市环境审计
-2. [Kimball's Data Warehouse Architecture: Evaluating the Challenges of Conformed Data against the Inmon Model](/202606/30/2606.27571v1-kimballs-data-warehouse-architecture-evaluating-the-challenges-of-conformed-data-against-the-inmon-model)  
-   标签：评分：8.0/10、query:smart-city
-   evidence：数据仓库架构通过一致性维度实现多源数据集成
-3. [UrbanCDNet: Appearance-Robust and Boundary-Aware Bitemporal Change Detection for Korean Urban Building Monitoring](/202606/30/2606.29781v1-urbancdnet-appearance-robust-and-boundary-aware-bitemporal-change-detection-for-korean-urban-building-monitoring)  
-   标签：评分：8.0/10、query:smart-city
-   evidence：基于双时相航空影像的城市建筑变化检测，用于基础设施管理
+   evidence：三维空间模式匹配用于城市数字孪生数据集成
 
 ### 速读区论文标签
-1. [Single and Multi Truth Data Fusion using Large Language Models](/202606/30/2606.28062v1-single-and-multi-truth-data-fusion-using-large-language-models)  
+1. [CORTEX: High-Quality Cross-Domain Organization of Web-Scale Corpora through Ontological Corpus Graph](/202607/01/2606.30175v1-cortex-high-quality-cross-domain-organization-of-web-scale-corpora-through-ontological-corpus-graph)  
    标签：评分：7.0/10、query:smart-city
-   evidence：基于LLM的数据融合方法用于多源数据整合，适用于智慧城市异构数据
-2. [Automated Quality Assessment of Geospatial Vector Data: A GeoAI Approach using Spatial Representation Learning](/202606/30/2606.28390v1-automated-quality-assessment-of-geospatial-vector-data-a-geoai-approach-using-spatial-representation-learning)  
+   evidence：提出本体语料图进行结构化知识组织，与智慧城市数据整合的语义数据模型相关
+2. [A Conversational Agentic Interface to Physics-Based Household Digital Twins for Residential Energy Decision Support](/202607/01/2606.31744v1-a-conversational-agentic-interface-to-physics-based-household-digital-twins-for-residential-energy-decision-support)  
    标签：评分：7.0/10、query:smart-city
-   evidence：GeoAI与空间表示学习用于地理空间数据质量评估，可应用于智慧城市GIS数据整合
-3. [Multimodal Graph RAG for Long-range Visually Rich Document Understanding](/202606/30/2606.28780v1-multimodal-graph-rag-for-long-range-visually-rich-document-understanding)  
-   标签：评分：7.0/10、query:smart-city
-   evidence：多模态知识图谱构建方法可迁移至智慧城市知识图谱
-4. [MaDI-Bench: An End-to-End Data Integration Benchmark](/202606/30/2606.30371v1-madi-bench-an-end-to-end-data-integration-benchmark)  
-   标签：评分：7.0/10、query:smart-city
-   evidence：涵盖模式匹配、实体解析和数据融合的端到端数据集成基准
-5. [CADENZA: Compiling Natural-Language Intent into Task-Specific Operator DAGs for Semantic Query Processing](/202606/30/2606.29151v1-cadenza-compiling-natural-language-intent-into-task-specific-operator-dags-for-semantic-query-processing)  
+   evidence：基于物理的家庭数字孪生的对话式代理接口，用于能源决策支持
+3. [Parameter Efficient Hybrid Transformer (PEHT) for Network Traffic Prediction via Dynamic Urban Congestion Integration](/202607/01/2606.28274v1-parameter-efficient-hybrid-transformer-peht-for-network-traffic-prediction-via-dynamic-urban-congestion-integration)  
    标签：评分：6.0/10、query:smart-city
-   evidence：面向异构数据整合的语义查询编译方法
-6. [Measuring Graph-to-Graph Semantic Similarity in Knowledge Graphs: An Empirical Evaluation of Knowledge Graph Embeddings](/202606/30/2606.29180v1-measuring-graph-to-graph-semantic-similarity-in-knowledge-graphs-an-empirical-evaluation-of-knowledge-graph-embeddings)  
+   evidence：融合城市移动性与网络数据进行流量预测
+4. [Customized Generative AI Agent for Transportation Engineering Practice: A Development and Continued Pre-training Guideline](/202607/01/2606.29014v1-customized-generative-ai-agent-for-transportation-engineering-practice-a-development-and-continued-pre-training-guideline)  
    标签：评分：6.0/10、query:smart-city
-   evidence：评估知识图谱嵌入在图级语义相似性上的表现，对智慧城市知识图谱推理有参考价值
-7. [Efficient Retrieval-Augmented Generation via Token Co-occurrence Graphs](/202606/30/2606.30093v1-efficient-retrieval-augmented-generation-via-token-co-occurrence-graphs)  
+   evidence：面向交通工程的定制化生成式AI，领域持续预训练
+5. [Measuring Graph-to-Graph Semantic Similarity in Knowledge Graphs: An Empirical Evaluation of Knowledge Graph Embeddings](/202607/01/2606.29180v2-measuring-graph-to-graph-semantic-similarity-in-knowledge-graphs-an-empirical-evaluation-of-knowledge-graph-embeddings)  
    标签：评分：6.0/10、query:smart-city
-   evidence：基于Token共现的知识图谱构建方法，可迁移至智慧城市知识图谱
+   evidence：知识图谱语义相似度评估方法可应用于城市知识图谱
 
 
 <div class="dpr-home-promo-card">

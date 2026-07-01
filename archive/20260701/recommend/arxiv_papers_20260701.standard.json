@@ -1,0 +1,291 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-01T21:50:18.526181+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2606.31471v1",
+      "source": "arxiv",
+      "title": "Think While You Map: Asynchronous Vision-Language Agents for Incremental 3D Scene Graphs",
+      "abstract": "Open-vocabulary 3D scene graph methods typically operate in two stages: first reconstruct, then enrich with vision-language models, leaving the graph unqueryable during exploration. We argue that this sequential coupling is unnecessary and propose an asynchronous architecture in which lightweight online mapping runs concurrently with heavyweight semantic refinement. A probabilistic voxel-based backbone maintains stable object identities incrementally, while background VLM agents progressively enrich the graph. This framework resolves duplicate object tracks through semantic loop closure, attaches fine-grained visual attributes and derives spatial relations between objects. A multi-target frame scheduler amortizes VLM cost by selecting a small set of informative frames that jointly cover multiple targets. The resulting scene graph is queryable during exploration and grows in semantic richness over time. Our method matches or outperforms existing open-vocabulary 3D scene graph methods on semantic segmentation (ScanNet, Replica) and surpasses the prior state-of-the-art across three visual grounding benchmarks (Sr3D+, Nr3D, ScanRefer) by 15.3 to 18.8 A@0.25. Project page: https://denizbickici.github.io/thinkgraphs/",
+      "authors": [
+        "Deniz Bickici",
+        "Michael Pabst",
+        "Shohei Mori",
+        "Dieter Schmalstieg"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-30T10:49:21+00:00",
+      "link": "https://arxiv.org/pdf/2606.31471v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "incremental 3D scene graphs from vision-language models, directly applicable to point cloud semantic understanding for urban environments",
+      "llm_evidence_cn": "增量式3D场景图构建方法，直接适用于城市环境点云语义理解",
+      "llm_evidence": "增量式3D场景图构建方法，直接适用于城市环境点云语义理解",
+      "canonical_evidence": "增量式3D场景图构建方法，直接适用于城市环境点云语义理解",
+      "llm_tldr_en": "Think While You Map proposes an asynchronous architecture for incremental 3D scene graph construction, combining online mapping with concurrent VLM refinement, enabling queryable graphs during exploration.",
+      "llm_tldr_cn": "针对现有3D场景图构建需先重建后富化的顺序耦合导致探索期间不可查询的问题，本文提出异步架构，让轻量在线建图与后台VLM语义精化并行运行。概率体素骨干网络增量维护稳定物体身份，VLM代理逐步丰富语义属性与空间关系，并通过语义闭环检测消除重复轨迹。该方法在实时性和语义丰富度上取得平衡，为城市环境点云场景理解提供新范式。",
+      "llm_tldr": "针对现有3D场景图构建需先重建后富化的顺序耦合导致探索期间不可查询的问题，本文提出异步架构，让轻量在线建图与后台VLM语义精化并行运行。概率体素骨干网络增量维护稳定物体身份，VLM代理逐步丰富语义属性与空间关系，并通过语义闭环检测消除重复轨迹。该方法在实时性和语义丰富度上取得平衡，为城市环境点云场景理解提供新范式。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.26465v1",
+      "source": "arxiv",
+      "title": "3D Spatial Pattern Matching",
+      "abstract": "Spatial pattern matching is the process of matching query entities and constraints with database entities and relations. It has many applications, including similar region search, housing market search, landmark search, and road network matching. To our knowledge, all existing spatial pattern matching approaches frame the problem in a 2 dimensional space, where entities lie in a cartesian plane and relationships defined between them are contained in 2 dimensions. However, this problem framing has significant limitations when searching for real world entities that have height in addition to position. To address this limitation, we extend spatial pattern matching to 3 dimensions and provide a generalized definition of the problem. We describe a subgraph matching algorithm capable of resolving 3D spatial patterns over distance relations and release two 3D spatial pattern matching datasets, one synthetic and one containing real 3D building data from the city of Hamburg, Germany. We test our subgraph matching algorithm on both datasets and present results as a baseline for future methods to build upon.",
+      "authors": [
+        "Nicole R. Schneider",
+        "Avik Das",
+        "Lukas Arzoumanidis",
+        "Abhijeet Ghodgaonkar",
+        "Hanan Samet",
+        "Youness Dehbi"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB",
+        "cs.AI",
+        "cs.IR"
+      ],
+      "published": "2026-06-25T00:00:49+00:00",
+      "link": "https://arxiv.org/pdf/2606.26465v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "3D spatial pattern matching for urban digital twin data integration",
+      "llm_evidence_cn": "三维空间模式匹配用于城市数字孪生数据集成",
+      "llm_evidence": "三维空间模式匹配用于城市数字孪生数据集成",
+      "canonical_evidence": "三维空间模式匹配用于城市数字孪生数据集成",
+      "llm_tldr_en": "Extends spatial pattern matching to 3D, enabling query matching across 3D spatial databases. Directly applicable to urban digital twins and smart city data semantics.",
+      "llm_tldr_cn": "现有空间模式匹配局限于二维，无法处理具有高度信息的真实世界实体。本文将其扩展至三维，提出三维空间模式匹配的通用定义，并设计子图匹配算法。应用包括相似区域搜索、地标搜索和道路网络匹配。该方法为城市数字孪生中的三维数据语义互操作和集成提供了核心技术支持。",
+      "llm_tldr": "现有空间模式匹配局限于二维，无法处理具有高度信息的真实世界实体。本文将其扩展至三维，提出三维空间模式匹配的通用定义，并设计子图匹配算法。应用包括相似区域搜索、地标搜索和道路网络匹配。该方法为城市数字孪生中的三维数据语义互操作和集成提供了核心技术支持。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.30175v1",
+      "source": "arxiv",
+      "title": "CORTEX: High-Quality Cross-Domain Organization of Web-Scale Corpora through Ontological Corpus Graph",
+      "abstract": "The continuous evolution of large language models drives escalating demands on data scale and quality, and as different training stages impose increasingly tailored data requirements, systematic organization of high-quality corpora becomes indispensable. Existing corpus construction pipelines confine the resulting corpora to flat, undifferentiated document collections, universally lacking systematic knowledge organization. We present Cortex, to our knowledge the first framework that elevates web-scale corpus construction from flat document filtering to structured knowledge organization through an Ontological Corpus Graph (OCG), a three-layer heterogeneous structure unifying a quality-refined content layer, a hierarchical lightweight ontology layer via LLM-driven automated evolution, and a cross-domain alignment layer enabling inter-domain association at arbitrary taxonomic resolution. Comprehensive experiments confirm the effectiveness of Cortex. In particular, we leverage the OCG to synthesize CortexBench, a cross-domain search-and-reasoning benchmark whose evaluation across eight frontier LLMs validates the effectiveness of quality refinement, domain organization, and cross-domain data synthesis. We will publicly release the complete codebase, a 24.14B-token refined corpus with its OCG, and CortexBench.",
+      "authors": [
+        "Chengtao Gan",
+        "Xiaoke Guo",
+        "Yushan Zhu",
+        "Zhaoyan Gong",
+        "Zhiqiang Liu",
+        "Songze Li",
+        "Huajun Chen",
+        "Wen Zhang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-29T11:51:00+00:00",
+      "link": "https://arxiv.org/pdf/2606.30175v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Proposes Ontological Corpus Graph for structured knowledge organization, relevant to semantic data models for smart city data integration",
+      "llm_evidence_cn": "提出本体语料图进行结构化知识组织，与智慧城市数据整合的语义数据模型相关",
+      "llm_evidence": "提出本体语料图进行结构化知识组织，与智慧城市数据整合的语义数据模型相关",
+      "canonical_evidence": "提出本体语料图进行结构化知识组织，与智慧城市数据整合的语义数据模型相关",
+      "llm_tldr_en": "Cortex elevates web corpus construction from flat filtering to structured organization using Ontological Corpus Graph, enabling hierarchical and semantic organization of heterogeneous data.",
+      "llm_tldr_cn": "现有语料构建流程产出扁平文档集合，缺乏系统知识组织。Cortex提出本体语料图(OCG)框架，包含质量精炼内容层、层次化标签层和本体关系层，实现跨领域语料的结构化组织。该框架可直接应用于智慧城市多源异构数据的统一语义建模与组织。",
+      "llm_tldr": "现有语料构建流程产出扁平文档集合，缺乏系统知识组织。Cortex提出本体语料图(OCG)框架，包含质量精炼内容层、层次化标签层和本体关系层，实现跨领域语料的结构化组织。该框架可直接应用于智慧城市多源异构数据的统一语义建模与组织。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing unified data standards and semantic data models for integrating heterogeneous smart city construction data, including BIM, GIS, documents, images, videos, point clouds, and structured databases.",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.28274v1",
+      "source": "arxiv",
+      "title": "Parameter Efficient Hybrid Transformer (PEHT) for Network Traffic Prediction via Dynamic Urban Congestion Integration",
+      "abstract": "Accurate network traffic prediction is a critical element for efficient resource allocation in dynamic urban cellular networks. However, prediction remains challenging because network demand is influenced by complex mobility patterns, congestion dynamics, and heterogeneous user behavior. This paper introduces the Parameter-Efficient Hybrid Transformer (PEHT), a network traffic prediction framework that integrates urban mobility and congestion information into a Transformer-based architecture. PEHT separates primary network communication features from secondary urban mobility features and incorporates Low-Rank Adaptation (LoRA) into the Transformer encoder to reduce the number of trainable parameters while maintaining high predictive accuracy. A multimodal fusion strategy then injects external mobility and congestion features into the decoder to improve traffic forecasting. Experiments on the Telecom Italia Milan dataset and multiple synthetic congestion scenarios show that PEHT outperforms state-of-the-art baselines in terms of RMSE, MAE, and $R^2$. The implementation is available in the GitHub repository.",
+      "authors": [
+        "Abdolazim Rezaei",
+        "Mehdi Sookhak",
+        "Mahboobeh Haghparast"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-26T17:17:17+00:00",
+      "link": "https://arxiv.org/pdf/2606.28274v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "integrates urban mobility and network data for traffic prediction",
+      "llm_evidence_cn": "融合城市移动性与网络数据进行流量预测",
+      "llm_evidence": "融合城市移动性与网络数据进行流量预测",
+      "canonical_evidence": "融合城市移动性与网络数据进行流量预测",
+      "llm_tldr_en": "PEHT integrates urban congestion data with network traffic via a hybrid Transformer, using LoRA for efficiency. Contributes to multi-source data fusion for smart city infrastructure.",
+      "llm_tldr_cn": "城市网络流量预测面临复杂出行模式和拥堵动态的挑战。本文提出参数高效混合Transformer（PEHT），通过融合城市移动性特征和网络通信特征，并采用低秩适配（LoRA）减少可训练参数。在城市数据集上验证了预测性能提升。该工作展示了多源数据融合在智慧城市基础设施管理中的潜力。",
+      "llm_tldr": "城市网络流量预测面临复杂出行模式和拥堵动态的挑战。本文提出参数高效混合Transformer（PEHT），通过融合城市移动性特征和网络通信特征，并采用低秩适配（LoRA）减少可训练参数。在城市数据集上验证了预测性能提升。该工作展示了多源数据融合在智慧城市基础设施管理中的潜力。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.31744v1",
+      "source": "arxiv",
+      "title": "A Conversational Agentic Interface to Physics-Based Household Digital Twins for Residential Energy Decision Support",
+      "abstract": "Multiple actors around residential energy systems require accessible decision-support tools: homeowners and tenants for dwelling-level retrofit choices, consultants and municipal planners for building and district-level intervention assessment, and retailers and aggregators for estimating residential flexibility and coordinating distributed energy resources. However, existing pathways remain limited, since professional audits are costly and static, rule-of-thumb estimates lack household specificity, and high-fidelity simulation tools require specialized expertise. This paper presents a conversational agentic framework that makes physics-based household energy simulation accessible through natural language interaction. The proposed system integrates a Household Digital Twin (HDT), built on GridLAB-D and exposed through a REST-based microservices architecture, with a two-tier large language model (LLM) agentic layer that translates user requests into structured, schema-compliant simulation payloads. To improve reliability, the architecture combines intent routing, a domain-specific knowledge base, deterministic post-processing of simulation outputs, and tool-governed execution policies. The system is evaluated on a curated dataset of 45 prompts with increasing complexity, covering multiple households, seasons, and override scenarios. Results show 100% schema conformance, 96.1% field-level F1, 90.4% value accuracy, and a 95.6% end-to-end simulation success rate. The findings indicate that conversational agentic interfaces can substantially lower the usability barrier of physics-based household digital twins while preserving the reliability required for residential energy decision support.",
+      "authors": [
+        "Costas Mylonas",
+        "Titos Georgoulakis",
+        "Magda Foti"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-06-30T14:36:18+00:00",
+      "link": "https://arxiv.org/pdf/2606.31744v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "conversational agentic interface to physics-based household digital twins for energy decision support",
+      "llm_evidence_cn": "基于物理的家庭数字孪生的对话式代理接口，用于能源决策支持",
+      "llm_evidence": "基于物理的家庭数字孪生的对话式代理接口，用于能源决策支持",
+      "canonical_evidence": "基于物理的家庭数字孪生的对话式代理接口，用于能源决策支持",
+      "llm_tldr_en": "Presents a conversational agentic framework making physics-based household energy simulation accessible via natural language, supporting diverse stakeholders in residential energy decisions.",
+      "llm_tldr_cn": "该论文针对住宅能源系统中多方决策者缺乏易用工具的问题，提出了一个对话式代理框架。该框架通过自然语言接口对接基于物理的家庭能量仿真，用户无需专业知识即可进行改造评估、规划分析等任务。系统结合数字孪生与大语言模型，实现了直观的人机交互。尽管聚焦住宅，其方法可推广至城市级数字孪生平台。",
+      "llm_tldr": "该论文针对住宅能源系统中多方决策者缺乏易用工具的问题，提出了一个对话式代理框架。该框架通过自然语言接口对接基于物理的家庭能量仿真，用户无需专业知识即可进行改造评估、规划分析等任务。系统结合数字孪生与大语言模型，实现了直观的人机交互。尽管聚焦住宅，其方法可推广至城市级数字孪生平台。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.29014v1",
+      "source": "arxiv",
+      "title": "Customized Generative AI Agent for Transportation Engineering Practice: A Development and Continued Pre-training Guideline",
+      "abstract": "Recent advancements in generative artificial intelligence (AI) and large language models (LLMs) have shown significant promise in automating complex reasoning, summarization, and question-answering tasks. However, the effectiveness of general-purpose LLMs in specialized engineering domains remains limited due to insufficient exposure to technical standards, engineering terminology, and domain-specific semantics. This study proposes a systematic approach to developing a customized generative AI agent for transportation engineering applications. A curated corpus of U.S. transportation manuals, design guidelines, and regulatory documents is used to conduct continued pretraining of six state-of-the-art LLMs through a unified low-rank adaptation (LoRA) framework. The training process is monitored to ensure convergence and model stability. Performance is evaluated using standard natural language processing metrics, including BLEU-4 and ROUGE, with Qwen2.5-7B and LLaMA-3.1-8B demonstrating the highest domain alignment and response quality. Results validate the effectiveness of LoRA-based adaptation in improving LLM performance on technical content interpretation and context-specific reasoning. This work contributes a reproducible development framework for constructing domain-specialized generative AI agents, supporting broader deployment in transportation research, design, planning, and policy analysis.",
+      "authors": [
+        "Dianwei Chen",
+        "Yuan-Zheng Lei",
+        "Zifan Zhang",
+        "Yuchen Liu",
+        "Xianfeng",
+        "Yang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.DL"
+      ],
+      "published": "2026-06-27T17:22:13+00:00",
+      "link": "https://arxiv.org/pdf/2606.29014v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "customized generative AI for transportation engineering, domain-specific continued pretraining",
+      "llm_evidence_cn": "面向交通工程的定制化生成式AI，领域持续预训练",
+      "llm_evidence": "面向交通工程的定制化生成式AI，领域持续预训练",
+      "canonical_evidence": "面向交通工程的定制化生成式AI，领域持续预训练",
+      "llm_tldr_en": "Proposes a systematic approach to develop customized generative AI agent for transportation engineering using continued pretraining on domain-specific corpus.",
+      "llm_tldr_cn": "通用大语言模型在交通工程领域效果有限。本文提出一套系统方法，利用美国交通手册等语料对六个大模型进行持续预训练，构建定制化生成式AI智能体，在专业问答和推理任务上取得显著提升。",
+      "llm_tldr": "通用大语言模型在交通工程领域效果有限。本文提出一套系统方法，利用美国交通手册等语料对六个大模型进行持续预训练，构建定制化生成式AI智能体，在专业问答和推理任务上取得显著提升。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.29180v2",
+      "source": "arxiv",
+      "title": "Measuring Graph-to-Graph Semantic Similarity in Knowledge Graphs: An Empirical Evaluation of Knowledge Graph Embeddings",
+      "abstract": "A Knowledge Graph (KG) represents facts as structured triples and is widely used to organize relational knowledge across diverse domains. Just as textual information ranges from words and sentences to complete documents, KG information can be interpreted at multiple levels, from entities, relations, and triples to subgraphs and entire KGs. However, existing KG embedding methods mainly focus on entities, relations, and triples, leaving graph-level semantics largely unaddressed. Conventional graph-level methods, which typically compare graphs based on structural patterns, are also insufficient because structural similarity alone cannot guarantee semantic similarity between KGs. To evaluate how well different methods capture such graph-level semantic information, we study graph-to-graph semantic similarity, which determines whether a pair of KGs represents semantically corresponding underlying information. To obtain reliable ground-truth correspondences, we construct a semantic matching dataset by modifying text documents, extracting KGs from both original and modified documents, and transferring their known correspondences to KG pairs. We compare text-based, structure-based, and KG embedding-based approaches on each dataset. For the KG embedding-based approach, we introduce two scoring functions: \\textit{EmbPairSim}, which uses maximal pairwise entity similarity, and \\textit{AvgEmbSim}, which uses a frequency-weighted centroid. Experiments on WikiText-2 and CC-News show that \\textit{EmbPairSim} achieves up to 5.3 pp higher MRR than Sentence-BERT while using substantially fewer parameters. These results suggest that KGE representations can serve as compact and effective signals for graph-to-graph semantic similarity in KGs. Our code is available at https://github.com/SeungRyeolBaek/KG-to-KG-Semantic-Similarity.",
+      "authors": [
+        "Seungryeol Baek",
+        "Wooseok Sim",
+        "Hogun Park"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-28T03:55:22+00:00",
+      "link": "https://arxiv.org/pdf/2606.29180v2",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "empirical evaluation of KG semantic similarity methods applicable to urban knowledge graphs",
+      "llm_evidence_cn": "知识图谱语义相似度评估方法可应用于城市知识图谱",
+      "llm_evidence": "知识图谱语义相似度评估方法可应用于城市知识图谱",
+      "canonical_evidence": "知识图谱语义相似度评估方法可应用于城市知识图谱",
+      "llm_tldr_en": "Empirically evaluates knowledge graph embedding methods for measuring graph-to-graph semantic similarity, highlighting limitations of structural-only approaches. Proposes framework for assessing KG semantic relevance.",
+      "llm_tldr_cn": "现有知识图谱嵌入方法主要关注实体和三元组，缺乏图级语义评估。本文系统评估了多种方法在图级语义相似度上的表现，发现结构相似度不足以表征语义相似度，并提出了评估框架。该工作对智慧城市中跨域知识图谱的整合与推理具有方法论价值。",
+      "llm_tldr": "现有知识图谱嵌入方法主要关注实体和三元组，缺乏图级语义评估。本文系统评估了多种方法在图级语义相似度上的表现，发现结构相似度不足以表征语义相似度，并提出了评估框架。该工作对智慧城市中跨域知识图谱的整合与推理具有方法论价值。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
