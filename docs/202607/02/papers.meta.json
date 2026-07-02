@@ -1,0 +1,69 @@
+{
+  "label": "2026-07-02",
+  "date": "2026-07-02",
+  "generated_at": "2026-07-02T21:44:13",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202607/02/2606.29151v2-cadenza-compiling-natural-language-intent-into-task-specific-operator-dags-for-semantic-query-processing",
+      "section": "quick",
+      "title_en": "CADENZA: Compiling Natural-Language Intent into Task-Specific Operator DAGs for Semantic Query Processing",
+      "authors": "Jaehyun Ha, Yongjoo Park, Wook-Shin Han",
+      "date": "2026-06-28",
+      "pdf": "https://arxiv.org/pdf/2606.29151v2",
+      "score": "7.0",
+      "evidence": "将自然语言意图编译为语义查询处理的算子DAG",
+      "tldr": "现有语义查询引擎优化器未将语义算子中间任务输出视为关系优化对象，缺乏联合调优能力。CADENZA通过任务扩展关系代数（TxRA）将自然语言意图编译为带类型的任务DAG，逻辑规划器枚举语义指导的替代方案并安全重写，物理规划器使用贝叶斯优化联合调优路由、后端参数和阈值。在SemBench上，质量提升0.49，时延降低165.7倍，成本降低310.3倍，实现了多目标优化。",
+      "tags": "query:smart-city",
+      "abstract_en": "Semantic query processing engines (SQPEs) extend relational query processing with semantic operators that are executed via model inference over unstructured data. Optimizing such queries is inherently multi-objective: model inference dominates latency and monetary cost, and outputs are stochastic and backend-dependent, so quality must be optimized alongside efficiency. Existing SQPE optimizers do not expose each semantic operator instance's intermediate task outputs as a relational optimization object, leaving optimization unable to filter, reorder, route, threshold, or jointly tune them. We present CADENZA, which compiles each semantic operator instance--a template bound to a natural-language intent--into an intent-specific plan space of typed task DAGs and selects an executable plan under user-specified quality-latency-cost trade-offs. CADENZA introduces task-extended relational algebra (TxRA), a conservative extension of relational algebra with task-specific operators. The logical planner synthesizes seed TxRA plans, applies structural rewrites whose safety conditions are checked from operator dependencies, and enumerates semantics-guided alternatives from alternative-generation templates. The physical planner compiles each task-specific operator into a router over heterogeneous backends and jointly tunes routing cutpoints, backend parameters, and relational thresholds with Bayesian optimization. On SemBench, CADENZA improves the scenario-level averages of quality, latency, and cost by up to +0.49, 165.7x, and 310.3x, respectively, relative to state-of-the-art.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/02/2606.29355v1-enterprise-data-modelling-methodologies-a-comparative-analysis-of-inmon-kimball-and-data-vault",
+      "section": "quick",
+      "title_en": "Enterprise Data Modelling Methodologies: A Comparative Analysis of Inmon, Kimball, and Data Vault",
+      "authors": "Issar Arab",
+      "date": "2026-06-28",
+      "pdf": "https://arxiv.org/pdf/2606.29355v1",
+      "score": "7.0",
+      "evidence": "企业数据建模方法论（Inmon、Kimball、Data Vault）对比，可应用于智能城市数据集成标准",
+      "tldr": "企业数据仓库设计面临Inmon、Kimball与Data Vault三种主流方法的选择难题。本文从架构哲学、建模技术、可扩展性、查询性能等维度进行系统比较，发现无普适最优方案，最佳选择取决于组织规模、监管环境与分析成熟度。研究提供决策准则，指导实践者根据战略目标选择合适的方法。",
+      "tags": "query:smart-city",
+      "abstract_en": "The design and governance of enterprise data warehouses constitute foundational decisions in modern data-driven organisations, with long-term impact for analytical capability, operational agility, and regulatory compliance. This paper presents a structured comparative analysis of three prevailing data warehousing methodologies: the Inmon approach, the Kimball approach, and Data Vault. The paper first establishes the technical foundations common to all three enterprise frameworks, in particular the distinction between Online Transaction Processing (OLTP) and Online Analytical Processing (OLAP) systems, the principles of relational normalisation, and the core techniques of entity-relationship and dimensional data modelling. The comparative analysis examines each methodology across a set of dimensions including architectural philosophy, modelling technique, scalability, agility, query performance, audit capability, and suitability for different organisational profiles. Findings indicate that no single methodology is universally optimal; rather, the appropriate choice is contingent on an organisation's scale, regulatory environment, analytical maturity, and tolerance for upfront architectural investment. This paper concludes with a synthesis of decision criteria to guide practitioners and researchers in selecting the methodology most aligned with their strategic objectives.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/02/2606.27967v1-relball-relation-ball-with-quaternion-rotation-for-knowledge-graph-completion",
+      "section": "quick",
+      "title_en": "RelBall: Relation Ball with Quaternion Rotation for Knowledge Graph Completion",
+      "authors": "Yike Liu, Peijia Xie, Chao He, Huiling Zhu",
+      "date": "2026-06-26",
+      "pdf": "https://arxiv.org/pdf/2606.27967v1",
+      "score": "6.0",
+      "evidence": "使用四元数旋转进行知识图谱补全，捕获关系模式和层次",
+      "tldr": "知识图谱补全面临建模多样关系模式（如非交换组合）和语义层次的挑战。现有模型RotatE和Rotate3D无法同时处理层次和一对多关系。提出RelBall，通过模变换捕获抽象到具体的层次结构，并引入尾中心关系球支持一对一、一对多、多对一及多对多关系。在多个数据集上，RelBall在链接预测任务中取得竞争性性能，首次统一建模了关系模式、层次与基数关系。",
+      "tags": "query:smart-city",
+      "abstract_en": "Real-world knowledge graphs are often incomplete, lacking many valid facts. Knowledge Graph Completion (KGC) aims to predict missing links using known triples, thereby enhancing graph coverage. A key challenge is modeling diverse relational patterns such as symmetry, antisymmetry, inversion, composition and semantic hierarchy. Existing models such as RotatE can capture symmetric, antisymmetric, inverse, and commutative composition patterns, yet struggle with non-commutative composition. Rotate3D addresses this by introducing non-commutativity via three-dimensional rotations, but still fails to capture the semantic hierarchies prevalent in knowledge graphs. Moreover, both models cannot effectively model one-to-many relations. To overcome these limitations, we propose RelBall, which extends Rotate3D with two innovations. First, our model introduces modulus transformation to model hierarchies, driving abstract concepts toward smaller moduli and concrete instances toward larger ones. Second, it introduces a tail-centric relation ball to model one-to-one, one-to-many, many-to-one, and many-to-many relations. RelBall offers the following advantages: (1) coverage of all relational patterns, including the ones mentioned above; (2) an interpretable hierarchical representation where the modulus directly reflect semantic levels; (3) support for one-to-one, one-to-many, many-to-one, and many-to-many relations. Experiments on multiple datasets demonstrate RelBall's competitive link prediction performance against various baselines.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/02/2607.00833v1-generative-retrieval-for-table-union-search",
+      "section": "quick",
+      "title_en": "Generative Retrieval for Table Union Search",
+      "authors": "Shulun Zhang, Linting Wang, Yuwei Xu, Yingli Zhou, Chenhao Ma",
+      "date": "2026-07-01",
+      "pdf": "https://arxiv.org/pdf/2607.00833v1",
+      "score": "6.0",
+      "evidence": "生成式检索用于表联合搜索，促进数据湖中的数据集成",
+      "tldr": "数据湖中表联合搜索因表异构和规模扩展面临挑战。现有方法依赖候选池召回和重排序，性能受召回率限制且成本高。本文提出GenTUS生成式检索框架，将联合搜索转化为离散语义表标识符的约束生成，直接输出可联合表。在7个基准上平均排名1.05（最强基线2.57），显著降低延迟、存储和增量更新成本。",
+      "tags": "query:smart-city",
+      "abstract_en": "Modern data lakes contain heterogeneous tables whose task-relevant information is often scattered across different schemas, sources, and naming conventions. Table union search (TUS) retrieves tables that can be reliably unioned with a query table, supporting data discovery, enrichment, and downstream analytics. Although learning-based TUS methods improve table- or column-level representations, they still follow an encode-search-refine pipeline: candidate retrieval is followed by query-candidate matching or reranking, making quality dependent on candidate-pool recall and incurring growing latency and storage costs as the data lake scales. We propose GenTUS, a generative retrieval framework that reformulates TUS as constrained generation over discrete semantic table identifiers. Instead of searching and reranking an explicit candidate pool, GenTUS assigns candidate tables compact unionability-aware identifiers and trains a generator to produce the identifiers of unionable tables directly from the query. At query time, constrained decoding ensures that generated identifiers correspond to valid data-lake tables and returns them as ranked retrieval results. Experiments on seven public TUS benchmarks show that GenTUS achieves the best overall retrieval quality, with an average rank of 1.05 compared to 2.57 for the strongest baseline, while substantially reducing online latency, retrieval-artifact storage, and incremental update cost.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
