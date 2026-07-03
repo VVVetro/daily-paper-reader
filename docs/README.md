@@ -6,35 +6,39 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-02
-- 运行时间：2026-07-02 21:44:03 UTC
+- 最新运行日期：2026-07-03
+- 运行时间：2026-07-03 20:14:54 UTC
 - 运行状态：成功
-- 本次总论文数：4
-- 精读区：0
-- 速读区：4
+- 本次总论文数：5
+- 精读区：3
+- 速读区：2
 
 ### 今日简报（AI）
-1) 今日速读4篇，聚焦语义查询编译、数据建模方法论与知识图谱补全。  
-2) 最值得关注《CADENZA》与《Enterprise Data Modelling Methodologies》，前者用DAG编译自然语言查询，后者对比Inmon、Kimball等建模范式。  
-3) 建议优先阅读CADENZA的技术实现，了解其从意图到操作DAG的编译逻辑。
-- 详情：[/202607/02/README](/202607/02/README)
+今日精读两篇9.0高分论文，涉及LLM紧凑城市知识图谱与全球建筑立面分割基准，速读两篇6分工作。
+
+最值得关注：pykci用LLM构建紧凑城市知识图谱实现语义/空间查询，UnderOneFacade提供首个大规模立面语义分割基准。
+
+建议优先阅读精读论文，学习LLM与知识图谱融合的落地路径及建筑视觉基准的构建方法。
+- 详情：[/202607/03/README](/202607/03/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [pykci: A Compact Urban Knowledge Graph for Semantic and Spatial Queries using LLMs](/202607/03/2607.01605v1-pykci-a-compact-urban-knowledge-graph-for-semantic-and-spatial-queries-using-llms)  
+   标签：评分：9.0/10、query:smart-city
+   evidence：将CityGML 2.0城市模型转换为知识图谱
+2. [UnderOneFacade: Worldwide Facade Semantic Segmentation Benchmark Dataset](/202607/03/2607.02018v1-underonefacade-worldwide-facade-semantic-segmentation-benchmark-dataset)  
+   标签：评分：9.0/10、query:smart-city
+   evidence：使用厘米级点云的世界范围立面语义分割基准
+3. [OntoLearner: A Modular Python Library for Ontology Learning with Large Language Models](/202607/03/2607.01977v1-ontolearner-a-modular-python-library-for-ontology-learning-with-large-language-models)  
+   标签：评分：8.0/10、query:smart-city
+   evidence：基于大语言模型的本体学习库，适用于AI就绪的城市数据库
 
 ### 速读区论文标签
-1. [CADENZA: Compiling Natural-Language Intent into Task-Specific Operator DAGs for Semantic Query Processing](/202607/02/2606.29151v2-cadenza-compiling-natural-language-intent-into-task-specific-operator-dags-for-semantic-query-processing)  
-   标签：评分：7.0/10、query:smart-city
-   evidence：将自然语言意图编译为语义查询处理的算子DAG
-2. [Enterprise Data Modelling Methodologies: A Comparative Analysis of Inmon, Kimball, and Data Vault](/202607/02/2606.29355v1-enterprise-data-modelling-methodologies-a-comparative-analysis-of-inmon-kimball-and-data-vault)  
-   标签：评分：7.0/10、query:smart-city
-   evidence：企业数据建模方法论（Inmon、Kimball、Data Vault）对比，可应用于智能城市数据集成标准
-3. [RelBall: Relation Ball with Quaternion Rotation for Knowledge Graph Completion](/202607/02/2606.27967v1-relball-relation-ball-with-quaternion-rotation-for-knowledge-graph-completion)  
+1. [FedLAB: Traceable Semantic Codebooks for Federated Multimodal Graph Foundation Learning](/202607/03/2606.32016v1-fedlab-traceable-semantic-codebooks-for-federated-multimodal-graph-foundation-learning)  
    标签：评分：6.0/10、query:smart-city
-   evidence：使用四元数旋转进行知识图谱补全，捕获关系模式和层次
-4. [Generative Retrieval for Table Union Search](/202607/02/2607.00833v1-generative-retrieval-for-table-union-search)  
+   evidence：联邦多模态图基础学习，通过可追踪语义码本实现跨模态知识迁移
+2. [CADENZA in Action: Breaking the Monolith with Intent-Dependent Plan Spaces for Semantic Queries](/202607/03/2607.01468v1-cadenza-in-action-breaking-the-monolith-with-intent-dependent-plan-spaces-for-semantic-queries)  
    标签：评分：6.0/10、query:smart-city
-   evidence：生成式检索用于表联合搜索，促进数据湖中的数据集成
+   evidence：语义算子优化器处理多模态数据查询，支持意图驱动的语义查询，适用于城市级数据平台
 
 
 <div class="dpr-home-promo-card">

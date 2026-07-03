@@ -1,0 +1,215 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-03T20:11:25.368208+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 3,
+    "deep_cap": 6,
+    "deep_selected": 3,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2607.01605v1",
+      "source": "arxiv",
+      "title": "pykci: A Compact Urban Knowledge Graph for Semantic and Spatial Queries using LLMs",
+      "abstract": "CityGML, the OGC standard for modeling, storage, and exchange of semantic 3D city models, describes urban objects with detailed semantics, geometry, and topology. Yet this richness is difficult to query directly: CityGML's XML encoding is designed for exchange rather than analysis, and relational mappings expose it through schemas requiring expert knowledge. We present pykci (Python Knowledge Graph for Cities), an open-source system that transforms CityGML 2.0 datasets into a compact urban knowledge graph in Neo4j and makes it queryable in natural language. The graph schema covers all thematic feature modules of CityGML 2.0 across all levels of detail and is spatially indexed with an R-tree for efficient geometric retrieval. A complete end-to-end Python pipeline ingests CityGML datasets into the knowledge graph, exports them to OGC 3D Tiles for interactive visualization, and supports lossless round-trip export of all content back to CityGML. For querying, the graph is paired with a large language model through a model-agnostic text-to-Cypher mechanism: the graph schema is supplied as context, and the model translates natural-language questions into Cypher queries executed against the graph. We evaluate both a locally running open-weight model, which keeps sensitive city data on-premise, and a state-of-the-art commercial model for the most demanding spatial and semantic queries. Answers are grounded in exact city data rather than the model's parametric memory, reducing hallucination and providing auditable provenance for every response. We demonstrate the system on open-government CityGML LoD2 datasets from Hamburg, Germany, including complex semantic and spatial queries such as identifying roof surfaces suitable for greening. pykci enables urban planners, GIS practitioners, and citizens to interact with semantic 3D city models without expertise in query languages and database schemas.",
+      "authors": [
+        "Huynh Duc An Son Nguyen",
+        "Lukas Arzoumanidis",
+        "Youness Dehbi"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB"
+      ],
+      "published": "2026-07-02T02:07:54+00:00",
+      "link": "https://arxiv.org/pdf/2607.01605v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "transforms CityGML 2.0 into urban knowledge graph",
+      "llm_evidence_cn": "将CityGML 2.0城市模型转换为知识图谱",
+      "llm_evidence": "将CityGML 2.0城市模型转换为知识图谱",
+      "canonical_evidence": "将CityGML 2.0城市模型转换为知识图谱",
+      "llm_tldr_en": "pykci converts CityGML semantic 3D city models into a compact Urban Knowledge Graph in Neo4j, enabling natural language queries via LLMs and R-tree spatial indexing.",
+      "llm_tldr_cn": "CityGML标准虽然富含语义、几何和拓扑信息，但其XML编码难以直接查询。pykci系统将CityGML 2.0数据集转换为Neo4j中的紧凑城市知识图谱，覆盖所有主题特征模块，并支持R树空间索引。用户可通过自然语言进行语义和空间查询，极大降低了城市数据的使用门槛。该工作为智慧城市中的知识图谱构建与语义查询提供了实用工具。",
+      "llm_tldr": "CityGML标准虽然富含语义、几何和拓扑信息，但其XML编码难以直接查询。pykci系统将CityGML 2.0数据集转换为Neo4j中的紧凑城市知识图谱，覆盖所有主题特征模块，并支持R树空间索引。用户可通过自然语言进行语义和空间查询，极大降低了城市数据的使用门槛。该工作为智慧城市中的知识图谱构建与语义查询提供了实用工具。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.02018v1",
+      "source": "arxiv",
+      "title": "UnderOneFacade: Worldwide Facade Semantic Segmentation Benchmark Dataset",
+      "abstract": "Globally consistent semantic digital twins require centimeter-accurate and geographically transferable 3D facade segmentation. However, progress in facade parsing is limited by the lack of large-scale, standardized benchmarks for evaluating cross-domain generalization. Existing datasets are geographically narrow, semantically inconsistent, or insufficiently precise. We introduce UnderOneFacade, the largest cross-country and cross-continent 3D facade benchmark to date, comprising centimeter-accurate point clouds with hierarchical, harmonized, and architecturally grounded semantic labels totaling 2.7 billion annotated points. Through a systematic evaluation of representative point-, graph- and transformer-based architectures, we show that current methods struggle to recognize fine-grained architectural elements and degrade significantly across geographic domains, with the best models achieving only up to 33 IoU on the fine-grained LoFG3 benchmark. By combining geometric precision with standardized semantics at unprecedented scale, UnderOneFacade establishes a rigorous benchmark for developing robust and transferable 3D segmentation models. The dataset, evaluation scripts, and pretrained models will be released upon publication.",
+      "authors": [
+        "Yi Wang",
+        "Fan Wang",
+        "Prabin Gyawali",
+        "Ziyang Xu",
+        "Anna Klimkowska",
+        "Yixiong Jing",
+        "Wanru Yang",
+        "Filip Biljecki",
+        "Christoph Holst",
+        "Benjamin Busam",
+        "Brian Sheil",
+        "Olaf Wysocki"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-02T10:50:01+00:00",
+      "link": "https://arxiv.org/pdf/2607.02018v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Worldwide facade semantic segmentation benchmark using centimeter-accurate point clouds",
+      "llm_evidence_cn": "使用厘米级点云的世界范围立面语义分割基准",
+      "llm_evidence": "使用厘米级点云的世界范围立面语义分割基准",
+      "canonical_evidence": "使用厘米级点云的世界范围立面语义分割基准",
+      "llm_tldr_en": "Introduces the largest cross-country 3D facade benchmark with 2.7B annotated point cloud points, enabling evaluation of point-based, graph-based, and transformer-based methods for facade segmentation.",
+      "llm_tldr_cn": "本文针对当前立面分割数据集地域狭窄、语义不一致的问题，提出了UnderOneFacade，这是迄今最大的跨大洲3D立面基准数据集，包含27亿个厘米级精度标注点云。系统评估了点、图、变换器等多种架构，揭示了现有方法在跨域泛化上的不足。该数据集直接服务于城市数字孪生和建筑语义理解。",
+      "llm_tldr": "本文针对当前立面分割数据集地域狭窄、语义不一致的问题，提出了UnderOneFacade，这是迄今最大的跨大洲3D立面基准数据集，包含27亿个厘米级精度标注点云。系统评估了点、图、变换器等多种架构，揭示了现有方法在跨域泛化上的不足。该数据集直接服务于城市数字孪生和建筑语义理解。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.01977v1",
+      "source": "arxiv",
+      "title": "OntoLearner: A Modular Python Library for Ontology Learning with Large Language Models",
+      "abstract": "Ontology learning (OL) aims to automatically construct structured knowledge models from text, yet progress remains fragmented across methods, domains, and evaluation practices. Despite decades of research, OL lacks a shared infrastructure for systematic evaluation and ontology access. This absence has hindered progress and fragmented research, leaving the central challenges of OL largely unaddressed. We introduce OntoLearner, a modular, cross-domain, and first-of-its-kind framework that unifies ontology access, large language model (LLM)-driven learning pipelines, and standardized benchmarking. OntoLearner releases 180 machine-readable ontologies spanning 22 domains and provides pipeline-ready datasets with train/dev/test splits for three core OL tasks: term typing, taxonomy discovery, and non-taxonomic relation extraction. Using this infrastructure, we conduct a large-scale empirical study of OL, evaluating 22 retrieval models and 12 LLMs across domains and tasks. The results converge on a finding that reframes the central challenge of OL: failure modes scale with ontological complexity rather than model size or architectural sophistication. The primary bottleneck is not model capability, but a structural mismatch between how models encode knowledge and how ontologies organize it. These findings establish that effective OL is reachable through the cross-domain, multi-task benchmarking enabled by OntoLearner. OntoLearner is open-source (MIT license) at https://github.com/sciknoworg/OntoLearner/.",
+      "authors": [
+        "Hamed Babaei Giglou",
+        "Jennifer D'Souza",
+        "Andrei Aioanei",
+        "Nandana Mihindukulasooriya",
+        "Sören Auer"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-02T10:09:03+00:00",
+      "link": "https://arxiv.org/pdf/2607.01977v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "LLM-driven ontology learning library for AI-ready urban databases",
+      "llm_evidence_cn": "基于大语言模型的本体学习库，适用于AI就绪的城市数据库",
+      "llm_evidence": "基于大语言模型的本体学习库，适用于AI就绪的城市数据库",
+      "canonical_evidence": "基于大语言模型的本体学习库，适用于AI就绪的城市数据库",
+      "llm_tldr_en": "OntoLearner is a modular Python library that unifies ontology access, LLM-driven learning pipelines, and standardized benchmarking across domains.",
+      "llm_tldr_cn": "本体学习领域长期缺乏统一的基础设施。OntoLearner提出了一个模块化、跨领域的Python库，统一了本体访问、大语言模型驱动的学习流水线和标准化基准测试。它发布了涵盖22个领域的180个机器可读本体，并提供流水线就绪的数据集。该工具可直接应用于智慧城市中BIM和点云数据的语义解析与知识图谱构建。",
+      "llm_tldr": "本体学习领域长期缺乏统一的基础设施。OntoLearner提出了一个模块化、跨领域的Python库，统一了本体访问、大语言模型驱动的学习流水线和标准化基准测试。它发布了涵盖22个领域的180个机器可读本体，并提供流水线就绪的数据集。该工具可直接应用于智慧城市中BIM和点云数据的语义解析与知识图谱构建。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic parsing, ontology learning, and knowledge graph construction from BIM models and point cloud scans for AI ready urban infrastructure databases.",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.32016v1",
+      "source": "arxiv",
+      "title": "FedLAB: Traceable Semantic Codebooks for Federated Multimodal Graph Foundation Learning",
+      "abstract": "Multimodal graph foundation models aim to learn reusable knowledge from graphs enriched with text, images, attributes, and relational topology, thereby supporting diverse graph-centric and modality-centric tasks. In practice, however, such multimodal graphs are often distributed across decentralized clients, where raw contents and local structures cannot be centrally shared due to privacy constraints. This motivates federated multimodal graph foundation learning, which requires not only transferable representation learning but also intrinsic semantic traceability under strict data isolation. Existing methods usually exchange or store knowledge through parameters, prototypes, embeddings, or compact codebooks, which support optimization and transfer but do not explicitly expose how modality evidence, node semantics, and topology context jointly support predictions. To bridge this gap, we propose FedLAB, a traceable semantic codebook framework that organizes multimodal graph knowledge into typed hierarchical codebooks for modality evidence, node semantics, and topology context. FedLAB further refines these trace units through federated semantic barycenter pre-training while keeping raw multimodal contents and graph structures local. Extensive experiments on 10 benchmarks and 6 downstream tasks show that FedLAB improves over state-of-the-art baselines by up to 7.53\\%, while preserving a native semantic trace interface.",
+      "authors": [
+        "Zekai Chen",
+        "Kairui Yang",
+        "Xuaner Chen",
+        "Xunkai Li",
+        "Xun Wu",
+        "Rong-Hua Li",
+        "Guoren Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-30T17:47:39+00:00",
+      "link": "https://arxiv.org/pdf/2606.32016v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "federated multimodal graph foundation learning with semantic codebooks for transferable knowledge across modalities",
+      "llm_evidence_cn": "联邦多模态图基础学习，通过可追踪语义码本实现跨模态知识迁移",
+      "llm_evidence": "联邦多模态图基础学习，通过可追踪语义码本实现跨模态知识迁移",
+      "canonical_evidence": "联邦多模态图基础学习，通过可追踪语义码本实现跨模态知识迁移",
+      "llm_tldr_en": "Proposes FedLAB, a federated learning framework for multimodal graphs using traceable semantic codebooks to learn transferable representations under privacy constraints.",
+      "llm_tldr_cn": "该论文提出FedLAB框架，针对隐私约束下分布式多模态图的联邦基础学习问题。现有方法通过参数或原型交换知识但缺乏语义可追踪性。FedLAB利用可追踪语义码本在客户端间传递知识，支持跨模态任务。实验表明FedLAB在保护隐私的同时有效学习多模态表示，可应用于智慧城市中传感器、文本、图像等各种异构数据场景。",
+      "llm_tldr": "该论文提出FedLAB框架，针对隐私约束下分布式多模态图的联邦基础学习问题。现有方法通过参数或原型交换知识但缺乏语义可追踪性。FedLAB利用可追踪语义码本在客户端间传递知识，支持跨模态任务。实验表明FedLAB在保护隐私的同时有效学习多模态表示，可应用于智慧城市中传感器、文本、图像等各种异构数据场景。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.01468v1",
+      "source": "arxiv",
+      "title": "CADENZA in Action: Breaking the Monolith with Intent-Dependent Plan Spaces for Semantic Queries",
+      "abstract": "Semantic query processing engines execute semantic operators, whose behavior is specified by natural-language intents, via model inference over multimodal data. Most existing optimizers optimize the operators at the granularity of monolithic implementations -- such as LLMs and embedding models -- forcing a trade-off between expensive model calls and cheaper alternatives that fail to capture intent-dependent semantics. We present CADENZA, a semantic operator optimizer that compiles an intent into decomposed steps, selects concrete physical implementations for each step, and tunes their parameters under user-specified quality-latency-cost preferences. In this demonstration, users interact with CADENZA through a web interface over multimodal databases, exploring how an intent is decomposed into alternative plans, how each plan is optimized, and how different preferences yield different winning plans.",
+      "authors": [
+        "Jaehyun Ha",
+        "Yongjoo Park",
+        "Wook-Shin Han"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB"
+      ],
+      "published": "2026-07-01T21:00:40+00:00",
+      "link": "https://arxiv.org/pdf/2607.01468v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "semantic operator optimizer for multimodal data queries, enabling efficient intent-driven semantic querying relevant to city-scale data platforms",
+      "llm_evidence_cn": "语义算子优化器处理多模态数据查询，支持意图驱动的语义查询，适用于城市级数据平台",
+      "llm_evidence": "语义算子优化器处理多模态数据查询，支持意图驱动的语义查询，适用于城市级数据平台",
+      "canonical_evidence": "语义算子优化器处理多模态数据查询，支持意图驱动的语义查询，适用于城市级数据平台",
+      "llm_tldr_en": "Presents CADENZA, a semantic operator optimizer that decomposes intents into steps and selects physical implementations under user preferences, enabling efficient semantic querying over multimodal data.",
+      "llm_tldr_cn": "语义查询引擎通常将自然语言意图映射为模型推理，但现有优化器难以兼顾质量与效率。本文提出CADENZA优化器，将意图分解为步骤，为每一步选择物理实现，并根据用户偏好调整参数。系统界面支持交互式查询，在保证语义准确的同时降低计算开销。该技术可用于智慧城市多模态数据平台，支持用户通过自然语言查询BIM、GIS等多种数据源。",
+      "llm_tldr": "语义查询引擎通常将自然语言意图映射为模型推理，但现有优化器难以兼顾质量与效率。本文提出CADENZA优化器，将意图分解为步骤，为每一步选择物理实现，并根据用户偏好调整参数。系统界面支持交互式查询，在保证语义准确的同时降低计算开销。该技术可用于智慧城市多模态数据平台，支持用户通过自然语言查询BIM、GIS等多种数据源。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
