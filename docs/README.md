@@ -6,39 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-03
-- 运行时间：2026-07-03 20:14:54 UTC
+- 最新运行日期：2026-07-04
+- 运行时间：2026-07-04 20:33:05 UTC
 - 运行状态：成功
-- 本次总论文数：5
-- 精读区：3
+- 本次总论文数：3
+- 精读区：1
 - 速读区：2
 
 ### 今日简报（AI）
-今日精读两篇9.0高分论文，涉及LLM紧凑城市知识图谱与全球建筑立面分割基准，速读两篇6分工作。
-
-最值得关注：pykci用LLM构建紧凑城市知识图谱实现语义/空间查询，UnderOneFacade提供首个大规模立面语义分割基准。
-
-建议优先阅读精读论文，学习LLM与知识图谱融合的落地路径及建筑视觉基准的构建方法。
-- 详情：[/202607/03/README](/202607/03/README)
+今日共阅读3篇论文，精读1篇、速读2篇。最值得关注的是精读论文《Dual-Learning based Penalized Multi-Align Clustering for Multi-View Incomplete and Disorderly Data》（8.0分），聚焦多视图不完整无序数据的聚类方法。后续可尝试将多视图聚类技术应用于实际数据清洗场景，同时跟进速读中知识图谱检索与自然语言转SQL的实用方向。
+- 详情：[/202607/04/README](/202607/04/README)
 
 ### 精读区论文标签
-1. [pykci: A Compact Urban Knowledge Graph for Semantic and Spatial Queries using LLMs](/202607/03/2607.01605v1-pykci-a-compact-urban-knowledge-graph-for-semantic-and-spatial-queries-using-llms)  
-   标签：评分：9.0/10、query:smart-city
-   evidence：将CityGML 2.0城市模型转换为知识图谱
-2. [UnderOneFacade: Worldwide Facade Semantic Segmentation Benchmark Dataset](/202607/03/2607.02018v1-underonefacade-worldwide-facade-semantic-segmentation-benchmark-dataset)  
-   标签：评分：9.0/10、query:smart-city
-   evidence：使用厘米级点云的世界范围立面语义分割基准
-3. [OntoLearner: A Modular Python Library for Ontology Learning with Large Language Models](/202607/03/2607.01977v1-ontolearner-a-modular-python-library-for-ontology-learning-with-large-language-models)  
+1. [Dual-Learning based Penalized Multi-Align Clustering for Multi-View Incomplete and Disorderly Data](/202607/04/2606.27984v1-dual-learning-based-penalized-multi-align-clustering-for-multi-view-incomplete-and-disorderly-data)  
    标签：评分：8.0/10、query:smart-city
-   evidence：基于大语言模型的本体学习库，适用于AI就绪的城市数据库
+   evidence：针对多模态数据不完整和时间异步的融合方法，直接适用于智慧城市传感器数据融合
 
 ### 速读区论文标签
-1. [FedLAB: Traceable Semantic Codebooks for Federated Multimodal Graph Foundation Learning](/202607/03/2606.32016v1-fedlab-traceable-semantic-codebooks-for-federated-multimodal-graph-foundation-learning)  
+1. [Query-Aware Spreading Activation for Multi-Hop Retrieval over Knowledge Graphs](/202607/04/2606.30133v1-query-aware-spreading-activation-for-multi-hop-retrieval-over-knowledge-graphs)  
    标签：评分：6.0/10、query:smart-city
-   evidence：联邦多模态图基础学习，通过可追踪语义码本实现跨模态知识迁移
-2. [CADENZA in Action: Breaking the Monolith with Intent-Dependent Plan Spaces for Semantic Queries](/202607/03/2607.01468v1-cadenza-in-action-breaking-the-monolith-with-intent-dependent-plan-spaces-for-semantic-queries)  
+   evidence：面向知识图的查询感知多跳检索方法
+2. [A Semantic-Layer-Mediated Agent for Natural Language to SQL over Heterogeneous Enterprise Databases](/202607/04/2606.31041v1-a-semantic-layer-mediated-agent-for-natural-language-to-sql-over-heterogeneous-enterprise-databases)  
    标签：评分：6.0/10、query:smart-city
-   evidence：语义算子优化器处理多模态数据查询，支持意图驱动的语义查询，适用于城市级数据平台
+   evidence：语义层用于异构数据集成
 
 
 <div class="dpr-home-promo-card">
