@@ -1,0 +1,341 @@
+Title: Verifiable Knowledge Expansion through Retrieval-Grounded Formal Concept Analysis
+
+URL Source: https://arxiv.org/pdf/2607.01773v1
+
+Published Time: Fri, 03 Jul 2026 00:37:16 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# Verifiable Knowledge Expansion through Retrieval-Grounded Formal Concept Analysis 
+
+# Yujin Yang 
+
+yujinyang@hanyang.ac.kr Hanyang University Seoul, Korea 
+
+# Heejung Lee ∗
+
+stdream@hanyang.ac.kr Hanyang University Seoul, Korea 
+
+## Abstract 
+
+Ontology construction requires deciding which objects, attributes, and structural relations should be accepted as valid knowledge. Lan-guage models can propose such structures from text, but their out-puts can still be unsupported or inconsistent. This paper proposes a retrieval-augmented small language model (SLM) framework that uses formal concept analysis (FCA) as a symbolic verification loop for knowledge expansion. Starting from seed attributes, FCA proposes implications over a growing formal context. A retrieval-grounded SLM oracle then validates each implication or returns a counterexample. The oracle also supports incidence judgments, consistency checks, and attribute proposals, making accepted im-plications, counterexamples, contradictions, and corrections in-spectable. In a rare ataxia setting constructed from Orphadata re-sources, retrieval-grounded 10-seed runs obtain relation F1 of 0.29– 0.52 and closure-based implication F1 of 0.22–0.30. Larger seed sets increase the number of evaluated implications and often improve implication F1. The lower implication scores reflect a stricter evalu-ation of derived implications, where one missed or extra relation can affect several implication judgments. Ablations show that in-cidence judgments in a fixed object–attribute setting can improve closure-based implication scores. However, identifying positive object–attribute pairs remains difficult even when the candidate objects and attributes are fixed. 
+
+## CCS Concepts 
+
+• Computing methodologies → Knowledge representation and reasoning ; Natural language processing ; • Information sys-tems → Information retrieval ; • Applied computing → Life and medical sciences. 
+
+## Keywords 
+
+Formal concept analysis, Retrieval-augmented generation, Ontol-ogy construction, Small language models, Rare disease phenotyping 
+
+ACM Reference Format: 
+
+Yujin Yang and Heejung Lee. 2026. Verifiable Knowledge Expansion through Retrieval-Grounded Formal Concept Analysis. In Proceedings of the 8th epiDAMIK ACM SIGKDD Workshop on Data-driven Decision Making for  
+
+> ∗Corresponding author. Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for third-party components of this work must be honored. For all other uses, contact the owner/author(s).
+> epiDAMIK @ KDD ’26, Jeju Island, Republic of Korea
+> ©2026 Copyright held by the owner/author(s).
+
+Public and Population Health, August 10, 2026, Jeju Island, Republic of Korea. 
+
+ACM, New York, NY, USA, 8 pages. 
+
+## 1 Introduction 
+
+Ontologies turn domain knowledge into a structure that can be shared, queried, checked, and reused [ 4 , 6 , 17 ]. In biomedical do-mains, for example, an ontology-like representation can connect rare disease objects to phenotype attributes and expose regularities among those phenotypes [ 7, 15 ]. However, building such structures manually is costly. Domain experts must inspect source documents, encode object–attribute relations, and revise the structure when new evidence reveals missing or inconsistent knowledge [ 1 , 6 , 17 ]. This makes ontology and knowledge graph construction a natural setting for language model assistance, but errors in domain specific knowledge make unverifiable generation risky [ 5, 11 , 12 ]. The key technical challenge is therefore to verify proposed knowledge be-fore it becomes a structural commitment. For example, the system may propose that a rare ataxia disease with Ataxia , Cerebellar atro-phy , and Tremor should also have Dysarthria . This rule is rejected if even one disease has the first three phenotypes but lacks Dysarthria .Ontology construction therefore needs a procedure that asks tar-geted structural questions and incorporates counterexamples when a proposed regularity fails [ 2]. Formal concept analysis (FCA) pro-vides such a procedure. Its attribute exploration procedure proposes implications over a formal context and requires a counterexample when an implication is invalid [2, 3]. The proposed framework combines FCA with retrieval-grounded SLM judgments for rare ataxia diseases. The task is to build a disease–phenotype formal context over standardized HPO labels such as Ataxia , Tremor , and Dysarthria . The practical question is whether a small seed attribute set can activate useful parts of the controlled phenotype attribute set while preserving verifiable incidence judgments and implication checks. Across three small language models (SLMs), the system expands the context over 20 rounds, keeping accepted implications, counterexamples, contra-dictions, and corrections inspectable. This paper makes three contributions. 
+
+• An FCA-based verification loop that tests object–attribute structures through implications and counterexamples. 
+
+• A retrieval-grounded SLM oracle for lower cost evidence based local judgments. 
+
+• A symbolic–subsymbolic hybrid where FCA controls con-struction and the language model makes evidence-based local decisions. Together, the experiments position the method as a verifiable con-struction procedure rather than an unchecked ontology generator. The ablations further separate the difficulty of discovering object  
+
+> arXiv:2607.01773v1 [cs.AI] 2 Jul 2026 epiDAMIK @ KDD ’26, August 10, 2026, Jeju Island, Republic of Korea Yang and Lee
+
+and attribute sets from the difficulty of judging incidences within those sets. 
+
+## 2 Background 
+
+FCA supplies the symbolic side by representing the current con-struction state as a formal context and testing implications with counterexamples. RAG supplies the evidence grounding side by retrieving disease level text for the SLM oracle, turning ontology construction into a verifiable loop of implication queries, local judg-ments, counterexamples, and context updates. 
+
+## 2.1 Formal concept analysis and attribute exploration 
+
+Formal concept analysis (FCA) represents object–attribute knowl-edge as a binary table called a formal context [ 3]. In this paper, the objects are rare ataxia diseases and the attributes are phenotype labels. A cell is marked when a disease is associated with a phe-notype. For example, one disease may have Ataxia , Tremor , and 
+
+Dysarthria , while another disease may have Ataxia and Tremor 
+
+but not Dysarthria . A formal concept consists of an extent, the set of objects in the concept, and an intent, the attributes shared by those objects. An implication describes a regularity in the table. The implication 𝐴 → 𝐵 means that every object having all attributes in 𝐴 also has all attributes in 𝐵 . For example, {Ataxia , Tremor } → {Dysarthria } states that every disease with Ataxia and Tremor also has Dysarthria . Such a rule is useful only if it survives a coun-terexample check. A disease with Ataxia and Tremor but without 
+
+Dysarthria would reject it. Attribute exploration turns these regularities into oracle ques-tions. Following Algorithm 19 in Conceptual Exploration [2], the in-tended domain context (𝐺, 𝑀, 𝐼 ) is distinguished from the observed partial context (𝐸 𝜏 , 𝑀 𝜏 , 𝐽 𝜏 ) at round 𝜏 . Here, 𝐺 is the domain object set, 𝑀 is the finite attribute set, 𝐼 is the target incidence relation, 
+
+𝐸 𝜏 is the observed object set, 𝑀 𝜏 is the active attribute set, and 𝐽 𝜏 
+
+records checked incidences. The closure 𝐴 𝐽 𝜏 𝐽 𝜏 is the set of attributes shared by the currently observed objects that have all attributes in 
+
+𝐴 . The exploration query asks whether the observed implication 
+
+𝐴 → 𝐴 𝐽 𝜏 𝐽 𝜏 also holds in the intended domain. If the oracle accepts the query, the implication is added to the implication base. If the oracle rejects it, the oracle must return a counterexample object 𝑔 
+
+such that 𝐴 ⊆ 𝑔 𝐼 but 𝐴 𝐽 𝜏 𝐽 𝜏 ⊈ 𝑔 𝐼 . The counterexample is added to the observed context, preventing the same overgeneral rule from being accepted again. Classical attribute exploration assumes that 𝑀 is fixed from the beginning; under a reliable expert and finite fixed 
+
+𝑀 , it can return a canonical implication basis. Following the FCA usage in Conceptual Exploration , this term refers to a complete and non redundant implication basis of a fixed formal context. Every valid implication of the context is derivable from the basis, and no accepted implication is treated as a free text rule outside the context. In this paper, FCA and attribute exploration provide the symbolic mechanism for proposing implications, checking counterexamples, and updating the disease–phenotype context. 
+
+## 2.2 Retrieval-augmented generation 
+
+Retrieval-augmented generation addresses a central limitation of purely parametric language models. Factual decisions should be grounded in external evidence that can be inspected or updated. Lewis et al. [ 8 ] introduced RAG as a way to combine parametric generation with non parametric retrieval for knowledge intensive NLP tasks. In ontology construction, retrieval is useful because object–attribute relations and implications require evidence sensi-tive judgments. Without retrieved evidence, a language model must answer from parametric memory alone, which can produce unsup-ported or incorrect relations. Retrieved evidence gives the model task relevant information to consult before making each local judg-ment. Providing retrieved evidence can improve performance over relying on parametric generation alone, especially in knowledge grounded dialogue and other knowledge intensive tasks [ 5, 16 ]. In this paper, retrieved evidence is used to ground local object– attribute and implication validity questions. 
+
+## 2.3 Small language models 
+
+Large language models remain advantageous for open ended gen-eration and multi step reasoning. However, the decisions required in the FCA loop are narrower than open ended generation. They are repeated, evidence conditioned YES/NO judgments over local object–attribute assignments or candidate implications. For this setting, maximum accuracy is not the only consideration. Inference cost, latency, memory footprint, and local deployability also matter. This task dependent view of model size is supported by prior work on text classification, where specialized smaller models can reach or exceed the performance of general large models with a limited number of labeled examples [ 13 ]. It is also supported by indus-trial studies showing that smaller transformer models can handle practical classification workloads while offering better deployment efficiency [ 9]. These findings match the use of SLMs for constrained classification style judgments over retrieved evidence rather than for long form reasoning or free form ontology generation. Thus, SLMs are not a replacement for LLMs in complex reasoning, but they are a cost efficient option when the task can be reduced to repeated, evidence conditioned YES/NO decisions. 
+
+## 3 Method 
+
+This section describes how the symbolic and retrieval-grounded components are combined into a single ontology construction loop. The framework starts from seed attributes and uses FCA attribute exploration to generate implication queries. For each query, the system first retrieves disease level evidence relevant to the premise and conclusion. The SLM oracle then uses this retrieved evidence to accept the implication or search for a counterexample. The formal context is updated with accepted implications or counterexample objects. Unlike classical attribute exploration, this setting keeps a fi-nite controlled phenotype attribute set but activates it progressively. The loop starts from seed attributes 𝑀 0, explores only the active attribute set 𝑀 𝜏 , and then adds a selected set of new attributes Δ𝑀 𝜏 
+
+for the next round. Each round keeps the FCA-based verification step. The overall process tests whether a small seed set can expand into useful parts of 𝑀 , while avoiding unchecked free text ontol-ogy generation. The following paragraphs define the round state, context updates, oracle decisions, and logged artifacts. Verifiable Knowledge Expansion through Retrieval-Grounded Formal Concept Analysis epiDAMIK @ KDD ’26, August 10, 2026, Jeju Island, Republic of Korea 
+
+Figure 1: Overview of the RAG-grounded SLM-FCA framework. 
+
+## 3.1 RAG-grounded SLM-FCA framework 
+
+The proposed method combines the FCA and RAG components introduced above into a single verifiable construction loop. Figure 1 summarizes the loop as six stages. The paragraphs below define the main components of this loop, from controlled attribute selection to attribute screening for the next round. 
+
+Controlled attribute set. The method starts from a finite do-main attribute set 𝑀 supplied before exploration and activates only a seed subset 𝑀 0 in the first round. In Figure 1, the term 
+
+controlled vocabulary denotes the finite domain attribute set 𝑀 ,i.e., the full controlled set of phenotype attributes considered by the method. The seed set is chosen to cover diverse, interpretable regions of the attribute set rather than a single narrow attribute cluster. Good seeds should be evidence accessible, non redundant, and frequent enough to produce early counterexamples, while still specific enough to avoid accepting overly broad implications. The rare ataxia experiment in Section 4 uses this criterion to choose clinically interpretable seed attributes. 
+
+Activate formal context. The initial context contains seed attributes but no seed objects, and rejected initial queries introduce the first counterexamples. At round 𝜏 , the active state is the formal context (𝐸 𝜏 , 𝑀 𝜏 , 𝐽 𝜏 ), where 𝐸 𝜏 is the observed object set, 𝑀 𝜏 is the active attribute set, and 𝐽 𝜏 records checked incidences. 
+
+FCA exploration. At round 𝜏 , FCA attribute exploration runs over the current attribute set 𝑀 𝜏 and example context (𝐸 𝜏 , 𝑀 𝜏 , 𝐽 𝜏 ),producing candidate implications 𝐴 → 𝐴 𝐽 𝜏 𝐽 𝜏 . Here, 𝐽 𝜏 is the cur-rently observed incidence relation, and 𝐴 𝐽 𝜏 𝐽 𝜏 is the current closure of 𝐴 , i.e., the attributes shared by all observed objects that have every attribute in 𝐴 . For readability, Algorithm 1 writes the same closure as cl 𝐾 𝜏 (𝐴 ), where 𝐾 𝜏 = (𝐸 𝜏 , 𝑀 𝜏 , 𝐽 𝜏 ). When an implication is not already closed in the current context, the retrieval-grounded oracle either returns a verified counterexample object or accepts the implication. After attribute exploration finishes for the fixed 
+
+𝑀 𝜏 , the method selects a small set of new attributes for the next round. Because 𝑀 𝜏 grows from a seed, the output is an explored implication set over the activated context, not a claim of a complete canonical basis for the full controlled phenotype attribute set. 
+
+RAG-SLM oracle. The oracle uses short prompts for binary YES/NO decisions over retrieved evidence. These decisions cover object–attribute judgments, counterexample checks, and correc-tions. Retrieval queries are built from the labels in the current FCA question. For an object–attribute query, the query combines the dis-ease name with the phenotype label being checked. For an implica-tion query, the query combines premise and conclusion labels, such as Ataxia , Cerebellar atrophy , and Dysarthria . The retrieved snip-pets are then placed in the oracle prompt as evidence for accepting the implication or searching for a counterexample. When the loop needs additional attributes, the SLM proposes reusable property phrases from retrieved snippets, which are then filtered, validated, and checked before entering the context. This prompt design fol-lows prior findings that retrieval-augmented outputs are sensitive to context placement, filtering, and distracting evidence [ 10 , 14 , 18 ]. The prompt therefore shows only the most relevant snippets near the YES/NO question before constrained output generation. 
+
+Context and implication update. The symbol Δ𝑀 𝜏 denotes the selected attributes appended after round 𝜏 , not the entire attribute set. Accepted implications are reused in later rounds as provisional background knowledge for query avoidance and contradiction de-tection. When a later counterexample candidate conflicts with a previously accepted implication, the implementation re checks the relevant object–attribute incidence and logs the correction event. It does not perform full implication retraction or belief revision. Thus, the method is an inspectable construction procedure, not a complete expert verified ontology editor. epiDAMIK @ KDD ’26, August 10, 2026, Jeju Island, Republic of Korea Yang and Lee 
+
+Attribute screening. Attribute proposals are guided by the current implication structure. For an accepted implication 𝐴 →
+
+cl 𝐾 𝜏 (𝐴 ), the closure difference cl 𝐾 𝜏 (𝐴 ) \ 𝐴 supplies inferred at-tributes that can seed retrieval queries. The system retrieves ev-idence from the premise, from the premise plus one inferred at-tribute, and from premise satisfying object anchors; if these queries fail, it visits unused vector database chunks one at a time. Only short, grounded, non duplicate property phrases that can be judged as YES/NO attributes are mapped to canonical attribute labels, se-lected, and appended to Δ𝑀 𝜏 .
+
+Oracle decisions. The retrieval-grounded SLM oracle is used only for constrained local decisions. For object–attribute queries, it returns a binary YES/NO incidence judgment from retrieved evi-dence, with unsupported or ambiguous evidence treated as NO. For implication queries, it searches for a counterexample object that satisfies the premise but misses at least one conclusion attribute. Accepted implications enter the implication base, while rejected implications add verified counterexample objects and checked inci-dences to the context. Later consistency conflicts are recorded as logged contradictions and corrections rather than full implication retractions. Algorithm 1 summarizes this round-level procedure in pseu-docode. 
+
+Algorithm 1 RAG-grounded SLM-FCA ontology exploration 
+
+Require: Controlled attribute set 𝑀 , seed attributes 𝑀 0 ⊆ 𝑀 , re-trieval index, SLM oracle  
+
+> 1:
+
+Initialize formal context 𝐾 0 = (𝐸 0, 𝑀 0, 𝐽 0) with 𝐸 0 = ∅ 
+
+> 2:
+
+for round 𝜏 = 1, . . . ,𝑇 do  
+
+> 3:
+
+Update object incidences for new attributes, then run FCA on 𝐾 𝜏  
+
+> 4:
+
+for each candidate implication 𝐴 → cl 𝐾 𝜏 (𝐴 ) do  
+
+> 5:
+
+Retrieve evidence relevant to 𝐴 and cl 𝐾 𝜏 (𝐴 ) 
+
+> 6:
+
+Ask the SLM oracle to search for and verify a counterex-ample  
+
+> 7:
+
+if the implication is rejected then  
+
+> 8:
+
+Add the counterexample object and checked inci-dences to 𝐾 𝜏  
+
+> 9:
+
+else  
+
+> 10:
+
+Add 𝐴 → cl 𝐾 𝜏 (𝐴 ) to the implication base  
+
+> 11:
+
+end if  
+
+> 12:
+
+end for  
+
+> 13:
+
+Use implications and object anchors to retrieve evidence and propose attributes  
+
+> 14:
+
+if no attribute is selected from the pending pool then  
+
+> 15:
+
+Visit unswept vector database chunks sequentially, one chunk at a time, and ask the SLM to extract candidate attributes  
+
+> 16:
+
+end if  
+
+> 17:
+
+Validate, map to labels in 𝑀 , and select Δ𝑀 𝜏 for the next round  
+
+> 18:
+
+if Δ𝑀 𝜏 = ∅ then  
+
+> 19:
+
+break  
+
+> 20:
+
+end if  
+
+> 21:
+
+Set 𝑀 𝜏 +1 = 𝑀 𝜏 ∪ Δ𝑀 𝜏 and carry objects forward  
+
+> 22:
+
+end for  
+
+> 23:
+
+return final context and implication base 
+
+## 3.2 Verification Artifacts 
+
+Each round produces artifacts that make the construction process inspectable. The system records the evolving object–attribute ma-trix, accepted implications, counterexamples, and logged contra-diction/correction events from consistency checks. It also records final evaluation outputs for disease–phenotype relation metrics and closure based implication metrics. These artifacts are the basis for the paper’s claim of verifiable ontology construction. The output is therefore not only a final context, but also a trace of why structural commitments were accepted, rejected, or revised. 
+
+## 4 Experiment 
+
+This section evaluates whether the proposed framework can con-struct and verify a rare ataxia disease–phenotype context from Orphadata derived resources. The setting separates disease level retrieval text used by the oracle from curated disease–HPO annota-tions used only for evaluation. The experiments are run for 20 rounds with temperature 0. The default 10-seed condition starts from frequent, clinically inter-pretable attributes covering speech, gait, cerebellar, eye-movement, pyramidal, and seizure-related findings. The controlled exploration attribute set contains the 160 evidence-accessible HPO attributes described below, and the retrieval index embeds disease-aligned Or-phanet records with EmbeddingGemma-300M 1. The same budgets are used across models, with up to ten counterexample candidates per implication test and up to three attribute discovery retrieval queries per round. Gold disease–HPO relations are never used by the runtime oracle, and generated attributes are aligned to the gold attribute set only after exploration for evaluation. Evaluation has two parts. Predicted object–attribute relations are compared with the run specific projection of the evidence acces-sible gold context. FCA implications induced by the output context are evaluated against the canonical basis of that context, so im-plication scores measure closure behavior rather than recovery of all implications in the full curated disease–phenotype annotation context. 
+
+## 4.1 Dataset 
+
+The framework is evaluated on rare ataxia diseases using Orpha-data 2 and HPO [ 7, 15 ]. Orphadata provides disease identifiers, names, classification records, and disease definition text, while HPO provides phenotype labels and curated disease–phenotype relations. In the resulting formal context, objects are rare ataxia diseases, attributes are HPO phenotype labels, and a positive cell means that the disease is curated as having that phenotype. The disease objects are selected from the Rare ataxia branch of the Orphadata rare neurological disease classification. From 189 classification nodes, 139 disease candidates are retained, 124 re-main after requiring curated HPO annotations, and 122 remain after requiring aligned Orphanet disease definition text. Thus, ev-ery object has curated phenotype annotations for evaluation and disease definition text for retrieval. The phenotype attribute set is derived from the curated disease– HPO annotations of these 122 diseases, which contain 850 HPO  
+
+> 1https://huggingface.co/google/embeddinggemma-300m
+> 2https://www.orphadata.com/ Verifiable Knowledge Expansion through Retrieval-Grounded Formal Concept Analysis epiDAMIK @ KDD ’26, August 10, 2026, Jeju Island, Republic of Korea
+
+labels and 2,716 positive relations. Because the retrieval corpus contains disease definition text rather than the curated annotation table, the evidence accessible gold context is constructed by exact keyword matching. Only HPO labels whose canonical names appear in the disease aligned retrieval chunks are retained, yielding 122 disease objects, 160 HPO phenotype attributes, and 1,398 positive relations. This attribute level filtering means that some retained curated relations are not explicitly stated in the corresponding disease definition text and may not be recoverable from retrieval evidence alone. The runtime oracle sees only disease definition text, and evalua-tion uses curated HPO disease–phenotype annotations. 
+
+## 4.2 Main Results 
+
+The evaluation reports relation scores over disease–phenotype in-cidences and closure-based implication scores over predicted impli-cations. Table 1 reports how far each 10-seed RAG-grounded run expands the formal context over 20 rounds. The reported objects are discovered counterexamples rather than a fixed input disease list. Thus, larger object counts indicate that the exploration loop found more diseases that challenged candidate implications. In Tables 1 and 3, Obj., Attr., Impl., Eval., and Qry. denote objects, attributes, accepted implications, evaluated implications, and oracle queries. Eval. counts accepted implications whose attributes all fall inside the evidence accessible gold context. Accepted implications outside this context are not scored by the gold projection. 
+
+Table 1: 10-seed exploration profile.                     
+
+> Model Obj. Attr. Impl. Eval. Qry. Gemma2:2B 18 46 99 22 115 Llama3.2:3B 44 68 298 43 444 Qwen2.5:1.5B 36 36 263 11 285
+
+The models use these objects and newly selected attributes to move beyond the seed attribute set. Table 1 therefore describes the exploration behavior, not only the final matrix size. Llama expands most aggressively, reaching 44 objects, 68 attributes, 298 accepted implications, and 444 oracle queries. Qwen adds almost as many counterexample objects as Llama but keeps a smaller attribute set, while Gemma remains the smallest explored object context. The small Eval. counts show that many accepted implications include generated attributes that cannot be projected back to the gold at-tribute set. Table 2 evaluates the final contexts from the same runs against the evidence accessible gold context. Rel. denotes relation scores, Impl. denotes closure based implication scores, and bold and underline mark the best and second best values within a table. 
+
+Table 2: 10-seed RAG-grounded SLM-FCA evaluation.                         
+
+> Model Rel.P Rel.R Rel.F1 Impl.P Impl.R Impl.F1 Gemma2:2B 0.18 0.87 0.29 0.23 0.21 0.22 Llama3.2:3B 0.58 0.47 0.52 0.16 0.44 0.24 Qwen2.5:1.5B 0.34 0.74 0.46 0.27 0.34 0.30
+
+Table 2 shows complementary metric tradeoffs. Llama has the best relation F1 (0.52) and relation precision (0.58). Qwen has the best implication F1 (0.30), while Gemma has the highest relation recall (0.87). Overall, the runs construct verifiable partial contexts, while relation agreement and implication quality diverge sharply. To examine the effect of a larger seed set, Tables 3 and 4 report the corresponding 20-seed runs under the same 20-round budget. The 10-seed runs in Tables 1 and 2 provide the comparison point. The 20-seed setting expands contexts and increases evaluable implications. 
+
+Table 3: 20-seed exploration profile.                     
+
+> Model Obj. Attr. Impl. Eval. Qry. Gemma2:2B 21 53 172 57 183 Llama3.2:3B 55 72 404 98 517 Qwen2.5:1.5B 58 49 544 67 577
+
+The 20-seed setting increases accepted implications for all three models, from 99 to 172 for Gemma, from 298 to 404 for Llama, and from 263 to 544 for Qwen. It also increases evaluable implications from 22 to 57 for Gemma, from 43 to 98 for Llama, and from 11 to 67 for Qwen. Table 4 then evaluates whether this larger explored space improves relation and implication quality. 
+
+Table 4: 20-seed RAG-grounded SLM-FCA evaluation.                         
+
+> Model Rel.P Rel.R Rel.F1 Impl.P Impl.R Impl.F1 Gemma2:2B 0.20 0.86 0.32 0.42 0.31 0.36 Llama3.2:3B 0.56 0.40 0.47 0.15 0.73 0.25 Qwen2.5:1.5B 0.32 0.64 0.42 0.57 0.32 0.41
+
+The larger seed set improves implication F1 for all three models. The largest absolute gain is Gemma, rising from 0.22 to 0.36, while Qwen reaches the highest final implication F1 at 0.41. The gap between accepted and evaluable implications in Table 3 remains large. Many generated attributes still fall outside the matched gold attribute set. Thus, the larger seed set improves reach but does not remove the evaluability bottleneck. For closure based implication evaluation, a canonical implication basis is first computed from the evidence accessible gold context. This basis is stored as the reference implication basis. In the sense of classical FCA, this basis is a complete implication representation of that fixed formal context. Valid implications of the context are derivable from the basis by closure. The same closure based impli-cation scoring protocol is then applied to every run. For implication precision, a predicted implication 𝐴 → 𝐵 is counted as correct when 𝐵 is contained in the closure of 𝐴 . This closure is computed under the canonical basis of the evidence accessible gold context. Equivalently, the implication is entailed if every gold disease with the premise phenotypes in 𝐴 also has the predicted conclusion phenotypes in 𝐵 . For example, 𝐴 → { Dysarthria } is correct when Dysarthria belongs to the gold closure of 𝐴 , even if that closure contains additional phenotypes. Thus, a prediction may state only part of the gold closure and still be correct; it is not required that the predicted implication exactly match a stored gold implication epiDAMIK @ KDD ’26, August 10, 2026, Jeju Island, Republic of Korea Yang and Lee 
+
+string. For implication recall, each gold basis implication 𝐶 → 𝐷 is counted as recovered when 𝐷 is contained in the closure of 𝐶 under the predicted implication set. This closure based implication proto-col is used for the proposed framework and for Experiments 1–3 in the ablation study. Table 5 gives concrete implication examples from the final run outputs. Both examples are taken from the fi-nal 20-seed RAG-grounded run outputs. The table keeps only the judgment type and implication so the examples remain readable. 
+
+Table 5: Example implication judgments.       
+
+> Case Example Entailed (TP) {Ataxia, Progressive cerebellar ataxia} →
+> {Gait ataxia} Non-entailed (FP) {Ataxia, Gait disturbance} →{Dysarthria, Gait ataxia}
+
+The core FCA output in this seeded setting is an explored im-plication set. The table contrasts predicted implications that are entailed by the evidence accessible gold context with those that are not. In the Case column, Entailed (TP) means that the predicted implication is true under the gold closure. Non-entailed (FP) means that the run predicted the implication, but the gold closure does not license it. These non entailed examples are not necessarily clin-ically implausible. They are simply not supported by the evidence accessible gold context under closure based evaluation. The same logs also show how the system makes verification failures inspectable. During exploration, a failed implication intro-duces a disease level counterexample rather than silently accepting a plausible rule. During consistency checking, an existing object can violate an accepted implication. The system records the vio-lated premise, missing conclusion attributes, and any corrected disease–phenotype relations proposed from the same Orphanet nomenclature evidence bundle. 
+
+Trace examples. In the 20-seed runs, Gemma2:2B records 21 disease level counterexamples, 57 logged contradictions, and 6 corrections. Llama3.2:3B records 55 counterexamples, 132 logged contradictions, and no accepted corrections. The corresponding Qwen2.5:1.5B run records 58 counterexamples, 105 logged contra-dictions, and 8 corrections. These traces show that failed implica-tions are not hidden. They become explicit counterexample objects, violation records, and candidate corrections that can be inspected after the run. The contrast also explains the metric pattern in Ta-ble 4. Llama expands the context most aggressively, while Qwen produces stronger implication F1 with moderate relation recall and lower precision. 
+
+## 4.3 Ablation Study 
+
+Tables 6–8 separate three GPT-based ablations from the local SLM oracle used in the proposed framework. 
+
+Experiment 1. Retrieval is removed from the exploration loop. GPT-4o-mini or GPT-4o is used as the oracle. Counterexample vali-dation, consistency checking, and attribute expansion are retained, with GPT providing attribute proposals. The runs stop when the exploration loop reaches its termination condition rather than a fixed round limit. Table 6 tests whether a GPT-based oracle can compensate for removing retrieved disease evidence. 
+
+Table 6: LLM-only FCA loop.                      
+
+> Oracle Rnd Obj. Attr. Impl. Qry. Rel.F1 Impl.F1 GPT-4o-mini 10 15 30 62 77 0.56 0.67
+> GPT-4o 12 27 69 378 405 0.54 0.41
+
+These results show that GPT-based LLM-only runs can achieve high implication quality in smaller explored contexts, but they do not replace retrieval driven context growth. Because the LLM-only runs terminate early, their high implication F1 is diagnostic rather than evidence that retrieval is unnecessary or directly comparable to larger retrieved contexts. This separates oracle strength from the evidence supply that helps the loop find counterexamples and attributes. Figure 2 adds a round level view of the difference between retrieval-grounded exploration and the LLM-only ablation. The left 
+
+Figure 2: Round-level context growth and oracle activity. The left panel shows object–attribute expansion; the right panel shows accepted implications and oracle questions per round. Verifiable Knowledge Expansion through Retrieval-Grounded Formal Concept Analysis epiDAMIK @ KDD ’26, August 10, 2026, Jeju Island, Republic of Korea 
+
+panel shows that the RAG-grounded runs continue to add objects and attributes across rounds, whereas the LLM-only runs saturate after fewer rounds. The right panel shows that oracle questions and accepted implications are not the same signal. Many oracle calls are used for verification, incidence checks, or counterexample search rather than becoming accepted implications. Together, these trends show that retrieved disease evidence sustains exploration by supplying new object and attribute evidence, while a GPT-based or-acle without retrieval tends to operate within a narrower explored context. 
+
+Experiment 2. This experiment uses the disease objects and phenotype attributes from each 10-seed, 20-round RAG-grounded source run in Table 1. For Gemma2, Llama3.2, and Qwen2.5, these discovered objects and attributes are reused as the candidate ma-trix. No new diseases or phenotype labels are added. GPT-4o-mini then rejudges every disease–phenotype cell in each source model’s matrix. The completed matrix is evaluated with the same projected implication protocol. Thus, Table 7 isolates incidence quality after object and attribute discovery has already happened. 
+
+Table 7: Incidence judgment on discovered object–attribute matrices.                     
+
+> Source Obj. Attr. Qry. Rel.F1 Impl.F1 Gemma2:2B 18 46 828 0.39 0.28 Llama3.2:3B 44 68 2,992 0.47 0.26 Qwen2.5:1.5B 36 36 1,296 0.46 0.40
+
+The rejudged matrices indicate that incidence judgment remains a bottleneck even after the source model has found the candidate objects and attributes. Relation F1 stays below 0.50 for all three matrices, with Llama highest and Qwen close behind. The induced implication scores improve over the original SLM oracle judgments for all three 10-seed matrices, with the largest gain for Qwen. Thus, local incidence decisions affect structural quality, but rejudged cell decisions do not uniformly improve every relation metric. 
+
+Experiment 3. The candidate diseases and phenotype labels are taken from the full evidence accessible gold context. This fixed object–attribute setting is kept unchanged throughout the exper-iment. GPT-4o-mini then judges every disease–phenotype pair within that fixed evaluation setting. The completed incidence ta-ble is evaluated for both relation quality and induced implications. Table 8 reports this favorable fixed object–attribute setting over 122 diseases and 160 phenotype labels, yielding 19 ,520 disease– phenotype pairs. 
+
+Table 8: Incidence judgement on the fixed gold object– attribute matrices.             
+
+> Model Rel.P Rel.R Rel.F1 Impl.P Impl.R Impl.F1 GPT-4o-mini 0.22 0.54 0.31 0.91 0.36 0.51
+
+The fixed object–attribute setting shows that even the complete evaluation scope does not make incidence recovery easy. The rela-tion F1 remains only 0.31, so many disease–phenotype cells are still hard to judge from the available textual evidence. This shows that the limitation is not only missing objects or missing phenotype la-bels. The evidence text itself can be too indirect for reliable cell level recovery. Because the discovery problem is removed, the model only has to judge whether each known pair is supported. At the implication level, the resulting context achieves high precision but lower recall. This precision–recall gap suggests conservative out-put: fewer gold implications are recovered, but many accepted ones remain valid. Thus, the result is a favorable fixed object–attribute baseline rather than evidence that open world exploration has been solved. The remaining errors show that relation recovery is still difficult even when all candidate diseases and phenotype attributes are already fixed. 
+
+Cost. Table 9 reports API calls and cost for the GPT-4o and GPT-4o-mini ablations. The table separates model price from the number of oracle judgments. Exp1 uses relatively few calls because the explored contexts are small, but its GPT-4o condition remains expensive because each call has a higher unit price. Exp3 shows the opposite pattern because it uses GPT-4o-mini while evaluating every disease–phenotype pair in the evidence-accessible gold con-text. Thus, local incidence judgments become the main driver of API usage. 
+
+Table 9: OpenAI API usage.                      
+
+> Experiment Model Calls Cost Exp1 GPT-4o-mini 77 $0.12 Exp1 GPT-4o 405 $6.56 Exp2 Gemma2 GPT-4o-mini 828 $0.02 Exp2 Llama3.2 GPT-4o-mini 2,992 $0.06 Exp2 Qwen2.5 GPT-4o-mini 1,296 $0.03 Exp3 GPT-4o-mini 19,520 $0.38
+
+The cost table shows that API usage depends on both oracle strength and evaluation scope. Exp2 calls follow the size of each discovered object–attribute matrix, while Exp3 grows to 19,520 calls because every fixed gold context pair is judged. 
+
+## 4.4 Evaluation and Limitations 
+
+The results characterize the framework as verifiable partial con-struction, not full ontology reconstruction. Its output is an explored implication set rather than a canonical basis of the full controlled phenotype attribute set. For the completed 10-seed RAG-grounded runs, relation F1 ranges from 0.29 to 0.52 and closure based im-plication F1 ranges from 0.22 to 0.30. Experiment 1 reaches 0.56 relation F1 and 0.67 implication F1 in a smaller explored context. These results demonstrate a working verification loop, but not high-precision ontology completion. Part of this gap comes from the larger explored object–attribute contexts, where more discovered objects, selected attributes, and incidence decisions create more opportunities for cell level errors. Because the retrieval corpus uses disease definition text rather than the curated annotation table, many HPO associations are not explicitly verbalized in the raw evidence. This mismatch especially affects relation recall, since a curated phenotype can be valid even when its exact label is absent from the retrieved disease description. It also affects implication epiDAMIK @ KDD ’26, August 10, 2026, Jeju Island, Republic of Korea Yang and Lee 
+
+scores indirectly, because a small number of missed or extra in-cidences can change several closure judgments. The appropriate claim is therefore an inspectable construction process whose scores measure recovered incidences and closure behavior in the evidence accessible gold context. 
+
+## 5 Discussion 
+
+The results clarify why ontology construction should be treated as verified structure building, not unconstrained text generation. FCA is the structural control mechanism because it derives implications from the current object–attribute context and tests them through counterexamples. Retrieval supplies disease level evidence, and the SLM oracle provides a lower cost interface for repeated evidence conditioned decisions. The GPT-based LLM-only ablation reaches high evaluation scores in smaller explored contexts, but Figure 2 shows that retrieval-grounded runs keep expanding objects and attributes. Thus, final evaluation scores and evidence-driven context growth capture different aspects of the construction process. The main limitation is not only the model. The available dis-ease definition text can also be too sparse for cell level incidence recovery. Experiment 3 fixes the candidate diseases and phenotype attributes, but relation F1 remains low. This suggests that some curated HPO relations cannot be recovered from disease defini-tion text alone. For this reason, the output should be read as an auditable pre curation artifact. The trace records accepted implica-tions, rejected implications, counterexample objects, contradiction logs, and corrections. These records show where the construction succeeded or failed. An expert can inspect them before accepting the resulting object–attribute context as ontology content. This keeps the claim centered on inspectable construction rather than automatic ontology completion. 
+
+## 6 Conclusion 
+
+This paper presented a RAG-grounded SLM-FCA framework for verifiable ontology construction in rare ataxia phenotyping. The framework starts from seed attributes and expands the context step by step. FCA proposes structural commitments, retrieval provides disease evidence, and SLMs make repeated local judgments over that evidence. Experiments on Orphadata-derived disease records show that the loop can add objects and attributes while recording counterexamples and corrections. The logs also connect implica-tions to object level evidence, which makes the construction pro-cess inspectable. The ablations show that high scores in a fixed or smaller explored context do not describe the whole open world task. In open world construction, the system must also discover useful objects and attributes. The output should therefore be read as an explored implication set over an evidence accessible context. It is not a finished clinical ontology or a canonical basis for the full controlled phenotype attribute set. The central takeaway is that FCA can make retrieval-grounded language model construc-tion inspectable. Reliable ontology completion will still require stronger retrieval coverage, better synonym and entity matching for HPO labels, improved seed selection, stricter implication accep-tance criteria, and expert facing review of logged oracle questions, counterexamples, and corrections. 
+
+## References 
+
+[1] Fatima N Al-Aswadi, Chan Huah Yong, and Keng Hoon Gan. 2020. Automatic ontology construction from text: a review from shallow to deep learning trend. 
+
+The Artificial Intelligence Review 53, 6 (2020), 3901–3928. [2] Bernhard Ganter, Sergei Obiedkov, Sebastian Rudolph, and Gerd Stumme. 2016. 
+
+Conceptual exploration . Springer. [3] Bernhard Ganter, Rudolf Wille, and Rudolf Wille. 1999. Formal concept analysis .Vol. 150. Springer. [4] Thomas R Gruber. 1993. A translation approach to portable ontology specifica-tions. Knowledge acquisition 5, 2 (1993), 199–220. [5] Lei Huang, Weijiang Yu, Weitao Ma, Weihong Zhong, Zhangyin Feng, Haotian Wang, Qianglong Chen, Weihua Peng, Xiaocheng Feng, Bing Qin, et al . 2025. A survey on hallucination in large language models: Principles, taxonomy, chal-lenges, and open questions. ACM Transactions on Information Systems 43, 2 (2025), 1–55. [6] Ahlem Chérifa Khadir, Hassina Aliane, and Ahmed Guessoum. 2021. Ontology learning: Grand tour and challenges. Computer Science Review 39 (2021), 100339. [7] Sebastian Köhler, Michael Gargano, Nicolas Matentzoglu, Leigh C Carmody, David Lewis-Smith, Nicole A Vasilevsky, Daniel Danis, Ganna Balagura, Gareth Baynam, Amy M Brower, et al . 2021. The human phenotype ontology in 2021. 
+
+Nucleic acids research 49, D1 (2021), D1207–D1217. [8] Patrick Lewis, Ethan Perez, Aleksandra Piktus, Fabio Petroni, Vladimir Karpukhin, Naman Goyal, Heinrich Küttler, Mike Lewis, Wen-tau Yih, Tim Rocktäschel, et al . 2020. Retrieval-augmented generation for knowledge-intensive nlp tasks. 
+
+Advances in neural information processing systems 33, 9459–9474. [9] Lujun Li, Lama Sleem, Geoffrey Nichil, et al . 2025. Small Language Models in the Real World: Insights from Industrial Text Classification. In Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 6: Industry Track) . 971–982. [10] Nelson F Liu, Kevin Lin, John Hewitt, Ashwin Paranjape, Michele Bevilacqua, Fabio Petroni, and Percy Liang. 2024. Lost in the middle: How language models use long contexts. Transactions of the association for computational linguistics 12 (2024), 157–173. [11] Andy Lo, Albert Q Jiang, Wenda Li, and Mateja Jamnik. 2024. End-to-end ontology learning with large language models. Advances in Neural Information Processing Systems 37, 87184–87225. [12] Shirui Pan, Linhao Luo, Yufei Wang, Chen Chen, Jiapu Wang, and Xindong Wu. 2024. Unifying large language models and knowledge graphs: A roadmap. IEEE Transactions on Knowledge and Data Engineering 36, 7 (2024), 3580–3599. [13] Branislav Pecher, Ivan Srba, and Maria Bielikova. 2025. Comparing specialised small and general large language models on text classification: 100 labelled samples to achieve break-even performance. In Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing . 165–184. [14] Ori Ram, Yoav Levine, Itay Dalmedigos, Dor Muhlgay, Amnon Shashua, Kevin Leyton-Brown, and Yoav Shoham. 2023. In-context retrieval-augmented language models. Transactions of the Association for Computational Linguistics 11 (2023), 1316–1331. [15] Peter N Robinson, Sebastian Köhler, Sebastian Bauer, Dominik Seelow, Denise Horn, and Stefan Mundlos. 2008. The Human Phenotype Ontology: a tool for annotating and analyzing human hereditary disease. The American Journal of Human Genetics 83, 5 (2008), 610–615. [16] Kurt Shuster, Spencer Poff, Moya Chen, Douwe Kiela, and Jason Weston. 2021. Retrieval augmentation reduces hallucination in conversation. In Findings of the Association for Computational Linguistics: EMNLP 2021 . 3784–3803. [17] Mike Uschold and Michael Gruninger. 1996. Ontologies: Principles, methods and applications. The knowledge engineering review 11, 2 (1996), 93–136. [18] Zhiruo Wang, Jun Araki, Zhengbao Jiang, Md Rizwan Parvez, and Graham Neubig. 2023. Learning to filter context for retrieval-augmented generation. arXiv preprint arXiv:2311.08377 (2023).

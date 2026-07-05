@@ -1,0 +1,54 @@
+{
+  "label": "2026-07-05",
+  "date": "2026-07-05",
+  "generated_at": "2026-07-05T20:40:34",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202607/05/2607.01773v1-verifiable-knowledge-expansion-through-retrieval-grounded-formal-concept-analysis",
+      "section": "deep",
+      "title_en": "Verifiable Knowledge Expansion through Retrieval-Grounded Formal Concept Analysis",
+      "authors": "Yujin Yang, Heejung Lee",
+      "date": "2026-07-02",
+      "pdf": "https://arxiv.org/pdf/2607.01773v1",
+      "score": "9.0",
+      "evidence": "基于检索的形式概念分析用于本体和知识扩展",
+      "tldr": "本体构建需验证知识有效性，语言模型生成结构可能不准确。提出检索增强小语言模型框架，结合形式概念分析作为符号验证循环：从种子属性推导蕴含，由检索增强预言机验证并返回反例。在罕见病数据集上关系F1为0.29-0.52，蕴含F1为0.22-0.30；消融显示实例判断可提升蕴含分数。该框架使知识扩展过程可检查。",
+      "tags": "query:smart-city",
+      "abstract_en": "Ontology construction requires deciding which objects, attributes, and structural relations should be accepted as valid knowledge. Language models can propose such structures from text, but their outputs can still be unsupported or inconsistent. This paper proposes a retrieval-augmented small language model (SLM) framework that uses formal concept analysis (FCA) as a symbolic verification loop for knowledge expansion. Starting from seed attributes, FCA proposes implications over a growing formal context. A retrieval-grounded SLM oracle then validates each implication or returns a counterexample. The oracle also supports incidence judgments, consistency checks, and attribute proposals, making accepted implications, counterexamples, contradictions, and corrections inspectable. In a rare ataxia setting constructed from Orphadata resources, retrieval-grounded 10-seed runs obtain relation F1 of 0.29-0.52 and closure-based implication F1 of 0.22-0.30. Larger seed sets increase the number of evaluated implications and often improve implication F1. The lower implication scores reflect a stricter evaluation of derived implications, where one missed or extra relation can affect several implication judgments. Ablations show that incidence judgments in a fixed object-attribute setting can improve closure-based implication scores. However, identifying positive object-attribute pairs remains difficult even when the candidate objects and attributes are fixed.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/05/2606.29532v1-semjoin-semantic-join-optimization",
+      "section": "quick",
+      "title_en": "SemJoin: Semantic Join Optimization",
+      "authors": "Christopher Gou, Aditya Banerjee, Jiaxuan Wang, Chunwei Liu",
+      "date": "2026-06-28",
+      "pdf": "https://arxiv.org/pdf/2606.29532v1",
+      "score": "7.0",
+      "evidence": "基于LLMagent的语义连接优化实现非结构化数据集成",
+      "tldr": "语义连接将自然语言谓词评估与关系数据库结合，但LLM逐对比较成本高昂。现有系统使用固定策略，效率与精度难以兼得。本文提出LLM-agent决策管道，根据数据特征动态选择Cluster Join（嵌入聚类剪枝）或Classifier（离散标签匹配）策略。在IMDb、邮件、Stack Overflow数据集上，动态路由相比自适应块连接（ABJ）提升F1 20-33点，相比特征分解连接（FDJ）降低token消耗1-2个数量级。该方法证明了策略匹配对语义连接优化的重要性。",
+      "tags": "query:smart-city",
+      "abstract_en": "Integrating unstructured data into relational database systems is increasingly important as demand grows for natural language querying and analysis. A semantic join, joining two tables under a natural-language predicate, can be evaluated with a large language model (LLM), but comparing every pair of tuples requires O(M x N) LLM invocations and is cost-prohibitive at scale. Existing systems reduce this cost but typically commit to a single fixed strategy (e.g., embedding similarity or one batched scheme) regardless of the data or the join predicate. We propose an LLM-agent-based decision pipeline that optimizes semantic joins by matching the execution strategy to the characteristics of the underlying tables. An LLM advisor routes each join to one of two strategies: a Cluster Join, which prunes candidates via unsupervised embedding clustering and sample-based filtering, or a Classifier strategy for predicates that reduce to a shared discrete label set. Across three diverse datasets (IMDb reviews, email contradictions, and Stack Overflow tags), the advisor consistently identifies the optimal execution strategy for each workload. This dynamic routing proves decisive: it outperforms adaptive block join (ABJ) by 20-33 F1 points across all datasets while consuming fewer tokens on two of the three, and achieves higher F1 scores than featurized-decomposition join (FDJ) at one to two orders of magnitude lower token cost.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/05/2606.30473v1-field-order-should-not-matter-permutation-invariant-embedding-model-fine-tuning-for-structured-metadata-retrieval",
+      "section": "quick",
+      "title_en": "Field Order Should Not Matter: Permutation-Invariant Embedding Model Fine-Tuning for Structured Metadata Retrieval",
+      "authors": "Aivin V. Solatorio, Olivier Dupriez, Rafael Macalaba",
+      "date": "2026-06-29",
+      "pdf": "https://arxiv.org/pdf/2606.30473v1",
+      "score": "7.0",
+      "evidence": "排列不变嵌入微调可用于城市数据标准化管道",
+      "tldr": "结构化元数据检索中，字段顺序的微小变化会导致标准微调模型性能大幅下降（nDCG@10降7.4点）。提出排列不变微调（PI-FT），在序列化时随机采样字段顺序并随机丢弃字段，使模型学习字段标签而非位置，将顺序变化惩罚降至0.2点。同时构建DevDataBench多语言基准，用LLM生成15种语言的涵盖所有指标的查询。微调后的118M参数CPU编码器在零样本基线中超越text-embedding-3-large（0.707 vs 0.556 nDCG@10），低资源语言提升最大。发布基准和可复用框架。",
+      "tags": "query:smart-city",
+      "abstract_en": "We study retrieval over catalogs of structured metadata, where each record is a small schema whose fields answer different kinds of query. Embedding a record with a text encoder first serializes its fields into a string, which forces a choice of field order. We show this choice, usually treated as an implementation detail, silently controls retrieval quality once the encoder is fine-tuned. A standard fine-tune loses 7.4 nDCG@10 points when the index is rebuilt under a different field order, because it reads absolute position instead of the field labels. We propose permutation-invariant fine-tuning ($\\textbf{PI-FT}$), which serializes each record under a freshly sampled field order with random field dropout, so meaning binds to the labels rather than to position. The change is about two lines in the data loader; it costs negligible in-distribution accuracy and cuts the order-change penalty to 0.2 points. We study this in the discovery of development statistics, a catalog of nearly 10,000 indicators that should be searchable in many languages by a model small enough to self-host. As AI assistants and agents increasingly mediate access to public data and statistics, this retrieval step decides whether an answer is grounded in the right indicator or series, making discoverability a precondition for disseminating data through AI. Because usage logs cannot provide training signal for indicators no one has searched, we generate the queries instead. $\\textbf{DevDataBench}$ is a fully LLM-generated benchmark of grounded, facet-targeted queries across 15 languages, covering every indicator for both training and evaluation. A fine-tuned 118M-parameter CPU encoder outperforms every zero-shot baseline, including $\\texttt{text-embedding-3-large}$ (0.707 vs.\\ 0.556 nDCG@10), with the largest gains in low-resource languages. We release the benchmark, pipeline, models, and a reusable PI-FT framework.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

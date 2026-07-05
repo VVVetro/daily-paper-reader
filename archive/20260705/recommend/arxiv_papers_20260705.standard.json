@@ -1,0 +1,133 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-05T20:38:10.591914+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2607.01773v1",
+      "source": "arxiv",
+      "title": "Verifiable Knowledge Expansion through Retrieval-Grounded Formal Concept Analysis",
+      "abstract": "Ontology construction requires deciding which objects, attributes, and structural relations should be accepted as valid knowledge. Language models can propose such structures from text, but their outputs can still be unsupported or inconsistent. This paper proposes a retrieval-augmented small language model (SLM) framework that uses formal concept analysis (FCA) as a symbolic verification loop for knowledge expansion. Starting from seed attributes, FCA proposes implications over a growing formal context. A retrieval-grounded SLM oracle then validates each implication or returns a counterexample. The oracle also supports incidence judgments, consistency checks, and attribute proposals, making accepted implications, counterexamples, contradictions, and corrections inspectable. In a rare ataxia setting constructed from Orphadata resources, retrieval-grounded 10-seed runs obtain relation F1 of 0.29-0.52 and closure-based implication F1 of 0.22-0.30. Larger seed sets increase the number of evaluated implications and often improve implication F1. The lower implication scores reflect a stricter evaluation of derived implications, where one missed or extra relation can affect several implication judgments. Ablations show that incidence judgments in a fixed object-attribute setting can improve closure-based implication scores. However, identifying positive object-attribute pairs remains difficult even when the candidate objects and attributes are fixed.",
+      "authors": [
+        "Yujin Yang",
+        "Heejung Lee"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-02T06:44:35+00:00",
+      "link": "https://arxiv.org/pdf/2607.01773v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "retrieval-grounded formal concept analysis for ontology and knowledge expansion",
+      "llm_evidence_cn": "基于检索的形式概念分析用于本体和知识扩展",
+      "llm_evidence": "基于检索的形式概念分析用于本体和知识扩展",
+      "canonical_evidence": "基于检索的形式概念分析用于本体和知识扩展",
+      "llm_tldr_en": "Proposes a framework using retrieval-grounded SLM and formal concept analysis for verifiable ontology construction and knowledge expansion, aligning with knowledge graph reasoning for smart city data.",
+      "llm_tldr_cn": "本体构建常面临知识不一致问题。本文提出使用检索增强小语言模型结合形式概念分析作为符号验证循环，通过种子属性迭代生成蕴含关系并验证，实现可验证的知识扩展。该方法可应用于智慧城市中BIM、GIS等数据的知识图谱构建与推理。",
+      "llm_tldr": "本体构建常面临知识不一致问题。本文提出使用检索增强小语言模型结合形式概念分析作为符号验证循环，通过种子属性迭代生成蕴含关系并验证，实现可验证的知识扩展。该方法可应用于智慧城市中BIM、GIS等数据的知识图谱构建与推理。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.29532v1",
+      "source": "arxiv",
+      "title": "SemJoin: Semantic Join Optimization",
+      "abstract": "Integrating unstructured data into relational database systems is increasingly important as demand grows for natural language querying and analysis. A semantic join, joining two tables under a natural-language predicate, can be evaluated with a large language model (LLM), but comparing every pair of tuples requires O(M x N) LLM invocations and is cost-prohibitive at scale. Existing systems reduce this cost but typically commit to a single fixed strategy (e.g., embedding similarity or one batched scheme) regardless of the data or the join predicate. We propose an LLM-agent-based decision pipeline that optimizes semantic joins by matching the execution strategy to the characteristics of the underlying tables. An LLM advisor routes each join to one of two strategies: a Cluster Join, which prunes candidates via unsupervised embedding clustering and sample-based filtering, or a Classifier strategy for predicates that reduce to a shared discrete label set. Across three diverse datasets (IMDb reviews, email contradictions, and Stack Overflow tags), the advisor consistently identifies the optimal execution strategy for each workload. This dynamic routing proves decisive: it outperforms adaptive block join (ABJ) by 20-33 F1 points across all datasets while consuming fewer tokens on two of the three, and achieves higher F1 scores than featurized-decomposition join (FDJ) at one to two orders of magnitude lower token cost.",
+      "authors": [
+        "Christopher Gou",
+        "Aditya Banerjee",
+        "Jiaxuan Wang",
+        "Chunwei Liu"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB",
+        "cs.AI"
+      ],
+      "published": "2026-06-28T17:57:10+00:00",
+      "link": "https://arxiv.org/pdf/2606.29532v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "LLM-agent-based semantic join optimization for integrating unstructured data",
+      "llm_evidence_cn": "基于LLMagent的语义连接优化实现非结构化数据集成",
+      "llm_evidence": "基于LLMagent的语义连接优化实现非结构化数据集成",
+      "canonical_evidence": "基于LLMagent的语义连接优化实现非结构化数据集成",
+      "llm_tldr_en": "Proposes SemJoin, an LLM-agent-based decision pipeline that optimizes semantic joins by selecting execution strategies based on table characteristics, reducing cost while improving accuracy.",
+      "llm_tldr_cn": "针对大规模语义连接中逐对LLM调用成本过高的问题，提出SemJoin框架，通过LLM顾问动态选择聚类连接或批量方案，实验证明该方法在保持准确率的同时大幅降低计算开销，为异构数据集成提供了高效优化手段。",
+      "llm_tldr": "针对大规模语义连接中逐对LLM调用成本过高的问题，提出SemJoin框架，通过LLM顾问动态选择聚类连接或批量方案，实验证明该方法在保持准确率的同时大幅降低计算开销，为异构数据集成提供了高效优化手段。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.30473v1",
+      "source": "arxiv",
+      "title": "Field Order Should Not Matter: Permutation-Invariant Embedding Model Fine-Tuning for Structured Metadata Retrieval",
+      "abstract": "We study retrieval over catalogs of structured metadata, where each record is a small schema whose fields answer different kinds of query. Embedding a record with a text encoder first serializes its fields into a string, which forces a choice of field order. We show this choice, usually treated as an implementation detail, silently controls retrieval quality once the encoder is fine-tuned. A standard fine-tune loses 7.4 nDCG@10 points when the index is rebuilt under a different field order, because it reads absolute position instead of the field labels. We propose permutation-invariant fine-tuning ($\\textbf{PI-FT}$), which serializes each record under a freshly sampled field order with random field dropout, so meaning binds to the labels rather than to position. The change is about two lines in the data loader; it costs negligible in-distribution accuracy and cuts the order-change penalty to 0.2 points. We study this in the discovery of development statistics, a catalog of nearly 10,000 indicators that should be searchable in many languages by a model small enough to self-host. As AI assistants and agents increasingly mediate access to public data and statistics, this retrieval step decides whether an answer is grounded in the right indicator or series, making discoverability a precondition for disseminating data through AI. Because usage logs cannot provide training signal for indicators no one has searched, we generate the queries instead. $\\textbf{DevDataBench}$ is a fully LLM-generated benchmark of grounded, facet-targeted queries across 15 languages, covering every indicator for both training and evaluation. A fine-tuned 118M-parameter CPU encoder outperforms every zero-shot baseline, including $\\texttt{text-embedding-3-large}$ (0.707 vs.\\ 0.556 nDCG@10), with the largest gains in low-resource languages. We release the benchmark, pipeline, models, and a reusable PI-FT framework.",
+      "authors": [
+        "Aivin V. Solatorio",
+        "Olivier Dupriez",
+        "Rafael Macalaba"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.IR",
+        "cs.LG",
+        "econ.GN"
+      ],
+      "published": "2026-06-29T15:33:04+00:00",
+      "link": "https://arxiv.org/pdf/2606.30473v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "permutation-invariant fine-tuning for structured metadata retrieval applicable to urban data pipelines",
+      "llm_evidence_cn": "排列不变嵌入微调可用于城市数据标准化管道",
+      "llm_evidence": "排列不变嵌入微调可用于城市数据标准化管道",
+      "canonical_evidence": "排列不变嵌入微调可用于城市数据标准化管道",
+      "llm_tldr_en": "PI-FT proposes permutation-invariant fine-tuning for embedding models to make structured metadata retrieval robust to field order, enhancing retrieval quality for data integration pipelines.",
+      "llm_tldr_cn": "结构化元数据检索中字段顺序通常被视为实现细节，但标准微调会因索引重建顺序变化而损失检索质量。本文提出排列不变微调（PI-FT），通过对每条记录随机采样字段顺序并随机丢弃字段进行序列化训练，使嵌入模型忽略字段位置，仅依赖字段标签。实验表明，PI-FT在字段顺序改变时仍保持高检索精度，为构建标准化城市数据管道和大模型应用提供了稳健的表示学习基础。",
+      "llm_tldr": "结构化元数据检索中字段顺序通常被视为实现细节，但标准微调会因索引重建顺序变化而损失检索质量。本文提出排列不变微调（PI-FT），通过对每条记录随机采样字段顺序并随机丢弃字段进行序列化训练，使嵌入模型忽略字段位置，仅依赖字段标签。实验表明，PI-FT在字段顺序改变时仍保持高检索精度，为构建标准化城市数据管道和大模型应用提供了稳健的表示学习基础。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
