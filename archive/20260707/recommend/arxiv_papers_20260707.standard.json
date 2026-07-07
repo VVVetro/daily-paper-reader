@@ -1,0 +1,596 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-07T22:00:00.508788+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 5,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 9,
+    "quick_skim_target": 11,
+    "quick_selected": 9
+  },
+  "deep_dive": [
+    {
+      "id": "2607.02609v1",
+      "source": "arxiv",
+      "title": "Knowledge-Centric Information Systems",
+      "abstract": "For decades, data engineering has developed mature architectural principles for integrating, governing, validating, cataloging, and serving organizational data. The rise of large language models does not eliminate these concerns; it exposes a broader version of them. Organizational knowledge is becoming executable infrastructure: systems increasingly retrieve it, assemble it, reason over it, and act on it. This paper argues that enterprise artificial intelligence (AI) systems suggest a transition toward an architectural discipline for representing, maintaining, governing, and operationally delivering organizational knowledge. We refer to this discipline as \\emph{knowledge architecture}. We offer a conceptual model and taxonomy showing how classical data-engineering guarantees must be redefined when the managed unit shifts from records to knowledge artifacts: extract, transform, and load (ETL) becomes knowledge ingestion, change-data capture (CDC) becomes knowledge change detection, lineage becomes provenance, catalogs become knowledge catalogs, materialized views become knowledge views, and medallion architectures become raw--curated--operational knowledge layers. Emerging formats such as large language model (LLM) Wiki and the Open Knowledge Format (OKF) are treated as early evidence of this transition, not as its endpoint. The central claim is that knowledge architecture becomes useful when organizational knowledge ceases to be a passive information resource and becomes an operational asset used by humans, agents, workflows, and models to execute work.",
+      "authors": [
+        "Mariano Garralda-Barrio"
+      ],
+      "primary_category": "cs.SE",
+      "categories": [
+        "cs.SE",
+        "cs.AI",
+        "cs.DB"
+      ],
+      "published": "2026-07-01T15:05:40+00:00",
+      "link": "https://arxiv.org/pdf/2607.02609v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "knowledge architecture for enterprise AI systems",
+      "llm_evidence_cn": "面向企业AI系统的知识架构",
+      "llm_evidence": "面向企业AI系统的知识架构",
+      "canonical_evidence": "面向企业AI系统的知识架构",
+      "llm_tldr_en": "Argues for knowledge architecture as a discipline for representing, maintaining, governing organizational knowledge in the LLM era.",
+      "llm_tldr_cn": "在大语言模型时代，组织知识正成为可执行的基础设施。本文提出知识架构的概念，将其作为一门学科，涵盖知识的表示、维护、治理和操作性交付，并给出概念模型和分类法，说明经典数据工程保障如何扩展到知识层面。该工作为智慧城市中多源异构数据的语义整合和知识图谱构建提供了顶层设计原则。",
+      "llm_tldr": "在大语言模型时代，组织知识正成为可执行的基础设施。本文提出知识架构的概念，将其作为一门学科，涵盖知识的表示、维护、治理和操作性交付，并给出概念模型和分类法，说明经典数据工程保障如何扩展到知识层面。该工作为智慧城市中多源异构数据的语义整合和知识图谱构建提供了顶层设计原则。",
+      "llm_tags": [
+        "query:smart-city:composite"
+      ],
+      "matched_query_tag": "query:smart-city:composite",
+      "matched_query_text": "Papers central to 智慧城市建设中的数据整合与语义化处理, especially work that connects or combines: Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.; Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.; Find research papers describing semantic information extraction from BIM models, including geometry, materials, textures, and object relationships.; Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.; Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.; Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.; Find research papers describing unified data standards and semantic data models for integrating heterogeneous smart city construction data, including BIM, GIS, documents, images, videos, point clouds, and structured databases.; Find research papers describing semantic parsing, ontology learning, and knowledge graph construction from BIM models and point cloud scans for AI ready urban infrastructure databases.; Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.; Find research papers describing cross domain data management methodologies transferred from manufacturing or industrial digital twins to construction, infrastructure, and smart city data integration..",
+      "matched_requirement_id": "req-composite-smart-city",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.03080v1",
+      "source": "arxiv",
+      "title": "A Model-Based Framework for Developing DTs in Industry 4.0",
+      "abstract": "With the rise of Industry 4.0 driven by the integration of Cyber-Physical Systems (CPS) and the Internet of Things (IoT), the use of Digital Twins (DTs) has significantly increased over the past decade, as they provide detailed insights and support well-informed decision-making. However, the lack of standardized methodologies, in addition to the time and resources involved for building them remains an important challenge.  Building on the idea that engineering models of the physical twin (PT) are often available, we propose a tool-supported framework that automates the derivation of DTs by leveraging existing structural and behavioral models of the PT and extending them with additional models to build a comprehensive DT. To demonstrate the feasibility of our approach, we applied it to four different use cases, in which we automatically derived DT instances from (1) models of their PT, (2) configuration of our generic framework and (3) minimal ad hoc additional development for connecting the DT to the PT. These experiments illustrate the applicability of our framework for building DTs in contexts that satisfy our assumptions and requirements. By simply configuring the framework, we are able to derive a DT aligned with its operational purpose.",
+      "authors": [
+        "Lina Bilal",
+        "Benoit Combemale",
+        "Jean-Marc Jézéquel",
+        "Quentin Perez"
+      ],
+      "primary_category": "cs.SE",
+      "categories": [
+        "cs.SE"
+      ],
+      "published": "2026-07-03T08:11:40+00:00",
+      "link": "https://arxiv.org/pdf/2607.03080v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "model-based DT development framework transferable from Industry 4.0 to construction infrastructure",
+      "llm_evidence_cn": "基于模型的数字孪生开发框架，可从工业4.0迁移至建筑基础设施",
+      "llm_evidence": "基于模型的数字孪生开发框架，可从工业4.0迁移至建筑基础设施",
+      "canonical_evidence": "基于模型的数字孪生开发框架，可从工业4.0迁移至建筑基础设施",
+      "llm_tldr_en": "A tool-supported framework that automates digital twin derivation from existing engineering models, addressing standardization challenges and enabling cross-domain transfer to construction.",
+      "llm_tldr_cn": "数字孪生构建缺乏标准化方法，开发耗时。本工作提出基于模型的框架，利用已有的物理孪生结构和行为模型，自动扩展构建数字孪生。框架提供工具支持，并通过示例验证可行性。该框架可直接迁移到智慧城市领域，实现从工业到建筑基础设施的数据集成与孪生开发。",
+      "llm_tldr": "数字孪生构建缺乏标准化方法，开发耗时。本工作提出基于模型的框架，利用已有的物理孪生结构和行为模型，自动扩展构建数字孪生。框架提供工具支持，并通过示例验证可行性。该框架可直接迁移到智慧城市领域，实现从工业到建筑基础设施的数据集成与孪生开发。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing cross domain data management methodologies transferred from manufacturing or industrial digital twins to construction, infrastructure, and smart city data integration.",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.03661v1",
+      "source": "arxiv",
+      "title": "From Geometric Labels to Semantic Understanding of Indoor Building Components Using Multimodal Large Language Models",
+      "abstract": "Point cloud-based understanding has become an important enabler for facility operation and maintenance involving indoor building components. However, existing methods output only discrete labels without explaining component functions or natural language interactions. This paper proposes Building-MLLM, a point cloud-centered multimodal large language model (MLLM) for indoor components, which models point clouds and instructions to generate responses across Simple Recognition, Complex Captioning, and Multi-Engineering Question Answering tasks. Building-MLLM addresses semantic concentration through four domain-specific mechanisms: Point Information Enhancer for task-relevant semantics, Geometry-Preserving Regularization preventing geometric erosion, fixed textual prefix for domain stabilization, and multi-dimensional LoRA balancing recognition with reasoning. A multi-constraint progressive instruction-generation engine is developed to compile a synthetic point cloud-text dataset with 4198 objects, 37,782 instruction-following pairs, and 47 categories. Experiments show that Building-MLLM achieves 88.00%, 65.10%, and 68.14% on the three task types, respectively, demonstrating superior indoor component language understanding and providing initial generalizability in transfer inference on other real-world datasets.",
+      "authors": [
+        "Shuju Jing",
+        "Chao Yin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-04T02:18:03+00:00",
+      "link": "https://arxiv.org/pdf/2607.03661v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "semantic understanding of indoor building components from point clouds using multimodal large language models, enabling scene understanding and natural language interaction",
+      "llm_evidence_cn": "使用多模态大语言模型从点云理解室内建筑构件语义，实现场景理解和自然语言交互",
+      "llm_evidence": "使用多模态大语言模型从点云理解室内建筑构件语义，实现场景理解和自然语言交互",
+      "canonical_evidence": "使用多模态大语言模型从点云理解室内建筑构件语义，实现场景理解和自然语言交互",
+      "llm_tldr_en": "Proposes Building-MLLM, a point cloud-centered multimodal large language model that understands indoor components from point clouds and natural language instructions, enabling recognition, captioning, and question answering.",
+      "llm_tldr_cn": "本文针对现有室内建筑构件点云理解方法仅输出离散标签、缺乏语义解释和自然语言交互的问题，提出了Building-MLLM，一个以点云为中心的多模态大语言模型。该模型通过点信息增强器、几何保持正则化等机制，实现了从简单识别到复杂描述和多工程问答的跨任务语义理解。实验表明，Building-MLLM在多个任务上显著优于基线模型，为设施运维提供了可交互的语义理解能力，推动了点云数据在智慧城市建筑信息管理中的应用。",
+      "llm_tldr": "本文针对现有室内建筑构件点云理解方法仅输出离散标签、缺乏语义解释和自然语言交互的问题，提出了Building-MLLM，一个以点云为中心的多模态大语言模型。该模型通过点信息增强器、几何保持正则化等机制，实现了从简单识别到复杂描述和多工程问答的跨任务语义理解。实验表明，Building-MLLM在多个任务上显著优于基线模型，为设施运维提供了可交互的语义理解能力，推动了点云数据在智慧城市建筑信息管理中的应用。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.03394v1",
+      "source": "arxiv",
+      "title": "From Mobile Data to Business Insights: An End-to-End Analytics Framework for Large-Scale Urban Mobility Analysis and Decision Support",
+      "abstract": "Real time location data derived from mobile applications is a powerful tool for addressing various urban challenges, including tourism planning, parking management, bus route optimization, and resource allocation. Besides, it offers invaluable insights for shaping strategic decisions in commercial domains such as location based services, market share analysis, and behavioral profiling. In this expansive study, we aim to address all of the aforementioned challenges by investigating the behaviors and patterns of smartphone users within urban environments, particularly in the domains of tourism, transportation, and retail. Our approach encompasses the development of a sophisticated data platform from inception to implementation, which includes the formulation of use cases, architectural design, and implementation of modules. We employ state of the art techniques and technologies, including data anonymization, ETL pipelines, and utilizing Google BigQuery and Vertex AI for data processing and machine learning model development. A modular architecture based on reusable analytical building blocks was developed to generate data products that support multiple stakeholder driven use cases. Additionally, we apply interactive data visualization techniques via Power BI to facilitate the effective interpretation of analytical findings by stakeholders. The developed models address a wide range of mobility analytics tasks, including mobility profiling, frequent trajectory mining, area of influence analysis, traffic anomaly detection, and origin destination pattern analysis. The results demonstrate the framework's ability to capture user mobility dynamics at fine spatial and temporal resolutions, providing actionable insights for urban planning and strategic business decision making.",
+      "authors": [
+        "Thiago Andrade",
+        "Shazia Tabassum",
+        "Miguel E. P. Silva",
+        "Ricardo Dinis",
+        "Joao Gama"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CY",
+        "cs.LG"
+      ],
+      "published": "2026-07-03T14:51:12+00:00",
+      "link": "https://arxiv.org/pdf/2607.03394v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "End-to-end analytics framework for large-scale urban mobility using real-time location data, enabling decision support for urban challenges",
+      "llm_evidence_cn": "利用实时位置数据的大规模城市移动性端到端分析框架，支持城市决策",
+      "llm_evidence": "利用实时位置数据的大规模城市移动性端到端分析框架，支持城市决策",
+      "canonical_evidence": "利用实时位置数据的大规模城市移动性端到端分析框架，支持城市决策",
+      "llm_tldr_en": "A sophisticated data platform for urban mobility analysis integrates mobile data to support tourism, transportation, and retail decisions, demonstrating multi-source data integration for smart city applications.",
+      "llm_tldr_cn": "该论文提出了一个端到端的城市移动性分析框架，整合智能手机实时位置数据，用于旅游规划、停车管理、公交路线优化等城市挑战。它展示了如何将多源移动数据转化为商业洞察和决策支持，是智慧城市中多源数据整合的典型案例。该方法为城市基础设施管理提供了可复制的数据分析流程。",
+      "llm_tldr": "该论文提出了一个端到端的城市移动性分析框架，整合智能手机实时位置数据，用于旅游规划、停车管理、公交路线优化等城市挑战。它展示了如何将多源移动数据转化为商业洞察和决策支持，是智慧城市中多源数据整合的典型案例。该方法为城市基础设施管理提供了可复制的数据分析流程。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.03872v1",
+      "source": "arxiv",
+      "title": "SharpSplat: Edge-Regularized 3D Gaussian Splatting for High Fidelity Urban Building Reconstruction from UAV images",
+      "abstract": "Reconstructing high-fidelity 3D building models from UAV imagery is essential for large-scale digital twin development. However, existing 3D Gaussian Splatting (3DGS) techniques often struggle with building facades, failing to capture sharp geometric transitions. To address this, we propose a semantic edge regularization framework that supervises 3DGS to produce crisp architectural boundaries. Our method leverages SAM 3 to generate precise building masks, from which we extract architecturally significant edges. During training, we align rendered image gradients with these extracted edges, forcing the Gaussians to converge into sharp structural geometries. Evaluations across campus environments, dense urban centers, and custom residential datasets demonstrate significant improvements in edge fidelity without requiring architectural modifications to the 3DGS pipeline. Our approach proves robust across diverse building types, roof geometries, and urban densities.",
+      "authors": [
+        "Porus Vaid",
+        "Shivam Chopra",
+        "Vaibhav Kumar"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-04T13:31:22+00:00",
+      "link": "https://arxiv.org/pdf/2607.03872v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Urban building reconstruction via semantic edge regularization for digital twin development",
+      "llm_evidence_cn": "通过语义边缘正则化进行城市建筑重建，支持数字孪生开发",
+      "llm_evidence": "通过语义边缘正则化进行城市建筑重建，支持数字孪生开发",
+      "canonical_evidence": "通过语义边缘正则化进行城市建筑重建，支持数字孪生开发",
+      "llm_tldr_en": "SharpSplat proposes edge-regularized 3D Gaussian Splatting for high-fidelity urban building reconstruction from UAV images, enabling crisp architectural boundaries for digital twins.",
+      "llm_tldr_cn": "从无人机图像重建高保真建筑模型对大规模数字孪生至关重要。现有3DGS技术难以捕捉建筑立面的锐利几何过渡。本文提出SharpSplat，一种语义边缘正则化框架，利用SAM生成建筑掩膜并提取边缘，在训练中对齐图像梯度与边缘，迫使高斯体收敛到锐利几何结构。在校园和密集城区场景的评估表明，该方法生成了清晰的建筑边界，提升了数字孪生模型的几何保真度。",
+      "llm_tldr": "从无人机图像重建高保真建筑模型对大规模数字孪生至关重要。现有3DGS技术难以捕捉建筑立面的锐利几何过渡。本文提出SharpSplat，一种语义边缘正则化框架，利用SAM生成建筑掩膜并提取边缘，在训练中对齐图像梯度与边缘，迫使高斯体收敛到锐利几何结构。在校园和密集城区场景的评估表明，该方法生成了清晰的建筑边界，提升了数字孪生模型的几何保真度。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.31366v1",
+      "source": "arxiv",
+      "title": "From Materials Database to Materials Bank: Assetizing Data for AI Driven Materials Innovation",
+      "abstract": "Driven by high-throughput experimentation, computational modeling, and artificial intelligence (AI), materials data has expanded at an unprecedented rate. Conventional materials databases function only as passive repositories, archiving raw experimental records indiscriminately including both successful and failed data, without systematic value filtering or asset management. This creates a critical gap between massive data accumulation and actionable innovation, hindering the identification of high-potential materials and industrial translation. To address this bottleneck, we propose an industrialization-oriented Materials Bank, a dedicated valuefiltering and assetization layer that operates beyond traditional databases. It does not merely curate high-quality data but systematically elevates qualified candidates into standardized, upgradable materials assets via a multi-dimensional BankCard framework covering scientific validity, synthesis feasibility, application readiness, and industrial value. By unifying databases, AI models, automated experimentation, and multi-criteria assessment into a cohesive closed-loop ecosystem, the Materials Bank establishes a clear trajectory from data to knowledge, candidate, asset, and product. It serves not as an enhanced database or screening tool, but as a decision infrastructure bridging academic discovery and industrial demand, offering a scalable paradigm to accelerate AI-driven materials innovation and deliver tangible real-world impact.",
+      "authors": [
+        "Chenyao Ma",
+        "Di Zhang",
+        "Weibo Gong",
+        "Wei Du",
+        "Rui Su",
+        "Yuhang Chen",
+        "Kan Xu",
+        "Huan Gu",
+        "Limin Li",
+        "Piao Ma",
+        "Zhenghao Li",
+        "Hao Li"
+      ],
+      "primary_category": "cond-mat.mtrl-sci",
+      "categories": [
+        "cond-mat.mtrl-sci",
+        "cs.AI",
+        "physics.chem-ph"
+      ],
+      "published": "2026-06-30T08:58:52+00:00",
+      "link": "https://arxiv.org/pdf/2606.31366v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "value-filtering data assetization for materials innovation, transferable to urban infrastructure data management",
+      "llm_evidence_cn": "材料数据价值过滤与资产化方法，可迁移至城市基础设施数据管理",
+      "llm_evidence": "材料数据价值过滤与资产化方法，可迁移至城市基础设施数据管理",
+      "canonical_evidence": "材料数据价值过滤与资产化方法，可迁移至城市基础设施数据管理",
+      "llm_tldr_en": "Materials Bank proposes a value-filtering and assetization layer beyond traditional databases to turn materials data into actionable assets, applicable to urban infrastructure.",
+      "llm_tldr_cn": "传统材料数据库仅作为被动仓库，无法从海量数据中筛选高价值信息。本文提出工业化导向的材料银行，通过价值过滤和资产化层将实验成功与失败数据转化为可行动资产，弥合数据积累与创新之间的鸿沟。该方法可类比迁移至智慧城市基础设施数据管理。",
+      "llm_tldr": "传统材料数据库仅作为被动仓库，无法从海量数据中筛选高价值信息。本文提出工业化导向的材料银行，通过价值过滤和资产化层将实验成功与失败数据转化为可行动资产，弥合数据积累与创新之间的鸿沟。该方法可类比迁移至智慧城市基础设施数据管理。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing cross domain data management methodologies transferred from manufacturing or industrial digital twins to construction, infrastructure, and smart city data integration.",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.00316v1",
+      "source": "arxiv",
+      "title": "Evolving Intelligent Complex Systems via Intellicise Networks: Architecture, Technologies, and Pathways",
+      "abstract": "Future engineering infrastructures are evolving into large-scale, open, heterogeneous, and wirelessly interconnected complex systems. These systems present significant challenges in optimizing network resource utilization, managing high-dimensional information spaces, and accommodating diverse business requirements. Intellicise networks, characterized by Intent-driven operation, semantic-native capability, and distributed intelligence, offer a promising paradigm for enabling such intelligent complex systems. We provide a systematic exploration of future intelligent complex systems from the perspective of intellicise networks. Specifically, we propose a cross-domain intelligent communication network architecture based on intellicise networks, grounded in information theory, systems theory, game theory, and cybernetics. The architecture comprises a cross-layer organizational framework, multi-functional planes, and novel information flows. The cross-layer framework defines the vertical evolution from perception and cognition to decision, while the control, user, data, computation, intelligence, and security planes deliver horizontal intellicise capabilities. Moreover, data, knowledge, model, and task flows interconnect the various layers and planes, forming a closed-loop process that derives simplicity from high-level intelligene while concurrently pursuing enhanced. Building on this architecture, we review key enabling technologies, tracing their evolution from semantic extraction to intent understanding, from heterogeneous resource integration to self-configuration and self-optimization, from generative artificial intelligence (AI) to agentic AI, and from embodied AI to symbodied AI. Additionally, we present a case study on intellicise networks for embodied agent communications and discuss representative applications and services for intelligent complex systems.",
+      "authors": [
+        "Ping Zhang",
+        "Rui Meng",
+        "Xiaodong Xu",
+        "Song Gao",
+        "Zixuan Huang",
+        "Yaheng Wang",
+        "Yinqiu Liu",
+        "Ruichen Zhang",
+        "Yiming Liu",
+        "Kaiwen Yu",
+        "Yaping Sun",
+        "Han Meng",
+        "Haonan Tong",
+        "Huishi Song",
+        "Qianqian Yang",
+        "Shuoyao Wang",
+        "Lexi Xu",
+        "Qinghe Du",
+        "Geng Sun",
+        "Jiawen Kang",
+        "Gang Wu",
+        "Yiqing Zhou",
+        "Haixia Zhang",
+        "Zesong Fei",
+        "Aimin Hao",
+        "Ming Li"
+      ],
+      "primary_category": "eess.SP",
+      "categories": [
+        "eess.SP"
+      ],
+      "published": "2026-07-01T01:32:44+00:00",
+      "link": "https://arxiv.org/pdf/2607.00316v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Proposes intellicise networks with semantic-native capability for intelligent complex systems, applicable to smart city data platforms",
+      "llm_evidence_cn": "提出具有语义原生能力的内智网络，适用于智慧城市数据平台",
+      "llm_evidence": "提出具有语义原生能力的内智网络，适用于智慧城市数据平台",
+      "canonical_evidence": "提出具有语义原生能力的内智网络，适用于智慧城市数据平台",
+      "llm_tldr_en": "Intellicise networks leverage semantic information for intent-driven operation and distributed intelligence, offering a communication architecture for future smart city data platforms and digital twins.",
+      "llm_tldr_cn": "该论文提出了内智网络的概念，通过语义原生能力和分布式智能来支撑未来智能复杂系统。它从通信网络架构角度探讨了语义驱动的系统互操作，可迁移至智慧城市中城市数字孪生与数据平台的语义互操作设计。虽然不直接聚焦城市数据，但理念相通。",
+      "llm_tldr": "该论文提出了内智网络的概念，通过语义原生能力和分布式智能来支撑未来智能复杂系统。它从通信网络架构角度探讨了语义驱动的系统互操作，可迁移至智慧城市中城市数字孪生与数据平台的语义互操作设计。虽然不直接聚焦城市数据，但理念相通。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.00342v1",
+      "source": "arxiv",
+      "title": "Semantic-based Internet of Embodied Intelligence: Visions and Frontiers",
+      "abstract": "Recent advances in generative artificial intelligence (AI) and embodied intelligence (EI) enable autonomous agents to interact with the physical world. However, scaling these systems into networks of multiple agents, namely the Internet of EI (IoEI), faces critical bottlenecks. These include the overhead of massive multimodal data transmission and the decoupling of logical reasoning from physical constraints. To address these challenges, we envision the Semantic-based IoEI (SIoEI), which leverages semantic information as a unified metric throughout the agent lifecycle. We systematically define four key dimensions of EI: perception, intelligence, control, and communication. We further elaborate how semantic empowerment revolutionizes environmental perception, cognition and task planning, action generation and robust control, and communication and networking. We also present a case study to verify that, the semantic-empowered end-to-end process significantly improves channel robustness and reduces end-to-end latency for EI. Finally, we outline critical open research directions for the SIoEI paradigm.",
+      "authors": [
+        "Yaheng Wang",
+        "Rui Meng",
+        "Xiaodong Xu",
+        "Yiming Liu",
+        "Feiliang Song",
+        "Linyuan Hu",
+        "Huishi Song",
+        "Lexi Xu",
+        "Tony Q. S. Quek",
+        "Ping Zhang"
+      ],
+      "primary_category": "eess.SP",
+      "categories": [
+        "eess.SP"
+      ],
+      "published": "2026-07-01T02:32:48+00:00",
+      "link": "https://arxiv.org/pdf/2607.00342v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Envisions Semantic-based IoEI using semantic information as unified metric for multimodal agent data, relevant to semantic interoperability in smart city platforms",
+      "llm_evidence_cn": "提出基于语义的具身智能互联网，以语义信息作为多模态数据的统一度量，关联智慧城市语义互操作",
+      "llm_evidence": "提出基于语义的具身智能互联网，以语义信息作为多模态数据的统一度量，关联智慧城市语义互操作",
+      "canonical_evidence": "提出基于语义的具身智能互联网，以语义信息作为多模态数据的统一度量，关联智慧城市语义互操作",
+      "llm_tldr_en": "Semantic-based Internet of Embodied Intelligence proposes using semantic information as a unified metric across perception, intelligence, control, and communication, enabling scalable multimodal data integration for multi-agent systems applicable to smart cities.",
+      "llm_tldr_cn": "该论文展望了基于语义的具身智能互联网，将语义信息作为代理生命周期中的统一度量，以解决多模态数据传输和逻辑推理瓶颈。其语义统一方法可迁移至智慧城市中多源异构数据（如BIM、GIS、传感器）的语义互操作与融合，为城市数字孪生提供理论基础。",
+      "llm_tldr": "该论文展望了基于语义的具身智能互联网，将语义信息作为代理生命周期中的统一度量，以解决多模态数据传输和逻辑推理瓶颈。其语义统一方法可迁移至智慧城市中多源异构数据（如BIM、GIS、传感器）的语义互操作与融合，为城市数字孪生提供理论基础。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.02771v1",
+      "source": "arxiv",
+      "title": "Automated Data Readiness for Scientific AI",
+      "abstract": "Leadership computing facilities steward large-scale scientific datasets that routinely require substantial transformation before serving as AI training data. However, no existing framework fully unifies automated transformation, readiness assessment, provenance tracking, and agent-native deployment. We present REDI, an open-source framework that addresses this gap through a unified five-stage pipeline (ingest, preprocess, transform, structure, and output) with per-stage instrumentation for reproducibility and deployment as an agent-callable skill; companion tool SetGo automates FAIR compliance and catalog publication. Evaluated across climate, proteomics, materials science, and nuclear fusion, REDI transforms all datasets from raw to AI-ready, with outputs validated against domain-expert references, and preliminary results show near-ideal parallel scaling to 100 nodes on Frontier for the climate case. Provenance-instrumented profiling reveals file I/O as the dominant pipeline cost, with format selection a first-order optimization lever. These results establish REDI as a cross-domain platform providing automated data readiness for scientific AI, transforming data preparation bottlenecks into reproducible, reusable community assets.",
+      "authors": [
+        "Sean R. Wilkinson",
+        "Valentine G. Anantharaj",
+        "Jong Youl Choi",
+        "Ketan Maheshwari",
+        "Marshall McDonnell",
+        "Massimiliano Lupo Pasini",
+        "Polina Shpilker",
+        "Renan Souza",
+        "Patrick Widener",
+        "Sarp Oral",
+        "Wesley Brewer"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CE"
+      ],
+      "published": "2026-07-02T21:09:13+00:00",
+      "link": "https://arxiv.org/pdf/2607.02771v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "automated data readiness pipeline for AI, applicable to urban construction data preparation",
+      "llm_evidence_cn": "自动化数据准备管道，可应用于城市建筑数据AI准备",
+      "llm_evidence": "自动化数据准备管道，可应用于城市建筑数据AI准备",
+      "canonical_evidence": "自动化数据准备管道，可应用于城市建筑数据AI准备",
+      "llm_tldr_en": "REDI is an open-source framework for automated data transformation and readiness assessment, applicable to preparing standardized urban data for LLMs and digital twins.",
+      "llm_tldr_cn": "该论文提出REDI框架，统一了数据摄取、预处理、转换、结构化与输出的五阶段管道，并支持可重现性和智能体调用。虽然面向科学数据（气候、蛋白质组学等），但其方法论可直接迁移至智慧城市中城市建筑数据的标准化和AI就绪准备，满足需求9中数据管道与表示学习的目标。",
+      "llm_tldr": "该论文提出REDI框架，统一了数据摄取、预处理、转换、结构化与输出的五阶段管道，并支持可重现性和智能体调用。虽然面向科学数据（气候、蛋白质组学等），但其方法论可直接迁移至智慧城市中城市建筑数据的标准化和AI就绪准备，满足需求9中数据管道与表示学习的目标。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.02116v1",
+      "source": "arxiv",
+      "title": "ContextNest: Verifiable Context Governance for Autonomous AI Agent",
+      "abstract": "Autonomous AI agents increasingly depend on external knowledge stores, yet most retrieval pipelines provide relevance without durable guarantees of provenance, version identity, integrity, traceability, or point-in-time reconstruction. We formalize this as context governance and present ContextNext, an open specification and reference implementation for governed AI-consumable knowledge vaults. ContextNext does not replace Retrieval-Augmented Generation (RAG); it supplies the governance layer beneath retrieval, determining which artifacts are approved, current, attributable, and integrity-verified before retrieval systems operate over them.   The specification combines typed Markdown documents with metadata, deterministic set-algebraic selectors, contextnest:// URI references, SHA-256 hash-chained version histories, graph-level checkpoints, source nodes for live data through the Model Context Protocol (MCP), and audit traces of agent context consumption. These mechanisms let organizations reconstruct which knowledge versions informed an agent output and whether those versions were AI-eligible when consumed.   We report first empirical results from two controlled experiments. In a stale-version attack isolating the governance-versus-retrieval failure mode, governed selection strictly Pareto-dominates BM25 sparse retrieval, with higher answer-quality pass rate (97% versus 93-90%) at about one-third the input-token cost. In a retrieval-determinism experiment over a 1,060-document corpus, deterministic selectors and BM25 return stable document sets across repeated identical queries (Jaccard 1.0), while a dense+HNSW baseline is non-deterministic on 80% of queries (mean Jaccard 0.611, worst case 0.210). These results suggest that context governance addresses failure modes retrieval quality alone is not designed to resolve. We release a core engine, CLI, and MCP server under open licenses.",
+      "authors": [
+        "Misha Sulpovar",
+        "Benn R. Konsynski",
+        "Qaish Kanchwala",
+        "Gabe Goodhart"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-02T12:51:38+00:00",
+      "link": "https://arxiv.org/pdf/2607.02116v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "governed knowledge vaults for autonomous agents",
+      "llm_evidence_cn": "面向自主智能体的受治理知识仓库",
+      "llm_evidence": "面向自主智能体的受治理知识仓库",
+      "canonical_evidence": "面向自主智能体的受治理知识仓库",
+      "llm_tldr_en": "Formalizes context governance and presents ContextNest for verifiable, provenance-tracked knowledge vaults for AI agents.",
+      "llm_tldr_cn": "自主AI智能体依赖外部知识库，但现有检索管道缺乏可验证性。本文形式化上下文治理概念，提出ContextNest规范与实现，提供经治理的知识仓库，确保数据来源、版本、完整性可追溯。该系统通过类型化Markdown文档与元数据、集合论选择器实现确定性上下文管理。该工作为智慧城市中知识图谱的治理和可信检索提供了基础设施。",
+      "llm_tldr": "自主AI智能体依赖外部知识库，但现有检索管道缺乏可验证性。本文形式化上下文治理概念，提出ContextNest规范与实现，提供经治理的知识仓库，确保数据来源、版本、完整性可追溯。该系统通过类型化Markdown文档与元数据、集合论选择器实现确定性上下文管理。该工作为智慧城市中知识图谱的治理和可信检索提供了基础设施。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.02872v1",
+      "source": "arxiv",
+      "title": "Poisson-Gamma Modeling of Inter-Relational Dependencies in Dynamic Knowledge Graphs",
+      "abstract": "Dynamic knowledge graphs are ubiquitous in today's AI applications, as we represent molecular structures, social relationships, and language information using these graph models. As knowledge graphs evolve over time and are often noisy and incomplete, modeling their temporal and relational dependencies becomes crucial for downstream tasks. To address these challenges, this paper proposes PGRE (Poisson-Gamma Relational Evolution), a probabilistic model for modeling inter-relational dependencies in dynamic knowledge graphs. PGRE represents multi-relational temporal links via a Poisson-Bernoulli formulation. It introduces Gamma-distributed latent variables to capture entity-factor associations and cross-relation dependencies mediated by shared latent communities. A Gamma Markov process further models the temporal evolution of these latent variables, enabling principled characterization of relational dynamics. Experiments on benchmark datasets show that PGRE achieves competitive performance in link prediction, particularly in sparse settings, while revealing meaningful relational evolution patterns in dynamic knowledge graphs.",
+      "authors": [
+        "Nan Fang",
+        "Yijun Wang",
+        "Hao Liao",
+        "Sikun Yang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-03T02:19:52+00:00",
+      "link": "https://arxiv.org/pdf/2607.02872v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Probabilistic modeling of inter-relational dependencies in dynamic knowledge graphs, transferable to smart city infrastructure knowledge.",
+      "llm_evidence_cn": "动态知识图谱关系间依赖的概率建模，可迁移到智慧城市基础设施知识图推理。",
+      "llm_evidence": "动态知识图谱关系间依赖的概率建模，可迁移到智慧城市基础设施知识图推理。",
+      "canonical_evidence": "动态知识图谱关系间依赖的概率建模，可迁移到智慧城市基础设施知识图推理。",
+      "llm_tldr_en": "PGRE models temporal and relational dependencies in dynamic knowledge graphs using Poisson-Gamma formulation, applicable to evolving urban data knowledge graphs.",
+      "llm_tldr_cn": "动态知识图谱在AI应用中无处不在，但常存在噪声和不完整性，需要建模时间和关系依赖。本文提出PGRE，一种基于泊松-伽马公式的概率模型，用于捕获动态知识图谱中的多关系时间链接和实体-因子关联。该模型通过共享潜在变量实现跨关系依赖，可应用于智慧城市中随时间演化的基础设施知识图谱推理任务，如实体补全和关系预测。",
+      "llm_tldr": "动态知识图谱在AI应用中无处不在，但常存在噪声和不完整性，需要建模时间和关系依赖。本文提出PGRE，一种基于泊松-伽马公式的概率模型，用于捕获动态知识图谱中的多关系时间链接和实体-因子关联。该模型通过共享潜在变量实现跨关系依赖，可应用于智慧城市中随时间演化的基础设施知识图谱推理任务，如实体补全和关系预测。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.03028v1",
+      "source": "arxiv",
+      "title": "HETERQA: Benchmarking Record Retrieval over Multiple Heterogeneous Sources",
+      "abstract": "In emerging systems (e.g., social media and e-commerce platforms), data records are often drawn from heterogeneous sources, such as relational tables, text documents, image repositories, spatial databases, and knowledge graphs. Accordingly, retrieving target records for question-answering (QA) tasks requires us to jointly exploit these heterogeneous sources. However, most existing benchmarks are constructed from individual sources, and only a very few recent benchmarks have considered two or three sources. To alleviate this issue, we introduce HETERQA, a comprehensive benchmark with 857 QA pairs for record retrieval over five heterogeneous sources. HETERQA instantiates this setting with Yelp business records, each of which is grounded by multiple sources. We build HETERQA in an answer-driven manner: candidate records are first initialized with record-field constraints, then enriched through heterogeneous sources, and finally cross-verified across required sources before the natural-language question is retained. We validate the benchmark through contradiction detection and human validation, and further evaluate sparse, dense, hybrid, late-interaction, and agentic retrievers under the same metrics. The results show that HETERQA is challenging: hybrid retrieval achieves the strongest Recall@10, Self-RAG achieves the best MRR@10, and all evaluated methods remain far from saturating the benchmark. These findings indicate that HETERQA provides an effective testbed for record retrieval over heterogeneous sources and leaves substantial room for future retrieval methods. The benchmark dataset and source code are publicly available at https://huggingface.co/datasets/hanchang02/HeterQA and https://github.com/hanchang02/HeterQA, respectively.",
+      "authors": [
+        "Yaodong Su",
+        "Hanchang Li",
+        "Quanqing Xu",
+        "Chuanhui Yang",
+        "Yixiang Fang"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR"
+      ],
+      "published": "2026-07-03T07:18:33+00:00",
+      "link": "https://arxiv.org/pdf/2607.03028v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "multi-source heterogeneous record retrieval for QA, mirrors multimodal fusion",
+      "llm_evidence_cn": "多异构源记录检索，支持多模态数据融合",
+      "llm_evidence": "多异构源记录检索，支持多模态数据融合",
+      "canonical_evidence": "多异构源记录检索，支持多模态数据融合",
+      "llm_tldr_en": "HETERQA benchmark for record retrieval from 5 heterogeneous sources (tables, text, images, spatial, KG) enabling multi-source integration, relevant to smart city multimodal fusion.",
+      "llm_tldr_cn": "现有问答基准多基于单一数据源，难以评估多异构源联合检索能力。HETERQA构建了包含857对问答的基准，覆盖关系表、文本、图像、空间数据库和知识图谱五类异构源。实验证明了多源联合检索的必要性和挑战。该基准为智慧城市中多模态数据融合提供了评估平台。",
+      "llm_tldr": "现有问答基准多基于单一数据源，难以评估多异构源联合检索能力。HETERQA构建了包含857对问答的基准，覆盖关系表、文本、图像、空间数据库和知识图谱五类异构源。实验证明了多源联合检索的必要性和挑战。该基准为智慧城市中多模态数据融合提供了评估平台。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.03501v1",
+      "source": "arxiv",
+      "title": "STRATOS: Bridging the Symbolic-to-Numeric Gap in Spatio-Temporal Text-to-SQL for Meteorological Data",
+      "abstract": "Copernicus, the European Union's Earth observation program, produces petabytes of Earth observation and climate data, offering immense potential for research, policy, and applications. However, access to these datasets requires advanced programming skills and familiarity with domain-specific formats such as NetCDF or GRIB. Moreover, general-purpose Text-to-SQL systems fail when applied naively to the meteorological domain due to a profound ``Symbolic-to-Numeric'' gap. To overcome these limitations, we present an end-to-end Text-to-SQL framework specifically engineered for real-world, scalable meteorological data exploration. Our system intercepts natural language to resolve spatial and semantic ambiguities \\textit{before} SQL generation. We design STRATOS, a Spatio-Temporal Resolution Agent for Text-to-SQL to dynamically bridge the symbolic-to-numeric gap by mapping fuzzy concepts to a localized ontology and resolving spatial entities via external knowledge bases. Further, our complexity-aware query rewriter rewrites expensive spatial predicates, reducing execution times from hours to seconds. Last, we introduce the STRATOS Evaluation Workload, comprising 7,520 complex query pairs explicitly designed by domain experts to test scalability and symbolic-to-numeric translation across challenging spatio-temporal dimensions previously unexplored by Text-to-SQL systems.",
+      "authors": [
+        "Yi Zhang",
+        "Farhad Nooralahzadeh",
+        "Jonathan Fürst",
+        "Fabio Scherrer",
+        "Antonis Bezes",
+        "Vassiliki Kotroni",
+        "Kurt Stockinger"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB",
+        "cs.AI",
+        "cs.MA"
+      ],
+      "published": "2026-07-03T17:15:24+00:00",
+      "link": "https://arxiv.org/pdf/2607.03501v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "end-to-end Text-to-SQL framework for meteorological data, enabling natural language query over spatio-temporal Earth observation data, relevant to multi-source data integration in smart cities",
+      "llm_evidence_cn": "面向气象数据的端到端Text-to-SQL框架，支持自然语言查询时空地球观测数据，与智慧城市多源数据整合相关",
+      "llm_evidence": "面向气象数据的端到端Text-to-SQL框架，支持自然语言查询时空地球观测数据，与智慧城市多源数据整合相关",
+      "canonical_evidence": "面向气象数据的端到端Text-to-SQL框架，支持自然语言查询时空地球观测数据，与智慧城市多源数据整合相关",
+      "llm_tldr_en": "Presents STRATOS, an end-to-end Text-to-SQL system that resolves spatial and semantic ambiguities before SQL generation for scalable meteorological data exploration.",
+      "llm_tldr_cn": "为了解决气象数据访问需要专业编程技能且通用Text-to-SQL系统因符号-数值鸿沟而失效的问题，提出STRATOS框架，在生成SQL前先解析自然语言中的空间和语义歧义，实现了对海量地球观测数据的可扩展查询。该系统在真实气象数据集上验证了有效性，降低了数据访问门槛，可推广至智慧城市中其他时空数据源的整合与查询。",
+      "llm_tldr": "为了解决气象数据访问需要专业编程技能且通用Text-to-SQL系统因符号-数值鸿沟而失效的问题，提出STRATOS框架，在生成SQL前先解析自然语言中的空间和语义歧义，实现了对海量地球观测数据的可扩展查询。该系统在真实气象数据集上验证了有效性，降低了数据访问门槛，可推广至智慧城市中其他时空数据源的整合与查询。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.05257v1",
+      "source": "arxiv",
+      "title": "GeoFlow: Geo-Aware Modeling of Inter-Area Relationships in Origin-Destination Flow Prediction and Generation",
+      "abstract": "Origin-destination (OD) flow modeling underpins urban planning and mobility analysis, but prevailing graph-based methods often neglect salient geographic attributes, limiting their ability to model long-range and multi-area dependencies. In this paper, we introduce GeoFlow, a novel framework that (i) augments area representations with geospatial attributes, including relative positions, k-hop and geodesic distances, (ii) employs a specialized geometric-intrinsic fusion encoder design that combines graph attention for intrinsic area signals with coordinate-aware encoders for global structure, and (iii) adopts an axial-global attention decoder to capture OD-specific competitive dependencies. For OD flow generation, GeoFlow is paired with flow matching models to produce more authentic and diverse mobility samples. Empirically, GeoFlow achieves superior performance in predictive accuracy, while substantially improving generative fidelity and diversity. Ablation and analytical studies confirm the contribution of each component. Code is available at https://github.com/ZheruiHuang/GeoFlow.",
+      "authors": [
+        "Zherui Huang",
+        "Guanjie Zheng",
+        "Hao Xue",
+        "Linghe Kong"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-06T16:04:23+00:00",
+      "link": "https://arxiv.org/pdf/2607.05257v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "geo-aware modeling of inter-area relationships for urban origin-destination flow, integrating geospatial attributes for smart city mobility management",
+      "llm_evidence_cn": "地理感知的OD流量建模，融合地理空间属性用于智慧城市移动性管理",
+      "llm_evidence": "地理感知的OD流量建模，融合地理空间属性用于智慧城市移动性管理",
+      "canonical_evidence": "地理感知的OD流量建模，融合地理空间属性用于智慧城市移动性管理",
+      "llm_tldr_en": "Proposes GeoFlow, a framework that augments area representations with geospatial attributes and uses axial-global attention for OD flow prediction and generation, improving long-range dependency modeling.",
+      "llm_tldr_cn": "针对现有OD流量建模方法忽略地理属性导致长程多区域依赖建模不足的问题，提出GeoFlow框架，通过融合相对位置、k跳距离等地理空间属性，结合图注意力和坐标感知编码器，以及轴向-全局注意力解码器，实现了对起点-终点流量的精准预测与生成。在城市数据上的实验表明，GeoFlow在多项指标上超越现有方法，为智慧城市交通规划和基础设施管理提供了有力工具。",
+      "llm_tldr": "针对现有OD流量建模方法忽略地理属性导致长程多区域依赖建模不足的问题，提出GeoFlow框架，通过融合相对位置、k跳距离等地理空间属性，结合图注意力和坐标感知编码器，以及轴向-全局注意力解码器，实现了对起点-终点流量的精准预测与生成。在城市数据上的实验表明，GeoFlow在多项指标上超越现有方法，为智慧城市交通规划和基础设施管理提供了有力工具。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
