@@ -1,0 +1,249 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-08T21:31:00.587435+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2607.06349v1",
+      "source": "arxiv",
+      "title": "TopoBrick: Agentic Topology Sampling of Exogenous Variables for Zero-Shot Building IoT Forecasting",
+      "abstract": "Building sensors are embedded in physical topology, spatial hierarchy, and operational context, yet existing forecasters often treat them as isolated time series or rely on fixed covariate sets. We present TopoBrick, a training-free framework for zero-shot building IoT (Internet-of-Things) forecasting. TopoBrick uses building knowledge graphs to construct a compact structural skeleton and employs an agentic topology sampler to select target-specific exogenous variables. The selected variables are organized by deployment-time availability, separating past-known sensor states from future-known calendar, schedule, and meteorological exogenous variables. Across three real-world buildings, TopoBrick outperforms strong zero-shot foundation-model baselines and remains competitive with fully trained building-specific models. Ablations show that topology-aware sampling is more reliable than random, ontology-only, or fixed-hop selection, especially for physically coupled HVAC and weather-driven sensing variables.",
+      "authors": [
+        "Xiachong Lin",
+        "Du Yin",
+        "Arian Prabowo",
+        "Hao Xue",
+        "Wen Hu",
+        "Imran Razzak",
+        "Matthew Amos",
+        "Sam Behrens",
+        "Flora D. Salim"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-07T14:47:46+00:00",
+      "link": "https://arxiv.org/pdf/2607.06349v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "uses building knowledge graphs for IoT forecasting, connecting to smart city infrastructure",
+      "llm_evidence_cn": "利用建筑知识图谱进行物联网预测，支持智慧城市基础设施管理",
+      "llm_evidence": "利用建筑知识图谱进行物联网预测，支持智慧城市基础设施管理",
+      "canonical_evidence": "利用建筑知识图谱进行物联网预测，支持智慧城市基础设施管理",
+      "llm_tldr_en": "TopoBrick uses building knowledge graphs and agentic topology sampling for zero-shot building IoT forecasting, outperforming baselines on three real-world buildings.",
+      "llm_tldr_cn": "建筑传感器数据预测常忽略物理拓扑和空间层次。本文提出TopoBrick，一个无需训练的零样本预测框架。它利用建筑知识图谱构建紧凑结构骨架，并通过智能体拓扑采样选择外部变量。在三个真实建筑上的实验显示，TopoBrick显著优于现有零样本方法，为智能建筑和智慧城市提供高效预测手段。",
+      "llm_tldr": "建筑传感器数据预测常忽略物理拓扑和空间层次。本文提出TopoBrick，一个无需训练的零样本预测框架。它利用建筑知识图谱构建紧凑结构骨架，并通过智能体拓扑采样选择外部变量。在三个真实建筑上的实验显示，TopoBrick显著优于现有零样本方法，为智能建筑和智慧城市提供高效预测手段。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.03447v1",
+      "source": "arxiv",
+      "title": "TRIAGE: Trustworthy Retrieval Instrumentation And Graph Evaluation",
+      "abstract": "Knowledge graphs (KGs) that underpin Graph-based Retrieval-Augmented Generation (Graph-RAG) are increasingly built automatically by LLM-driven extraction rather than curated by experts. Proper evaluation would require instrumenting all pertinent stages: extraction, graph construction, and inference, coherently enough to localize failures, so that a failure at one stage is not discovered as a wrong answer at the end. We introduce TRIAGE, a stage-aware instrumentation framework for automated, document-grounded graph-RAG that asks not only whether the underlying graph can be trusted but at what cost it can be queried. TRIAGE attaches stage-specific, independently interpretable metrics to three stages: the KG Implementation (triple confidence, source coverage, and schema and canonicalization checks), the KG Validation by expert (graph-level structural quality, with correctness and completeness computed only as offline calibration when a reference is available), and the KG Usage (retrieval coverage, faithfulness, and retrieval cost); the deployed metrics need no gold annotations, the gold-requiring ones serving only as offline calibration. At usage time these metrics form a diagnostic chain of necessary conditions whose first broken link localizes the failure, and the diagnosis maps to the stage levers that can remedy it: extraction, graph and schema, or retrieval. TRIAGE is a theoretical framework with a proof of concept and a reproducible evaluation protocol.",
+      "authors": [
+        "Axel TahmasebiMoradi",
+        "Lucas Schott",
+        "Martin Royer"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-07-03T16:01:20+00:00",
+      "link": "https://arxiv.org/pdf/2607.03447v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "evaluates KG construction for graph-RAG",
+      "llm_evidence_cn": "评估知识图谱构建用于图增强检索",
+      "llm_evidence": "评估知识图谱构建用于图增强检索",
+      "canonical_evidence": "评估知识图谱构建用于图增强检索",
+      "llm_tldr_en": "TRIAGE provides stage-aware instrumentation for evaluating automatically constructed knowledge graphs used in Graph-RAG, offering metrics for extraction, construction, and inference stages.",
+      "llm_tldr_cn": "针对自动构建的知识图谱在Graph-RAG中的可靠性评估难题，提出TRIAGE框架，分阶段（提取、构建、推理）提供独立可解释的度量指标，不仅评估可信度还考虑查询成本，有助于定位失败源头。实验证明该框架能有效检测各阶段问题，提升图检索系统的可信任性。",
+      "llm_tldr": "针对自动构建的知识图谱在Graph-RAG中的可靠性评估难题，提出TRIAGE框架，分阶段（提取、构建、推理）提供独立可解释的度量指标，不仅评估可信度还考虑查询成本，有助于定位失败源头。实验证明该框架能有效检测各阶段问题，提升图检索系统的可信任性。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.05716v1",
+      "source": "arxiv",
+      "title": "Scene Graph Thinking: Reinforcing Structured Visual Reasoning for Multimodal Large Language Models",
+      "abstract": "Multimodal Large Language Models (MLLMs) have demonstrated strong perception and reasoning capabilities. However, most existing models focus on isolated objects and neglect structured relationships for efficient target navigation, limiting their performance on visually intensive tasks. To address this challenge, we introduce Scene Graph Thinking (SaGe), a novel paradigm that enables fine-grained and structured visual reasoning through explicit scene-graph representations. Specifically, we first introduce an automated data engine that converts flat image-text corpora into structured scene graphs, where hierarchical entities constitute the nodes and diverse visual relations define the edges. Building upon this, we construct 120K high-quality training data by sampling reasoning traces from scene graphs. Then, two-stage graph-aligned post-training paradigms are introduced, where supervised fine-tuning internalizes MLLMs with structured reasoning, and subsequent reinforcement fine-tuning proposes node-as-proxy graph rewards to consolidate efficient graph exploration. With curated data and graph-aligned training, our approach achieves significant improvements across eight multimodal benchmarks, demonstrating strong effectiveness on fine-grained perception and reasoning tasks. Code is available at https://github.com/zwyang6/SaGe.",
+      "authors": [
+        "Zhiwei Yang",
+        "Yuanchen Wu",
+        "Nan Zhang",
+        "Yucong Meng",
+        "Ke Yan",
+        "Shouhong Ding"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-07T01:00:51+00:00",
+      "link": "https://arxiv.org/pdf/2607.05716v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "automated scene graph generation from image-text data for structured visual reasoning",
+      "llm_evidence_cn": "从图像-文本数据自动生成场景图用于结构化视觉推理",
+      "llm_evidence": "从图像-文本数据自动生成场景图用于结构化视觉推理",
+      "canonical_evidence": "从图像-文本数据自动生成场景图用于结构化视觉推理",
+      "llm_tldr_en": "Proposes Scene Graph Thinking (SaGe) with automated data engine converting image-text corpora into scene graphs, enhancing structured visual reasoning in MLLMs.",
+      "llm_tldr_cn": "该论文提出场景图思维（SaGe）范式，通过自动化数据引擎将图像-文本语料转为结构化场景图，用于增强多模态大语言模型的细粒度结构推理能力。构建了12个下游任务数据集进行验证。该方法可迁移至BIM语义信息提取，辅助智慧城市知识图谱构建。",
+      "llm_tldr": "该论文提出场景图思维（SaGe）范式，通过自动化数据引擎将图像-文本语料转为结构化场景图，用于增强多模态大语言模型的细粒度结构推理能力。构建了12个下游任务数据集进行验证。该方法可迁移至BIM语义信息提取，辅助智慧城市知识图谱构建。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic information extraction from BIM models, including geometry, materials, textures, and object relationships.",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.06012v1",
+      "source": "arxiv",
+      "title": "Structured Data Extraction from Real Estate Documents using Clustering, Classification, and Large Language Models",
+      "abstract": "Real estate property listings expose structured metadata through the API. Still, the richest property-level information (i.e., legal status, structural condition, utility supplies, heating systems) sits in attached questionnaire documents that no automated system currently processes at scale. These documents are heterogeneous. Some are digitally generated with selectable text, others are scanned physical forms. There are even more complex layouts that contain checkbox annotations that defeat conventional text extraction. In this paper, we present an end-to-end pipeline for acquiring, classifying, and extracting structured data from selectable text documents. The pipeline was applied to 3965 questionnaire documents collected from a live property platform via reverse-engineered REST APIs. First, we classified each document into one of three structural categories (text_only, scanned, and special_char), then extracted 35 predefined property attributes from eligible documents using DeepSeek R1 as the Large Language Model, prompted to return a structured JSON object. All 2781 submitted documents were processed successfully, producing a final dataset of 2766 unique property records. Downstream validation confirmed the data quality. Cosine similarity matching achieves a Jaccard consistency score of 0.82, and K-Means clustering produces interpretable market segments with a silhouette score of 0.2088. Results show that the proposed extraction from each property document is both feasible and reliable at this scale.",
+      "authors": [
+        "Muhammad Assad Shehbaz",
+        "Carlos Francisco Moreno-García"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-07T08:54:11+00:00",
+      "link": "https://arxiv.org/pdf/2607.06012v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "structured data extraction from heterogeneous real estate documents using LLMs and clustering",
+      "llm_evidence_cn": "利用聚类、分类和大语言模型从异构房地产文档中提取结构化数据",
+      "llm_evidence": "利用聚类、分类和大语言模型从异构房地产文档中提取结构化数据",
+      "canonical_evidence": "利用聚类、分类和大语言模型从异构房地产文档中提取结构化数据",
+      "llm_tldr_en": "Presents an end-to-end pipeline using clustering, classification, and LLMs to extract structured fields from heterogeneous real estate documents, applied to 3965 questionnaires.",
+      "llm_tldr_cn": "房地产文档包含丰富的结构化信息，但现有系统无法自动处理。本文提出一个端到端流水线，结合聚类、分类和大语言模型，从可选择的文本、扫描件和复杂布局中提取数据。在3965份问卷上应用，展示了大规模文档信息抽取的可行性。该方法可推广至其他领域文档处理。",
+      "llm_tldr": "房地产文档包含丰富的结构化信息，但现有系统无法自动处理。本文提出一个端到端流水线，结合聚类、分类和大语言模型，从可选择的文本、扫描件和复杂布局中提取数据。在3965份问卷上应用，展示了大规模文档信息抽取的可行性。该方法可推广至其他领域文档处理。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.05859v1",
+      "source": "arxiv",
+      "title": "AVA-VLM: Adaptive Visual Attention-Vision Language Model for In-the-Wild Construction Site Monitoring",
+      "abstract": "Vision-Language Models (VLMs) are promising for construction-site monitoring, and recent construction-tailored VLMs have primarily adapted pretrained VLMs through direct QA-style fine-tuning from a single global image. We argue that this direct paradigm remains limited for in-the-wild deployment in terms of operational range, reliability under reduced-resolution inputs, and inference efficiency. To address these challenges, we propose AVA-VLM, an Adaptive Visual Attention-Vision Language Model that follows a human-inspired coarse-to-fine reasoning strategy. AVA-VLM first reasons over a low-resolution global image and selectively requests a high-resolution local crop only when detailed inspection is needed, similar to how a human inspector zooms in on hard-to-see yet important areas. We further introduce a region-aware Chain-of-Thought dataset that teaches the model when to inspect, where to crop, and how to use local evidence. Experiments show that AVA-VLM improves reliability under long-distance and reduced-resolution conditions while substantially reducing visual-token usage.",
+      "authors": [
+        "Younggun Kim",
+        "Taeheon Kim",
+        "Youngseo Kim",
+        "Seunghee Park"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-07T05:30:13+00:00",
+      "link": "https://arxiv.org/pdf/2607.05859v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "vision-language model for construction site monitoring",
+      "llm_evidence_cn": "视觉语言模型用于施工现场监控",
+      "llm_evidence": "视觉语言模型用于施工现场监控",
+      "canonical_evidence": "视觉语言模型用于施工现场监控",
+      "llm_tldr_en": "AVA-VLM uses coarse-to-fine adaptive visual attention for efficient and reliable construction site monitoring.",
+      "llm_tldr_cn": "现有的施工监控VLM直接对全局图像进行问答微调，在野外部署中受限于分辨率与效率。本文提出AVA-VLM，模仿人类先粗后精的推理策略，先分析低分辨率全局图像，仅在需要时请求高分辨率局部裁剪。实验证明该方法在保持精度的同时提升推理效率，适用于实际监控场景。该工作展示了多模态融合在智慧城市基础设施监测中的应用潜力。",
+      "llm_tldr": "现有的施工监控VLM直接对全局图像进行问答微调，在野外部署中受限于分辨率与效率。本文提出AVA-VLM，模仿人类先粗后精的推理策略，先分析低分辨率全局图像，仅在需要时请求高分辨率局部裁剪。实验证明该方法在保持精度的同时提升推理效率，适用于实际监控场景。该工作展示了多模态融合在智慧城市基础设施监测中的应用潜力。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.06529v1",
+      "source": "arxiv",
+      "title": "Life Style Levels: Neighborhood Delineation using Geospatial Data",
+      "abstract": "Fine-scale socioeconomic information is often unavailable across rapidly ur-banizing regions of the developing world, like India, limiting the ability to delineate intra-urban variations in affluence and deprivation. This study pro-poses a scalable, grid-based urban delineation framework using building morphology derived from open-source satellite imagery. Urban areas across 59 Indian cities and towns are partitioned into high-resolution spatial grids and characterized using interpretable morphological indicators, which are combined into a transparent, rule-based scoring framework to delineate areas with contrasting levels of urban affluence. The resulting classifications are validated through ground-level Google Street View observations, revealing a sharp contrast between the grid classes which are consistent with the ex-pected effects of the lifestyle affluence indicators. We further investigate density-based clustering of building footprints in Mumbai to identify dense urban settlements, demonstrating that the resulting clusters exhibit substan-tial spatial overlap with known informal settlements across the city. Finally, we conduct an exploratory analysis mapping consumer loan delinquency across the derived affluence classes. By relying entirely on publicly available geospatial data, the proposed framework provides a scalable, interpretable, and cost-effective approach for granular urban affluence mapping across In-dian cities.",
+      "authors": [
+        "Srivatsa Kulkarni",
+        "Debarag Banerjee"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-07-07T17:37:03+00:00",
+      "link": "https://arxiv.org/pdf/2607.06529v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "urban delineation using geospatial data from satellite imagery",
+      "llm_evidence_cn": "利用卫星图像地理空间数据进行城市划分",
+      "llm_evidence": "利用卫星图像地理空间数据进行城市划分",
+      "canonical_evidence": "利用卫星图像地理空间数据进行城市划分",
+      "llm_tldr_en": "Proposes a grid-based urban delineation framework using building morphology from satellite imagery to classify socioeconomic levels in Indian cities.",
+      "llm_tldr_cn": "发展中国家缺乏精细尺度的社会经济信息。本文提出一种可扩展的基于网格的城市划分框架，利用开源卫星图像的建筑形态学指标，通过规则评分区分城市富裕和贫困区域，并在59个印度城市验证，结果与地面观测高度一致。",
+      "llm_tldr": "发展中国家缺乏精细尺度的社会经济信息。本文提出一种可扩展的基于网格的城市划分框架，利用开源卫星图像的建筑形态学指标，通过规则评分区分城市富裕和贫困区域，并在59个印度城市验证，结果与地面观测高度一致。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
