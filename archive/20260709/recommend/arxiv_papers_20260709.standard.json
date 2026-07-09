@@ -1,0 +1,492 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-09T21:13:42.882207+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 3,
+    "deep_cap": 6,
+    "deep_selected": 3,
+    "quick_candidates": 9,
+    "quick_skim_target": 11,
+    "quick_selected": 9
+  },
+  "deep_dive": [
+    {
+      "id": "2607.01633v1",
+      "source": "arxiv",
+      "title": "Bridging 3D Gaussians and Semantic Occupancy for Comprehensive Open-Vocabulary Scene Understanding from Unposed Images",
+      "abstract": "Comprehensive 3D scene understanding from sparse, unposed images requires a model to recover renderable geometry, open-vocabulary semantics, and free/occupied 3D space without relying on external camera calibration. Recent feed-forward Gaussian methods improve pose-free reconstruction and semantic rendering, but their Gaussian primitives are mainly optimized through image-space objectives and remain weakly constrained in unobserved regions. We propose \\textit{COVScene}, a pose-free semantic Gaussian framework that couples renderable Gaussian primitives with a dense semantic occupancy field through differentiable volumetric lifting. Instead of converting Gaussians to voxels only at evaluation time, COVScene lifts the predicted semantic Gaussians inside the training computation graph, so volumetric regularization provides gradients to Gaussian opacity, geometry, and semantic features. The framework combines a semantic-aware Geometry Transformer, multi-task Gaussian decoding, geometric foundation distillation, and occupancy entropy regularization to support novel view synthesis, open-vocabulary semantic querying, and semantic occupancy prediction within a single representation. Experiments on ScanNet and ScanNet++ show that COVScene maintains competitive rendering quality, improves open-vocabulary segmentation, and achieves stronger semantic occupancy prediction than the self-supervised baseline without direct voxel-level supervision.",
+      "authors": [
+        "Hu Zhu",
+        "Bohan Li",
+        "Xianda Guo",
+        "Yanlun Peng",
+        "Zheng Zhu",
+        "Xin Jin",
+        "Wenjun Zeng",
+        "Chang Wen Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-02T03:00:23+00:00",
+      "link": "https://arxiv.org/pdf/2607.01633v1",
+      "tags": [
+        "keyword:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "3D semantic occupancy and open-vocabulary scene understanding from images",
+      "llm_evidence_cn": "基于图像的3D语义占用和开放词汇场景理解",
+      "llm_evidence": "基于图像的3D语义占用和开放词汇场景理解",
+      "canonical_evidence": "基于图像的3D语义占用和开放词汇场景理解",
+      "llm_tldr_en": "Proposes COVScene, a pose-free semantic Gaussian framework that couples renderable Gaussians with dense semantic occupancy for comprehensive 3D scene understanding from sparse unposed images.",
+      "llm_tldr_cn": "本论文提出COVScene框架，将可渲染的高斯原语与密集语义占用场相结合，实现从稀疏无位姿图像中恢复完整3D场景、开放词汇语义和自由/占用空间。该方法通过可微分体积提升实现高斯与占用场的耦合，在无外部标定下获得高质量的语义场景理解。该工作为城市环境的语义分割和场景理解提供了有力工具，可直接用于智慧城市中的点云语义分析。",
+      "llm_tldr": "本论文提出COVScene框架，将可渲染的高斯原语与密集语义占用场相结合，实现从稀疏无位姿图像中恢复完整3D场景、开放词汇语义和自由/占用空间。该方法通过可微分体积提升实现高斯与占用场的耦合，在无外部标定下获得高质量的语义场景理解。该工作为城市环境的语义分割和场景理解提供了有力工具，可直接用于智慧城市中的点云语义分析。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.06838v1",
+      "source": "arxiv",
+      "title": "WildCity: A Real-World City-Scale Testbed for Rendering, Simulation, and Spatial Intelligence",
+      "abstract": "Humans can navigate an unfamiliar city and gradually form a coherent spatial mental map spanning tens of square kilometers. Can AI build spatial representations at a comparable scale? Although recent foundation models have advanced scene reconstruction and embodied intelligence, scaling to entire cities remains an open challenge, primarily due to the lack of city-scale data. To bridge the gap, we introduce WildCity, a real-world multimodal dataset collected by autonomous fleets traversing complex urban environments. Our dataset includes 18 trajectories, each averaging 83.7 kilometers in length, and preserves the core challenges of in-the-wild perception, e.g., dynamic objects, lighting variations, and imperfect camera poses. We further establish an urban-tailored reconstruction baseline and convert the reconstructed environments into a closed-loop simulator. Beyond the dataset and baseline, we systematically analyze the key challenges on the path to simulation-ready urban digital twins: scalability, extrapolation, and uncertainty. Ultimately, WildCity aims to catalyze progress not only in city-scale rendering, but more broadly in the pursuit of AI that can perceive, remember, and reason across space at a scale comparable to human cognition. Project page: https://han-xiangyu.github.io/Wild-City/",
+      "authors": [
+        "Xiangyu Han",
+        "Mengyu Yang",
+        "Jiaqi Li",
+        "Bowen Chang",
+        "Ziyu Chen",
+        "Hexu Zhao",
+        "Rahul Kumar Agrawal",
+        "Anthony Rodriguez",
+        "Fiona Hua",
+        "Marco Pavone",
+        "Chen Feng",
+        "Yiming Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-07T22:19:51+00:00",
+      "link": "https://arxiv.org/pdf/2607.06838v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "city-scale multimodal dataset for smart city data integration and spatial intelligence",
+      "llm_evidence_cn": "城市规模多模态数据集，用于智慧城市数据整合与空间智能",
+      "llm_evidence": "城市规模多模态数据集，用于智慧城市数据整合与空间智能",
+      "canonical_evidence": "城市规模多模态数据集，用于智慧城市数据整合与空间智能",
+      "llm_tldr_en": "WildCity provides a real-world multimodal dataset collected by autonomous fleets over 18 long trajectories, enabling city-scale rendering, simulation, and spatial intelligence research for smart cities.",
+      "llm_tldr_cn": "该论文针对城市规模空间智能缺乏数据的问题，提出了WildCity数据集，通过自动驾驶车队收集了18条平均长度83.7公里的城市轨迹，包含多模态感知数据，保留了动态物体、光照变化等实际挑战。该数据集为城市级渲染、仿真和空间智能研究提供了真实世界的测试平台，有助于推动智慧城市数据整合与AI能力提升。",
+      "llm_tldr": "该论文针对城市规模空间智能缺乏数据的问题，提出了WildCity数据集，通过自动驾驶车队收集了18条平均长度83.7公里的城市轨迹，包含多模态感知数据，保留了动态物体、光照变化等实际挑战。该数据集为城市级渲染、仿真和空间智能研究提供了真实世界的测试平台，有助于推动智慧城市数据整合与AI能力提升。",
+      "llm_tags": [
+        "query:smart-city:composite"
+      ],
+      "matched_query_tag": "query:smart-city:composite",
+      "matched_query_text": "Papers central to 智慧城市建设中的数据整合与语义化处理, especially work that connects or combines: Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.; Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.; Find research papers describing semantic information extraction from BIM models, including geometry, materials, textures, and object relationships.; Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.; Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.; Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.; Find research papers describing unified data standards and semantic data models for integrating heterogeneous smart city construction data, including BIM, GIS, documents, images, videos, point clouds, and structured databases.; Find research papers describing semantic parsing, ontology learning, and knowledge graph construction from BIM models and point cloud scans for AI ready urban infrastructure databases.; Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.; Find research papers describing cross domain data management methodologies transferred from manufacturing or industrial digital twins to construction, infrastructure, and smart city data integration..",
+      "matched_requirement_id": "req-composite-smart-city",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.07292v1",
+      "source": "arxiv",
+      "title": "CarbonCLIP: Enhance Carbon Prediction from Satellite Imagery via Integrated Street-View Semantics and Temporal Context Training",
+      "abstract": "Accurately estimating urban carbon emissions is critical for sustainable urban planning, yet many existing approaches remain difficult to apply consistently across cities due to data-source heterogeneity and the lack of fine-grained semantic-temporal context in remote sensing data. We propose CarbonCLIP, a task-oriented multimodal distillation framework that improves satellite-based carbon emission prediction by transferring contextual knowledge into a unified satellite representation through dual-branch contrastive learning. Unlike conventional methods that rely on static visual features, CarbonCLIP explicitly bridges the gap between top-down satellite views and ground-level human activities. Specifically, the spatial branch uses fine-grained textual descriptions automatically generated from street-view images by Large Multimodal Models (LMMs) to provide semantic priors reflecting building functions, infrastructure, and urban activities, while the temporal branch employs a month encoder to encode temporal priors associated with monthly emission variation. CarbonCLIP requires multimodal data only during the pretraining phase; during inference, it relies solely on satellite imagery, thereby supporting scalable deployment when ground-level data are unavailable at inference. Experiments on Beijing and Singapore demonstrate that CarbonCLIP outperforms baselines in both study cities. The results validate that our method effectively transfers multimodal knowledge into satellite representations, offering a robust solution for satellite-based urban carbon modeling.",
+      "authors": [
+        "Zeru Yang",
+        "Fang-Ying Gong",
+        "Steve H. L. Yim",
+        "Chau Yuen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-08T11:33:35+00:00",
+      "link": "https://arxiv.org/pdf/2607.07292v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "multimodal fusion of satellite and street-view data for urban carbon prediction",
+      "llm_evidence_cn": "融合卫星与街景等多模态数据进行城市碳排放预测",
+      "llm_evidence": "融合卫星与街景等多模态数据进行城市碳排放预测",
+      "canonical_evidence": "融合卫星与街景等多模态数据进行城市碳排放预测",
+      "llm_tldr_en": "CarbonCLIP uses dual-branch contrastive learning to fuse satellite imagery with street-view semantics and temporal context, improving urban carbon emission prediction across cities.",
+      "llm_tldr_cn": "针对城市碳排放预测中数据源异构和缺乏细粒度语义时间上下文的问题，本文提出CarbonCLIP框架，通过双分支对比学习将街景语义和时间上下文知识蒸馏到统一的卫星表示中。实验表明该方法显著提升了跨城市的碳预测精度，弥合了遥感数据与地面人类活动之间的语义鸿沟。",
+      "llm_tldr": "针对城市碳排放预测中数据源异构和缺乏细粒度语义时间上下文的问题，本文提出CarbonCLIP框架，通过双分支对比学习将街景语义和时间上下文知识蒸馏到统一的卫星表示中。实验表明该方法显著提升了跨城市的碳预测精度，弥合了遥感数据与地面人类活动之间的语义鸿沟。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.01140v1",
+      "source": "arxiv",
+      "title": "Relation-Centric Open-Vocabulary 3D Gaussian Segmentation",
+      "abstract": "Open-vocabulary 3D Gaussian segmentation is challenging because it requires language understanding for diverse queries and accurate separation of Gaussians along object boundaries. Prior approaches either embed language knowledge into individual Gaussians to improve query responsiveness or optimize per-Gaussian instance features to encode object identity. However, these strategies may produce noisy Gaussian segmentations or rely on cost-inefficient per-scene optimization. We propose PairGS, a framework that reframes Gaussian segmentation as modeling pairwise relations between Gaussians. 3D Gaussian representations provide rich signals for relation estimation, such as view contribution weights and multi-view mask evidence. By leveraging these cues, PairGS explicitly constructs a relation graph for segmentation without a heavy optimization process. PairGS first proposes sparse edge candidates using low-dimensional descriptors, computes precise pairwise affinities only on those candidates, and builds a hierarchical cluster tree for multi-granular querying. It achieves state-of-the-art results on open-vocabulary 3D Gaussian segmentation benchmarks, while the fast variant is 50x faster than optimization-based instance-feature approaches.",
+      "authors": [
+        "Eunsung Cha",
+        "Hyunjoon Lee",
+        "Jaesik Park"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-01T16:23:41+00:00",
+      "link": "https://arxiv.org/pdf/2607.01140v1",
+      "tags": [
+        "keyword:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "open-vocabulary 3D segmentation for point clouds",
+      "llm_evidence_cn": "开词汇三维分割可用于点云语义分割",
+      "llm_evidence": "开词汇三维分割可用于点云语义分割",
+      "canonical_evidence": "开词汇三维分割可用于点云语义分割",
+      "llm_tldr_en": "Reframes 3D Gaussian segmentation as pairwise relation modeling, enabling open-vocabulary segmentation without per-scene optimization, applicable to point cloud scene understanding.",
+      "llm_tldr_cn": "针对开词汇三维高斯分割中语义理解与物体边界分离的难题，本文提出PairGS框架，将分割任务转化为高斯体之间的成对关系建模。通过利用三维高斯表示中的视角贡献权重和多视图掩码线索，显式建模高斯间关系，无需逐场景优化即可实现精确分割。在多个数据集上验证了该方法在开放词汇场景下的优越性能，为点云场景理解提供了可迁移的通用方法。",
+      "llm_tldr": "针对开词汇三维高斯分割中语义理解与物体边界分离的难题，本文提出PairGS框架，将分割任务转化为高斯体之间的成对关系建模。通过利用三维高斯表示中的视角贡献权重和多视图掩码线索，显式建模高斯间关系，无需逐场景优化即可实现精确分割。在多个数据集上验证了该方法在开放词汇场景下的优越性能，为点云场景理解提供了可迁移的通用方法。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.00978v1",
+      "source": "arxiv",
+      "title": "Privacy-Preserving Depth-Only Open-Vocabulary 3D Semantic Segmentation Via Uncertainty-Guided Test-Time Optimization",
+      "abstract": "Privacy-preserving perception is a critical requirement for deploying 3D scene understanding systems in real-world indoor environments, yet it remains underexplored in open-vocabulary 3D semantic segmentation. Existing methods typically rely on obtaining rich semantic cues from RGB images, which may expose privacy-sensitive visual information. Depth-only 3D geometry provides a privacy-preserving alternative, but the absence of appearance-based semantic cues makes open-vocabulary predictions highly uncertain and less reliable. Under this setting, we propose to convert uncertainty into a guidance signal to identify unreliable semantic responses and use semantic priors from foundation models to regularize their refinement. We present UTTO, an uncertainty-guided test-time optimization framework for depth-only open-vocabulary 3D semantic segmentation. Without additional training, experiments on ScanNet20, ScanNet40, and ScanNet200 demonstrate that UTTO consistently improves depth-only open-vocabulary 3D segmentation and outperforms representative baselines under privacy-preserving conditions.",
+      "authors": [
+        "Xuying Huang",
+        "Sicong Pan",
+        "Maren Bennewitz"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.RO"
+      ],
+      "published": "2026-07-01T14:12:21+00:00",
+      "link": "https://arxiv.org/pdf/2607.00978v1",
+      "tags": [
+        "keyword:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "depth-only open-vocabulary 3D semantic segmentation for point clouds",
+      "llm_evidence_cn": "基于深度图的开放词汇3D点云语义分割",
+      "llm_evidence": "基于深度图的开放词汇3D点云语义分割",
+      "canonical_evidence": "基于深度图的开放词汇3D点云语义分割",
+      "llm_tldr_en": "This work enables privacy-preserving open-vocabulary 3D semantic segmentation using only depth data, converting prediction uncertainty into guidance signal and leveraging foundation model priors.",
+      "llm_tldr_cn": "为在保护隐私的前提下实现3D场景理解，本文利用仅深度几何进行开放词汇语义分割。针对缺乏外观语义线索导致预测不确定的问题，提出将不确定性转化为引导信号，并借助基础模型的语义先验进行正则化。在室内场景数据集上验证了方法的有效性，为隐私敏感环境下的点云语义分割提供了新思路。",
+      "llm_tldr": "为在保护隐私的前提下实现3D场景理解，本文利用仅深度几何进行开放词汇语义分割。针对缺乏外观语义线索导致预测不确定的问题，提出将不确定性转化为引导信号，并借助基础模型的语义先验进行正则化。在室内场景数据集上验证了方法的有效性，为隐私敏感环境下的点云语义分割提供了新思路。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.04732v1",
+      "source": "arxiv",
+      "title": "SparseOcc++: Geometry-Aware Sparse Latent Representation for Semantic Occupancy Prediction",
+      "abstract": "Vision-based 3D semantic occupancy prediction is essential for autonomous driving, yet dense voxel representations waste computation on largely empty space, while BEV and TPV projections compromise fine-grained 3D structure. Fully sparse representations offer an attractive alternative, but existing methods, including SparseOcc, entangle scene completion with semantic prediction by indiscriminately propagating high-dimensional features into empty regions and applying voxel-wise classification. This creates excessive activations, computational overhead, and geometric ambiguity. We present SparseOcc++, a geometry-aware sparse framework that explicitly decouples scene completion from semantic segmentation. SparseOcc++ reformulates completion as signed-distance regression on sparse anchor voxels through a scene completion field (SCF). To model complex outdoor geometry robustly, it combines orthogonal decomposition with discretized distance learning. A geometry-guided propagation module then converts the SCF into a complete volumetric scene and restricts semantic segmentation to geometrically verified regions. Experiments establish new state of the art: SparseOcc++ improves IoU by 2.3 points and is 3.9x faster than SparseOcc on nuScenes, while achieving a 5.9x speedup over OccFormer on SemanticKITTI.",
+      "authors": [
+        "Pin Tang",
+        "Zhongdao Wang",
+        "Guoqing Wang",
+        "Xiangxuan Ren",
+        "Chao Ma"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-06T07:10:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.04732v1",
+      "tags": [
+        "keyword:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "geometry-aware sparse semantic occupancy prediction from point clouds",
+      "llm_evidence_cn": "几何感知的稀疏点云语义占用预测",
+      "llm_evidence": "几何感知的稀疏点云语义占用预测",
+      "canonical_evidence": "几何感知的稀疏点云语义占用预测",
+      "llm_tldr_en": "SparseOcc++ reformulates 3D semantic occupancy prediction by decoupling scene completion from semantic segmentation using a geometry-aware sparse latent representation.",
+      "llm_tldr_cn": "针对自动驾驶中3D语义占用预测的稠密体素计算浪费和稀疏表示中场景完成与语义预测纠缠的问题，本文提出SparseOcc++，通过几何感知的稀疏框架显式解耦两者，在稀疏潜在空间中进行语义分割。在多个数据集上实现了高效且精确的语义占用预测，减少了计算冗余。",
+      "llm_tldr": "针对自动驾驶中3D语义占用预测的稠密体素计算浪费和稀疏表示中场景完成与语义预测纠缠的问题，本文提出SparseOcc++，通过几何感知的稀疏框架显式解耦两者，在稀疏潜在空间中进行语义分割。在多个数据集上实现了高效且精确的语义占用预测，减少了计算冗余。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.03553v1",
+      "source": "arxiv",
+      "title": "iVISION-2DCD: A Long-Term Change Detection Dataset for Large-Scale Outdoor Construction Monitoring",
+      "abstract": "Automation in construction is essential for reducing costs and human errors in large-scale projects. We approach the construction progress monitoring from the aspect of detecting changes in construction sites. As construction buildings continue to evolve in geometry and appearance over time, change detection need to be performed from arbitrary camera viewpoints. This necessitates developing 2D Change Detection (2DCD) algorithms that operate robustly across diverse camera perspectives at construction sites. While developing and evaluating such systems is data-intensive, no open-source benchmark dataset exists at the intersection of 2D change detection and construction automation research. Data collection using Unmanned Aerial Vehicles (UAVs) is gaining its popularity in outdoor large-scale surveying. However, in active construction sites conducting drone missions equipped with high-end sensors imposes safety concerns. Flight trajectory and collected camera viewpoints can be significantly limited. To address this critical gap, we introduce iVISION-2DCD, a large-scale synthetically generated dataset from dense LiDAR point clouds with photorealistic input images and accurate ground truth annotations. Our dataset formally defines the problem of viewpoint-robust 2DCD at construction sites and captures the inherent complexities of real-world deployment. In this paper, we present our systematic methodology for synthetic data generation, developing novel view synthesis techniques to overcome bi-temporal alignment and viewpoint diversity challenges, and implementing semi-automated semantic segmentation with change label generation while preserving challenging real-world cases. Benchmark evaluations using state-of-the-art 2DCD algorithms demonstrate that iVISION-2DCD poses novel research challenges for the computer vision and robotics communities.",
+      "authors": [
+        "Dayou Mao",
+        "Yuchen Lin",
+        "Ashkan Ebadi",
+        "John Zelek",
+        "Alexander Wong",
+        "Yuhao Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.RO"
+      ],
+      "published": "2026-07-03T18:29:13+00:00",
+      "link": "https://arxiv.org/pdf/2607.03553v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "construction monitoring dataset for smart city",
+      "llm_evidence_cn": "面向智慧城市施工监测的数据集",
+      "llm_evidence": "面向智慧城市施工监测的数据集",
+      "canonical_evidence": "面向智慧城市施工监测的数据集",
+      "llm_tldr_en": "Introduces a long-term 2D change detection dataset for large-scale outdoor construction sites, enabling robust change detection from arbitrary viewpoints for construction automation.",
+      "llm_tldr_cn": "针对大规模户外施工场景的自动化监测需求，本文提出并构建了iVISION-2DCD长期变化检测数据集。该数据集通过无人机在不同视角采集施工场地的时序图像，支持开发跨视角鲁棒的二维变化检测算法。数据集填补了施工自动化与变化检测交叉领域的基准缺失，为智慧城市中的施工进度监控和基础设施管理提供了数据基础。",
+      "llm_tldr": "针对大规模户外施工场景的自动化监测需求，本文提出并构建了iVISION-2DCD长期变化检测数据集。该数据集通过无人机在不同视角采集施工场地的时序图像，支持开发跨视角鲁棒的二维变化检测算法。数据集填补了施工自动化与变化检测交叉领域的基准缺失，为智慧城市中的施工进度监控和基础设施管理提供了数据基础。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.05348v1",
+      "source": "arxiv",
+      "title": "Beyond Isolated Objects: Relationship-aware Open Vocabulary Scene Understanding via 3D Scene Graph Analysis",
+      "abstract": "Open-vocabulary 3D scene understanding aims to segment 3D scenes beyond predefined categories by transferring semantic knowledge from vision-language models. Existing methods have advanced this task by lifting language-aligned 2D features into 3D, yet they often rely on context-independent semantic representations, leaving object relationships underexplored for contextual refinement. We propose RelGraphOV, a relationship-aware framework that uses 3D scene graphs to enhance open-vocabulary 3D understanding. Our method constructs relational scene graphs from multi-view observations by leveraging vision-language reasoning to infer object relationships and prune geometrically implausible connections, without manual relationship annotations. To aggregate relational context while avoiding feature interference, we introduce an Adaptive Gated Dual-Stream Contextual GAT that separates dense geometric features and semantic CLIP embeddings, performs edge-guided message passing, and adaptively fuses complementary semantics. A hierarchical contrastive objective further promotes instance-level consistency and category-level discrimination. Experiments on ScanNetV2, ScanNet200, ScanNet$++$, and Replica demonstrate strong performance and generalization ability. Project Page: https://cxavireh.github.io/relgraphov-projectpage",
+      "authors": [
+        "Xianhao Chen",
+        "Jiarui Hu",
+        "Yuanbo Yang",
+        "Xiyu Zhang",
+        "Tengyue Wang",
+        "Hujun Bao",
+        "Guofeng Zhang",
+        "Zhaopeng Cui"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.RO"
+      ],
+      "published": "2026-07-06T17:29:49+00:00",
+      "link": "https://arxiv.org/pdf/2607.05348v1",
+      "tags": [
+        "keyword:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "relationship-aware 3D scene understanding using scene graphs, applicable to urban point clouds",
+      "llm_evidence_cn": "使用场景图的关系感知3D场景理解，可应用于城市点云",
+      "llm_evidence": "使用场景图的关系感知3D场景理解，可应用于城市点云",
+      "canonical_evidence": "使用场景图的关系感知3D场景理解，可应用于城市点云",
+      "llm_tldr_en": "RelGraphOV constructs relational scene graphs from multi-view observations via vision-language reasoning to enhance open-vocabulary 3D scene understanding beyond isolated objects.",
+      "llm_tldr_cn": "针对现有开放词汇3D场景理解仅依赖上下文无关语义表示、忽略对象关系的问题，提出RelGraphOV框架，通过视觉语言推理从多视角观测构建关系场景图，修剪几何不可行的连接，提升场景理解的关系感知能力。该方法可迁移至城市环境点云分析。",
+      "llm_tldr": "针对现有开放词汇3D场景理解仅依赖上下文无关语义表示、忽略对象关系的问题，提出RelGraphOV框架，通过视觉语言推理从多视角观测构建关系场景图，修剪几何不可行的连接，提升场景理解的关系感知能力。该方法可迁移至城市环境点云分析。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.05543v1",
+      "source": "arxiv",
+      "title": "GEM-Occ: From Visual Geometry Evidence to Embodied Semantic Occupancy Memory",
+      "abstract": "Semantic occupancy provides a structured spatial memory for embodied indoor agents by jointly representing occupied regions, observed free space, unknown areas, and object semantics. However, existing indoor occupancy benchmarks and methods mainly focus on single-view prediction or room-level online perception, leaving long-horizon semantic mapping across connected indoor spaces underexplored. We introduce HIOcc, a hierarchical indoor occupancy benchmark that unifies ScanNet, ScanNet++, and Matterport3D under a common sparse semantic occupancy format while preserving their native observation geometries, including perspective RGB-D frames and pano-centric observation groups. HIOcc supports three complementary evaluation regimes: local semantic occupancy prediction, room-level online occupancy mapping, and building-level mapping across connected panoramic environments. We further propose GEM-Occ, a Gaussian Evidence Memory framework for semantic occupancy mapping. Rather than using pointmaps as persistent map states, GEM-Occ treats local visual geometry predictions as transient evidence, converts them into semantic Gaussian occupancy evidence and free-space ray evidence, and fuses them into a persistent hierarchical memory through visibility- and uncertainty-aware causal updates. The memory is organized into local caches, room-level submaps, and a building-level graph, and can be queried at any time through Gaussian-to-occupancy splatting. Experiments on HIOcc show that GEM-Occ improves local occupancy prediction, online map stability, free-space reasoning, revisit consistency, and building-level scalability over prior indoor occupancy and Gaussian-based mapping baselines.",
+      "authors": [
+        "Hu Zhu",
+        "Bohan Li",
+        "Xianda Guo",
+        "Hongsi Liu",
+        "Baorui Peng",
+        "Mingqi Yuan",
+        "Xin Jin",
+        "Wenjun Zeng",
+        "Chang Wen Chen"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV"
+      ],
+      "published": "2026-07-06T18:26:27+00:00",
+      "link": "https://arxiv.org/pdf/2607.05543v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "semantic occupancy mapping unifying multiple 3D indoor datasets; relevant to point cloud scene understanding",
+      "llm_evidence_cn": "语义占据映射统一多个3D室内数据集，与点云场景理解相关",
+      "llm_evidence": "语义占据映射统一多个3D室内数据集，与点云场景理解相关",
+      "canonical_evidence": "语义占据映射统一多个3D室内数据集，与点云场景理解相关",
+      "llm_tldr_en": "Introduces HIOcc benchmark for hierarchical indoor semantic occupancy, unifying ScanNet, ScanNet++, Matterport3D into a common format, enabling long-horizon semantic mapping.",
+      "llm_tldr_cn": "该论文提出HIOcc，一个分层室内语义占据基准，将ScanNet、ScanNet++和Matterport3D统一为通用稀疏语义占据格式，支持局部、全局和序列语义占据预测。它为室内点云语义分割和场景理解提供了标准化评估平台，尽管主要面向室内，其方法可迁移至城市环境。",
+      "llm_tldr": "该论文提出HIOcc，一个分层室内语义占据基准，将ScanNet、ScanNet++和Matterport3D统一为通用稀疏语义占据格式，支持局部、全局和序列语义占据预测。它为室内点云语义分割和场景理解提供了标准化评估平台，尽管主要面向室内，其方法可迁移至城市环境。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.07170v1",
+      "source": "arxiv",
+      "title": "PUF: Plug-and-Play Uncertainty-Aware Fusion for Online 3D Scene Graph Generation",
+      "abstract": "Online 3D scene graph generation builds a persistent, structured representation of a scene by incrementally fusing 2D observations into a global 3D graph. Existing online methods treat this fusion as a fully deterministic pipeline, where we identify three sources of uncertainty that are overlooked: observation, 2D model, and 3D representation. We propose PUF: a Plug-and-play, Uncertainty-aware, and training-free Fusion framework. Scene graph node association is reformulated as a probabilistic likelihood over semantic and spatial factors, replacing binary accept/reject gates. Dirichlet evidence accumulation distributes class and relationship evidence across plausible candidates proportional to association likelihood. An optional class-conditional prior completes edges for sparsely or never co-observed object pairs. We instantiate PUF with both a 3D Gaussian and a 3D voxel backend and observe consistent improvements, demonstrating its ability to generalize across different representations. Experiments on the 3DSSG and ReplicaSSG benchmarks show that our method substantially outperforms existing approaches while maintaining real-time latency. These results establish uncertainty-aware fusion as a principled and effective paradigm for online 3D scene understanding. The source code is publicly available at https://github.com/yyyyangyi/PUF.",
+      "authors": [
+        "Yi Yang",
+        "Myrna Castillo",
+        "Bodo Rosenhahn",
+        "Michael Ying Yang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-08T09:05:52+00:00",
+      "link": "https://arxiv.org/pdf/2607.07170v1",
+      "tags": [
+        "keyword:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "online 3D scene graph generation with uncertainty-aware fusion",
+      "llm_evidence_cn": "在线3D场景图生成中的不确定性感知融合",
+      "llm_evidence": "在线3D场景图生成中的不确定性感知融合",
+      "canonical_evidence": "在线3D场景图生成中的不确定性感知融合",
+      "llm_tldr_en": "Presents PUF, a plug-and-play uncertainty-aware fusion framework for online 3D scene graph generation that reformulates node association as probabilistic likelihood over semantic and spatial factors.",
+      "llm_tldr_cn": "本文提出PUF框架，针对在线3D场景图生成中的融合不确定性，将节点关联重新定义为语义和空间因素的似然概率，并采用Dirichlet证据累积来分配证据。该方法无需训练，可即插即用。在动态场景中，PUF能够增量地融合2D观测构建稳定的全局3D图结构，显著提升融合鲁棒性。该工作为城市数字孪生中的实时语义场景表示提供了有效方案。",
+      "llm_tldr": "本文提出PUF框架，针对在线3D场景图生成中的融合不确定性，将节点关联重新定义为语义和空间因素的似然概率，并采用Dirichlet证据累积来分配证据。该方法无需训练，可即插即用。在动态场景中，PUF能够增量地融合2D观测构建稳定的全局3D图结构，显著提升融合鲁棒性。该工作为城市数字孪生中的实时语义场景表示提供了有效方案。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.07175v1",
+      "source": "arxiv",
+      "title": "Benchmark Engineering as a Design Instrument for Heterogeneous Information Systems",
+      "abstract": "Contemporary information systems operate in heterogeneous and continuously evolving data environments, where representation choices and structural redesign decisions strongly influence system behavior. Existing benchmarking approaches, however, rely mostly on static datasets and fixed schemas, providing limited support for analyzing architectural trade-offs or guiding evolution in multi-model settings.   This paper introduces TransforMMer, a framework for evolution-aware and representation-aware benchmark engineering in heterogeneous information systems. The approach treats benchmark construction as a systematic design process: starting from raw data, inferring structure, refining it conceptually, and generating comparable dataset variants across relational, document, and graph systems. The framework is grounded in a unified representation that enables explicit modeling of schemas and cross-model mappings and supports reproducible transformations across alternative representations.   We position benchmarking as a system-design tool for evaluating architectural and representation-level decisions in evolving information systems, rather than as a static comparison of database engines. Through controlled benchmark construction scenarios on real-world datasets, we demonstrate how structural redesign steps -- such as embedding, enrichment, and hybrid partitioning -- affect observed query costs across systems. The results show that performance differences emerge primarily from the interaction between workload and representation design.   By enabling systematic generation of structurally distinct yet semantically aligned dataset variants, the proposed approach connects conceptual data modeling with empirical system evaluation and supports reproducible, evolution-aware analysis of heterogeneous information systems.",
+      "authors": [
+        "Jáchym Bártík",
+        "Alžběta Šrůtková",
+        "Irena Holubová"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB"
+      ],
+      "published": "2026-07-08T09:11:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.07175v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "benchmark engineering for heterogeneous systems",
+      "llm_evidence_cn": "异构信息系统基准工程设计",
+      "llm_evidence": "异构信息系统基准工程设计",
+      "canonical_evidence": "异构信息系统基准工程设计",
+      "llm_tldr_en": "Proposes TransforMMer, a framework for evolution-aware benchmark engineering in heterogeneous information systems, enabling systematic design and comparison of dataset variants.",
+      "llm_tldr_cn": "异构信息系统面临多模型数据环境，现有基准多基于静态模式和固定模式，难以分析架构权衡或指导演化。提出TransforMMer框架，将基准构建视为系统设计过程，从原始数据出发，推断结构、概念精化并生成可比较的数据集变体。该方法支持表示感知和演化感知的基准测试，有助于智慧城市中多源数据融合系统的设计评估。",
+      "llm_tldr": "异构信息系统面临多模型数据环境，现有基准多基于静态模式和固定模式，难以分析架构权衡或指导演化。提出TransforMMer框架，将基准构建视为系统设计过程，从原始数据出发，推断结构、概念精化并生成可比较的数据集变体。该方法支持表示感知和演化感知的基准测试，有助于智慧城市中多源数据融合系统的设计评估。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing unified data standards and semantic data models for integrating heterogeneous smart city construction data, including BIM, GIS, documents, images, videos, point clouds, and structured databases.",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.07422v1",
+      "source": "arxiv",
+      "title": "InductWave: Inductive Multi-Hop Logical Query Answering on Knowledge Graphs",
+      "abstract": "Logical Multi-Hop Query Answering over Knowledge Graphs (KGs) can be formulated as querying, with an implicit completeness assumption. Current works mainly focus on Existential First Order Logic (EFO) queries. These EFO queries contain conjunction, disjunction, and negation operators. Most existing works employ transductive reasoning, meaning they are not capable of reasoning over entities unseen during training. In the real world, there is a resource scarcity, and we cannot train a model with all the nodes of a large KG. Hence, we propose InductWave, a wavelet-based inductive embedding method for logical query answering on large KGs. Here, the training graph consists of fewer nodes than the test graph. Our model performs on par with the baseline models while having half the number of message-passing layers. It outperforms all of them in most cases, with 75% of the layers. These fewer resource requirements enable us to evaluate InductWave on massive graphs, such as Wiki-KG. We test our model using extensive experiments across varying train-test graph proportions of the FB15k-(237) dataset, comparing it with the state-of-the-art models. The code and datasets for the model are available at https://github.com/kracr/inductwave/.",
+      "authors": [
+        "Mayank Kharbanda",
+        "Michael Cochez",
+        "Rajiv Ratn Shah",
+        "Raghava Mutharaju"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.IR"
+      ],
+      "published": "2026-07-08T13:49:44+00:00",
+      "link": "https://arxiv.org/pdf/2607.07422v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "inductive multi-hop logical query answering on KGs; relevant to knowledge graph reasoning for smart city",
+      "llm_evidence_cn": "知识图谱上的归纳式多跳逻辑查询回答，与智慧城市知识图谱推理相关",
+      "llm_evidence": "知识图谱上的归纳式多跳逻辑查询回答，与智慧城市知识图谱推理相关",
+      "canonical_evidence": "知识图谱上的归纳式多跳逻辑查询回答，与智慧城市知识图谱推理相关",
+      "llm_tldr_en": "Proposes InductWave, a wavelet-based inductive embedding method for logical query answering on large KGs that generalizes to unseen entities.",
+      "llm_tldr_cn": "该论文提出InductWave，一种基于小波的归纳式嵌入方法，用于大规模知识图谱上的逻辑多跳查询回答。它能够处理训练中未见的实体，适合动态更新的知识图谱。该方法在标准基准上表现与基线相当，同时具备归纳能力，可应用于智慧城市知识图谱的推理任务。",
+      "llm_tldr": "该论文提出InductWave，一种基于小波的归纳式嵌入方法，用于大规模知识图谱上的逻辑多跳查询回答。它能够处理训练中未见的实体，适合动态更新的知识图谱。该方法在标准基准上表现与基线相当，同时具备归纳能力，可应用于智慧城市知识图谱的推理任务。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

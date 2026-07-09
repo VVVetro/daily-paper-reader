@@ -6,42 +6,58 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-08
-- 运行时间：2026-07-08 21:37:14 UTC
+- 最新运行日期：2026-07-09
+- 运行时间：2026-07-09 21:22:57 UTC
 - 运行状态：成功
-- 本次总论文数：6
-- 精读区：1
-- 速读区：5
+- 本次总论文数：12
+- 精读区：3
+- 速读区：9
 
 ### 今日简报（AI）
-今日精读1篇论文《TopoBrick》探讨零样本建筑IoT预测，速读5篇涵盖检索可信评估、房地产文档结构化提取与视觉推理增强。
-
-最值得关注的是TopoBrick通过智能拓扑采样外生变量实现零样本预测，以及TRIAGE提出的可信检索评估框架。
-
-建议读者优先精读TopoBrick理解零样本预测机制，其次关注TRIAGE对检索系统可靠性的评测方法。
-- 详情：[/202607/08/README](/202607/08/README)
+1) 今日聚焦从无位姿图像实现开放词汇3D场景理解，并推出城市级渲染测试平台。  
+2) 最值得关注：高分工作《Bridging 3D Gaussians and Semantic Occupancy》打通无位姿输入下的语义占据预测，以及《WildCity》提供真实城市规模的渲染与空间智能基准。  
+3) 建议普通读者重点阅读这两篇精读文章，并结合速读中的关系感知分割工作，把握从孤立物体到关系场景的进阶方向。
+- 详情：[/202607/09/README](/202607/09/README)
 
 ### 精读区论文标签
-1. [TopoBrick: Agentic Topology Sampling of Exogenous Variables for Zero-Shot Building IoT Forecasting](/202607/08/2607.06349v1-topobrick-agentic-topology-sampling-of-exogenous-variables-for-zero-shot-building-iot-forecasting)  
+1. [Bridging 3D Gaussians and Semantic Occupancy for Comprehensive Open-Vocabulary Scene Understanding from Unposed Images](/202607/09/2607.01633v1-bridging-3d-gaussians-and-semantic-occupancy-for-comprehensive-open-vocabulary-scene-understanding-from-unposed-images)  
    标签：评分：8.0/10、query:smart-city
-   evidence：利用建筑知识图谱进行物联网预测，支持智慧城市基础设施管理
+   evidence：基于图像的3D语义占用和开放词汇场景理解
+2. [WildCity: A Real-World City-Scale Testbed for Rendering, Simulation, and Spatial Intelligence](/202607/09/2607.06838v1-wildcity-a-real-world-city-scale-testbed-for-rendering-simulation-and-spatial-intelligence)  
+   标签：评分：8.0/10、query:smart-city
+   evidence：城市规模多模态数据集，用于智慧城市数据整合与空间智能
+3. [CarbonCLIP: Enhance Carbon Prediction from Satellite Imagery via Integrated Street-View Semantics and Temporal Context Training](/202607/09/2607.07292v1-carbonclip-enhance-carbon-prediction-from-satellite-imagery-via-integrated-street-view-semantics-and-temporal-context-training)  
+   标签：评分：8.0/10、query:smart-city
+   evidence：融合卫星与街景等多模态数据进行城市碳排放预测
 
 ### 速读区论文标签
-1. [TRIAGE: Trustworthy Retrieval Instrumentation And Graph Evaluation](/202607/08/2607.03447v1-triage-trustworthy-retrieval-instrumentation-and-graph-evaluation)  
+1. [Relation-Centric Open-Vocabulary 3D Gaussian Segmentation](/202607/09/2607.01140v1-relation-centric-open-vocabulary-3d-gaussian-segmentation)  
    标签：评分：7.0/10、query:smart-city
-   evidence：评估知识图谱构建用于图增强检索
-2. [Structured Data Extraction from Real Estate Documents using Clustering, Classification, and Large Language Models](/202607/08/2607.06012v1-structured-data-extraction-from-real-estate-documents-using-clustering-classification-and-large-language-models)  
+   evidence：开词汇三维分割可用于点云语义分割
+2. [SparseOcc++: Geometry-Aware Sparse Latent Representation for Semantic Occupancy Prediction](/202607/09/2607.04732v1-sparseocc-geometry-aware-sparse-latent-representation-for-semantic-occupancy-prediction)  
    标签：评分：7.0/10、query:smart-city
-   evidence：利用聚类、分类和大语言模型从异构房地产文档中提取结构化数据
-3. [Scene Graph Thinking: Reinforcing Structured Visual Reasoning for Multimodal Large Language Models](/202607/08/2607.05716v1-scene-graph-thinking-reinforcing-structured-visual-reasoning-for-multimodal-large-language-models)  
+   evidence：几何感知的稀疏点云语义占用预测
+3. [Beyond Isolated Objects: Relationship-aware Open Vocabulary Scene Understanding via 3D Scene Graph Analysis](/202607/09/2607.05348v1-beyond-isolated-objects-relationship-aware-open-vocabulary-scene-understanding-via-3d-scene-graph-analysis)  
+   标签：评分：7.0/10、query:smart-city
+   evidence：使用场景图的关系感知3D场景理解，可应用于城市点云
+4. [PUF: Plug-and-Play Uncertainty-Aware Fusion for Online 3D Scene Graph Generation](/202607/09/2607.07170v1-puf-plug-and-play-uncertainty-aware-fusion-for-online-3d-scene-graph-generation)  
+   标签：评分：7.0/10、query:smart-city
+   evidence：在线3D场景图生成中的不确定性感知融合
+5. [InductWave: Inductive Multi-Hop Logical Query Answering on Knowledge Graphs](/202607/09/2607.07422v1-inductwave-inductive-multi-hop-logical-query-answering-on-knowledge-graphs)  
+   标签：评分：7.0/10、query:smart-city
+   evidence：知识图谱上的归纳式多跳逻辑查询回答，与智慧城市知识图谱推理相关
+6. [Privacy-Preserving Depth-Only Open-Vocabulary 3D Semantic Segmentation Via Uncertainty-Guided Test-Time Optimization](/202607/09/2607.00978v1-privacy-preserving-depth-only-open-vocabulary-3d-semantic-segmentation-via-uncertainty-guided-test-time-optimization)  
    标签：评分：6.0/10、query:smart-city
-   evidence：从图像-文本数据自动生成场景图用于结构化视觉推理
-4. [AVA-VLM: Adaptive Visual Attention-Vision Language Model for In-the-Wild Construction Site Monitoring](/202607/08/2607.05859v1-ava-vlm-adaptive-visual-attention-vision-language-model-for-in-the-wild-construction-site-monitoring)  
+   evidence：基于深度图的开放词汇3D点云语义分割
+7. [iVISION-2DCD: A Long-Term Change Detection Dataset for Large-Scale Outdoor Construction Monitoring](/202607/09/2607.03553v1-ivision-2dcd-a-long-term-change-detection-dataset-for-large-scale-outdoor-construction-monitoring)  
    标签：评分：6.0/10、query:smart-city
-   evidence：视觉语言模型用于施工现场监控
-5. [Life Style Levels: Neighborhood Delineation using Geospatial Data](/202607/08/2607.06529v1-life-style-levels-neighborhood-delineation-using-geospatial-data)  
+   evidence：面向智慧城市施工监测的数据集
+8. [GEM-Occ: From Visual Geometry Evidence to Embodied Semantic Occupancy Memory](/202607/09/2607.05543v1-gem-occ-from-visual-geometry-evidence-to-embodied-semantic-occupancy-memory)  
    标签：评分：6.0/10、query:smart-city
-   evidence：利用卫星图像地理空间数据进行城市划分
+   evidence：语义占据映射统一多个3D室内数据集，与点云场景理解相关
+9. [Benchmark Engineering as a Design Instrument for Heterogeneous Information Systems](/202607/09/2607.07175v1-benchmark-engineering-as-a-design-instrument-for-heterogeneous-information-systems)  
+   标签：评分：6.0/10、query:smart-city
+   evidence：异构信息系统基准工程设计
 
 
 <div class="dpr-home-promo-card">
