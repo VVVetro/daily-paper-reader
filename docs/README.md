@@ -6,58 +6,39 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-09
-- 运行时间：2026-07-09 21:22:57 UTC
+- 最新运行日期：2026-07-10
+- 运行时间：2026-07-10 21:36:26 UTC
 - 运行状态：成功
-- 本次总论文数：12
-- 精读区：3
-- 速读区：9
+- 本次总论文数：6
+- 精读区：0
+- 速读区：6
 
 ### 今日简报（AI）
-1) 今日聚焦从无位姿图像实现开放词汇3D场景理解，并推出城市级渲染测试平台。  
-2) 最值得关注：高分工作《Bridging 3D Gaussians and Semantic Occupancy》打通无位姿输入下的语义占据预测，以及《WildCity》提供真实城市规模的渲染与空间智能基准。  
-3) 建议普通读者重点阅读这两篇精读文章，并结合速读中的关系感知分割工作，把握从孤立物体到关系场景的进阶方向。
-- 详情：[/202607/09/README](/202607/09/README)
+今日速读6篇论文，聚焦城市渲染仿真、移动数据生成与AI代理上下文治理三大方向。最值得看的是《WildCity》真实城市规模测试平台和《MobiDiff》语义感知离散扩散方法。建议普通读者关注城市空间智能与AI代理可验证性治理的融合趋势。
+- 详情：[/202607/10/README](/202607/10/README)
 
 ### 精读区论文标签
-1. [Bridging 3D Gaussians and Semantic Occupancy for Comprehensive Open-Vocabulary Scene Understanding from Unposed Images](/202607/09/2607.01633v1-bridging-3d-gaussians-and-semantic-occupancy-for-comprehensive-open-vocabulary-scene-understanding-from-unposed-images)  
-   标签：评分：8.0/10、query:smart-city
-   evidence：基于图像的3D语义占用和开放词汇场景理解
-2. [WildCity: A Real-World City-Scale Testbed for Rendering, Simulation, and Spatial Intelligence](/202607/09/2607.06838v1-wildcity-a-real-world-city-scale-testbed-for-rendering-simulation-and-spatial-intelligence)  
-   标签：评分：8.0/10、query:smart-city
-   evidence：城市规模多模态数据集，用于智慧城市数据整合与空间智能
-3. [CarbonCLIP: Enhance Carbon Prediction from Satellite Imagery via Integrated Street-View Semantics and Temporal Context Training](/202607/09/2607.07292v1-carbonclip-enhance-carbon-prediction-from-satellite-imagery-via-integrated-street-view-semantics-and-temporal-context-training)  
-   标签：评分：8.0/10、query:smart-city
-   evidence：融合卫星与街景等多模态数据进行城市碳排放预测
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Relation-Centric Open-Vocabulary 3D Gaussian Segmentation](/202607/09/2607.01140v1-relation-centric-open-vocabulary-3d-gaussian-segmentation)  
+1. [WildCity: A Real-World City-Scale Testbed for Rendering, Simulation, and Spatial Intelligence](/202607/10/2607.06838v1-wildcity-a-real-world-city-scale-testbed-for-rendering-simulation-and-spatial-intelligence)  
    标签：评分：7.0/10、query:smart-city
-   evidence：开词汇三维分割可用于点云语义分割
-2. [SparseOcc++: Geometry-Aware Sparse Latent Representation for Semantic Occupancy Prediction](/202607/09/2607.04732v1-sparseocc-geometry-aware-sparse-latent-representation-for-semantic-occupancy-prediction)  
+   evidence：城市规模测试平台，支持渲染与空间智能
+2. [MobiDiff: Semantic-Aware Multi-Channel Discrete Diffusion for Human Mobility Data Generation](/202607/10/2607.08357v1-mobidiff-semantic-aware-multi-channel-discrete-diffusion-for-human-mobility-data-generation)  
    标签：评分：7.0/10、query:smart-city
-   evidence：几何感知的稀疏点云语义占用预测
-3. [Beyond Isolated Objects: Relationship-aware Open Vocabulary Scene Understanding via 3D Scene Graph Analysis](/202607/09/2607.05348v1-beyond-isolated-objects-relationship-aware-open-vocabulary-scene-understanding-via-3d-scene-graph-analysis)  
-   标签：评分：7.0/10、query:smart-city
-   evidence：使用场景图的关系感知3D场景理解，可应用于城市点云
-4. [PUF: Plug-and-Play Uncertainty-Aware Fusion for Online 3D Scene Graph Generation](/202607/09/2607.07170v1-puf-plug-and-play-uncertainty-aware-fusion-for-online-3d-scene-graph-generation)  
-   标签：评分：7.0/10、query:smart-city
-   evidence：在线3D场景图生成中的不确定性感知融合
-5. [InductWave: Inductive Multi-Hop Logical Query Answering on Knowledge Graphs](/202607/09/2607.07422v1-inductwave-inductive-multi-hop-logical-query-answering-on-knowledge-graphs)  
-   标签：评分：7.0/10、query:smart-city
-   evidence：知识图谱上的归纳式多跳逻辑查询回答，与智慧城市知识图谱推理相关
-6. [Privacy-Preserving Depth-Only Open-Vocabulary 3D Semantic Segmentation Via Uncertainty-Guided Test-Time Optimization](/202607/09/2607.00978v1-privacy-preserving-depth-only-open-vocabulary-3d-semantic-segmentation-via-uncertainty-guided-test-time-optimization)  
+   evidence：生成具有语义骨架的人类移动数据，对城市数据管道和表示学习有用
+3. [ContextNest: Verifiable Context Governance for Autonomous AI Agent](/202607/10/2607.02116v2-contextnest-verifiable-context-governance-for-autonomous-ai-agent)  
    标签：评分：6.0/10、query:smart-city
-   evidence：基于深度图的开放词汇3D点云语义分割
-7. [iVISION-2DCD: A Long-Term Change Detection Dataset for Large-Scale Outdoor Construction Monitoring](/202607/09/2607.03553v1-ivision-2dcd-a-long-term-change-detection-dataset-for-large-scale-outdoor-construction-monitoring)  
+   evidence：可验证的AI代理上下文治理，适用于城市数字孪生的数据管道
+4. [Scalable Semantic Steering of Embedding Projections](/202607/10/2607.03978v1-scalable-semantic-steering-of-embedding-projections)  
    标签：评分：6.0/10、query:smart-city
-   evidence：面向智慧城市施工监测的数据集
-8. [GEM-Occ: From Visual Geometry Evidence to Embodied Semantic Occupancy Memory](/202607/09/2607.05543v1-gem-occ-from-visual-geometry-evidence-to-embodied-semantic-occupancy-memory)  
+   evidence：基于LLM的可扩展语义引导嵌入投影方法，适用于城市数据表示
+5. [Scene Graph Thinking: Reinforcing Structured Visual Reasoning for Multimodal Large Language Models](/202607/10/2607.05716v2-scene-graph-thinking-reinforcing-structured-visual-reasoning-for-multimodal-large-language-models)  
    标签：评分：6.0/10、query:smart-city
-   evidence：语义占据映射统一多个3D室内数据集，与点云场景理解相关
-9. [Benchmark Engineering as a Design Instrument for Heterogeneous Information Systems](/202607/09/2607.07175v1-benchmark-engineering-as-a-design-instrument-for-heterogeneous-information-systems)  
+   evidence：场景图构建用于结构化视觉推理，可迁移至城市知识图谱
+6. [PolyUQuest: Verifiable Structure-Aware Web RAG over Heterogeneous Graphs](/202607/10/2607.08269v1-polyuquest-verifiable-structure-aware-web-rag-over-heterogeneous-graphs)  
    标签：评分：6.0/10、query:smart-city
-   evidence：异构信息系统基准工程设计
+   evidence：基于异构图的RAG模型包含实体关系知识，可应用于智慧城市知识图谱构建
 
 
 <div class="dpr-home-promo-card">

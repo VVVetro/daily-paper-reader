@@ -1,0 +1,266 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-10T21:33:55.645743+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 6,
+    "quick_skim_target": 11,
+    "quick_selected": 6
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.06838v1",
+      "source": "arxiv",
+      "title": "WildCity: A Real-World City-Scale Testbed for Rendering, Simulation, and Spatial Intelligence",
+      "abstract": "Humans can navigate an unfamiliar city and gradually form a coherent spatial mental map spanning tens of square kilometers. Can AI build spatial representations at a comparable scale? Although recent foundation models have advanced scene reconstruction and embodied intelligence, scaling to entire cities remains an open challenge, primarily due to the lack of city-scale data. To bridge the gap, we introduce WildCity, a real-world multimodal dataset collected by autonomous fleets traversing complex urban environments. Our dataset includes 18 trajectories, each averaging 83.7 kilometers in length, and preserves the core challenges of in-the-wild perception, e.g., dynamic objects, lighting variations, and imperfect camera poses. We further establish an urban-tailored reconstruction baseline and convert the reconstructed environments into a closed-loop simulator. Beyond the dataset and baseline, we systematically analyze the key challenges on the path to simulation-ready urban digital twins: scalability, extrapolation, and uncertainty. Ultimately, WildCity aims to catalyze progress not only in city-scale rendering, but more broadly in the pursuit of AI that can perceive, remember, and reason across space at a scale comparable to human cognition. Project page: https://han-xiangyu.github.io/Wild-City/",
+      "authors": [
+        "Xiangyu Han",
+        "Mengyu Yang",
+        "Jiaqi Li",
+        "Bowen Chang",
+        "Ziyu Chen",
+        "Hexu Zhao",
+        "Rahul Kumar Agrawal",
+        "Anthony Rodriguez",
+        "Fiona Hua",
+        "Marco Pavone",
+        "Chen Feng",
+        "Yiming Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-07T22:19:51+00:00",
+      "link": "https://arxiv.org/pdf/2607.06838v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "city-scale testbed for rendering and spatial intelligence",
+      "llm_evidence_cn": "城市规模测试平台，支持渲染与空间智能",
+      "llm_evidence": "城市规模测试平台，支持渲染与空间智能",
+      "canonical_evidence": "城市规模测试平台，支持渲染与空间智能",
+      "llm_tldr_en": "WildCity provides a real-world city-scale multimodal dataset collected by autonomous fleets, enabling research in rendering, simulation, and spatial intelligence for urban environments.",
+      "llm_tldr_cn": "针对城市级空间智能缺乏真实数据的挑战，WildCity收集了自主车队在城市中行驶的多模态轨迹数据，覆盖动态对象、光照变化等挑战。该数据集支持三维重建、仿真和空间理解等任务，为城市数字孪生和智能感知提供了宝贵的基准和训练资源。",
+      "llm_tldr": "针对城市级空间智能缺乏真实数据的挑战，WildCity收集了自主车队在城市中行驶的多模态轨迹数据，覆盖动态对象、光照变化等挑战。该数据集支持三维重建、仿真和空间理解等任务，为城市数字孪生和智能感知提供了宝贵的基准和训练资源。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.02116v2",
+      "source": "arxiv",
+      "title": "ContextNest: Verifiable Context Governance for Autonomous AI Agent",
+      "abstract": "Autonomous AI agents increasingly depend on external knowledge stores, yet most retrieval pipelines provide relevance without durable guarantees of provenance, version identity, integrity, traceability, or point-in-time reconstruction. We formalize this as context governance and present ContextNest, an open specification and reference implementation for governed AI-consumable knowledge vaults. ContextNest does not replace Retrieval-Augmented Generation (RAG); it supplies the governance layer beneath retrieval, determining which artifacts are approved, current, attributable, and integrity-verified before retrieval systems operate over them.   The specification combines typed Markdown documents with metadata, deterministic set-algebraic selectors, contextnest:// URI references, SHA-256 hash-chained version histories, graph-level checkpoints, source nodes for live data through the Model Context Protocol (MCP), and audit traces of agent context consumption. These mechanisms let organizations reconstruct which knowledge versions informed an agent output and whether those versions were AI-eligible when consumed.   We report first empirical results from two controlled experiments. In a stale-version attack isolating the governance-versus-retrieval failure mode, governed selection strictly Pareto-dominates BM25 sparse retrieval, with higher answer-quality pass rate (97% versus 93-90%) at about one-third the input-token cost. In a retrieval-determinism experiment over a 1,060-document corpus, deterministic selectors and BM25 return stable document sets across repeated identical queries (Jaccard 1.0), while a dense+HNSW baseline is non-deterministic on 80% of queries (mean Jaccard 0.611, worst case 0.210). These results suggest that context governance addresses failure modes retrieval quality alone is not designed to resolve. We release a core engine, CLI, and MCP server under open licenses.",
+      "authors": [
+        "Misha Sulpovar",
+        "Benn R. Konsynski",
+        "Qaish Kanchwala",
+        "Gabe Goodhart"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-02T12:51:38+00:00",
+      "link": "https://arxiv.org/pdf/2607.02116v2",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "verifiable context governance for AI agents, applicable to data pipelines for urban digital twins",
+      "llm_evidence_cn": "可验证的AI代理上下文治理，适用于城市数字孪生的数据管道",
+      "llm_evidence": "可验证的AI代理上下文治理，适用于城市数字孪生的数据管道",
+      "canonical_evidence": "可验证的AI代理上下文治理，适用于城市数字孪生的数据管道",
+      "llm_tldr_en": "ContextNest provides a governance layer for AI-consumable knowledge vaults, ensuring provenance, integrity, and version identity, which is transferable to smart city data pipelines.",
+      "llm_tldr_cn": "本文提出ContextNest，一个为AI代理提供可验证上下文治理的开放规范。它通过类型化Markdown文档、元数据及集代数选择器，确保知识库的溯源、完整性及版本一致性。该方法可直接迁移至智慧城市数据管道，为构建AI就绪的城市基础设施数据提供质量保障层，但未直接针对城市领域进行验证。",
+      "llm_tldr": "本文提出ContextNest，一个为AI代理提供可验证上下文治理的开放规范。它通过类型化Markdown文档、元数据及集代数选择器，确保知识库的溯源、完整性及版本一致性。该方法可直接迁移至智慧城市数据管道，为构建AI就绪的城市基础设施数据提供质量保障层，但未直接针对城市领域进行验证。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.08357v1",
+      "source": "arxiv",
+      "title": "MobiDiff: Semantic-Aware Multi-Channel Discrete Diffusion for Human Mobility Data Generation",
+      "abstract": "Human mobility data are essential for transportation optimization, urban planning, and resource allocation, yet real-world mobility data are costly to collect and difficult to share due to privacy concerns. Recent diffusion-based methods have shown promise in synthesizing realistic mobility patterns, but they typically rely on continuous or latent spatio-temporal traces, limiting their ability to natively model discrete semantic events with explicit region, activity, time, and interval structures. To address this issue, we introduce MobiDiff, an end-to-end discrete diffusion framework that efficiently generates mobility data by directly denoising multi-channel semantic skeletons, avoiding the costly interpolation, latent trace construction, and coarse-to-fine realization pipelines widely used in existing diffusion-based methods. Specifically, MobiDiff decomposes each human check-in event into spatial, activity, and temporal channels, and employs structured event-, group-, and channel-level masking to jointly capture trajectory-level mobility patterns and within-event dependencies. We evaluate generation fidelity, privacy-preserving, and efficiency on three large-scale real-world datasets from Atlanta, Boston, and Seattle. Results show that MobiDiff effectively preserves trajectory length and temporal interval distributions while remaining competitive across broader mobility statistics; it is also much faster than state-of-the-art methods, e.g., 5.3$\\times$ faster than GeoGen on average during inference. These findings suggest that discrete diffusion offers an interpretable and efficient framework for synthetic mobility data generation.",
+      "authors": [
+        "Rongchao Xu",
+        "Lin Jiang",
+        "Dahai Yu",
+        "Ximiao Li",
+        "Taichi Liu",
+        "Desheng Zhang",
+        "Yuan Tian",
+        "Guang Wang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-09T11:08:39+00:00",
+      "link": "https://arxiv.org/pdf/2607.08357v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "generates human mobility data with semantic skeleton, useful for urban data pipeline and representation learning",
+      "llm_evidence_cn": "生成具有语义骨架的人类移动数据，对城市数据管道和表示学习有用",
+      "llm_evidence": "生成具有语义骨架的人类移动数据，对城市数据管道和表示学习有用",
+      "canonical_evidence": "生成具有语义骨架的人类移动数据，对城市数据管道和表示学习有用",
+      "llm_tldr_en": "MobiDiff uses discrete diffusion on multi-channel semantic skeletons to generate realistic human mobility data, supporting urban analytics and data augmentation.",
+      "llm_tldr_cn": "人类移动数据对城市规划至关重要，但真实数据采集成本高且隐私敏感。本文提出MobiDiff，一种端到端离散扩散框架，直接对多通道语义骨架（区域、活动、时间、间隔）去噪生成移动数据，避免了连续潜变量插值。在多个城市数据集上，生成的轨迹在统计和语义上与真实数据高度一致，为城市数据管道提供了高质量的数据增强方法。",
+      "llm_tldr": "人类移动数据对城市规划至关重要，但真实数据采集成本高且隐私敏感。本文提出MobiDiff，一种端到端离散扩散框架，直接对多通道语义骨架（区域、活动、时间、间隔）去噪生成移动数据，避免了连续潜变量插值。在多个城市数据集上，生成的轨迹在统计和语义上与真实数据高度一致，为城市数据管道提供了高质量的数据增强方法。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.03978v1",
+      "source": "arxiv",
+      "title": "Scalable Semantic Steering of Embedding Projections",
+      "abstract": "Low-dimensional projections support interactive visual analysis of high-dimensional data embeddings, but their structure often does not align with analyst-defined semantic relationships. Recent LLM-augmented semantic steering methods address this gap by externalizing analyst intent from user-defined groups of seed examples, but they propagate intent through per-item LLM reasoning, causing LLM calls and cost to grow linearly with collection size. We propose a scalable semantic steering method that shifts semantic computation from individual items to user-defined groups. A single LLM call generates structured profiles for all groups, which are embedded and combined with seed centroids to form hybrid semantic prototypes. The method then propagates intent without retraining, using embedding-space soft assignment, abstention, and alignment-scaled updates before reprojection. On a 5K-document LitCovid corpus, our method achieves global alignment comparable to per-item LLM steering while reducing LLM calls by over three orders of magnitude. An image case study shows that the same prototype-based mechanism extends to multimodal embeddings. These results suggest that group-level representations can make semantic steering more practical for larger embedding collections.",
+      "authors": [
+        "Wei Liu",
+        "Eric Krokos",
+        "Kirsten Whitley",
+        "Rebecca Faust",
+        "Chris North"
+      ],
+      "primary_category": "cs.HC",
+      "categories": [
+        "cs.HC",
+        "cs.AI",
+        "cs.CV"
+      ],
+      "published": "2026-07-04T18:24:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.03978v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "scalable semantic steering method for embedding projections using LLMs, applicable to urban data representation",
+      "llm_evidence_cn": "基于LLM的可扩展语义引导嵌入投影方法，适用于城市数据表示",
+      "llm_evidence": "基于LLM的可扩展语义引导嵌入投影方法，适用于城市数据表示",
+      "canonical_evidence": "基于LLM的可扩展语义引导嵌入投影方法，适用于城市数据表示",
+      "llm_tldr_en": "Proposes scalable semantic steering that shifts LLM computation from items to groups, enabling cost-effective intent propagation for embedding projections, useful for urban data analysis.",
+      "llm_tldr_cn": "针对现有语义引导投影方法随数据规模线性增长的LLM开销问题，本文提出一种可扩展方法。它通过单次LLM调用为所有用户定义组生成结构化轮廓，并与种子质心结合形成混合语义原型，从而无需重新训练即可传播意图。该方法显著降低了成本，同时保持语义对齐，为大规模城市数据嵌入的语义引导提供了高效方案。",
+      "llm_tldr": "针对现有语义引导投影方法随数据规模线性增长的LLM开销问题，本文提出一种可扩展方法。它通过单次LLM调用为所有用户定义组生成结构化轮廓，并与种子质心结合形成混合语义原型，从而无需重新训练即可传播意图。该方法显著降低了成本，同时保持语义对齐，为大规模城市数据嵌入的语义引导提供了高效方案。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.05716v2",
+      "source": "arxiv",
+      "title": "Scene Graph Thinking: Reinforcing Structured Visual Reasoning for Multimodal Large Language Models",
+      "abstract": "Multimodal Large Language Models (MLLMs) have demonstrated strong perception and reasoning capabilities. However, most existing models focus on isolated objects and neglect structured relationships for efficient target navigation, limiting their performance on visually intensive tasks. To address this challenge, we introduce Scene Graph Thinking (SaGe), a novel paradigm that enables fine-grained and structured visual reasoning through explicit scene-graph representations. Specifically, we first introduce an automated data engine that converts flat image-text corpora into structured scene graphs, where hierarchical entities constitute the nodes and diverse visual relations define the edges. Building upon this, we construct 120K high-quality training data by sampling reasoning traces from scene graphs. Then, two-stage graph-aligned post-training paradigms are introduced, where supervised fine-tuning internalizes MLLMs with structured reasoning, and subsequent reinforcement fine-tuning proposes node-as-proxy graph rewards to consolidate efficient graph exploration. With curated data and graph-aligned training, our approach achieves significant improvements across eight multimodal benchmarks, demonstrating strong effectiveness on fine-grained perception and reasoning tasks. Code is available at https://github.com/zwyang6/SaGe.",
+      "authors": [
+        "Zhiwei Yang",
+        "Yuanchen Wu",
+        "Nan Zhang",
+        "Yucong Meng",
+        "Ke Yan",
+        "Shouhong Ding"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-07T01:00:51+00:00",
+      "link": "https://arxiv.org/pdf/2607.05716v2",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "scene graph construction for structured visual reasoning, transferable to urban knowledge graphs",
+      "llm_evidence_cn": "场景图构建用于结构化视觉推理，可迁移至城市知识图谱",
+      "llm_evidence": "场景图构建用于结构化视觉推理，可迁移至城市知识图谱",
+      "canonical_evidence": "场景图构建用于结构化视觉推理，可迁移至城市知识图谱",
+      "llm_tldr_en": "SaGe introduces an automated data engine converting image-text data into structured scene graphs, enabling fine-grained visual reasoning for MLLMs, relevant to knowledge graph construction.",
+      "llm_tldr_cn": "针对多模态大语言模型忽略结构化关系的问题，本文提出场景图思维（SaGe）范式。通过自动数据引擎将平面图像-文本语料转换为层次化场景图，其中包含实体节点和视觉关系边。该方法显著提升了MLLM在视觉密集任务中的推理能力，其场景图构建技术可直接迁移至智慧城市知识图谱的自动构建中。",
+      "llm_tldr": "针对多模态大语言模型忽略结构化关系的问题，本文提出场景图思维（SaGe）范式。通过自动数据引擎将平面图像-文本语料转换为层次化场景图，其中包含实体节点和视觉关系边。该方法显著提升了MLLM在视觉密集任务中的推理能力，其场景图构建技术可直接迁移至智慧城市知识图谱的自动构建中。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.08269v1",
+      "source": "arxiv",
+      "title": "PolyUQuest: Verifiable Structure-Aware Web RAG over Heterogeneous Graphs",
+      "abstract": "Existing retrieval-augmented generation (RAG) systems treat web pages as flat text, losing the structural and semantic signals encoded in HTML. We present PolyUQuest, a verifiable, structure-aware web RAG framework built on a heterogeneous graph that unifies hyperlink topology between pages, DOM hierarchy within pages, and entity-relation knowledge across pages. A two-tier router dispatches each query to one of three retrieval modes matched to its structural need, including direct block retrieval, cross-page graph traversal, and multi-hop entity reasoning. Every answer is fully verifiable, as each cited block carries its source page, heading path, and entity links so that users can trace any claim back to its structural evidence. We evaluate on the official websites of the Hong Kong Polytechnic University (PolyU), comprising 4,240 pages, 31,086 DOM blocks, 29,119 entities, and 37,680 relations, together with a multi-type evaluation benchmark. PolyUQuest outperforms existing RAG systems in answer correctness, coverage, and faithfulness, while consuming significantly fewer LLM tokens per query. The demonstration provides an interactive interface for inspecting cited answers, comparing retrieval traces across routing modes, and exploring evidence graph paths. PolyUQuest is being prepared for deployment as a student-facing QA service at PolyU.",
+      "authors": [
+        "Ying Liu",
+        "Yi Ye",
+        "Quanyu Feng",
+        "Mingxi Ye",
+        "Mingtao Zhang",
+        "Haoyang Li",
+        "Chen Jason Zhang",
+        "Qing Li"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-09T09:10:52+00:00",
+      "link": "https://arxiv.org/pdf/2607.08269v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "heterogeneous graph-based RAG with entity-relation knowledge, applicable to smart city knowledge graph construction",
+      "llm_evidence_cn": "基于异构图的RAG模型包含实体关系知识，可应用于智慧城市知识图谱构建",
+      "llm_evidence": "基于异构图的RAG模型包含实体关系知识，可应用于智慧城市知识图谱构建",
+      "canonical_evidence": "基于异构图的RAG模型包含实体关系知识，可应用于智慧城市知识图谱构建",
+      "llm_tldr_en": "PolyUQuest presents a heterogeneous graph unifying web structure and entity relations for verifiable RAG, offering transferable methods for smart city knowledge graph reasoning.",
+      "llm_tldr_cn": "现有RAG系统将网页视为平面文本，忽略了HTML中的结构和语义信号。本文提出PolyUQuest，构建了一个异构图统一页面超链接拓扑、DOM层次和跨页面实体关系知识，并采用两阶段路由器将查询分发至三种结构化检索模式。该方法在开放域问答上验证了可追溯性和准确性，为智慧城市多源异构数据的知识图谱构建提供了可迁移的结构化表示与推理方法。",
+      "llm_tldr": "现有RAG系统将网页视为平面文本，忽略了HTML中的结构和语义信号。本文提出PolyUQuest，构建了一个异构图统一页面超链接拓扑、DOM层次和跨页面实体关系知识，并采用两阶段路由器将查询分发至三种结构化检索模式。该方法在开放域问答上验证了可追溯性和准确性，为智慧城市多源异构数据的知识图谱构建提供了可迁移的结构化表示与推理方法。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
