@@ -1,0 +1,97 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-11T21:02:56.123783+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 0,
+    "quick_skim_target": 11,
+    "quick_selected": 0
+  },
+  "deep_dive": [
+    {
+      "id": "2607.05493v1",
+      "source": "arxiv",
+      "title": "Ground3D-LMM: Fine-Grained 3D Point Grounding and Spatial Reasoning with LMM",
+      "abstract": "Natural-language queries about 3D environments become actionable when responses are verifiable and metric. Verifiability requires explicit grounding to the referred 3D region, while metric answers report physical measurements in real-world units (e.g., size, thickness, clearance, and distance). Existing 3D large multimodal models (LMMs) approaches remain limited: conversational systems typically respond without explicit 3D grounding, while 3D grounding models are not designed for interactive, metric-aware dialogue. In this paper, we present Ground3D-LMM, a unified model that takes a point cloud and an optional RGB image as input and supports 3D spatial conversation with (i) point-grounded responses and (ii) metric numeric outputs at both object and part granularity, including multi-object queries. To evaluate this intersection of grounding and measurement, we define the 3D Grounded Measurement task, which requires predicting the referred 3D region and the corresponding metric quantities in real-world units. We introduce a large-scale dataset built on ScanNet and ScanNet++ datasets with dense object and part annotations and roughly 2.5M question-answer pairs spanning eight tasks, along with a manually verified test set. Extensive experiments on multiple datasets and tasks show that our proposed Ground3D-LMM model provides a strong baseline for grounded, metric-aware 3D conversational understanding. Our dataset and model are publicly available.",
+      "authors": [
+        "Amol Harsh",
+        "Zongyan Han",
+        "Jean Lahoud",
+        "Ye Liu",
+        "Rao Muhammad Anwer",
+        "Hisham Cholakkal",
+        "Salman Khan",
+        "Fahad Khan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-06T18:00:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.05493v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "3D point cloud grounding and spatial reasoning with metric outputs",
+      "llm_evidence_cn": "三维点云定位与空间推理，支持度量输出",
+      "llm_evidence": "三维点云定位与空间推理，支持度量输出",
+      "canonical_evidence": "三维点云定位与空间推理，支持度量输出",
+      "llm_tldr_en": "Ground3D-LMM unifies point grounding and metric-aware spatial reasoning in a single LMM, supporting interactive 3D conversations with explicit region references.",
+      "llm_tldr_cn": "该论文提出Ground3D-LMM，一个统一的三维大语言模型，同时支持点云的点位定位和度量感知的空间推理。模型以点云和可选RGB图像为输入，能够进行带有点云引用的对话并输出物理测量值（如尺寸、距离）。实验证明其在三维场景理解任务上优于现有方法，可直接用于建筑和基础设施的智能分析。",
+      "llm_tldr": "该论文提出Ground3D-LMM，一个统一的三维大语言模型，同时支持点云的点位定位和度量感知的空间推理。模型以点云和可选RGB图像为输入，能够进行带有点云引用的对话并输出物理测量值（如尺寸、距离）。实验证明其在三维场景理解任务上优于现有方法，可直接用于建筑和基础设施的智能分析。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.03154v1",
+      "source": "arxiv",
+      "title": "Conditional Diffusion Guided Knowledge Transfer for Multi-Domain Knowledge Graph Completion",
+      "abstract": "Multi-domain knowledge graph completion (MKGC) aims to improve missing triple prediction in a target KG by transferring knowledge from other support KGs. Existing methods typically enforce consistency constraints on equivalent entities across KGs to transfer knowledge, which risks suppressing domain-specific contextual information of entities. This design can also compromise entity representation information from all KG domains, impeding performance improvements, especially in low-resource data scenarios. To address this, we pioneer a generation-based paradigm for MKGC and propose DMKGC, a conditional diffusion-guided knowledge transfer framework. Our key insight is to treat each KG as a partial view of the entity entire information, and generate informative domain-general entity embeddings through diffusion models conditioned on support KGs. Particularly, we first initialize domain-agnostic entity embeddings as prior entity embeddings, and then encode them within individual KGs. Afterward, we fuse equivalent entities from support KGs as the conditional diffusion generation guidance. We leverage the prior entity embeddings as the proxy generation objective, which ensures this conditional generation to be unbiased towards any conditioned KGs. Simultaneously, we also train the generated embeddings to be predictive across KGs, thus preserving domain-specific information. Extensive experiments on 14 KGs in 3 benchmarks demonstrate a 4.3\\% average MRR improvement in tail entity prediction over state-of-the-art methods, with sustained gains in low-resource data settings.",
+      "authors": [
+        "Jiawei Sheng",
+        "Taoyu Su",
+        "Xixun Lin",
+        "Xiaodong Li",
+        "Tingwen Liu"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-07-03T09:51:49+00:00",
+      "link": "https://arxiv.org/pdf/2607.03154v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "knowledge graph completion via conditional diffusion, directly applicable to smart city KG reasoning",
+      "llm_evidence_cn": "条件扩散知识图补全，可直接用于智慧城市知识图推理",
+      "llm_evidence": "条件扩散知识图补全，可直接用于智慧城市知识图推理",
+      "canonical_evidence": "条件扩散知识图补全，可直接用于智慧城市知识图推理",
+      "llm_tldr_en": "DMKGC introduces conditional diffusion for multi-domain KG completion, enabling effective knowledge transfer across KGs, which can enhance smart city infrastructure knowledge graphs.",
+      "llm_tldr_cn": "DMKGC针对多域知识图谱补全中域特定信息丢失的问题，提出了基于条件扩散的知识迁移框架，将每个KG视为实体的部分视图，通过生成式范式预测缺失三元组。实验在多个数据集上取得最优结果，显著提升低资源场景下的补全性能。该方法可迁移至智慧城市建设中的BIM、GIS等异构数据知识图谱构建与推理。",
+      "llm_tldr": "DMKGC针对多域知识图谱补全中域特定信息丢失的问题，提出了基于条件扩散的知识迁移框架，将每个KG视为实体的部分视图，通过生成式范式预测缺失三元组。实验在多个数据集上取得最优结果，显著提升低资源场景下的补全性能。该方法可迁移至智慧城市建设中的BIM、GIS等异构数据知识图谱构建与推理。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": []
+}

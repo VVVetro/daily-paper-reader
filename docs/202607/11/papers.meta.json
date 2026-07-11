@@ -1,0 +1,39 @@
+{
+  "label": "2026-07-11",
+  "date": "2026-07-11",
+  "generated_at": "2026-07-11T21:05:54",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/11/2607.05493v1-ground3d-lmm-fine-grained-3d-point-grounding-and-spatial-reasoning-with-lmm",
+      "section": "deep",
+      "title_en": "Ground3D-LMM: Fine-Grained 3D Point Grounding and Spatial Reasoning with LMM",
+      "authors": "Amol Harsh, Zongyan Han, Jean Lahoud, Ye Liu, Rao Muhammad Anwer, Hisham Cholakkal, Salman Khan, Fahad Khan",
+      "date": "2026-07-06",
+      "pdf": "https://arxiv.org/pdf/2607.05493v1",
+      "score": "9.0",
+      "evidence": "三维点云定位与空间推理，支持度量输出",
+      "tldr": "现有3D大模型在接地和度量感知对话方面存在局限。本文提出Ground3D-LMM统一模型，以点云和RGB图像为输入，支持细粒度点接地和物理度量输出。基于ScanNet/ScanNet++构建约250万问答对的数据集，定义3D接地度量任务。实验表明，该模型在多数据集上成为接地且度量感知的对话理解强基线。",
+      "tags": "query:smart-city",
+      "abstract_en": "Natural-language queries about 3D environments become actionable when responses are verifiable and metric. Verifiability requires explicit grounding to the referred 3D region, while metric answers report physical measurements in real-world units (e.g., size, thickness, clearance, and distance). Existing 3D large multimodal models (LMMs) approaches remain limited: conversational systems typically respond without explicit 3D grounding, while 3D grounding models are not designed for interactive, metric-aware dialogue. In this paper, we present Ground3D-LMM, a unified model that takes a point cloud and an optional RGB image as input and supports 3D spatial conversation with (i) point-grounded responses and (ii) metric numeric outputs at both object and part granularity, including multi-object queries. To evaluate this intersection of grounding and measurement, we define the 3D Grounded Measurement task, which requires predicting the referred 3D region and the corresponding metric quantities in real-world units. We introduce a large-scale dataset built on ScanNet and ScanNet++ datasets with dense object and part annotations and roughly 2.5M question-answer pairs spanning eight tasks, along with a manually verified test set. Extensive experiments on multiple datasets and tasks show that our proposed Ground3D-LMM model provides a strong baseline for grounded, metric-aware 3D conversational understanding. Our dataset and model are publicly available.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/11/2607.03154v1-conditional-diffusion-guided-knowledge-transfer-for-multi-domain-knowledge-graph-completion",
+      "section": "deep",
+      "title_en": "Conditional Diffusion Guided Knowledge Transfer for Multi-Domain Knowledge Graph Completion",
+      "authors": "Jiawei Sheng, Taoyu Su, Xixun Lin, Xiaodong Li, Tingwen Liu",
+      "date": "2026-07-03",
+      "pdf": "https://arxiv.org/pdf/2607.03154v1",
+      "score": "8.0",
+      "evidence": "条件扩散知识图补全，可直接用于智慧城市知识图推理",
+      "tldr": "现有多领域知识图谱补全方法通过跨KG等价实体一致性约束转移知识，但易抑制实体领域特定信息。本文开创生成式范式，提出DMKGC框架：将每个KG视为实体完整信息的部分视图，以条件扩散模型生成域通用嵌入，通过先验嵌入确保无偏性并保留领域信息。在3个基准的14个KG上，尾部实体预测平均MRR提升4.3%，并在低资源数据下持续获益，验证了生成式迁移的有效性。",
+      "tags": "query:smart-city",
+      "abstract_en": "Multi-domain knowledge graph completion (MKGC) aims to improve missing triple prediction in a target KG by transferring knowledge from other support KGs. Existing methods typically enforce consistency constraints on equivalent entities across KGs to transfer knowledge, which risks suppressing domain-specific contextual information of entities. This design can also compromise entity representation information from all KG domains, impeding performance improvements, especially in low-resource data scenarios. To address this, we pioneer a generation-based paradigm for MKGC and propose DMKGC, a conditional diffusion-guided knowledge transfer framework. Our key insight is to treat each KG as a partial view of the entity entire information, and generate informative domain-general entity embeddings through diffusion models conditioned on support KGs. Particularly, we first initialize domain-agnostic entity embeddings as prior entity embeddings, and then encode them within individual KGs. Afterward, we fuse equivalent entities from support KGs as the conditional diffusion generation guidance. We leverage the prior entity embeddings as the proxy generation objective, which ensures this conditional generation to be unbiased towards any conditioned KGs. Simultaneously, we also train the generated embeddings to be predictive across KGs, thus preserving domain-specific information. Extensive experiments on 14 KGs in 3 benchmarks demonstrate a 4.3\\% average MRR improvement in tail entity prediction over state-of-the-art methods, with sustained gains in low-resource data settings.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
