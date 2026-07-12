@@ -1,0 +1,54 @@
+{
+  "label": "2026-07-12",
+  "date": "2026-07-12",
+  "generated_at": "2026-07-12T21:04:20",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202607/12/2607.06032v1-uncertainty-aware-cross-modal-remote-sensing-image-text-retrieval-via-evidential-learning",
+      "section": "quick",
+      "title_en": "Uncertainty-Aware Cross-Modal Remote Sensing Image-Text Retrieval via Evidential Learning",
+      "authors": "Zhuoyue Wang, Xueqian Wang, Gang Li, Chengxi Li, Yongpan Liu, Yifang Ban",
+      "date": "2026-07-07",
+      "pdf": "https://arxiv.org/pdf/2607.06032v1",
+      "score": "7.0",
+      "evidence": "不确定性感知的跨模态遥感数据检索，适用于智慧城市多模态融合",
+      "tldr": "跨模态遥感图像-文本检索中，测试时图像退化与文本异构导致检索不可靠。本文提出证据学习ELC方法，通过狄利克雷分布建模不确定性，并引入不确定性-正确性对齐学习和内模态关系蒸馏，对高不确定性查询采用测试时增强。实验证明该方法在多种退化下具有强鲁棒性。",
+      "tags": "query:smart-city",
+      "abstract_en": "In cross-modal remote sensing image-text retrieval (CMRSITR), test-time remote sensing (RS) images and textual descriptions may deviate from well-curated benchmark conditions due to sensor- and atmosphere-related image degradations and text-side RS-vocabulary heterogeneity. Under such non-ideal conditions, existing CMRSITR methods may produce unreliable retrieval results because they perform retrieval with full certainty for each query and do not distinguish the varying uncertainty across queries. To address this issue, we propose an evidential learning-based CMRSITR (ELC) method for uncertainty-aware retrieval. During the training phase of ELC, evidential learning (EDL) is employed to model the inter-modal correspondences between RS images and textual descriptions as Dirichlet distributions, from which the uncertainty of each query can be obtained. Based on the EDL outputs, uncertainty-correctness alignment learning (UCL) is introduced to align the estimated uncertainty with retrieval correctness, encouraging high uncertainty for incorrect retrieval and low uncertainty for correct retrieval. Furthermore, intra-modal relationship learning (RL) distills the intra-modal similarity structure from pretrained mentor encoders for the trainable encoders, thereby making the Dirichlet distributions modeled by EDL more discriminative. In the test phase of ELC, the estimated uncertainty is compared with a threshold determined by a fixed deferral ratio, where low-uncertainty queries are directly returned and high-uncertainty queries are refined by RS-aware test-time augmentation (RS-TTA). Experimental results demonstrate that ELC achieves competitive retrieval performance compared with state-of-the-art CMRSITR methods and provides stronger robustness under the evaluated RS-specific degradations, including sensor- and atmosphere-related image perturbations and RS-vocabulary heterogeneity.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/12/2607.03884v1-lognlq-natural-language-log-querying-with-parser-induced-and-semantically-grounded-schemas",
+      "section": "quick",
+      "title_en": "LogNLQ: Natural-Language Log Querying with Parser-Induced and Semantically Grounded Schemas",
+      "authors": "Juepeng Wang, Jinyang Liu, Zhuangbin Chen, Zibin Zheng",
+      "date": "2026-07-04",
+      "pdf": "https://arxiv.org/pdf/2607.03884v1",
+      "score": "6.0",
+      "evidence": "自然语言日志查询生成SQL，涉及解析诱导模式与语义解析",
+      "tldr": "现代软件系统依赖日志进行监控与故障诊断，但自然语言查询日志面临原始日志缺乏结构化模式的根本障碍。LogNLQ提出将原始日志解析为模板分区的关系表，并利用双粒度语义接地为表和列赋予可读名称描述，从而构建可执行模式。查询时，通过语义检索相关模式候选，驱动大语言模型生成SQL。在包含8895个查询的LogNLQ-Bench基准上，LogNLQ显著优于基线方法，尤其在复杂分析场景中提升明显。该工作首次实现了在无预定义模式下的精确日志查询，推动了自然语言日志分析的发展。",
+      "tags": "query:smart-city",
+      "abstract_en": "Logs are essential for system monitoring and failure diagnoses in modern software systems, yet querying them through natural language remains an open challenge. Existing approaches either treat logs as plain text, generate queries for schema-light backends, or assume predefined relational schemas, but none addresses a fundamental obstacle: raw logs carry no executable schema over which structured queries can be defined and run. To address these limitations, we present LogNLQ, a framework that formulates natural-language log querying as executable SQL generation over parser-induced and semantically grounded schemas. LogNLQ parses raw logs into template-partitioned relational tables, then applies dual-granularity semantic grounding to annotate both templates and parameter columns with interpretable names and descriptions. At query time, relevant schema candidates are retrieved via semantic search, and a large language model (LLM) generates executable SQL constrained to the retrieved context. To support rigorous evaluation, we introduce LogNLQ-Bench, an execution-verified benchmark of 8,895 queries over four real-world log datasets. Experimental results demonstrate that LogNLQ consistently outperforms all representative baselines by wide margins, with especially pronounced gains on analytically complex scenario queries.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/12/2607.04219v1-agentic-iot-architectures-applications-and-challenges-toward-the-internet-of-agents",
+      "section": "quick",
+      "title_en": "Agentic IoT: Architectures, Applications, and Challenges Toward the Internet of Agents",
+      "authors": "Rümeysa Hilal Sevinç, Bahaeddin Türkoğlu, İbrahim Kök",
+      "date": "2026-07-05",
+      "pdf": "https://arxiv.org/pdf/2607.04219v1",
+      "score": "6.0",
+      "evidence": "智能体物联网架构，面向智慧城市多源数据集成",
+      "tldr": "现有AIoT系统依赖任务特定模型进行数据推断，缺乏实时推理、自适应规划和自主协调能力。本文提出Agentic IoT范式，将自主AI代理的感知、推理、规划、学习与行动能力整合至设备-边缘-云连续体，形成分布式认知代理生态系统。通过系统综述，构建了全息架构框架，梳理了领域应用潜力，并识别了关键技术挑战。该工作为物联网从数据采集向智能代理协同演进提供了系统性指导。",
+      "tags": "query:smart-city",
+      "abstract_en": "The integration of AI into Internet of Things (AIoT) systems has gradually transformed them from passive data collection infrastructures into intelligent systems capable of anomaly detection, predictive maintenance, classification, forecasting, and optimization. However, most existing solutions still rely on task-specific models that infer from sensor data; thus, system-wide capabilities such as real-time reasoning, adaptive planning, autonomous coordination, learning, tool use, and contextual decision-making remain limited. This paper examines Agentic IoT as a next-generation cognitive IoT paradigm that integrates the perception, reasoning, planning, learning, and action capabilities of autonomous AI agents with cyber-physical systems. Agentic IoT aims to transform IoT from data-centric sensing and inference infrastructures into distributed cognitive agent ecosystems operating across the device/edge-fog-cloud continuum. The paper first grounds this transition as a paradigm shift and positions Agentic IoT in relation to AIoT, edge intelligence, multi-agent systems, and the Internet of Agents. It then systematically reviews current studies, presents a holistic architectural framework, discusses domain-specific application potential, and identifies key technical, operational, and research challenges together with future research directions.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

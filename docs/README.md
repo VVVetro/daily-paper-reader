@@ -6,27 +6,32 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-11
-- 运行时间：2026-07-11 21:05:47 UTC
+- 最新运行日期：2026-07-12
+- 运行时间：2026-07-12 21:04:13 UTC
 - 运行状态：成功
-- 本次总论文数：2
-- 精读区：2
-- 速读区：0
+- 本次总论文数：3
+- 精读区：0
+- 速读区：3
 
 ### 今日简报（AI）
-今日精读2篇论文，涵盖3D点云精细定位与多域知识图谱补全两大方向。最推荐《Ground3D-LMM》（9分），其在三维空间细粒度定位与推理上突破显著；《Conditional Diffusion Guided Knowledge Transfer》（8分）则为跨域知识图谱提供了新思路。若对三维视觉感兴趣可优先精读首篇，知识图谱方向建议关注扩散迁移方法。
-- 详情：[/202607/11/README](/202607/11/README)
+今日精选3篇研究，涵盖跨模态遥感检索、自然语言日志查询与智能物联网架构。  
+最值得关注的是《Uncertainty-Aware Cross-Modal Remote Sensing Image-Text Retrieval via Evidential Learning》，其不确定性感知方法为跨模态检索提供新思路；另两篇LogNLQ与Agentic IoT也各具应用价值。  
+建议普通读者优先了解遥感图像与文本的智能匹配技术，再逐步探索日志查询自动化及智能体网络趋势。
+- 详情：[/202607/12/README](/202607/12/README)
 
 ### 精读区论文标签
-1. [Ground3D-LMM: Fine-Grained 3D Point Grounding and Spatial Reasoning with LMM](/202607/11/2607.05493v1-ground3d-lmm-fine-grained-3d-point-grounding-and-spatial-reasoning-with-lmm)  
-   标签：评分：9.0/10、query:smart-city
-   evidence：三维点云定位与空间推理，支持度量输出
-2. [Conditional Diffusion Guided Knowledge Transfer for Multi-Domain Knowledge Graph Completion](/202607/11/2607.03154v1-conditional-diffusion-guided-knowledge-transfer-for-multi-domain-knowledge-graph-completion)  
-   标签：评分：8.0/10、query:smart-city
-   evidence：条件扩散知识图补全，可直接用于智慧城市知识图推理
+- 本次无精读推荐。
 
 ### 速读区论文标签
-- 本次无速读推荐。
+1. [Uncertainty-Aware Cross-Modal Remote Sensing Image-Text Retrieval via Evidential Learning](/202607/12/2607.06032v1-uncertainty-aware-cross-modal-remote-sensing-image-text-retrieval-via-evidential-learning)  
+   标签：评分：7.0/10、query:smart-city
+   evidence：不确定性感知的跨模态遥感数据检索，适用于智慧城市多模态融合
+2. [LogNLQ: Natural-Language Log Querying with Parser-Induced and Semantically Grounded Schemas](/202607/12/2607.03884v1-lognlq-natural-language-log-querying-with-parser-induced-and-semantically-grounded-schemas)  
+   标签：评分：6.0/10、query:smart-city
+   evidence：自然语言日志查询生成SQL，涉及解析诱导模式与语义解析
+3. [Agentic IoT: Architectures, Applications, and Challenges Toward the Internet of Agents](/202607/12/2607.04219v1-agentic-iot-architectures-applications-and-challenges-toward-the-internet-of-agents)  
+   标签：评分：6.0/10、query:smart-city
+   evidence：智能体物联网架构，面向智慧城市多源数据集成
 
 
 <div class="dpr-home-promo-card">
