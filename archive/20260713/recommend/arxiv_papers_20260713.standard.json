@@ -1,0 +1,151 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-13T20:24:36.135366+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2607.09578v1",
+      "source": "arxiv",
+      "title": "Knowledge Graphs and Explainable AI as Complementary Resources for Urban Mining",
+      "abstract": "Pre-demolition assessment, the regulated audit process at the heart of urban mining, is an information process in which AI support must serve qualified auditors who remain accountable for the decisions taken. The relevant unit of value is not prediction accuracy alone, but the defensibility of the supported decisions: their legibility, plausibility, sourcing, and contestability. Explainable AI techniques and domain knowledge graphs each address parts of this requirement, and existing taxonomies have catalogued their integration. The literature is descriptively rich but structurally under-specified: what remains less developed is a structural account of why specific integrations produce artefacts neither resource can provide alone. This paper offers a complementarity-theoretic interpretation grounded in the IS resource-based tradition. We propose four consolidated KG-XAI integration modes (Lifting, Constraining, Typing, and Revising), each defined as a typed operation over XAI artefacts and knowledge-graph substrate structures. Each mode unlocks a distinct property of defensibility and contributes to the kind of regulatory artefact pre-demolition assessment demands. A fire-door example from the urban-mining process illustrates the modes using the W3C Linked Building Data stack and valuation extensions.",
+      "authors": [
+        "Jan Gronewald",
+        "Andreas Emrich",
+        "Nijat Mehdiyev"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-10T16:27:29+00:00",
+      "link": "https://arxiv.org/pdf/2607.09578v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "knowledge graphs and XAI for urban mining",
+      "llm_evidence_cn": "知识图谱与可解释AI用于城市采矿",
+      "llm_evidence": "知识图谱与可解释AI用于城市采矿",
+      "canonical_evidence": "知识图谱与可解释AI用于城市采矿",
+      "llm_tldr_en": "Proposes a structural account of how knowledge graphs and explainable AI integrate for defensible decision support in urban mining pre-demolition assessment.",
+      "llm_tldr_cn": "本文针对城市采矿中的拆除前评估问题，提出知识图谱与可解释人工智能的结构性整合框架，强调决策的可辩护性（可读性、可追溯性等），弥补了现有分类学在结构描述上的不足，为智能城市基础设施管理中的可解释AI应用提供了理论支撑。",
+      "llm_tldr": "本文针对城市采矿中的拆除前评估问题，提出知识图谱与可解释人工智能的结构性整合框架，强调决策的可辩护性（可读性、可追溯性等），弥补了现有分类学在结构描述上的不足，为智能城市基础设施管理中的可解释AI应用提供了理论支撑。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.05943v1",
+      "source": "arxiv",
+      "title": "SearchEyes: Towards Frontier Multimodal Deep Search Intelligence via Search World Simulation",
+      "abstract": "Training multimodal search agents to perform multi-hop reasoning remains challenging due to a fundamental structural disconnect: existing pipelines construct training data, search environments, and reward signals independently, causing synthesized structural metadata to be discarded, environments to rely on irreproducible external engines, and RL rewards to remain sparse at the trajectory level. We present \\textbf{SearchEyes}, which uses a typed knowledge graph as the backbone of a \\emph{simulated search world} that unifies all three components. We propose \\textbf{Perception-Knowledge Chains (PKC)} to sample constrained multi-hop paths over the visual-knowledge intersection of Wikidata5M, retaining hop-level entity metadata that simultaneously defines a self-contained search world and step-level reward anchors. We further propose \\textbf{Hop-Anchored Policy Optimization (HaPO)}, which reuses these anchors for step-level credit assignment without a separately trained process reward model. Experiments on six multimodal knowledge-intensive benchmarks show that SearchEyes achieves state-of-the-art performance among open-source multimodal search agents, with SearchEyes-27B improving over the strongest open-source baseline by 6.2 points on average.%",
+      "authors": [
+        "Zhengbo Jiao",
+        "Yiming Cheng",
+        "Yilei Jiang",
+        "Kaituo Feng",
+        "Rui Huang",
+        "Tianyi Jiang",
+        "Juanxi Tian",
+        "Jiapeng li",
+        "Qunzhong Wang",
+        "Tailai Chen",
+        "Qianshan Wei",
+        "Chuan Xiao",
+        "Shanyu Rong",
+        "Yangfu Li",
+        "Yanhan Zhou",
+        "Yunpu Ma",
+        "Yifan Zhang",
+        "Xiangyu Yue"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-07T07:43:04+00:00",
+      "link": "https://arxiv.org/pdf/2607.05943v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Builds knowledge graphs from visual and textual data using typed KG and multi-hop reasoning, applicable to urban data integration",
+      "llm_evidence_cn": "利用类型化知识图谱从视觉和文本数据构建多跳推理路径，适用于城市数据整合",
+      "llm_evidence": "利用类型化知识图谱从视觉和文本数据构建多跳推理路径，适用于城市数据整合",
+      "canonical_evidence": "利用类型化知识图谱从视觉和文本数据构建多跳推理路径，适用于城市数据整合",
+      "llm_tldr_en": "Uses a typed knowledge graph as backbone for multimodal search, generating Perception-Knowledge Chains from Wikidata5M, enabling structured knowledge graph construction from heterogeneous data.",
+      "llm_tldr_cn": "训练多模态搜索代理面临数据、环境与奖励信号分离的问题。该文提出SearchEyes，以类型化知识图谱为骨干构建模拟搜索世界，通过感知知识链（PKC）在视觉-知识交集上采样多跳路径。保留了实体元数据，实现了统一的知识图构建与推理框架，可迁移至智慧城市领域。",
+      "llm_tldr": "训练多模态搜索代理面临数据、环境与奖励信号分离的问题。该文提出SearchEyes，以类型化知识图谱为骨干构建模拟搜索世界，通过感知知识链（PKC）在视觉-知识交集上采样多跳路径。保留了实体元数据，实现了统一的知识图构建与推理框架，可迁移至智慧城市领域。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.06464v1",
+      "source": "arxiv",
+      "title": "Hilti-Trimble-Oxford Dataset: 360 Visual-Inertial Benchmark with Floor Plan Priors for SLAM and Localization",
+      "abstract": "Automated progress monitoring on construction sites is an active area of research and development. Robot and human-carried mapping systems have been developed to build 3D maps of building and infrastructure projects. While LiDAR-based mapping systems achieve high accuracy, the cost of LiDAR can be prohibitive. Consumer-grade cameras with wide field of view (\"360 cameras\") combined with embedded inertial measurement units (IMUs) provide a cost-effective alternative. To support change detection and progress monitoring, highly accurate visual Simultaneous Localization and Mapping (SLAM) and floor plan-referenced localization systems are required. In this paper we present a high-quality dataset collected at an active construction site, which captures realistic challenges such as variable lighting conditions, moving workers, fast motions, and repetitive structures. The dataset offers thirty visual-inertial sequences recorded across seven floors over an eight-month period of the construction project. Ground truth trajectories were collected using a high quality LiDAR-inertial SLAM system rigidly attached to the 360 camera. Additionally, we report the results of an open research challenge evaluating the best visual SLAM and localization systems from around the world. The Challenge attracted substantially higher participation in SLAM, with 62 teams compared to 22 in floor-plan-referenced localization, reflecting the broader maturity of SLAM methods. The higher errors in localization further highlight the difficulty of this task in construction and point to the need for continued research, which this dataset is intended to support. The dataset and the benchmark are publicly available at: https://hilti-trimble-challenge.com/dataset-2026.",
+      "authors": [
+        "Samuele Centanni",
+        "Yuhao Zhang",
+        "Yifu Tao",
+        "Julien Kindle",
+        "Frank Neuhaus",
+        "Tilman Koß",
+        "Aryaman Patel",
+        "Michael Helmberger",
+        "Emilia Szymańska",
+        "Torben Gräber",
+        "Maurice Fallon"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-07T16:25:35+00:00",
+      "link": "https://arxiv.org/pdf/2607.06464v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multi-source data integration for construction site monitoring",
+      "llm_evidence_cn": "施工场地多源数据集成（视觉、惯性、平面图）",
+      "llm_evidence": "施工场地多源数据集成（视觉、惯性、平面图）",
+      "canonical_evidence": "施工场地多源数据集成（视觉、惯性、平面图）",
+      "llm_tldr_en": "Hilti-Trimble-Oxford dataset provides 360 visual-inertial data with floor plan priors for SLAM and localization on construction sites.",
+      "llm_tldr_cn": "施工场地自动化进度监测需要低成本高精度定位。本文提出Hilti-Trimble-Oxford数据集，包含360摄像头、IMU和楼层平面图先验，支持视觉SLAM和定位研究。实验表明该数据集能有效评估算法在真实施工场景中的表现，推动多源数据融合在智慧建造中的应用。",
+      "llm_tldr": "施工场地自动化进度监测需要低成本高精度定位。本文提出Hilti-Trimble-Oxford数据集，包含360摄像头、IMU和楼层平面图先验，支持视觉SLAM和定位研究。实验表明该数据集能有效评估算法在真实施工场景中的表现，推动多源数据融合在智慧建造中的应用。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -1,0 +1,336 @@
+Title: Hilti-Trimble-Oxford Dataset: 360 Visual-Inertial Benchmark with Floor Plan Priors for SLAM and Localization
+
+URL Source: https://arxiv.org/pdf/2607.06464v1
+
+Published Time: Wed, 08 Jul 2026 01:28:10 GMT
+
+Number of Pages: 9
+
+Markdown Content:
+# Hilti-Trimble-Oxford Dataset: 360 Visual-Inertial Benchmark with Floor Plan Priors for SLAM and Localization 
+
+Samuele Centanni 1∗, Yuhao Zhang 2∗, Yifu Tao 2, Julien Kindle 1,3, Frank Neuhaus 4, Tilman Koß 4
+
+Aryaman Patel 5, Michael Helmberger 1, Emilia Szyma´ nska 1, Torben Gräber 1, Maurice Fallon 2
+
+Abstract — Automated progress monitoring on construction sites is an active area of research and development. Robot and human-carried mapping systems have been developed to build 3D maps of building and infrastructure projects. While LiDAR-based mapping systems achieve high accuracy, the cost of LiDAR can be prohibitive. Consumer-grade cameras with wide field of view ( “360 cameras” ) combined with embedded inertial measurement units (IMUs) provide a cost-effective al-ternative. To support change detection and progress monitoring, highly accurate visual Simultaneous Localization and Mapping (SLAM) and floor plan-referenced localization systems are required. In this paper we present a high-quality dataset collected at an active construction site, which captures realistic challenges such as variable lighting conditions, moving workers, fast motions, and repetitive structures. The dataset offers thirty visual-inertial sequences recorded across seven floors over an eight-month period of the construction project. Ground truth trajectories were collected using a high quality LiDAR-inertial SLAM system rigidly attached to the 360 camera. Additionally, we report the results of an open research challenge evaluating the best visual SLAM and localization systems from around the world. The Challenge attracted substantially higher participation in SLAM, with 62 teams compared to 22 in floor-plan-referenced localization, reflecting the broader maturity of SLAM methods. The higher errors in localization further highlight the difficulty of this task in construction and point to the need for continued research, which this dataset is intended to support. The dataset and the benchmark are publicly available at: https://hilti-trimble-challen ge.com/dataset-2026 .
+
+I. I NTRODUCTION 
+
+The buildings and construction industry accounts for ap-proximately 11 -13 % of global GDP [1]. It is, however, a sector that has seen minimal improvements to productivity, in part due to the limited digitization of work processes, rework due to defects and quality deviations, occupational safety hazards, and demographic changes in the construction workforce [2]. These challenges motivate automated methods for tracking the progress of construction to provide site managers with timely insights into the as-is state of the project. A common approach to construction site monitoring is the regular mapping of the environment using a variety of sensors such as LiDAR, RGB cameras, or terrestrial laser 
+
+> ∗
+
+Equal contribution 
+
+> 1
+
+Hilti AG, Corporate Research & Technology, Schaan, Liechtenstein 
+
+> 2
+
+University of Oxford, Dynamic Robot Systems Group, Oxford, UK 
+
+> 3
+
+ETH Zürich, Robotics Systems Lab, Zürich, Switzerland 
+
+> 4
+
+Vision & Robotics GmbH, Koblenz, Germany 
+
+> 5
+
+Trimble Inc., Denver, USA 360-degree videos 
+
+> IMU measurements
+> Floor plans
+> Floor plan frame
+
+Evaluation server   
+
+> SLAM frame
+> Score: 2’100 / 2’500
+> EVALUATION SYSTEM
+> for the CONMAP Challenge
+> Upload your results (see submission requirements ) and receive a detailed accuracy report.
+> Discover the challenge >
+
+Estimated trajectories 
+
+Dataset (30 sequences)  
+
+> Localization Challenge SLAM Challenge
+
+Fig. 1: The Hilti-Trimble-Oxford Dataset, consisting of 360-degree videos, IMU measurements and floor plans, allows for benchmark-ing algorithms for SLAM and floor-plan-referenced localization. 
+
+scanners [3, 4]. These sensors may be operated manually or mounted on robotic platforms, including legged robots, drones, and wheeled platforms [5, 6]. The usefulness of the resulting maps depends on the extent to which they can support change detection across consecutive mapping sessions or comparison against architectural models [7]. Detecting errors or deviations early can lead to substantial savings in both cost and time. The maps can also serve as documentary evidence of the building project [8]. The core technology allowing for the generation of such maps is Simultaneous Localization and Mapping (SLAM), which has been an area of active research in robotics and computer vision [9]. While LiDAR sensors remain widely used for SLAM, color cameras provide a richer understanding of the environment. Due to their low cost, wide availability, and easy deployment, passive cameras are increasingly used as the sole sensor for data collection. In particular, 360 cameras provide a full field-of-view coverage, which enables efficient environment mapping. Additionally, many 360 cameras incorporate inertial measurements, which can support gravity alignment and scale estimation. After a map and a trajectory is estimated, it is often beneficial for site managers to have them registered in the construction site’s plan. Prior work has focused on local-ization within complete 3D building representations [10], however, Building Information Modeling (BIM) models are not universally available, and tend to be large and complex arXiv:2607.06464v1 [cs.RO] 7 Jul 2026 to process. In contrast, 2D floor plans are widely adopted, compact, and still encode important geometric and seman-tic information about the environment. This makes floor plan-based localization a practical and relevant problem for construction-site monitoring. This setting highlights the need for benchmark datasets that evaluate both visual-inertial SLAM performance and lo-calization with respect to 2D floor plans in realistic, evolving construction environments. To address this gap, we introduce the Hilti-Trimble-Oxford Dataset and the corresponding Hilti x Trimble Challenge 2026, which provide data, ground truth, and an evaluation protocol for benchmarking trajectory estimation methods, as presented in Fig. 1. The main contributions of this work are:  
+
+> •
+
+The Hilti-Trimble-Oxford Dataset of 30 challenging sequences of 360 ◦ field of view image streams with synchronized IMU measurements, captured over a span of 8 months at the same construction site, together with the corresponding 2D floor plans.  
+
+> •
+
+Ground-truth trajectories collected with a high-accuracy LiDAR-inertial system which are released alongside the dataset.  
+
+> •
+
+An evaluation system for benchmarking algorithms from two categories, where participants estimate the trajectory of the 360 camera: (i) in an arbitrary reference frame ( SLAM category) (ii) in the floor plan’s reference frame ( Localization category).  
+
+> •
+
+The discussion of the results of the Hilti x Trimble Challenge 2026, which received the submissions from 22 teams in the Localization category and 62 teams in the SLAM category, demonstrating substantial interest in the proposed benchmark. II. R ELATED WORK 
+
+Research into visual SLAM has progressed hand in hand with the availability of high quality datasets. Accordingly, we review datasets for visual SLAM and localization before turning to datasets for construction monitoring. 
+
+A. Datasets for Visual SLAM and Localization 
+
+Common visual SLAM datasets exist for autonomous vehicles [11], aerial robots [12], and legged robots [13]. The manner in which the sensors are mounted on the platforms and how they move has a significant impact on the usefulness of any dataset. Early autonomous vehicle and field robotics datasets, such as KITTI [11], mostly contain forward translation with low rotation rates and larger dis-tances to nearby objects. With the advent of body-mounted or egocentric sensing systems, there are new challenges for visual SLAM systems to solve, notably the high rotation rates which occur when a person moves their head abruptly. Subsequent datasets have included inertial data and were used to develop visual-inertial odometry systems [12, 14]. More recent datasets such as LaMAR [15] target egocentric scenarios, while LaMAria [16] extends this approach to city-scale large environments. For evaluation of visual SLAM systems, ground truth poses can be obtained from GNSS (especially in autonomous driving [11]) or from motion capture systems in indoor environments [17]. Control points have also been used to provide precise but sparse ground truth locations [16, 18]. In addition to ground truth trajectories, there are datasets that also provide a ground truth 3D map to evaluate the SLAM reconstruction. Datasets including Matterport3D [19], ScanNet [20] and LaMAR [15] use the output from an accurate SLAM systems as the ground truth map. Alter-natively, a survey-grade laser scanner can produce more precise 3D maps, and is used to provide ground truth maps in datasets including ETH3D [21], ScanNet++ [22], FusionPortableV2 [13] and Oxford Spires [23]. Visual localization or place recognition (in a prior map) is a common and related problem. Early place recognition datasets such as 7-Scenes [24] were limited to small static scenes. Later efforts pushed the scale of viewpoint, illumi-nation and structural change. InLoc [25] features textureless indoor areas while Aachen Day-Night [26] has sequences captured with extreme variations in image appearance. How-ever, these approaches localize in prior maps of visual fea-tures as opposed to localizing directly within an architectural floor plan – which is the focus of the Hilti-Trimble-Oxford dataset. 
+
+B. Datasets Specific to Construction Monitoring 
+
+Despite the emergence of a wide range of technologies for digitizing construction project monitoring, there are few high quality public SLAM datasets available. This is in part because site owners and contractors prefer to retain confi-dentiality on their projects. The following datasets therefore provide important benchmarks, but differ in terms of sensing modalities, prior information, and the type of localization or mapping task they support. ConSLAM is a dataset of five sequences collected with a portable LiDAR scanner on the same part of a construction site over an extended period [27], which supports multi-session LiDAR SLAM. However, its limited spatial coverage and focus on LiDAR sensing make it less suitable for evaluating low-cost visual localization approaches. Hilti Research has organized a series of SLAM Chal-lenges focused on benchmarking performance in realistic construction environments. The initial Hilti SLAM Challenge (2021) [28] introduced a multi-sensor dataset combining visual, LiDAR, and inertial measurements with millimeter-accurate ground truth, highlighting the importance of sen-sor fusion for robustness in real-world scenarios. Follow-on Challenges in 2022 and 2023 extended the benchmark to more diverse environments, sparse survey-grade ground truth, multi-device setups, and multi-session SLAM [18, 29]. Across these Challenges, reported results showed strong performance from LiDAR-based methods, including sub-centimeter drift in some 2022 sequences, while also reveal-ing that multi-session capabilities remain comparatively less mature. The associated datasets, however, lack explicit map Fig. 2: Visualization of the multi-camera calibration. Extrinsic constraints are obtained when the AprilTag board is observed by two cameras simultaneously. The red markers indicate the forward-projected image-plane locations of the extracted calibration target corners under the calibrated cameras. 
+
+priors, which have the potential to improve the reliability of SLAM solutions. The SLABIM [10] dataset is notably relevant. The authors focus on direct LiDAR localization inside a detailed 3D Building Information Model (BIM) - in this case the HKUST campus. While industry trends are promoting the use of BIMs, we feel that a useful commercial solution should not rely on such a detailed prior map for localization. The Hilti-Trimble-Oxford Dataset instead targets visual-only localization with respect to a minimal 2D floor plan. This combination is more practical due to the low power and cost requirements of the 360 ◦ camera we selected. III. H ARDWARE 
+
+The main sensor used in the proposed dataset is the Insta360 ONE RS 1-Inch 360 Edition, selected to balance high-quality omnidirectional imaging with portability and robustness. The choice of a compact, self-contained 360 ◦
+
+camera is motivated by the characteristics of real-world construction and industrial environments, where data acqui-sition often takes place in confined, cluttered, and partially unstructured spaces. In such settings, sensors must support rapid deployment, tolerate frequent handling, and operate reliably without complex calibration or setup procedures. The device captures front and back hemispherical images at a resolution of 2944 × 2880 pixels in the proprietary 
+
+.insv file format. Since each fisheye lens provides a field of view exceeding 180 ◦, there exists some limited overlap between the two camera views. This redundancy enables identification of common visual features across lenses in multi-camera processing pipelines and can also be leveraged to produce seamless equirectangular projection through ro-bust image stitching. In addition to visual data, the camera integrates a 6-axis Inertial Measurement Unit (IMU) that provides high-frequency motion measurements. These measurements are used to estimate metric motion and to carry out motion compensation of the rolling shutter images. 
+
+A. Calibration 
+
+Performing SLAM on a two-fisheye camera system re-quires precise intrinsic and extrinsic calibration. 
+
+1) Multi-Camera Intrinsic and Extrinsic Calibration: We employ the open-source toolbox Kalibr [30] for intrinsic and extrinsic calibration of two fisheye cameras. Due to the limited visual overlap between the two lenses, standard checkerboard patterns are not suitable, as they require both cameras to simultaneously observe a large, contiguous set of shared inner corners. Instead, we use a 6 × 6 AprilTag cal-ibration board. We keep the device stationary while moving the board around the field of view of each camera to ensure spatial coverage and feature diversity, as shown in Fig 2. We move the calibration board slowly to ensure that the rolling shutter effect is negligible. To achieve stable and accurate calibration under wide-angle imaging conditions, we adopt the Enhanced Uni-fied Camera Model (EUCM) [31]. Since many SLAM systems support the Kannala-Brandt four-parameter model (KB4) [32], we also provide KB4 parameters fitted to the calibrated EUCM intrinsics. Fig 2 shows an example of the reprojection of the extracted calibration target corners using the calibrated intrinsics and extrinsics. 
+
+2) Rolling Shutter Parameter: We obtain the rolling-shutter frame readout time directly from the camera metadata and validate it using a high-frequency blinking LED, where the spacing of the induced horizontal brightness bands pro-vides an independent estimate of the sensor readout time. 
+
+3) IMU Calibration: We estimate the IMU noise char-acteristics through Allan variance analysis. Specifically, we collected approximately three hours of stationary IMU data to compute the noise density and random walk parameters for both the accelerometer and the gyroscope. 
+
+4) Camera-IMU Extrinsic Calibration: Given the cal-ibrated camera and IMU noise parameters, we perform camera–IMU extrinsic calibration using Kalibr with a record-ing that includes rich translational motion and rotational excitation about the yaw, pitch, and roll axes to ensure full observability of all extrinsic parameters. IV. D ATASET 
+
+We collected the dataset over a eight-month period at a construction site in Buchs, Switzerland. This long collection period captures the site’s structural evolution, offering a novel benchmark for long-term mapping in dynamic environ-ments. The building footprint is approximately 40 m × 100 mand spans seven floors as well as two underground parking levels. In its early stages, the environment was characterized by limited texture and repetitive concrete structures; as construction progressed, the scene complexity increased as ducting, fixtures and dividing walls were installed. We provide the dataset as ROS 2 bag files ( .db3 ), a standard logging format for time-stamped sensor streams commonly used in robotics. Raw images and high-frequency IMU measurements are extracted directly from the .insv 
+
+metadata. Each recording is self-contained and captured on Sensor Topic name Rate [Hz] IMU /imu/data_raw/compressed 1000 Front camera /cam0/image_raw/compressed 30 Rear camera /cam1/image_raw/compressed 30                             
+
+> TABLE I: Sensors with their corresponding ROS topics and data frequencies contained in the dataset’s .db3 files.
+> Clutter ✓✓
+> Dynamic init. ✓✓✓✓
+> Low light ✓✓✓✓✓✓
+> Aggr. motion ✓✓✓✓✓
+> # Sequences 10 24712121
+> TABLE II: Distribution of sequences across evaluation conditions. Each column represents a unique combination of conditions, with the number of corresponding sequences in the bottom row.
+
+a single floor, enabling modular benchmarking and evalu-ation. Specifically, each ROS 2 bag records a set of time synchronized data streams (“topic”) as summarized in Tab. I. These topics provide the complete sensor data required for visual-inertial SLAM, including IMU measurements and two fisheye camera streams. 
+
+A. Challenge Sequences 
+
+The dataset consists of 30 sequences with an average duration of 180 s . We categorize the runs according to four factors that influence sequence difficulty: 1) Clutter: Selected runs offer intentionally cluttered environments (e.g. close proximity to walls or moving people), resulting in severe occlusions. 2) Initialization: Static runs start with a stationary pe-riod and gentle excitation for IMU bias estimation. 
+
+Dynamic runs begin in motion, requiring the estimator to initialize under active dynamics. 3) Low-Light: Sequences include near-dark conditions, testing the limits of feature tracking. 4) Aggressive Motion: Certain runs involve rapid 6-DoF movements, introducing motion blur and stress-testing IMU-based de-skewing. These sequences may require rolling shutter compensation for optimal results. By combining these factors, the dataset spans diverse operating conditions, as summarized in Tab. II, ranging from simple cases with static initialization, sufficient illumination, rich visual features, and smooth motion, to challenging cases with dynamic initialization, low-light or near-dark scenes, aggressive 6-DoF motion, and severe visual occlusions. The sequences intentionally avoid large repeated loops, making loop-closure detection and global map optimization more difficult and emphasizing wide-field-of-view loop clo-sure using both cameras. 
+
+B. Floor Plans 
+
+We provide anonymized building floor plans as PNG images, resized to a metric resolution of 1 px = 1 cm and simplified to contain only structural elements such as walls and concrete columns. The resulting maps are represented as binary images, where structural elements are encoded 
+
+> Fig. 3: Types of provided floor plans.
+> Fig. 4: Data collection platform: rigidly connected V&R LiDAR-inertial SLAM system and Insta360 ONE RS 1-Inch 360 Edition.
+
+as 1 (black) and free space as 0 (white), allowing direct conversion into ROS occupancy maps. Two variants of each floor plan are available: with and without windows included as structural elements. Additionally, we provide floor plans in DXF format, which contain more detailed structural infor-mation. Although these are not registered with respect to the PNG maps, they offer additional geometric or semantic data. All floor plans’ formats available in the dataset are presented in Fig. 3. Localization in this setting remains challenging, as it requires associating visual observations from the sequences with the simplified 2D structural representation. To reduce ambiguity and shift the focus from global place recognition to local map matching, the initial pose of each sequence within the floor plan is provided. V. G ROUND TRUTH 
+
+We obtain ground truth for both camera trajectories and the reconstructed scene geometry using a LiDAR-inertial SLAM system from Vision & Robotics (V&R), rigidly attached to the 360 camera as depicted in Fig. 4. The LiDAR-inertial subpart consists of a Hesai XT32M2X LiDAR sensor and a high-quality, factory-calibrated, tactical-grade IMU, with hardware synchronization between the two components. A. Temporal Synchronization 
+
+As the Insta360 camera does not support hardware-level temporal synchronization, we perform software-based tem-poral alignment between the LiDAR and camera systems. Specifically, we estimate a linear time-mapping function between the two clock domains by maximizing the cross-correlation between their corresponding inertial motion sig-nals. This mapping function enables accurate timestamp conversion between the LiDAR and camera clocks. 
+
+B. Geometric Optimization 
+
+The SLAM pipeline operates in two stages. First, the online MC2SLAM algorithm [33] is executed to produce an initial estimate of the trajectory and map. In a subsequent offline step, all recorded measurements are used for joint optimization in a large-scale non-linear optimization step. The system adopts a continuous-time trajectory representa-tion, allowing for the simultaneous optimization of both the sensor trajectory and the scene structure with implicit loop closures. Prior experimental evaluations, both internal and commercial, have demonstrated that LiDAR-inertial SLAM systems of this class are capable of achieving sub-centimeter accuracy under favorable conditions [18]. Consequently, we consider the resulting estimates to serve as sufficiently accu-rate ground truth for the purposes of this study. 
+
+C. Camera Ground Truth 
+
+To transfer the LiDAR trajectory to the camera frame, we estimate the extrinsic transformation between the LiDAR and the camera. To this end, we perform a joint calibration procedure. An AprilTag calibration board is placed within the common field of view of both the LiDAR and the intrinsically pre-calibrated camera. We then record a dataset comprising a wide range of board poses (positions and orientations). This enables the formulation of a non-linear least-squares optimization problem that jointly estimates the board poses and the rigid transformation between the LiDAR and the camera. The optimization incorporates two complementary error terms: (i) reprojection errors of detected AprilTag corners in the camera images, and (ii) point-to-plane distances between LiDAR measurements and the observed calibration board, which is assumed to be planar. By jointly minimizing these error terms, the LiDAR and camera observations are coupled, resulting in an accurate estimate of the LiDAR-to-camera extrinsic calibration. 
+
+D. Floor Plan Alignment 
+
+We achieve the spatial alignment of the trajectories to the architectural floor plans through a multi-stage registration process. Initially, we perform a coarse alignment by manually rotating and translating the LiDAR point cloud to match the primary structural features of the floor plan. This result serves as the initial seed for a fine-grained refinement using the Point-to-Point Iterative Closest Point (ICP) algorithm [34], ensuring a high-precision fit between the global LiDAR 
+
+> Fig. 5: A ground truth trajectory ( blue ) with LiDAR SLAM map (green ) overlaid on a floor plan ( black ). The trajectory passes through some as-yet unbuilt walls due to the early construction phase, and some temporary wall-like structures are captured in the LiDAR point cloud. Glass reflections can also be seen.
+
+map and the reference geometry, with the example presented in Fig. 5. Beyond alignment, this process quantifies the discrep-ancies between the as-built state and the as-planned ar-chitectural models. We observed an average deviation of approximately 2 cm between the LiDAR data and the floor plans. These values reflect the standard structural tolerances and inevitable variances inherent in large-scale, real-world construction environments. VI. C HALLENGE RESULTS AND FINDINGS 
+
+In this section we describe the benchmark setup and evaluation metrics, summarize the Challenge results, and discuss the main findings and known limitations of the dataset. 
+
+A. Benchmark Overview 
+
+The proposed dataset is accompanied by a benchmarking system that evaluates submitted trajectories according to the selected evaluation track:  
+
+> •
+
+SLAM: The submitted and ground-truth trajectories are first rigidly aligned in a least-squares sense using the Kabsch algorithm. The score is then computed from the resulting 3D position error.  
+
+> •
+
+Localization: The submitted trajectory has to be ex-pressed in the map frame (without any alignment). In this track, only the 2D position error in the floor plan plane is evaluated, with the z-coordinate ignored. To encourage submissions to the benchmark, we organized the Hilti x Trimble Challenge 2026, which accepted submis-sions over a period of 3.5 months. After the completion of the Challenge, all ground truth trajectories were made available to support independent evaluation, further algorithm devel-opment, and model training. 
+
+B. Evaluation Metrics 
+
+We required each submission to provide a trajectory with one pose for each camera-frame timestamp. A run is eval-uated only if the submitted trajectory achieves at least 99% 
+
+coverage of the evaluated ground-truth poses, with coverage defined as the ratio of matched predicted poses to ground-truth poses; otherwise, the score for that run is set to zero. The initial 5 s of each recording are excluded to ignore any effects during initialization. For each evaluated trajectory i, we compute an expo-nentially decaying position score by averaging the per-pose scores over the trajectory: 
+
+score i = 1
+
+NiNiX
+
+> t=1
+
+ae −c e (i) 
+
+> t
+
+(1) 
+
+e(i) 
+
+> t
+
+= p(i) 
+
+> M,C
+
+(t) − ˆp(i) 
+
+> M,C
+
+(t) 2
+
+(2) Here, Ni denotes the number of evaluated poses in trajec-tory i; p(i) 
+
+> M,C
+
+(t) and ˆp(i) 
+
+> M,C
+
+(t) denote the ground-truth and predicted camera position in the map frame M; and e(i)
+
+> t
+
+is the Euclidean position error. For the SLAM track, e(i)
+
+> t
+
+is the 3D Euclidean distance after rigid alignment. For the Localization track, e(i) 
+
+> t
+
+is the 2D Euclidean distance in the floorplan plane. The constants a and c parameterize the exponential decay and are chosen such that an error of 0 m corresponds to a score of 100 and an error of 10 m corresponds to a score of 
+
+1, yielding a = 100 and c = ln(10) /5 ≈ 0.4605 .The final score is the sum of the trajectory scores over all evaluated runs: 
+
+finalScore = X
+
+> i
+
+score i (3) For the official benchmark, both the SLAM and Local-ization tracks exclude 5 sequences that were made available with ground truth. These sequences are intended solely for algorithm fine-tuning and not used for evaluation. Therefore, the SLAM track is evaluated on 25 trajectories out of 30 in total. The Localization track is evaluated on 24 trajectories, excluding the same 5 runs as SLAM, with one additional sequence omitted due to a missing floor plan. Consequently, the maximum achievable total score is 2500 points for SLAM and 2400 points for Localization. All the aforementioned metrics are computed using the evo toolbox [35]. 
+
+C. Results 
+
+At the time of the Challenge deadline, the evaluation system has received over 1800 submissions, with 22 unique teams competing in the Localization category and 62 teams in the SLAM category. The results of the Hilti x Trim-ble Challenge 2026 were announced publicly and the top performing solutions are shown in Tab. III and Tab. IV, with a dash signifying the lack of information provided by the participants. The full leaderboard is available at the Challenge’s webpage 1.The winning SLAM submission, ACDC-VSLAM from KAIST, achieved a total score of 2410 .0 points. Their system is based on OKVIS2-X [36] and uses point and line features together with an optimized selection criteria to balance the 
+
+> 1https://hilti-trimble-challenge.com/leaderboard -2026
+
+feature distribution in each image to improve robustness in texture-poor indoor scenes. Its local bundle adjustment further re-weights visual constraints based on observation reliability and depth. In the backend, a two-stage loop-closure module detects both intra-camera and cross-camera revisits, and adaptively selects between SE(3), Sim(3), and 4-DoF constraints depending on the quality of each loop candidate. A joint team from ETH, THU and University of Stuttgart won the Localization category of the Challenge with the score of 2196 .3 points. Their approach first estimates camera poses using OKVIS2-X with online extrinsic calibration. They then build upon Z-FLoc [37], which estimates a Sim(2) transformation from recent image frames. It reconstructs a wall-only 3D point cloud and projects it into a BEV map. It then matches extracted line/circular primitives to floor plan primitives with RANSAC and non-linear refinement, and then refines the overall trajectory using pose graph optimization. Their solution achieves an average RMSE of approx. 24 cm, resulting in a score of 2196 .3 points. 
+
+D. Discussion 
+
+The top SLAM solutions all rely on visual-inertial odome-try, usually using both cameras and the IMU, and followed by a subsequent optimization step (BA). Most are based on es-tablished systems such as OKVIS2-X [36], OpenVINS [38], ORB-SLAM3 [39], or √VINS [40]. Notably, OKVIS2-X was used by several high-performing teams, including the winners of both the SLAM and Localization tracks. Some teams explicitly reported challenges with initial-ization, especially for sequences that start in motion, and addressed this through dynamic or delayed initialization strategies. Image preprocessing was also common, including contrast enhancement in dark scenes, static masks, and segmentation to remove the operator or dynamic objects. Beyond classical point features, multiple systems incorporate line features, which are particularly useful in construction environments with texture-poor walls, corridors, and strong structural edges. In the backend, loop closure, pose-graph optimization, and global bundle adjustment are frequently used to reduce drift beyond what local Visual-Inertial Odom-etry (VIO) can recover. Overall, the strongest submissions combine robust VIO with careful preprocessing, reliable initialization, and global optimization. The Localization track results suggest that semantic infor-mation extraction plays an important role in map alignment. The top-performing teams detected walls in the video and created wall-points-only point clouds to later align them in bird’s-eye view (BEV) with floor plans, either through a ded-icated algorithm such as Z-FLoc or via ICP. Notably, the top three teams all used semantic segmentation, suggesting that performance gains come not only from geometric alignment itself, but from selecting stable, semantically meaningful structural elements. Even in later construction phases, no team reported improving alignment by detecting windows or other structural components other than walls that are present in detailed drawings. 1 07-07/r1 
+
+> 1 12-02/r1
+> 2 12-02/r1
+> 2 12-03/r1
+> 3 05-19/r1
+> 3 12-02/r1
+> 4 05-19/r1
+> 4 12-02/r1
+> 5 12-02/r1
+> 6 06-18/r1
+> 6 07-07/r1
+> 6 12-02/r1
+> 6 12-02/r2
+> 7 12-02/r1
+> 7 12-02/r2
+> 7 12-03/r1
+> EG 10-16/r1
+> EG 12-02/r1
+> EG 12-02/r2
+> UG1 05-19/r1
+> UG1 06-18/r1
+> UG1 12-02/r1
+> UG1 12-02/r2
+> UG1 12-03/r1
+> UG2 12-02/r1 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> Mean RMSE [m]
+> SLAM 1 07-07/r1
+> 1 12-02/r1
+> 2 12-02/r1
+> 2 12-03/r1
+> 3 05-19/r1
+> 3 12-02/r1
+> 4 05-19/r1
+> 4 12-02/r1
+> 5 12-02/r1
+> 6 06-18/r1
+> 6 07-07/r1
+> 6 12-02/r1
+> 6 12-02/r2
+> 7 12-02/r1
+> 7 12-02/r2
+> 7 12-03/r1
+> EG 10-16/r1
+> EG 12-02/r1
+> EG 12-02/r2
+> UG1 05-19/r1
+> UG1 06-18/r1
+> UG1 12-02/r1
+> UG1 12-02/r2
+> UG1 12-03/r1 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> Mean RMSE [m]
+> LOCALIZATION
+
+Fig. 6: Average error of the top three teams for each sequence in the SLAM and Localization categories. Bar color indicates error magnitude, transitioning from green to red as error increases. The coding for run names is floor, date, and numbered run on that date. 
+
+Sequences recorded in the underground floor consistently challenged the top teams in both the localization and SLAM tracks. This is visible in the error plots in Fig. 6. We did not envisage this because when we categorized the difficulty of these sequences, they did not involve aggressive motion or clutter. However, they do contain low-light conditions and less texture than the other floors. 
+
+E. Known Issues 
+
+There are a couple of practical considerations when using this dataset. The most important issue is the accuracy or concurrency of the provided floor plans. The bitmap floor plans were derived from a single version of the architectural floor plans. The building project was in constant progress with certain elements of the floor plan (cubicles, partitions or ducting) not yet present during the early data recordings. This means that the Challenge required localization to a similar but different scene – with only some of the features usable for matching. We feel this is a realistic challenge because up-to-the-minute floor plans would not be feasible in active construction environments. Separately from this, a few deviations or errors in the floor plan were identified when comparing them to our LiDAR-based ground-truth point clouds (e.g., partitions installed with a slightly different length). This may lead to small residual errors in our ground-truth pipeline. These effects are minor with respect to the intended evaluation scale and do not affect the overall validity of the benchmark. VII. C ONCLUSION 
+
+The Hilti-Trimble-Oxford Dataset provides a construction-focused visual-inertial state estimation benchmark with prior 2D maps. Using the Hilti x Trimble Challenge 2026, we eval-uated SLAM and localization submissions from teams world-wide. The top team in the Localization category achieved an average error below 24 cm, with increased performance observed among solutions that incorporate semantic scene segmentation information from video frames. The SLAM category attracted nearly three times as many teams, demon-strating high interest, with the lowest reported average error reaching 9 cm. Beyond the original Challenge sequences, we have also released the ground-truth trajectories and evaluation code. We hope that the Hilti-Trimble-Oxford Dataset and bench-mark will support further progress in SLAM and localization research and contribute to more effective construction-site monitoring. REFERENCES 
+
+[1] United Nations Environment Programme and Global Alliance for Buildings and Construction, “Global Status Report for Buildings and Construction 2025–2026,” 2026, accessed 7 July 2026. [Online]. Available: www.unep.org/resources/repor t/global-status-report-buildings-and-construction-2025-2026 [2] I. Armeni et al. , “Construction robotics and automation -technical committee spotlight,” IEEE Robotics & Automation Magazine , vol. 31, no. 4, pp. 186–192, 2024. [3] F. Bosche, C. T. Haas, and B. Akinci, “Automated recognition of 3D CAD objects in site laser scans for project 3D status visualization and performance control,” Journal of Computing in Civil Engineering , vol. 23, no. 6, pp. 311–318, 2009. [4] Y. Turkan, F. Bosche, C. T. Haas, and R. Haas, “Automated progress tracking using 4D schedule and 3D sensing technolo-gies,” Autom. in Construction , vol. 22, pp. 414–421, 2012. [5] S. Halder, K. Afsari, J. Serdakowski, and S. DeVito, “A methodology for BIM-enabled automated reality capture in construction inspection with quadruped robots.” Intl. Asso-ciation for Automation and Robotics in Construction, 2021. [6] M. Arjmand, J. Jung, M. Olsen, H. Lassiter, and M. Jafari, “Conceptual design of advanced construction progress mon-itoring with terrestrial and robotic laser scanning systems,” 
+
+Zenodo , vol. abs/zenodo.7807693, 03 2023. [7] F. Bosche, M. Ahmed, Y. Turkan, C. T. Haas, and R. Haas, “The value of integrating scan-to-BIM and scan-vs-BIM tech-niques for construction monitoring using laser scanning and BIM: The case of cylindrical MEP components,” Automation in Construction , vol. 49, pp. 201–213, 2015. [8] Building Safety Regulator. (n.d.) Understanding the Golden Thread. Accessed 7 July 2026. [Online]. Available: www.go v.uk/guidance/keeping-information-about-a-higher-risk-build ing-the-golden-thread [9] C. Cadena et al. , “Past, present, and future of simultaneous localization and mapping: Toward the robust-perception age,” 
+
+IEEE Transactions on Robotics , vol. 32, no. 6, p. 1309–1332, Dec. 2016. [10] H. Huang et al. , “Slabim: A SLAM-BIM coupled dataset in HKUST main building,” in IEEE Intl. Conf. on Robotics and Automation (ICRA) , 2025. [11] A. Geiger, P. Lenz, C. Stiller, and R. Urtasun, “Vision meets robotics: The KITTI dataset,” Intl. J. of Robotics Research ,vol. 32, no. 11, pp. 1231–1237, 2013. [12] M. Burri et al. , “The EuRoC micro aerial vehicle datasets,” 
+
+Intl. J. of Robotics Research , vol. 35, no. 10, pp. 1157–1163, 2016. [13] H. Wei et al. , “FusionPortableV2: A unified multi-sensor dataset for generalized SLAM across diverse platforms & scalable environments,” Intl. J. of Robotics Research , 2024. [14] D. Schubert, T. Goll, N. Demmel, V. Usenko, J. Stueckler, and D. Cremers, “The TUM VI benchmark for evaluating visual-inertial odometry,” in IEEE/RSJ Intl. Conf. on Intelligent Robots and Systems (IROS) , October 2018, pp. 1680–1687. [15] P.-E. Sarlin et al. , “LaMAR: Benchmarking localization and Team Base method View type Map prior Real time Global BA Loop closure Same params Average RMSE [m] Score 1 KAIST OKVIS2-X Fisheye ✗ - ✓ ✓ - 0.089 2410.0 2 Inha Univ. √VINS Fisheye ✗ ✗ ✓ ✓ - 0.109 2393.9 3 - OKVIS2-X Fisheye ✗ ✗ ✓ ✓ ✗ 0.189 2320.7 4 ICL OpenVINS + DBoW Fisheye ✗ ✗ ✗ ✓ ✓ 0.202 2308.8 5 Univ. of Luxembourg ORB-SLAM3 Fisheye ✓ - ✓ ✓ - 0.224 2299.3 
+
+TABLE III: Top 5 SLAM teams by rank with base method, used image view type, use of map prior, real-time capability, global bundle adjustment, loop closure, parameter consistency across sequences, average RMSE, and score.                                      
+
+> Team Trajectory estimation approach Map alignment approach Semantic segment. Average RMSE [m] Score 1ETH-THU-Stuttgart OKVIS2-X Z-FLoc anchors ✓[41] 0.238 2196.3 2Univ. of Luxembourg ORB-SLAM3 with map priors BEV-wall-points-to-map ICP in 2D ✓[42] 0.286 2161.4 3ETH OmniRecon OpenVINS + COLMAP BEV-wall-points-to-map ICP in 2D ✓[41] 0.399 2041.3 4Cairo University ORB-SLAM3 Ray-based wall scoring ✗0.497 1919.0 5ETH Map-It Ralph OpenVINS + COLMAP Starting-pose-based alignment ✗1.287 1569.9
+
+TABLE IV: Top 5 Localization teams by rank with method used for generating the trajectory, trajectory-to-map alignment approach, whether semantic segmentation information from the video stream was used in the alignment, average RMSE and the score. mapping for augmented reality,” in Eur. Conf. on Computer Vision (ECCV) , 2022. [16] A. Krishnan et al. , “Benchmarking egocentric visual-inertial SLAM at city scale,” in IEEE/CVF Intl. Conference on Com-puter Vision , 2025. [17] J. Sturm, N. Engelhard, F. Endres, W. Burgard, and D. Cre-mers, “A benchmark for the evaluation of RGB-D SLAM systems,” in IEEE/RSJ Intl. Conf. on Intelligent Robots and Systems (IROS) , 2012, pp. 573–580. [18] L. Zhang et al. , “Hilti-Oxford dataset: A millimeter-accurate benchmark for simultaneous localization and mapping,” IEEE Robotics and Automation Letters , vol. 8, no. 1, pp. 408–415, 2022. [19] A. Chang et al. , “Matterport3D: Learning from RGB-D data in indoor environments,” in IEEE Intl. Conf. on 3D Vision ,2017, pp. 667–676. [20] A. Dai, A. X. Chang, M. Savva, M. Halber, T. Funkhouser, and M. Nießner, “ScanNet: Richly-annotated 3D reconstructions of indoor scenes,” in IEEE Int. Conf. Computer Vision and Pattern Recognition (CVPR) , 2017, pp. 5828–5839. [21] T. Schops et al. , “A multi-view stereo benchmark with high-resolution images and multi-camera videos,” in IEEE Int. Conf. Computer Vision and Pattern Recognition (CVPR) ,2017, pp. 3260–3269. [22] C. Yeshwanth, Y.-C. Liu, M. Nießner, and A. Dai, “Scan-Net++: A high-fidelity dataset of 3D indoor scenes,” in Intl. Conf. on Computer Vision (ICCV) , 2023, pp. 12–22. [23] Y. Tao, M. Á. Muñoz-Bañón, L. Zhang, J. Wang, L. F. T. Fu, and M. Fallon, “The Oxford Spires dataset: Benchmark-ing large-scale LiDAR-visual localisation, reconstruction and radiance field methods,” Intl. J. of Robotics Research , 2025. [24] J. Shotton, B. Glocker, C. Zach, S. Izadi, A. Criminisi, and A. Fitzgibbon, “Scene coordinate regression forests for camera relocalization in RGB-D images,” in IEEE Int. Conf. Computer Vision and Pattern Recognition (CVPR) , 2013, pp. 2930–2937. [25] H. Taira et al. , “InLoc: Indoor visual localization with dense matching and view synthesis,” in IEEE Int. Conf. Computer Vision and Pattern Recognition (CVPR) , 2018, pp. 7199–7209. [26] T. Sattler et al. , “Benchmarking 6DOF outdoor visual local-ization in changing conditions,” in IEEE Int. Conf. Computer Vision and Pattern Recognition (CVPR) , 2018, pp. 8601–8610. [27] M. Trzeciak et al. , “ConSLAM: Construction data set for SLAM,” J. of Computing in Civil Engineering , 2023. [28] M. Helmberger, K. Morin, B. Berner, N. Kumar, G. Cioffi, and D. Scaramuzza, “The Hilti SLAM challenge dataset,” IEEE Robotics and Automation Letters , vol. 7, no. 3, p. 7518–7525, 2022. [29] A. D. Nair, J. Kindle, P. Levchev, and D. Scaramuzza, “Hilti SLAM Challenge 2023: Benchmarking single + multi-session SLAM across sensor constellations in construction,” IEEE Robotics and Automation Letters , vol. 9, no. 8, 2024. [30] J. Rehder, J. Nikolic, T. Schneider, T. Hinzmann, and R. Sieg-wart, “Extending kalibr: Calibrating the extrinsics of multiple IMUs and of individual axes,” in IEEE Intl. Conf. on Robotics and Automation (ICRA) , 2016, pp. 4304–4311. [31] B. Khomutenko, G. Garcia, and P. Martinet, “An enhanced unified camera model,” IEEE Robotics and Automation Let-ters , vol. 1, no. 1, pp. 137–144, 2015. [32] J. Kannala and S. Brandt, “A generic camera model and calibration method for conventional, wide-angle, and fish-eye lenses,” IEEE Trans. Pattern Anal. Machine Intell. , vol. 28, no. 8, pp. 1335–1340, 2006. [33] F. Neuhaus, T. Koss, R. Kohnen, and D. Paulus, “MC2SLAM: Real-time inertial lidar odometry using two-scan motion com-pensation,” in Pattern Recognition , vol. 11269, 2019. [34] P. J. Besl and N. D. McKay, “Method for registration of 3-d shapes,” in Sensor fusion IV: control paradigms and data structures , vol. 1611. Spie, 1992, pp. 586–606. [35] M. Grupp, “evo: Python package for the evaluation of odom-etry and slam.” https://github.com/MichaelGrupp/evo, 2017. [36] S. Boche, J. Jung, S. B. Laina, and S. Leutenegger, “OKVIS2-X: Open keyframe-based visual-inertial SLAM configurable with dense depth or LiDAR, and GNSS,” IEEE Trans. on Robotics , vol. 41, pp. 6064–6083, 2025. [37] A. Umemura, T. Kuwahara, M. Pollefeys, and D. Barath, “Z-floc: Zero-shot floorplan localization via geometric primi-tives,” CoRR , vol. abs/2606.04788, 2026. [38] P. Geneva, K. Eckenhoff, W. Lee, Y. Yang, and G. Huang, “OpenVINS: A research platform for visual-inertial estima-tion,” in IEEE Intl. Conf. on Robotics and Automation (ICRA) ,Paris, France, 2020. [39] C. Campos, R. Elvira, J. J. G. Rodriguez, J. M. Montiel, and J. D. Tardos, “ORB-SLAM3: An accurate open-source library for visual, visual-inertial, and multimap SLAM,” IEEE Trans. Robotics , vol. 37, no. 6, pp. 1874–1890, 2021. [40] Y. Peng, C. Chen, K. Wu, and G. Huang, “sqrt-vins: Robust and ultrafast square-root filter-based 3d motion tracking,” 
+
+IEEE Trans. on Robotics (TRO) , oct 2025. [41] B. Cheng, I. Misra, A. G. Schwing, A. Kirillov, and R. Gird-har, “Masked-attention mask transformer for universal image segmentation,” CoRR , vol. abs/2112.01527, 2021. [42] T. Kerssies et al. , “Your ViT is Secretly an Image Segmenta-tion Model,” in IEEE Int. Conf. Computer Vision and Pattern Recognition (CVPR) , 2025.
