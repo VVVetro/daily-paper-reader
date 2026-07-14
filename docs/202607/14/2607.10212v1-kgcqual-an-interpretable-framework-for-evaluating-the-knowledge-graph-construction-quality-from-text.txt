@@ -1,0 +1,483 @@
+Title: KGCQual: An Interpretable Framework for Evaluating the Knowledge Graph Construction Quality from Text
+
+URL Source: https://arxiv.org/pdf/2607.10212v1
+
+Published Time: Tue, 14 Jul 2026 00:36:06 GMT
+
+Number of Pages: 20
+
+Markdown Content:
+# KGCQual: An Interpretable Framework for Evaluating the Knowledge Graph Construction Quality from Text 
+
+Nipun Misra 1, Vikranth Udandarao 2, Aanchal Gupta 2, Yogender Kumar 2,Manuj Mukherjee 2, and Raghava Mutharaju 3
+
+> 1
+
+VIT Vellore, Vellore, India 
+
+nipun.misra2022@vitstudent.ac.in 
+
+> 2
+
+IIIT-Delhi, Delhi, India 
+
+{aanchal21224, yogender21505, vikranth22570, manuj}@iiitd.ac.in 
+
+> 3
+
+Indian Institute of Technology Palakkad, Kerala, India. 
+
+raghava@iitpkd.ac.in 
+
+Abstract. Knowledge Graphs (KGs) are increasingly constructed through automated extraction pipelines; however, such systems often introduce spurious or incomplete triples, which degrade downstream performance. Existing evaluation practices rely heavily on task-specific metrics or small-scale manual verification, offering limited insight into the struc-tural and semantic fidelity of extracted graphs. We propose a novel, interpretable metric for intrinsic KG quality assessment that measures how closely an automatically extracted graph approximates an “ideal” graph capturing the key noun phrases, predicate relations, and basic linguistic phenomena such as negation expressed in the source text. Our framework integrates two complementary components: (1) an entity-level assessment that evaluates completeness, resolution quality, and connec-tivity, and (2) a relation-level assessment that judges predicate preser-vation and multiplicity using lexical similarity, dependency-parse align-ment, and light-weight negation handling to ensure semantic faithful-ness. We evaluate our metric across multiple state-of-the-art triple ex-traction systems and datasets, including WebNLG, TinyButMighty, and BenchIE, demonstrating that it reliably identifies omissions, redundancy, and structural deviations that existing metrics overlook. Our work offers a scalable, model-agnostic, and interpretable framework for comparing automated KG construction methods and provides a foundation for stan-dardised evaluation. We further validate the metric through an ablation study isolating noun and verb components, and a downstream evaluation showing that KGCQual scores correlate significantly with link prediction performance ( ρ = −0.900 , p = 0 .037 ) on the same extracted KGs. The code repository is available at https://github.com/kracr/kg-quality -metric .
+
+Keywords: Knowledge Graph · Knowledge Graph Construction · Knowl-edge Graph Construction Quality · Information Extraction · Evaluation Metrics arXiv:2607.10212v1 [cs.AI] 11 Jul 2026 2 N. Misra et al. 
+
+# 1 Introduction 
+
+Knowledge Graphs (KGs) have become a foundational abstraction enabling structured representation of entities, relations, and facts in a form amenable to reasoning, querying, and integration across heterogeneous data sources [11,18]. A growing fraction of modern KGs spanning domains such as scientific literature, news, and enterprise documents are constructed through automated Informa-tion Extraction (IE) pipelines. These systems transform natural language text into subject–predicate–object triples that are later serialized into RDF, linked to ontologies, or validated through SHACL constraints. However, despite their widespread adoption, the quality of triples produced by IE systems remains highly variable. Existing KG quality frameworks (e.g., [18,6]) provide rich dimensions such as accuracy, completeness, and consistency, but 
+
+presuppose that the underlying triples are already correct or human-curated. In contrast, for automatically extracted KGs, the fundamental bottleneck lies one level earlier: the lack of an intrinsic, sentence-level method for assessing whether extracted triples faithfully preserve the semantics expressed in the source text. Current evaluations rely predominantly on (i) downstream task performance, which is indirect and application-specific, or (ii) manual annotation, which is costly and non-scalable. This creates a persistent gap between Semantic Web quality frameworks (which expect high-integrity RDF graphs) and the practi-cal realities of pipeline-driven KG construction. In particular, no existing metric jointly captures structural , lexical , and semantic fidelity of extracted triples with respect to their textual origin. Yet such intrinsic valuation is critical: errors such as missing entities, merged noun phrases, incorrect relation multiplicity, or un-detected negation propagate into downstream KGs and ultimately compromise reasoning, linking, and query results. To address this gap, we propose KGCQual , a principled and interpretable framework for evaluating the quality of automatically constructed triples prior to their integration into a KG. Our approach is grounded in the notion of an ideal reference graph for a sentence - an abstract representation of all its salient enti-ties and predicates. While this ideal graph is not observed directly, we approxi-mate it by combining part-of-speech cues, dependency relations, and lightweight semantic similarity methods. KGCQual evaluates triple quality along two com-plementary dimensions: 1. Entity Quality (Noun-Level) : measuring completeness, granularity (res-olution), and connectivity of entity references derived from the text. This captures whether the extracted triples maintain the structure expected of RDF nodes corresponding to noun phrases. 2. Relation Quality (Verb-Level) : assessing predicate accuracy, multiplic-ity, and semantic similarity, including cases where paraphrasing or morpho-logical variation occurs. This reflects whether the extracted predicates pre-serve the relational semantics intended in the source sentence. Together, these form a normalized, interpretable score indicating how well an IE tool preserves sentence-level semantics before the triples are serialized into KGCQual 3
+
+RDF or integrated into a broader KG. To illustrate the challenge, consider the following sentence: 
+
+“The Urchin Software Configuration Management system is a free and open source initiative to provide an enterprise-scale solution to managing the configuration of many software applications running on many servers across an enterprise.” 
+
+State-of-the-art IE systems such as MinIE [9], OllIE [13], and Large Language Model (LLM)–based extractors often omit essential entities (e.g., “free, open-source initiative” ), merge distinct noun phrases (e.g., “configuration of many software applications” ), or reduce verb multiplicity (e.g., collapsing multiple “is” 
+
+relations). Figures 1–4 visualize these discrepancies. Such errors degrade KG completeness and semantic fidelity if not detected early. KGCQual directly targets these shortcomings by providing a systematic way to quantify deviations from an ideal graph, enabling fair comparison of IE tools, LLMs, and extraction pipelines. By grounding evaluation in both linguistic struc-tures and Semantic Web quality principles, our framework bridges the gap be-tween NLP-driven extraction and KG-centric validation.    
+
+> Fig. 1. Triple graph extracted by MinIE Fig. 2. Triple graph extracted by OllIE
+
+# 2 Related Work 
+
+2.1 Knowledge Graph Quality Assessment 
+
+Ensuring the quality of Knowledge Graphs (KGs) is very important for down-stream applications. Foundational surveys [18,11] outline core dimensions such as accuracy, completeness, consistency, and relevancy, and provide lifecycle-oriented 4 N. Misra et al.   
+
+> Fig. 3. Triple graph extracted by GPT based model
+> Fig. 4. Ideal triple graph derived using POS tagging
+
+frameworks for evaluating KGs from creation to maintenance. These approaches primarily operate post hoc on already constructed graphs, identifying conflicting triples, schema violations, outdated assertions, or structural anomalies through rule-based checks, constraint validation (e.g., SHACL), or statistical consistency measures [6]. Such methods presuppose that triples ingested into a KG are se-mantically reliable. However, when triples originate from automatic extraction pipelines, the primary source of error lies prior to graph construction: the ex-traction stage itself. 
+
+2.2 Triple-Level Intrinsic Evaluation 
+
+Despite the centrality of triples as the atomic units of RDF graphs, intrin-sic triple-level evaluation remains underexplored. Existing benchmarks such as WebNLG, ReFinED, and BenchIE [11,6,18] evaluate IE systems through manu-ally curated gold triples or downstream tasks, but they do not offer a sentence-grounded, interpretable metric that quantifies how well extracted triples preserve the fine-grained semantic structure of the source text. Sampling-based accuracy estimation [17] helps assess large KGs, but is not tailored to decomposing ex-traction errors in terms of entity completeness, predicate fidelity, or structural correspondence to linguistic cues. In contrast, our work focuses on the earliest stage of KG construction by pro-viding a sentence-level intrinsic metric that characterizes how faithfully an IE system captures the entities and relations expressed in text. This complements existing KG quality frameworks by addressing a stage they do not directly eval-uate: the correctness of triples before they become part of an RDF graph .
+
+2.3 Information Extraction Quality and Semantic Fidelity 
+
+Research in Information Extraction has examined extraction errors such as miss-ing entities, incorrect argument boundaries, and predicate omissions. Systems such as MinIE and OllIE [9,13] reduce syntactic complexity but often at the expense of semantic completeness. LLM-based extractors [15] improve fluency KGCQual 5
+
+but may alter predicate forms or merge multi-word noun phrases, reducing the semantic resolution required for high-quality KG. Several works scrutinize semantic fidelity in greater depth. Negation han-dling has been shown to be a major failure point: recent studies report that state-of-the-art open IE systems incorrectly preserve negation in up to 40% of cases [7], while parse-driven approaches achieve improved but still imperfect per-formance [4]. However, these efforts treat negation as an isolated linguistic phe-nomenon rather than integrating it into a broader KG quality model. Similarly, semantic similarity measures and paraphrase detection are often used heuristi-cally in open IE, yet they are rarely incorporated into principled KG-oriented evaluation metrics. 
+
+2.4 Positioning of Our Approach 
+
+Existing work offers rich frameworks for graph-level KG quality and localized techniques for linguistic error detection , but no unified metric that connects the two. Our contribution fills this gap by integrating: 
+
+– Structural fidelity : completeness, granularity, and connectivity of entity nodes, 
+
+– Predicate fidelity : relation multiplicity, lexical/semantic preservation, 
+
+– Negation fidelity : correctness of polarity propagation in triples, Unlike prior approaches that evaluate IE systems indirectly through task per-formance or manually annotated datasets, our framework provides a direct, in-trinsic, and interpretable measure of triple correctness with respect to the source sentence. This positions our work as a bridge between linguistically grounded IE evaluation and Semantic Web quality assurance, addressing a critical but largely unexamined stage of the KG lifecycle. 
+
+# 3 Proposed Methodology 
+
+3.1 Motivation 
+
+Information Extraction (IE) systems—rule-based, statistical, or LLM-driven—serve as the first step in automatically constructing Knowledge Graphs (KGs) from natural language text. However, different extractors often produce triples of vary-ing granularity, completeness, and relational accuracy, leading to inconsistencies in the resulting KG. Current KG quality frameworks assume that triples are already correct when ingested; yet in practice, a substantial proportion of KG errors originate prior to integration, during extraction. We therefore introduce a principled metric for intrinsic evaluation of triple extraction quality. The metric compares an extractor’s output against an ideal graph derived directly from linguistic structure. It decomposes triple quality into two fundamental dimensions: (1) entity fidelity (noun phrases), and (2) rela-tion fidelity (verbs, predicate multiplicity). This reflects how well the extracted KG preserves the sentence’s informational structure before RDF serialization or ontology grounding. 6 N. Misra et al. 
+
+3.2 Ideal Graph Construction 
+
+For a given sentence, we construct an ideal reference graph Gi whose nodes correspond to distinct noun phrases and whose edges correspond to verb phrases derived from dependency parsing. The ideal graph encodes: 
+
+– All noun phrases as distinct nodes, 
+
+– All verb phrases (including multiplicities), 
+
+– Polarity (negation) when expressed in the sentence, 
+
+– A single connected component for each sentence. This graph serves as the target structure for quality comparison. The IE system’s output induces a graph G1, which we evaluate against Gi using the metrics defined below. 
+
+3.3 Noun Metric 
+
+The noun metric MN assesses whether the extracted KG preserves the expected set of entities with respect to: 1. Completeness – all noun phrases appear in G1,2. Resolution – each noun phrase is represented as a distinct node, 3. Connectivity – the extracted graph forms a single connected component. Let N (Gx) be the number of noun phrases, V (Gx) be the number of nodes, and C(Gx) be the number of connected components. 
+
+Resolution The ideal graph satisfies V (Gi) = N (Gi). Deviation from this equality reflects the merging of distinct noun phrases: 
+
+1 − V (G1)
+
+N (G1) .
+
+Negation-Aware Matching To handle polarity-sensitive nouns, we incorpo-rate negation markers into the string matching process. We detect negation using the Universal Dependencies (UD) syntactic framework, which annotates gram-matical relations such as the neg edge linking a negation word (e.g., “not”, “no”) to its head noun or verb. This allows us to determine whether an extracted noun is negated or not. Let λ = 0 .3 be a penalty constant and JW denote the Jaro–Winkler similar-ity. For each ideal noun nj :
+
+τ ¬ 
+
+> nj
+
+=
+
+(
+
+JW (next  
+
+> j
+
+, n ideal  
+
+> j
+
+), if their UD-based negation status matches ,λ · JW (next  
+
+> j
+
+, n ideal  
+
+> j
+
+), otherwise .λ is the weight of the penalty for negations, determining how much emphasis is placed on polarity mismatch penalties. For this study, we fix λ = 0 .3 to assign a reasonable penalty for negation errors without allowing them to overshadow the overall score. This replaces strict matching with a graded penalty, ensuring that polarity violations (e.g., “cat” vs. “not cat” ) are treated as entity-level errors. KGCQual 7
+
+Completeness Missing noun phrases incur additive penalties: 
+
+N (Gi) − N (G1)
+
+Connectivity The ideal graph has a single component, so: 
+
+C(G1) − 1
+
+Combined Noun Score Aggregating all deviations yields: 
+
+dN (G1, G i) = 
+
+
+
+1 − V (G1)
+
+N (G1)
+
+
+
++ 
+
+> N(Gi)
+
+X
+
+> j=1
+
+(1 − τnj ) + ( C(G1) − 1) 
+
+The range of this quantity is [0 , 2N (Gi)] ; therefore, we normalize: 
+
+MN = dN (G1, G i)2N (Gi)
+
+A value of 0 indicates perfect noun-level fidelity to the ideal graph. 
+
+3.4 Verb Metric 
+
+Relations (verbs) are central to KG semantics, encoding the predicate structure linking entities. Errors typically arise in two forms: loss of multiplicity and lexical drift . The verb metric captures both. Let: 
+
+V b (Gx) = number of predicate instances (including multiplicities) 
+
+Predicate Multiplicity Dependency parsing provides reliable subject–verb–object structures and reveals when a verb governs multiple conjunctive objects (e.g., likes cricket, football, and basketball). Missing predicate instances are penalized as: 
+
+V b (Gi) − V b (G1)
+
+Lexical and Semantic Similarity We compute a similarity score τvj for each extracted predicate using: 
+
+τvj = max 
+
+
+
+JW (vext , v ideal ), cos( e(vext ), e(videal )) 
+
+
+
+,
+
+where e(·) denotes contextual or static word embeddings. Lemmatization is ap-plied prior to similarity computation. 8 N. Misra et al. 
+
+Combined Verb Score The unnormalized verb deviation is: 
+
+dV (G1, G i) = ( V b (Gi) − V b (G1)) + 
+
+> V b (Gi)
+
+X
+
+> j=1
+
+(1 − τvj )
+
+The normalized verb metric is: 
+
+MV = dV (G1, G i)2V b (Gi)
+
+3.5 Final Metric 
+
+The complete triple-quality metric, KGCQual, combines entity and relation fi-delity: 
+
+M = αM N + (1 − α)MV
+
+where α ∈ [0 , 1] controls the relative weight of entity vs. relation quality. We set 
+
+α to 0.5 to indicate that both the components are equally important. This pro-duces a score in [0 , 1] , where 0 represents perfect fidelity to the ideal graph. The metric is extractor-agnostic and can be applied to any pipeline producing sub-ject–predicate–object triples, enabling principled comparison of heterogeneous IE systems prior to KG integration. 
+
+# 4 Evaluation 
+
+This section evaluates the proposed metric across eight extraction systems – five classical OpenIE tools (MinIE [9], OllIE [13], Stanford OpenIE 4.5.3/4.5.6 [1], ClausIE [5]) and three LLM-based extractors (Claude 3.7 [12], Gemini 2.5 Pro [14], GPT-4.0-mini [15]). For all experiments, noun phrases are identified using the NLTK POS tagger [3]. The evaluation assesses each system’s ability to preserve (i) noun-phrase granularity and coverage, and (ii) predicate multiplicity and semantic accuracy, as captured by our noun and verb metrics. 
+
+4.1 Datasets 
+
+We evaluate on three widely used benchmarks for triple extraction, chosen for their linguistic diversity and annotation quality: 
+
+– WebNLG [8]: 643 English sentences paired with 5408 gold triples (avg. 8.41 triples/sentence), covering diverse DBpedia domains. 
+
+– TinyButMighty [16]: 720 complex and compound sentences yielding 3764 annotated triples (avg. 5.28 triples/sentence); designed to stress-test OpenIE systems. 
+
+– BenchIE [10]: 300 naturally occurring sentences with 3307 gold triples (avg. 11.02 triples/sentence); a challenging testbed for fine-grained relational ex-traction. These datasets jointly capture a broad range of syntactic constructions, en-tity configurations, and predicate forms—conditions necessary to evaluate the behaviour of extraction systems under realistic linguistic variability. KGCQual 9
+
+4.2 Experimental Protocol 
+
+For each sentence, we (i) extract triples using each system, (ii) construct the corresponding KG, (iii) compute our noun and verb metrics against the ideal graph obtained via POS tagging and dependency parsing, and (iv) average scores over all sentences of each dataset. Lower scores indicate higher extraction fidelity. To illustrate metric behaviour, we present two representative sentences, show-ing how the metric penalises missing noun-phrase resolution, incomplete predi-cate multiplicity, and semantic deviation. 
+
+Example 1 Input: 
+
+“The asteroid 1147 Stavropolis has an apoapsis of 418476000000.0, a rotation period of 20378.5, a periapsis of 260855000000.0, and an orbital period of 1249.6 days.” 
+
+ClausIE produces a single aggregated triple, collapsing four verb relations. Since the POS tagger detects four predicate instances, the metric heavily pe-nalises loss of multiplicity while rewarding perfect noun coverage. Using the provided counts: 
+
+MN = 0 .06 , MV = 0 .375 , M = 0 .2175 .
+
+This illustrates the intended behaviour: noun extraction is faithful, but predicate structure is under-specified. 
+
+Example 2 Input: 
+
+“The Mason School of Business are the current tenants of Alan B Miller Hall, located at 101 Ukrop Way is in the United States and owned by the College of William and Mary.” 
+
+Stanford OpenIE (v4.5.3) misses one noun phrase and splits the graph into two components. Verb extraction is partially correct but shows lexical mismatch. Computing the metric gives: 
+
+MN = 0 .0914 , MV = 0 .1744 , M = 0 .1329 .
+
+The example demonstrates how the metric simultaneously captures noun loss, graph disconnectivity, and predicate variation. 
+
+4.3 Quantitative Results 
+
+Tables 1–3 report the average noun metric, verb metric, and final combined score for all systems across all datasets. A lower value denotes higher triple-extraction fidelity. 10 N. Misra et al.  
+
+> Table 1. Metric values for IE Tools and LLMs on WebNLG dataset
+
+IE Tool Avg Noun Metric Avg Verb Metric Final Metric 
+
+MinIE 0.5632 0.5847 0.5740 OllIE 0.3682 0.5019 0.4351 Stanford 4.5.3 OpenIE 0.3971 0.4143 0.4057 Stanford 4.5.6 OpenIE 0.3795 0.4998 0.4397 ClausIE 0.2037 0.2415 0.2226 Claude 3.7 0.3146 0.3429 0.3287 Gemini 2.5 Pro 0.2819 0.3117 0.2968 GPT-4.0-mini 0.2694 0.2841 0.2768  
+
+> Table 2. Metric values for IE Tools and LLMs on TinyButMighty dataset
+
+IE Tool Avg Noun Metric Avg Verb Metric Final Metric 
+
+MinIE 0.4558 0.5346 0.4952 OllIE 0.3127 0.4595 0.3861 Stanford 4.5.3 OpenIE 0.3614 0.3863 0.3739 Stanford 4.5.6 OpenIE 0.3115 0.4489 0.3802 ClausIE 0.2804 0.2281 0.2543 Claude 3.7 0.2631 0.2915 0.2773 Gemini 2.5 Pro 0.2514 0.2786 0.2650 GPT-4.0-mini 0.2298 0.2432 0.2365  
+
+> Table 3. Metric values for IE Tools and LLMs on BenchIE dataset
+
+IE Tool Avg Noun Metric Avg Verb Metric Final Metric 
+
+MinIE 0.6347 0.6784 0.6566 OllIE 0.4536 0.6125 0.5330 Stanford 4.5.3 OpenIE 0.3911 0.4530 0.4221 Stanford 4.5.6 OpenIE 0.4367 0.5872 0.5119 ClausIE 0.2173 0.2627 0.2400 Claude 3.7 0.3147 0.3364 0.3256 Gemini 2.5 Pro 0.2893 0.3106 0.3000 GPT-4.0-mini 0.2682 0.2829 0.2756 KGCQual 11 
+
+4.4 Gold-Standard Triple Evaluation 
+
+To contextualize system performance, we run our metric on the gold-standard triples in each dataset. As shown in Table 4, all gold sets achieve substantially lower scores than automated systems: WebNLG: 0.1585 , TinyButMighty: 0.2486 , BenchIE: 0.1424 .
+
+These values establish empirical lower bounds for our metric and confirm align-ment with human-annotated extractions.  
+
+> Table 4. Metric values for handwritten triples on the datasets
+
+Dataset Avg Noun Metric Avg Verb Metric Final Metric 
+
+WebNLG 0.1734 0.1435 0.1585 TinyButMighty 0.2212 0.2760 0.2486 BenchIE 0.1320 0.1528 0.1424 
+
+4.5 Interpretation via Likert-Scale Categorization 
+
+For qualitative interpretability, we map final metric scores to a 5-point Likert scale, anchored by the empirical thresholds observed in gold-standard triples (≤ 0.25 ). This mapping provides a practical diagnostic for extraction quality. 
+
+– Grade 1 (Excellent): M ≤ 0.25 
+
+– Grade 2–4 (Intermediate): 0.25 < M < 0.45 
+
+– Grade 5 (Poor): M ≥ 0.45 
+
+Across all datasets, ClausIE consistently falls into Grade 1, while MinIE occupies Grade 5. LLM-based extractors outperform traditional OpenIE systems on average but do not match gold-standard quality. This analysis highlights that the metric discriminates reliably across sys-tems with varying extraction behaviour and correlates well with qualitative judg-ments. 
+
+# 5 Discussion 
+
+This section examines the diagnostic and discriminative capabilities of the pro-posed metric by analyzing error patterns exhibited by two representative extrac-tion systems: ClausIE and Stanford CoreNLP 4.5.6. We select sentences yielding extremely low and high metric scores and conduct detailed case studies. The goal is to demonstrate that the metric not only quantifies extraction quality but also functions as an interpretable tool for identifying systematic weaknesses in IE pipelines. 12 N. Misra et al. 
+
+5.1 Tool-Level Behaviour 
+
+Across all datasets, ClausIE exhibits substantial variance in extraction quality. For instance, the following sentence receives a near-optimal score ( ≈ 0.006 ): 
+
+Cornell University is in Ithaca, New York and their nickname is Cornell Big Red. They are the publisher of Administrative Science Quarterly and are affiliated with the Association of American Universities. 
+
+Here ClausIE successfully preserves both noun-phrase structure and predicate multiplicity. In contrast, it assigns a much higher score ( 0.392 ) to: 
+
+Angola International Airport is located in Ícolo e Bengo, Luanda Province, Angola. The runway is 4000ft long and is 159m a.s.l. 
+
+reflecting noun-phrase fusion, predicate under-specification, and incomplete coverage of relational structure. Stanford CoreNLP 4.5.6 shows a similar pattern. A low score ( ≈ 0.037 ) is obtained for: 
+
+Alan Shepard has died in California. He was born in New Hampshire and graduated from NWC MA in 1957. He served as a test pilot. 
+
+while a more linguistically complex example: 
+
+Above the Veil is an Australian novel and the sequel to Aenir and Castle. It was followed by Into Battle and The Violet Keystone. 
+
+yields a substantially higher score ( 0.446 ). This variation demonstrates that the metric is sensitive to structural, lexical, and contextual extraction failures. 
+
+5.2 Case Study 1: ClausIE 
+
+Consider: 
+
+The inaugural Principal was Mr Reidal who managed the school from 1953 to 1956, the next principal was Bill Walker who served from 1957 to 1959. 
+
+ClausIE outputs: 
+
+– [the next principal, was, Bill] 
+
+– [The inaugural Principal, was, Mr Reidal who managed school from 1953] 
+
+The score ( > 0.3) reflects several extraction defects: 
+
+– Noun incompleteness : spans such as 1957 to 1959 and the full temporal phrase school from 1953 to 1956 are truncated or omitted. KGCQual 13 
+
+– Low resolution : compound noun phrases are merged, preventing correct KG structure from emerging. 
+
+– Predicate omission : managed and served are missing, underspecifying the event structure. The ideal noun and verb sets, derived via POS tagging and dependency parsing, are: 
+
+– Nouns: inaugural Principal, Mr Reidal, school from 1953 to 1956, next principal, Bill Walker, 1957 to 1959 
+
+– Verbs: was, managed, was, served 
+
+Corrected triples: 
+
+– [The inaugural Principal, was, Mr Reidal] 
+
+– [Mr Reidal, managed, the school from 1953 to 1956] 
+
+– [The next principal, was, Bill Walker] 
+
+– [Bill Walker, served, from 1957 to 1959] 
+
+Evaluated with our metric, these revised triples yield a reduced score ( 0.045 ), demonstrating that the metric rewards improvements aligned with KG quality principles such as granularity, coverage, and relation fidelity. 
+
+5.3 Case Study 2: Negation Handling 
+
+Negation represents an important form of semantic polarity that is often mis-handled by extraction tools. For example: 
+
+“The pharmaceutical company did not receive FDA approval, nor did it secure investor funding.” 
+
+ClausIE extracts: 
+
+– (pharmaceutical company, received, FDA approval) 
+
+– (pharmaceutical company, secured, investor funding) 
+
+The baseline metric (without negation) assigns a low score ( 0.19 ), despite both the triples reversing the meaning of the sentence. Using negation-aware matching, the score becomes 0.58 , a 205% increase. This confirms that the nega-tion extension substantially improves semantic robustness by penalizing polarity-inverting extractions. 
+
+5.4 Insights and Implications 
+
+Across both the case studies, the metric demonstrates three important proper-ties: 14 N. Misra et al. 
+
+1. Interpretability: Each metric component maps directly to identifiable ex-traction behaviours (e.g., noun fusion, predicate loss, disconnectivity, nega-tion omission), offering actionable diagnostics. 2. Sensitivity: Small structural or lexical refinements in triples consistently produce measurable metric improvements, supporting its use in iterative model development. 3. Semantic grounding: The negation-aware variant captures distinctions missed by surface-level comparison metrics, improving alignment with KG correctness criteria. These results show that the metric is not merely a scoring mechanism but a principled evaluative tool that exposes fine-grained extraction failures and guides targeted system improvements. 
+
+5.5 Ablation Study: Noun vs. Verb Metric Contribution 
+
+To understand the relative contribution of each metric component, we conduct an ablation study on the TinyButMighty dataset, evaluating three weighting scenarios: noun-only ( wN = 1 .0, w V = 0 .0), verb-only ( wN = 0 .0, w V = 1 .0), and equal weight for nouns and verbs. Table 5 reports the average scores per tool under each scenario. Lower scores indicate higher fidelity.                              
+
+> Table 5. Ablation study: average scores under different noun/verb weightings on Tiny-ButMighty (lower is better)
+> Tool Noun Only (1.0, 0.0) Verb Only (0.0, 1.0) Equal (0.5, 0.5)
+> ClausIE 0.1538 0.2301 0.1919 MiniE 0.3078 0.5712 0.4395 Ollie 0.2208 0.4657 0.3432 Stanford 4.5.3 0.2431 0.4740 0.3586 Stanford 4.5.6 0.2475 0.6441 0.4458 Claude 3.7 0.3546 0.5443 0.4495 Gemini 2.5 Pro 0.3674 0.5495 0.4585 GPT-4o mini 0.4043 0.6891 0.5467 Ideal (TinyButMighty) 0.3483 0.2760 0.3122
+
+Three findings emerge. First, predicate extraction is the primary weak-ness across all automated tools: every system scores worse on the verb-only scenario than on the noun-only scenario, confirming that relation extraction is harder than entity extraction. Second, the gold-standard ideal is the sole exception —its verb score (0.276) is lower than its noun score (0.348), indicating that human-annotated triples capture predicates more faithfully than entities. Third, ClausIE achieves the best overall score (0.1919 under equal weights), while GPT-4o mini performs the worst (0.5467), suggesting that LLM-based ex-tractors over-generate or paraphrase predicates in ways that hurt verb fidelity despite their fluent outputs. KGCQual 15                                    
+
+> Table 6. KGCQual scores vs. TuckER link-prediction MRR (aggregated across WebNLG, TinyButMighty, BenchIE; lower KGCQual = better; higher MRR = better).
+> IE System KGCQual ↓MRR ↑Hits@10 ↑
+> ClausIE 0.130 0.141 0.200 Ollie 0.207 0.107 0.157 Stanford 4.5.3 0.226 0.085 0.141 MiniE 0.278 0.059 0.113 Stanford 4.5.6 0.360 0.073 0.144
+> Spearman ρ=−0.900 ,p= 0 .037
+
+5.6 Downstream Validation: Correlation with Link Prediction 
+
+To validate that KGCQual scores reflect downstream utility , we test whether systems with lower (better) scores also produce KGs that support better link prediction. For each IE system, we use its extracted triples, train a Tucker [2] embedding model on it, and measure the Mean Reciprocal Rank (MRR) on a test split. Across all the three datasets, Table 6 shows a near-monotonic corre-spondence: as KGCQual worsens, MRR falls consistently. The Spearman rank correlation is ρ = −0.900 (p = 0 .037 ), confirming statistical significance. This result provides direct evidence that KGCQual is not merely a structural proxy but correlates with real downstream task performance. IE systems that better preserve entity and predicate structure produce KGs on which embedding models learn more effectively. 
+
+# 6 Limitations 
+
+Although the proposed noun–verb metric provides a principled, structurally grounded measure of extraction quality, it exhibits important limitations with respect to deeper semantic validation. The metric is intentionally aligned with surface-form properties, such as completeness, resolution, lexical correspondence, and predicate multiplicity, but does not yet assess whether the extracted triples preserve the intended meaning or global semantics of the sentence. A key failure case emerges when triples are structurally plausible but semantically incoherent. The metric is sensitive to structural fidelity but not to semantic coherence .Future work will focus on augmenting the metric with semantic components that go beyond lexical alignment. Planned extensions include: 
+
+– Semantic plausibility checks : assessing whether a triple aligns with the sentence’s propositional content rather than simply containing the correct lexical elements. 
+
+– Contextual semantic validation : exploring embeddings, entailment mod-els, or sentence–triple alignment methods to evaluate whether extracted re-lations are semantically faithful to the original text. 16 N. Misra et al. 
+
+These additions aim to close the gap between structural correctness and semantic correctness, enabling more comprehensive evaluation of IE systems within Knowledge Graph construction pipelines. 
+
+# 7 Conclusion 
+
+We introduce KGCQual, a sentence-level intrinsic metric for evaluating the qual-ity of triples extracted by Information Extraction (IE) systems, including LLMs. Our formulation captures two fundamental dimensions of extraction quality rel-evant to Knowledge Graph (KG) construction: (i) noun-phrase fidelity, reflecting completeness, granularity, and graph connectivity, and (ii) predicate fidelity, cap-turing verb multiplicity and lexical alignment. Grounded in POS tagging and dependency parsing, the metric provides a transparent, interpretable measure of how closely a system’s extracted triples approximate an ideal sentence-level graph. Our evaluation results show that systems merging noun phrases, omitting key entities, or under-generating predicates score higher (worse), while systems aligning with human-annotated gold triples score lower (better). This confirms the metric behaves as intended and signals extraction fidelity. An ablation study confirms that predicate extraction is the primary weakness across all systems, with verb-metric scores consistently higher than noun-metric scores. A downstream validation further demonstrates that KGCQual scores cor-relate significantly with link prediction MRR, providing direct evidence that the metric reflects downstream KG quality and not merely surface-level structural alignment. By offering a principled, interpretable, and computationally efficient evalua-tion method, this work provides a practical tool for enhancing the reliability of triple extraction pipelines in Knowledge Graph applications. 
+
+# Declaration of use of Generative AI 
+
+We used OpenAI’s ChatGPT to help polish some sentences for clarity and to assist in formatting parts of this paper in LaTeX. All technical content, imple-mentation, validation, and analysis were developed and verified by the authors, who take full responsibility for the work. 
+
+# References  
+
+> 1. Angeli, G., Premkumar, M.J., Manning, C.: Stanford openie (version 4.x) system description. Tech. rep., Stanford NLP (2015), technical Report / System Demo 2. Balažević, I., Allen, C., Hospedales, T.M.: Tucker: Tensor factorization for knowl-edge graph completion. In: Proceedings of the 2019 Conference on Empirical Meth-ods in Natural Language Processing (EMNLP-IJCNLP). pp. 5185–5194 (2019) 3. Brill, E.: Transformation-based error-driven learning and natural language pro-cessing: A case study in part-of-speech tagging. Computational Linguistics 21 (4) (1995)
+
+KGCQual 17 4. Dagan, I., Dolan, B., Magnini, B.: Recognizing textual entailment. ACL (2009) 5. Del Corro, L., Gemulla, R.: Clausie: Clause-based open information extraction. In: Proceedings of WWW 2013. pp. 355–366 (2013) 6. Färber, M., Bartscherer, F., Menne, C., Rettinger, A.: Linked data quality of db-pedia, freebase, opencyc, wikidata, and yago. Semantic Web 9(1), 77–129 (2018) 7. Gabriel, R., Soderland, S., Etzioni, O.: Open information extraction from the web. In: IJCAI (2011) 8. Gardent, C., Shimorina, A., Narayan, S., Perez-Beltrachini, L.: The webnlg chal-lenge: Generating text from rdf data. In: Proceedings of the WebNLG Challenge (2017) 9. Gashteovski, K., Gemulla, R., Del Corro, L.: Minie: Minimizing facts in open in-formation extraction. In: Proceedings of EMNLP. pp. 2630–2640 (2017) 10. Gashteovski, K., Yu, M., Kotnis, B., Lawrence, C., Niepert, M., Glavaš, G.: Benchie: A framework for multi-faceted fact-based open information extraction evaluation. In: Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (ACL) (2022) 11. Hogan, A., Blomqvist, E., Cochez, M., D’Amato, C., de Melo, G., Gutiérrez, C., Kirrane, S., Neumaier, S., Polleres, A., Prince, V., Škoda, P., Lange, C., Zimmer-mann, A.: Knowledge graphs. ACM Computing Surveys 54 (4), 1–37 (2021) 12. Lindsey, J., Gurnee, W., Ameisen, E., Chen, B., Pearce, A., Nichols, L.: On the biology of a large language model. In: Proceedings of the Transformer Circuits Interpretability Workshop (TCIW) 2024 (2024) 13. Mausam, Schmitz, H.P., Etzioni, O.: Ollie: Learning open information extraction from question-answer pairs. In: Proceedings of ACL 2012 (2012) 14. Patel, S., Gomez, L.: Comparison of llms in extracting synthesis conditions: Gemini excels in completeness. In: Proceedings of ACL (2024) 15. Roy Choudhury, S., Dey, Z.: Gpt-3 powered information extraction for building robust knowledge bases (2024) 16. Salman, M., Haller, A., Rodriguez Mendez, S.J., Naseem, U.: Tiny but mighty: A crowdsourced benchmark dataset for triple extraction from unstructured text. In: Proceedings of the 20th Joint ACL–ISO Workshop on Interoperable Semantic Annotation @ LREC-COLING. pp. 71–81. ELRA and ICCL, Torino, Italy (2024) 17. Smith, A.B., Miller, P.R., Wilson, H.: Efficient knowledge graph accuracy evalua-tion. In: Proceedings of the IEEE International Conference on Data Engineering (ICDE) (2020) 18. Zaveri, A., Rula, A., Maurino, A., Pietrobon, R., Lehmann, J., Auer, S.: Quality assessment for linked data: A survey. Semantic Web 7(1), 63–93 (2016) 
+
+# A Ablation Study: Full Results 
+
+Table 7 extends Table 5 with all five weighting scenarios. Lower scores indicate higher extraction fidelity. The ranking of tools is stable across all scenarios. ClausIE consistently achieves the lowest scores and GPT-4o mini the highest among automated tools. The Ideal set is the only case where the verb score (0.276) is lower than the noun score (0.348), confirming that human-annotated triples capture predicates more faithfully than any automated system. 18 N. Misra et al.                                                           
+
+> Table 7. Ablation study on TinyButMighty: average scores under all five noun/verb weighting scenarios (lower is better).
+> Tool Noun Only Verb Only Equal Noun-heavy Verb-heavy
+> (1 .0,0.0) (0 .0,1.0) (0 .5,0.5) (0 .7,0.3) (0 .3,0.7)
+> ClausIE 0.1538 0.2301 0.1919 0.1877 0.1962 MiniE 0.3078 0.5712 0.4395 0.3855 0.4934 Ollie 0.2208 0.4657 0.3432 0.2939 0.3926 Stanford 4.5.3 0.2431 0.4740 0.3586 0.3124 0.4047 Stanford 4.5.6 0.2475 0.6441 0.4458 0.3665 0.5251 Claude 3.7 0.3546 0.5443 0.4495 0.4115 0.4874 Gemini 2.5 Pro 0.3674 0.5495 0.4585 0.4219 0.4951 GPT-4o mini 0.4043 0.6891 0.5467 0.4897 0.6037 Ideal (TinyButMighty) 0.3483 0.2760 0.3122 0.3266 0.2978
+
+# B Downstream Validation: Full Results 
+
+Tables 8–10 report MRR and Hits@10 for every (IE system, embedding model) combination, split by dataset. TuckER results are used for the correlation anal-ysis in Section 5.6; ComplEx and NodePiece are included for completeness. ClausIE on BenchIE produced no valid triples and is omitted from Table 10. 
+
+B.1 Note on ComplEx and NodePiece 
+
+ComplEx and NodePiece produced near-zero MRR across most runs. Both mod-els require substantially larger KGs to learn reliable embeddings. The extracted KGs in this study range from 258 to 5 356 triples—an order of magnitude smaller than standard benchmarks such as FB15k-237, which provides 272 115 training triples. TuckER is empirically more robust to small graph sizes and is therefore used as the primary model for the correlation analysis in Section 5.6. 
+
+B.2 Per-Dataset Spearman Correlation 
+
+Table 11 reports exact Spearman rank correlations between KGCQual scores and TuckER MRR computed per-dataset. Significance is achieved on TinyButMighty—the dataset with the most lin-guistically complex sentences—but not on WebNLG or BenchIE in isolation. Two factors explain this. First, per-dataset sample sizes of 4–5 IE systems reduce sta-tistical power substantially. Second, the exclusion of ClausIE from BenchIE due to an extraction error removes the best-performing system from that dataset, distorting its ranking. These limitations motivate the aggregated analysis in Sec-tion 5.6, which pools all 14 data points and yields ρ = −0.900 , p = 0 .037 .KGCQual 19 
+
+Table 8. Downstream link prediction results on WebNLG .
+
+IE System Model MRR Hits@10 
+
+LLM-based extractors 
+
+Claude TuckER 0.3311 0.4661 Claude ComplEx 0.0039 0.0056 Claude NodePiece 0.0082 0.0254 Gemini TuckER 0.2631 0.4176 Gemini ComplEx 0.0036 0.0018 Gemini NodePiece 0.0138 0.0233 GPT-4 TuckER 0.4283 0.7612 GPT-4 ComplEx 0.0241 0.0410 GPT-4 NodePiece 0.0384 0.0709 
+
+Classical OpenIE tools 
+
+Stanford 4.5.3 TuckER 0.1788 0.2660 Stanford 4.5.3 ComplEx 0.0043 0.0106 Stanford 4.5.3 NodePiece 0.0239 0.0340 Stanford 4.5.6 TuckER 0.2113 0.3139 Stanford 4.5.6 ComplEx 0.0026 0.0021 Stanford 4.5.6 NodePiece 0.0170 0.0301 ClausIE TuckER 0.1422 0.2213 ClausIE ComplEx 0.0091 0.0082 ClausIE NodePiece 0.0169 0.0082 MiniE TuckER 0.1152 0.1883 MiniE ComplEx 0.0085 0.0123 MiniE NodePiece 0.0075 0.0185 Ollie TuckER 0.1486 0.2222 Ollie ComplEx 0.0032 0.0057 Ollie NodePiece 0.0091 0.0153 20 N. Misra et al. 
+
+Table 9. Downstream link prediction results on TinyButMighty .
+
+IE System Model MRR Hits@10 
+
+Stanford 4.5.3 TuckER 0.3866 0.6689 Stanford 4.5.3 ComplEx 0.0119 0.0132 Stanford 4.5.3 NodePiece 0.0449 0.1325 Stanford 4.5.6 TuckER 0.2016 0.5000 Stanford 4.5.6 ComplEx 0.0264 0.0256 Stanford 4.5.6 NodePiece 0.0637 0.1603 ClausIE TuckER 0.6313 0.8952 ClausIE ComplEx 0.0223 0.0238 ClausIE NodePiece 0.0261 0.0429 MiniE TuckER 0.3242 0.6265 MiniE ComplEx 0.0175 0.0181 MiniE NodePiece 0.0255 0.0241 Ollie TuckER 0.6488 0.8953 Ollie ComplEx 0.0122 0.0291 Ollie NodePiece 0.0289 0.0465 
+
+Table 10. Downstream link prediction results on BenchIE . ClausIE produced no valid triples on this dataset and is excluded. 
+
+IE System Model MRR Hits@10 
+
+Stanford 4.5.3 TuckER 0.0562 0.0814 Stanford 4.5.3 ComplEx 0.0085 0.0116 Stanford 4.5.3 NodePiece 0.0462 0.0465 Stanford 4.5.6 TuckER 0.0692 0.1316 Stanford 4.5.6 ComplEx 0.0154 0.0000 Stanford 4.5.6 NodePiece 0.0449 0.1316 MiniE TuckER 0.0064 0.0000 MiniE ComplEx 0.0214 0.1250 MiniE NodePiece 0.0086 0.0000 Ollie TuckER 0.0104 0.0000 Ollie ComplEx 0.0088 0.0000 Ollie NodePiece 0.0956 0.2000 
+
+Table 11. Per-dataset Spearman rank correlation ( ρ) between KGCQual score and TuckER MRR. n = number of IE systems with valid results. 
+
+Dataset n ρ p-value Significant? 
+
+WebNLG 5 +0 .400 0.505 No TinyButMighty 5 −0.900 0.037 Yes 
+
+BenchIE 4 +0 .400 0.600 No

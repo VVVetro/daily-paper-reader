@@ -1,0 +1,365 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-14T21:32:19.741088+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 7,
+    "quick_skim_target": 11,
+    "quick_selected": 7
+  },
+  "deep_dive": [
+    {
+      "id": "2607.10212v1",
+      "source": "arxiv",
+      "title": "KGCQual: An Interpretable Framework for Evaluating the Knowledge Graph Construction Quality from Text",
+      "abstract": "Knowledge Graphs (KGs) are increasingly constructed through automated extraction pipelines; however, such systems often introduce spurious or incomplete triples, which degrade downstream performance. Existing evaluation practices rely heavily on task-specific metrics or small-scale manual verification, offering limited insight into the structural and semantic fidelity of extracted graphs. We propose a novel, interpretable metric for intrinsic KG quality assessment that measures how closely an automatically extracted graph approximates an \"ideal\" graph capturing the key noun phrases, predicate relations, and basic linguistic phenomena such as negation expressed in the source text. Our framework integrates two complementary components: (1) an entity-level assessment that evaluates completeness, resolution quality, and connectivity, and (2) a relation-level assessment that judges predicate preservation and multiplicity using lexical similarity, dependency-parse alignment, and light-weight negation handling to ensure semantic faithfulness. We evaluate our metric across multiple state-of-the-art triple extraction systems and datasets, including WebNLG, TinyButMighty, and BenchIE, demonstrating that it reliably identifies omissions, redundancy, and structural deviations that existing metrics overlook. Our work offers a scalable, model-agnostic, and interpretable framework for comparing automated KG construction methods and provides a foundation for standardised evaluation. We further validate the metric through an ablation study isolating noun and verb components, and a downstream evaluation showing that KGCQual scores correlate significantly with link prediction performance on the same extracted KGs. The code repository is available at https://github.com/kracr/kg-quality-metric.",
+      "authors": [
+        "Nipun Misra",
+        "Vikranth Udandarao",
+        "Aanchal Gupta",
+        "Yogender Kumar",
+        "Manuj Mukherjee",
+        "Raghava Mutharaju"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-07-11T08:45:15+00:00",
+      "link": "https://arxiv.org/pdf/2607.10212v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "interpretable quality assessment for knowledge graph construction, directly relevant to smart city knowledge graph requirements",
+      "llm_evidence_cn": "知识图谱构建的可解释质量评估，直接相关于智慧城市知识图谱需求",
+      "llm_evidence": "知识图谱构建的可解释质量评估，直接相关于智慧城市知识图谱需求",
+      "canonical_evidence": "知识图谱构建的可解释质量评估，直接相关于智慧城市知识图谱需求",
+      "llm_tldr_en": "Proposes an interpretable metric for evaluating the quality of automatically constructed knowledge graphs by measuring fidelity to source text's noun phrases, predicate relations, and negation.",
+      "llm_tldr_cn": "自动构建的知识图谱常包含错误或不完整的三元组，缺乏系统的质量评估指标。本文提出KGCQual，一种可解释的内在质量评估框架，通过比较提取图与源文本中名词短语、谓词关系和否定等语言现象的匹配程度来衡量图的质量。该框架集成互补性指标，无需人工标注即可评估KGs的结构和语义保真度。实验显示，KGCQual与下游任务性能具有良好相关性。",
+      "llm_tldr": "自动构建的知识图谱常包含错误或不完整的三元组，缺乏系统的质量评估指标。本文提出KGCQual，一种可解释的内在质量评估框架，通过比较提取图与源文本中名词短语、谓词关系和否定等语言现象的匹配程度来衡量图的质量。该框架集成互补性指标，无需人工标注即可评估KGs的结构和语义保真度。实验显示，KGCQual与下游任务性能具有良好相关性。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.11459v1",
+      "source": "arxiv",
+      "title": "A Multimodal Dataset for Large Language Model Applications in the Energy Domain",
+      "abstract": "This paper presents the mAIEnergy dataset, an open-access, multimodal corpus developed to support Large Language Model (LLM) applications in the energy sector. The dataset integrates approximately 50,000 textual documents, 20,000 images, 25 million numerical time series records, and 2 million geospatial and relational data entries. It includes policy and regulatory texts, scientific articles and news articles, satellite and contextual imagery, electricity system measurements, weather observations, statistical indicators, and geospatial representations of energy infrastructure and related entities. All data have been harmonized into structured, ready-to-use formats, accompanied by consistent metadata and reproducible data retrieval and preparation workflows. The dataset can serve as a foundational energy knowledge base, allowing energy stakeholders to integrate additional open-source or proprietary data. The mAIEnergy dataset adheres to Findable, Accessible, Interoperable, and Reusable (FAIR) principles, enhancing its applicability for AI-driven energy research, modeling, and decision-making.",
+      "authors": [
+        "Costas Mylonas",
+        "Magda Foti"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "cs.AI"
+      ],
+      "published": "2026-07-13T12:08:43+00:00",
+      "link": "https://arxiv.org/pdf/2607.11459v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "multimodal dataset integrating text, images, time series, geospatial data for energy, a smart city domain",
+      "llm_evidence_cn": "能源领域的多模态数据集，含文本、图像、时序、地理空间数据，属于智慧城市范畴",
+      "llm_evidence": "能源领域的多模态数据集，含文本、图像、时序、地理空间数据，属于智慧城市范畴",
+      "canonical_evidence": "能源领域的多模态数据集，含文本、图像、时序、地理空间数据，属于智慧城市范畴",
+      "llm_tldr_en": "Presents mAIEnergy, an open multimodal corpus integrating 50K texts, 20K images, 25M time series, and 2M geospatial entries for LLM applications in energy, harmonized into structured formats with consistent metadata.",
+      "llm_tldr_cn": "该论文针对能源领域大语言模型应用，整合了约5万篇文本、2万张图像、2500万条时间序列记录和200万地理空间数据条目，形成多模态数据集mAIEnergy。所有数据被统一为结构化格式并附带一致元数据，为智慧城市中多源异构数据（如文档、图像、传感器、地理信息）的融合与标准化提供了可复用的范例，直接支撑智慧城市多模态数据融合需求。",
+      "llm_tldr": "该论文针对能源领域大语言模型应用，整合了约5万篇文本、2万张图像、2500万条时间序列记录和200万地理空间数据条目，形成多模态数据集mAIEnergy。所有数据被统一为结构化格式并附带一致元数据，为智慧城市中多源异构数据（如文档、图像、传感器、地理信息）的融合与标准化提供了可复用的范例，直接支撑智慧城市多模态数据融合需求。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.06025v1",
+      "source": "arxiv",
+      "title": "FLAIR: Distributed Federated Learning with Dynamic Clustering",
+      "abstract": "Federated Learning (FL) offers a privacy-preserving framework for distributed machine learning, yet conventional centralized and hierarchical architectures present significant challenges in terms of scalability, resilience, and single points of failure, particularly in dynamic, infrastructure-less environments such as sensor networks. To address these limitations, we introduce FLAIR, a novel, fully decentralized FL protocol that integrates dynamic, resource-aware secure and self-organized clustering with in-cluster model training. FLAIR leverages a probabilistic, verifiable cluster-head election mechanism, which is enhanced to favor nodes with greater computational and communication capabilities, thereby ensuring both fairness and efficiency. Through comprehensive simulations in ns-3, we evaluate FLAIR against centralized, hierarchical, and gossip-based FL benchmarks across four demanding scenarios. The results demonstrate the superiority of our approach: in static 100-node networks, FLAIR achieves a final accuracy of approximately 0.91, outperforming all baselines. The protocol exhibits exceptional robustness, maintaining graceful degradation with accuracy above 0.85 even under 90% node failure rates. Furthermore, it shows strong resilience to mobility, with a performance loss of less than 2% compared to static deployments. In a realistic smart farming simulation, FLAIR's accuracy is within 0.2% of the centralized baseline, confirming its practical viability. These findings validate that FLAIR successfully combines the scalability of decentralized learning with the structural efficiency of clustering, presenting a robust and high performing solution for large-scale, heterogeneous IoT systems.",
+      "authors": [
+        "Ihssan Boutebicha",
+        "Bilel Zaghdoudi",
+        "Mohamed Amine Legheraba",
+        "Maria Potop Butucaru"
+      ],
+      "primary_category": "cs.NI",
+      "categories": [
+        "cs.NI"
+      ],
+      "published": "2026-07-07T09:04:33+00:00",
+      "link": "https://arxiv.org/pdf/2607.06025v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "federated learning for sensor networks, enabling privacy-preserving multi-source data integration in smart city",
+      "llm_evidence_cn": "面向传感器网络的联邦学习，支持智慧城市中多源数据隐私保护整合",
+      "llm_evidence": "面向传感器网络的联邦学习，支持智慧城市中多源数据隐私保护整合",
+      "canonical_evidence": "面向传感器网络的联邦学习，支持智慧城市中多源数据隐私保护整合",
+      "llm_tldr_en": "Introduces a fully decentralized federated learning protocol with dynamic clustering for infrastructure-less sensor networks, enhancing scalability and resilience.",
+      "llm_tldr_cn": "传统联邦学习架构在动态、无基础设施的传感器网络中面临可扩展性和单点故障问题。本文提出FLAIR，一种完全去中心化的联邦学习协议，通过动态、资源感知的聚类和可验证的簇头选举机制，实现在无线传感器网络中的高效模型训练。实验表明，与集中式和分层架构相比，FLAIR在通信效率和模型准确性方面均有显著提升，为智慧城市中的分布式数据分析提供了可行方案。",
+      "llm_tldr": "传统联邦学习架构在动态、无基础设施的传感器网络中面临可扩展性和单点故障问题。本文提出FLAIR，一种完全去中心化的联邦学习协议，通过动态、资源感知的聚类和可验证的簇头选举机制，实现在无线传感器网络中的高效模型训练。实验表明，与集中式和分层架构相比，FLAIR在通信效率和模型准确性方面均有显著提升，为智慧城市中的分布式数据分析提供了可行方案。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.05716v3",
+      "source": "arxiv",
+      "title": "Scene Graph Thinking: Reinforcing Structured Visual Reasoning for Multimodal Large Language Models",
+      "abstract": "Multimodal Large Language Models (MLLMs) have demonstrated strong perception and reasoning capabilities. However, most existing models focus on isolated objects and neglect structured relationships for efficient target navigation, limiting their performance on visually intensive tasks. To address this challenge, we introduce Scene Graph Thinking (SaGe), a novel paradigm that enables fine-grained and structured visual reasoning through explicit scene-graph representations. Specifically, we first introduce an automated data engine that converts flat image-text corpora into structured scene graphs, where hierarchical entities constitute the nodes and diverse visual relations define the edges. Building upon this, we construct 120K high-quality training data by sampling reasoning traces from scene graphs. Then, two-stage graph-aligned post-training paradigms are introduced, where supervised fine-tuning internalizes MLLMs with structured reasoning, and subsequent reinforcement fine-tuning proposes node-as-proxy graph rewards to consolidate efficient graph exploration. With curated data and graph-aligned training, our approach achieves significant improvements across eight multimodal benchmarks, demonstrating strong effectiveness on fine-grained perception and reasoning tasks. Code is available at https://github.com/zwyang6/SaGe.",
+      "authors": [
+        "Zhiwei Yang",
+        "Yuanchen Wu",
+        "Nan Zhang",
+        "Yucong Meng",
+        "Ke Yan",
+        "Shouhong Ding"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-07T01:00:51+00:00",
+      "link": "https://arxiv.org/pdf/2607.05716v3",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "scene graph construction for structured visual reasoning applicable to urban knowledge graphs",
+      "llm_evidence_cn": "场景图构建用于结构化视觉推理，可迁移至城市知识图谱",
+      "llm_evidence": "场景图构建用于结构化视觉推理，可迁移至城市知识图谱",
+      "canonical_evidence": "场景图构建用于结构化视觉推理，可迁移至城市知识图谱",
+      "llm_tldr_en": "SaGe converts flat image-text data into structured scene graphs to reinforce visual reasoning in MLLMs.",
+      "llm_tldr_cn": "该论文提出场景图思维范式SaGe，通过自动数据引擎将图像-文本语料转换为结构化的场景图，其中层次实体为节点，关系为边，从而增强多模态大语言模型的细粒度视觉推理能力。构建了12个数据集。该方法可直接应用于城市图像理解，为知识图谱构建提供技术支撑。",
+      "llm_tldr": "该论文提出场景图思维范式SaGe，通过自动数据引擎将图像-文本语料转换为结构化的场景图，其中层次实体为节点，关系为边，从而增强多模态大语言模型的细粒度视觉推理能力。构建了12个数据集。该方法可直接应用于城市图像理解，为知识图谱构建提供技术支撑。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.10841v1",
+      "source": "arxiv",
+      "title": "Align and Segment: Unsupervised Learning for Building Segmentation From Misaligned Labels",
+      "abstract": "Supervised learning for image segmentation typically requires spatially aligned image and label sets. When images and labels originate from different sources, the pairing may be misaligned, which can significantly deteriorate the performance of the learned models. This is especially common in remote sensing, when aerial or satellite images are co-registered with labels from another source (e.g., OpenStreetMap). In this work, we propose a novel approach for training on misaligned labels, where we simultaneously learn the label alignment. Our align and segment (AnS) approach builds on the spatial transformer module to transform the misaligned labels using an affine transformation to provide a better learning target for a canonical semantic segmentation network. We prevent shortcut learning of misaligned labels in these semantic segmentation networks through a self-supervised regularization loss and show that it is complementary to data augmentation, especially for systematically misaligned training data. A decisive characteristic of our AnS approach is that it learns without requiring any golden labels. We experimentally show on both synthetic and real-world data from different cities that our approach enables high-quality building segmentation and precise label-image alignment at the same time. Code and derived datasets are available at https://github.com/venkanna37/align-and-segment",
+      "authors": [
+        "Venkanna Babu Guthula",
+        "Oswin Krause",
+        "Dimitri Gominski",
+        "Hui Zhang",
+        "Johan Mottelson",
+        "Ankit Kariryaa",
+        "Nico Lang",
+        "Christian Igel"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-12T17:07:55+00:00",
+      "link": "https://arxiv.org/pdf/2607.10841v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "unsupervised building segmentation from misaligned labels, applicable to urban scene understanding",
+      "llm_evidence_cn": "从误对齐标签中进行无监督建筑分割，适用于城市场景理解",
+      "llm_evidence": "从误对齐标签中进行无监督建筑分割，适用于城市场景理解",
+      "canonical_evidence": "从误对齐标签中进行无监督建筑分割，适用于城市场景理解",
+      "llm_tldr_en": "Proposes an unsupervised method that simultaneously learns alignment and segmentation for building extraction from misaligned image-label pairs, using spatial transformers.",
+      "llm_tldr_cn": "遥感图像中的建筑分割通常需要空间对齐的标签，但实际中标签与图像可能因配准误差而错位。本文提出一种无监督方法，结合空间变换器模块，在训练分割网络的同时学习标签与图像的对齐。该方法无需手动修正标签，可有效利用如OpenStreetMap等外部不完美标签。在多个遥感数据集上，该方法在分割精度上显著优于直接使用未对齐标签的训练方式。",
+      "llm_tldr": "遥感图像中的建筑分割通常需要空间对齐的标签，但实际中标签与图像可能因配准误差而错位。本文提出一种无监督方法，结合空间变换器模块，在训练分割网络的同时学习标签与图像的对齐。该方法无需手动修正标签，可有效利用如OpenStreetMap等外部不完美标签。在多个遥感数据集上，该方法在分割精度上显著优于直接使用未对齐标签的训练方式。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.05970v1",
+      "source": "arxiv",
+      "title": "Faithful or Findable? Evaluating LLM-Generated Metadata for RDF Dataset Search",
+      "abstract": "Dataset search depends heavily on metadata, making LLM-generated metadata a consequential form of synthetic content in retrieval systems. We study six metadata-generation settings for RDF datasets, ranging from simple rewriting to profile-grounded and agentic graph-based generation, and evaluate them jointly for retrieval effectiveness and faithfulness. Unconstrained metadata rewriting delivers the strongest retrieval gains over the original metadata, but it is also the least faithful, showing that search improvements can be driven by unsupported semantic expansion. More grounded settings substantially improve faithfulness, and profile-grounded rewriting provides the most balanced trade-off between retrieval effectiveness and grounding. These findings position synthetic metadata as a system-level IR problem in which effectiveness, provenance, and trust must be evaluated together.",
+      "authors": [
+        "Riccardo Terrenzi",
+        "Serkan Ayvaz"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR",
+        "cs.AI"
+      ],
+      "published": "2026-07-07T08:04:47+00:00",
+      "link": "https://arxiv.org/pdf/2607.05970v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "evaluates LLM-generated metadata for RDF datasets, relevant to semantic data models",
+      "llm_evidence_cn": "评估LLM生成的RDF数据集元数据，与语义数据模型相关",
+      "llm_evidence": "评估LLM生成的RDF数据集元数据，与语义数据模型相关",
+      "canonical_evidence": "评估LLM生成的RDF数据集元数据，与语义数据模型相关",
+      "llm_tldr_en": "Studies six metadata-generation settings for RDF datasets and evaluates them for retrieval effectiveness and faithfulness, finding profile-grounded rewriting best balances trade-offs.",
+      "llm_tldr_cn": "数据集搜索依赖元数据，LLM生成的元数据可能引入不忠实内容。本文研究六种RDF数据集元数据生成设置，从简单重写到基于图谱的生成，并联合评估检索效果和忠实度。发现无约束重写检索增益最大但忠实度最低；基于背景的重写提供了最佳平衡。该研究为智慧城市中异构数据集的语义标注与检索提供了方法论参考，有助于实现统一的数据标准。",
+      "llm_tldr": "数据集搜索依赖元数据，LLM生成的元数据可能引入不忠实内容。本文研究六种RDF数据集元数据生成设置，从简单重写到基于图谱的生成，并联合评估检索效果和忠实度。发现无约束重写检索增益最大但忠实度最低；基于背景的重写提供了最佳平衡。该研究为智慧城市中异构数据集的语义标注与检索提供了方法论参考，有助于实现统一的数据标准。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing unified data standards and semantic data models for integrating heterogeneous smart city construction data, including BIM, GIS, documents, images, videos, point clouds, and structured databases.",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.09806v1",
+      "source": "arxiv",
+      "title": "An Autonomous Scientific Knowledge Generation Framework for AI-Driven Scientific Discovery",
+      "abstract": "Artificial intelligence (AI) is transforming scientific discovery, but its effectiveness is fundamentally limited by the availability of structured scientific knowledge. Although existing databases have accelerated data-driven materials research, much of the knowledge needed for predictive modeling and inverse design remains embedded in unstructured scientific literature. We present an Autonomous Scientific Knowledge Generation Framework that transforms scientific publications into a Unified AI-Ready Scientific Knowledge Base. The framework integrates ontology-guided literature acquisition, hybrid scientific knowledge extraction, semantic harmonization, knowledge fusion, and validation within a unified workflow. Rather than treating literature retrieval, information extraction, and database construction as separate tasks, the framework progressively converts scientific publications into structured, semantically consistent, and provenance-preserving knowledge suitable for AI-driven reasoning. As a proof of concept, the framework was applied to electro-optic materials. Autonomous literature acquisition retrieved and validated about 1,000 publications from multiple scholarly repositories. A representative subset of eight publications was processed through the complete workflow, generating 29 structured scientific records that were harmonized into 7 canonical scientific records. The results demonstrate the complete transformation from scientific literature to an AI-ready scientific knowledge base while preserving quantitative measurements, operating conditions, provenance, and scientific context. The proposed framework provides a scalable, domain-independent foundation for predictive AI, generative AI, and closed-loop AI-driven scientific discovery.",
+      "authors": [
+        "Dibakar Datta"
+      ],
+      "primary_category": "cs.DL",
+      "categories": [
+        "cs.DL",
+        "cond-mat.mtrl-sci",
+        "cs.AI"
+      ],
+      "published": "2026-07-09T19:40:41+00:00",
+      "link": "https://arxiv.org/pdf/2607.09806v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "autonomous knowledge generation framework with ontology-guided extraction and semantic harmonization",
+      "llm_evidence_cn": "自主知识生成框架，包含本体引导提取和语义协调",
+      "llm_evidence": "自主知识生成框架，包含本体引导提取和语义协调",
+      "canonical_evidence": "自主知识生成框架，包含本体引导提取和语义协调",
+      "llm_tldr_en": "Proposes an autonomous framework that transforms scientific literature into a unified AI-ready knowledge base using ontology-guided extraction, hybrid extraction, knowledge fusion, and validation.",
+      "llm_tldr_cn": "针对科学文献中知识难以结构化的挑战，提出自主科学知识生成框架，整合本体引导文献获取、混合知识提取、语义协调、知识融合与验证，将非结构化文本转化为统一AI就绪知识库。该方法可迁移至智慧城市领域，用于从BIM文档、GIS报告等异构来源自动构建知识图谱，但论文本身不直接处理BIM或点云。",
+      "llm_tldr": "针对科学文献中知识难以结构化的挑战，提出自主科学知识生成框架，整合本体引导文献获取、混合知识提取、语义协调、知识融合与验证，将非结构化文本转化为统一AI就绪知识库。该方法可迁移至智慧城市领域，用于从BIM文档、GIS报告等异构来源自动构建知识图谱，但论文本身不直接处理BIM或点云。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.10151v1",
+      "source": "arxiv",
+      "title": "MC-RAG System: A Structure-Driven RAG System for Multi-Constraint Queries",
+      "abstract": "Retrieval-Augmented Generation (RAG) systems are widely adopted in question answering, yet they often fail to satisfy complex multi-constraint queries, leading to constraint violations, factual inconsistencies, or hallucinations. We present Structure-Driven RAG System for Multi-Constraint Queries(MC-RAG), a structure-driven RAG system that reformulates retrieval as a subgraph matching problem over a knowledge graph. By integrating semantic and structural embeddings with path-level indexing, MC-RAG performs interpretable, structure-aware, and constraint-consistent retrieval and generation. During the demonstration, participants can input medical or encyclopedic multi-constraint queries, visualize how the system parses constraints, performs structural matching, and generates answers, thereby experiencing an end-to-end, interactive, and explainable RAG pipeline. A demo video is available at https://youtu.be/J8kahzmAnu0.",
+      "authors": [
+        "Xiao Zhang",
+        "Yang Wan",
+        "Yi Li",
+        "Miao Xie",
+        "Chunli Lv"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR"
+      ],
+      "published": "2026-07-11T06:20:38+00:00",
+      "link": "https://arxiv.org/pdf/2607.10151v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "knowledge graph-based retrieval for complex multi-constraint queries applicable to smart city data",
+      "llm_evidence_cn": "基于知识图谱的检索用于多约束查询，可应用于智慧城市数据",
+      "llm_evidence": "基于知识图谱的检索用于多约束查询，可应用于智慧城市数据",
+      "canonical_evidence": "基于知识图谱的检索用于多约束查询，可应用于智慧城市数据",
+      "llm_tldr_en": "MC-RAG reformulates retrieval as subgraph matching over a knowledge graph, enabling structure-aware and constraint-consistent generation.",
+      "llm_tldr_cn": "MC-RAG系统将多约束查询的检索重构为知识图谱上的子图匹配问题，结合语义和结构嵌入及路径级索引，实现可解释且约束一致的生成。该系统在医疗和百科查询中验证，可直接应用于智慧城市中的知识库问答和推理，促进城市知识图谱的利用。",
+      "llm_tldr": "MC-RAG系统将多约束查询的检索重构为知识图谱上的子图匹配问题，结合语义和结构嵌入及路径级索引，实现可解释且约束一致的生成。该系统在医疗和百科查询中验证，可直接应用于智慧城市中的知识库问答和推理，促进城市知识图谱的利用。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.11464v1",
+      "source": "arxiv",
+      "title": "FAIR GraphRAG: A Retrieval-Augmented Generation Approach for Semantic Data Analysis",
+      "abstract": "Retrieval-Augmented Generation (RAG) addresses the limitations of Large Language Models (LLMs) when providing responses to domain-specific questions. Graph-based RAG approaches, such as GraphRAG, enhance retrieval by capturing semantic relationships within knowledge graphs (KGs). While the FAIR principles (Findability, Accessibility, Interoperability, and Reusability) are becoming prevalent for scientific data management, especially in complex domains such as medicine, existing RAG approaches lack a structured FAIRification of the underlying knowledge resources. This lack limits their potential for FAIR information retrieval in these domains. To address this gap, we introduce FAIR GraphRAG, a novel framework that integrates FAIR Digital Objects (FDOs) as the fundamental units of a graph-based retrieval system. Each graph node represents an FDO that incorporates core data, metadata, persistent identifiers, and semantic links. We leverage LLMs to support schema construction and automated extraction of content and metadata from data sources. The framework was co-designed by physicians and computer scientists to ensure technical and clinical relevance. We apply FAIR GraphRAG to a biomedical dataset in gastroenterology, demonstrating its applicability to RNA-sequencing data. Beyond ensuring adherence to the FAIR principles, FAIR GraphRAG significantly improves question answering accuracy, coverage, and explainability, particularly for complex queries involving metadata and ontology links. This work shows the feasibility of combining FAIR data practices with graph-based retrieval techniques. We see potential for applying our approach to other specialized fields such as education and business.",
+      "authors": [
+        "Marlena Flüh",
+        "Soo-Yon Kim",
+        "Carolin Victoria Schneider",
+        "Sandra Geisler"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR"
+      ],
+      "published": "2026-07-13T12:15:27+00:00",
+      "link": "https://arxiv.org/pdf/2607.11464v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "integration of FAIR principles and knowledge graphs for semantic data analysis in RAG",
+      "llm_evidence_cn": "将FAIR原则与知识图谱集成，用于语义数据分析的RAG",
+      "llm_evidence": "将FAIR原则与知识图谱集成，用于语义数据分析的RAG",
+      "canonical_evidence": "将FAIR原则与知识图谱集成，用于语义数据分析的RAG",
+      "llm_tldr_en": "FAIR GraphRAG integrates FAIR Digital Objects with knowledge graphs for retrieval-augmented generation, enabling FAIR information retrieval in complex domains.",
+      "llm_tldr_cn": "针对现有RAG方法缺乏FAIR结构化知识资源的问题，提出FAIR GraphRAG框架，通过将FAIR数字对象与知识图谱结合，实现语义数据分析中的可查找、可访问、可互操作、可重用信息检索。该方法可应用于智慧城市中异构数据（如BIM、GIS、传感器）的语义查询，但论文聚焦于医学等科学领域。",
+      "llm_tldr": "针对现有RAG方法缺乏FAIR结构化知识资源的问题，提出FAIR GraphRAG框架，通过将FAIR数字对象与知识图谱结合，实现语义数据分析中的可查找、可访问、可互操作、可重用信息检索。该方法可应用于智慧城市中异构数据（如BIM、GIS、传感器）的语义查询，但论文聚焦于医学等科学领域。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
