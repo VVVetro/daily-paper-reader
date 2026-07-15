@@ -6,49 +6,43 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-14
-- 运行时间：2026-07-14 21:37:45 UTC
+- 最新运行日期：2026-07-15
+- 运行时间：2026-07-15 21:28:37 UTC
 - 运行状态：成功
-- 本次总论文数：9
-- 精读区：2
-- 速读区：7
+- 本次总论文数：7
+- 精读区：1
+- 速读区：6
 
 ### 今日简报（AI）
-1) 今日精读两篇8分论文：知识图谱构建质量可解释评估KGCQual框架与能源领域多模态数据集。  
-2) 最值得聚焦KGCQual的可解释评估指标设计，以及能源数据集如何填补大模型应用的数据空白。  
-3) 建议优先精读这两篇，可直接复用KGCQual的评估逻辑或下载能源数据集开展实验。
-- 详情：[/202607/14/README](/202607/14/README)
+今日精读一篇关于Agentic IoT的高分论文（8.0分），速读涵盖企业数据分析、街景空间认知和CAD图纸符号检测的三个方向。
+最值得看的是《Internet of Agentic Things》，其提出的网络化AI代理实现闭环IoT编排架构颇具前瞻性。
+建议优先精读该高分论文，了解AI代理与物联网结合的新范式，再辅以速读中的具体应用案例。
+- 详情：[/202607/15/README](/202607/15/README)
 
 ### 精读区论文标签
-1. [KGCQual: An Interpretable Framework for Evaluating the Knowledge Graph Construction Quality from Text](/202607/14/2607.10212v1-kgcqual-an-interpretable-framework-for-evaluating-the-knowledge-graph-construction-quality-from-text)  
+1. [Internet of Agentic Things: Networked AI Agents for Closed-Loop IoT Orchestration](/202607/15/2607.12662v1-internet-of-agentic-things-networked-ai-agents-for-closed-loop-iot-orchestration)  
    标签：评分：8.0/10、query:smart-city
-   evidence：知识图谱构建的可解释质量评估，直接相关于智慧城市知识图谱需求
-2. [A Multimodal Dataset for Large Language Model Applications in the Energy Domain](/202607/14/2607.11459v1-a-multimodal-dataset-for-large-language-model-applications-in-the-energy-domain)  
-   标签：评分：8.0/10、query:smart-city
-   evidence：能源领域的多模态数据集，含文本、图像、时序、地理空间数据，属于智慧城市范畴
+   evidence：结合智能体AI、物联网和数字孪生实现智能楼宇编排，涉及语义互操作性
 
 ### 速读区论文标签
-1. [FLAIR: Distributed Federated Learning with Dynamic Clustering](/202607/14/2607.06025v1-flair-distributed-federated-learning-with-dynamic-clustering)  
+1. [QwenPaw-Data: Bridging Facts, Methodology, and Execution for Autonomous Enterprise Data Analytics](/202607/15/2607.11019v2-qwenpaw-data-bridging-facts-methodology-and-execution-for-autonomous-enterprise-data-analytics)  
    标签：评分：7.0/10、query:smart-city
-   evidence：面向传感器网络的联邦学习，支持智慧城市中多源数据隐私保护整合
-2. [Align and Segment: Unsupervised Learning for Building Segmentation From Misaligned Labels](/202607/14/2607.10841v1-align-and-segment-unsupervised-learning-for-building-segmentation-from-misaligned-labels)  
+   evidence：整合异构企业资产的智能数据系统实现自然语言驱动的分析
+2. [DM-KG: A Novel Method for Boosting Spatial Cognition of Vision-Language Models in Street View Imagery](/202607/15/2607.12319v1-dm-kg-a-novel-method-for-boosting-spatial-cognition-of-vision-language-models-in-street-view-imagery)  
    标签：评分：7.0/10、query:smart-city
-   evidence：从误对齐标签中进行无监督建筑分割，适用于城市场景理解
-3. [Scene Graph Thinking: Reinforcing Structured Visual Reasoning for Multimodal Large Language Models](/202607/14/2607.05716v3-scene-graph-thinking-reinforcing-structured-visual-reasoning-for-multimodal-large-language-models)  
+   evidence：使用知识图谱增强街景空间认知，与智慧城市知识图谱构建相关
+3. [Text-Aided Multi-Modal Panoptic Symbol Spotting for CAD Floor Plan Drawings](/202607/15/2607.12678v1-text-aided-multi-modal-panoptic-symbol-spotting-for-cad-floor-plan-drawings)  
+   标签：评分：7.0/10、query:smart-city
+   evidence：从CAD平面图中提取文本辅助的全景符号，类似于BIM模型中的语义信息提取
+4. [3D Scene Graph Prediction: Generating Hierarchical Models from Partially Observed Environments](/202607/15/2607.10879v1-3d-scene-graph-prediction-generating-hierarchical-models-from-partially-observed-environments)  
    标签：评分：6.0/10、query:smart-city
-   evidence：场景图构建用于结构化视觉推理，可迁移至城市知识图谱
-4. [Faithful or Findable? Evaluating LLM-Generated Metadata for RDF Dataset Search](/202607/14/2607.05970v1-faithful-or-findable-evaluating-llm-generated-metadata-for-rdf-dataset-search)  
+   evidence：3D场景图预测用于层次化环境理解
+5. [CityBehavEx: A Scalable and Empirically Validated LLM-Assisted Urban Simulation Platform](/202607/15/2607.12086v1-citybehavex-a-scalable-and-empirically-validated-llm-assisted-urban-simulation-platform)  
    标签：评分：6.0/10、query:smart-city
-   evidence：评估LLM生成的RDF数据集元数据，与语义数据模型相关
-5. [An Autonomous Scientific Knowledge Generation Framework for AI-Driven Scientific Discovery](/202607/14/2607.09806v1-an-autonomous-scientific-knowledge-generation-framework-for-ai-driven-scientific-discovery)  
+   evidence：LLM辅助的城市模拟平台，整合移动模型和语义编码器，用于城市规模数据管道
+6. [EvoGraph-R1: Self-Evolving Multimodal Knowledge Hypergraphs for Agentic Retrieval](/202607/15/2607.12764v1-evograph-r1-self-evolving-multimodal-knowledge-hypergraphs-for-agentic-retrieval)  
    标签：评分：6.0/10、query:smart-city
-   evidence：自主知识生成框架，包含本体引导提取和语义协调
-6. [MC-RAG System: A Structure-Driven RAG System for Multi-Constraint Queries](/202607/14/2607.10151v1-mc-rag-system-a-structure-driven-rag-system-for-multi-constraint-queries)  
-   标签：评分：6.0/10、query:smart-city
-   evidence：基于知识图谱的检索用于多约束查询，可应用于智慧城市数据
-7. [FAIR GraphRAG: A Retrieval-Augmented Generation Approach for Semantic Data Analysis](/202607/14/2607.11464v1-fair-graphrag-a-retrieval-augmented-generation-approach-for-semantic-data-analysis)  
-   标签：评分：6.0/10、query:smart-city
-   evidence：将FAIR原则与知识图谱集成，用于语义数据分析的RAG
+   evidence：自演化多模态知识超图，可用于智慧城市知识图谱构建
 
 
 <div class="dpr-home-promo-card">

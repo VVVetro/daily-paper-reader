@@ -1,0 +1,639 @@
+Title: Text-Aided Multi-Modal Panoptic Symbol Spotting for CAD Floor Plan Drawings
+
+URL Source: https://arxiv.org/pdf/2607.12678v1
+
+Published Time: Wed, 15 Jul 2026 11:58:02 GMT
+
+Number of Pages: 35
+
+Markdown Content:
+# Text-Aided Multi-Modal Panoptic Symbol Spotting for CAD Floor Plan Drawings 
+
+Yan Gong a,1 , Bohao Li a,1 , Bowen Du a,b , Junchen Ye c
+
+> aCCSE Lab, Beihang University, Beijing, 100191, China
+> bSchool of Transportation Science and Engineering, Beihang University, Beijing, 100191, China
+> cThe Hong Kong Polytechnic University, Hong Kong, China
+
+Abstract 
+
+Computer-Aided Design (CAD) floor plan drawings contain both graphical primitives and textual annotations, which provide complementary geometric and semantic cues for intelligent design understanding. Among CAD analy-sis tasks, panoptic symbol spotting has become increasingly important with the growing demand for industrial digitalization and deep learning-based automation. However, most existing methods remain primarily primitive-centric and underexploit textual annotations, despite their critical semantic value. Even the few text-aware approaches often treat annotations only su-perficially, without properly modeling complex syntax and hierarchical se-mantics of CAD annotations, which leads to semantic loss and suboptimal spotting performance. To address these limitations, we propose TextCAD, a multimodal framework that jointly models graphical primitives and tex-tual annotations for panoptic symbol spotting. Specifically, we design a Type–Attribute Correlation Encoder (TACE) to explicitly encode the com-positional semantics within annotations by jointly modeling their types and attributes. We further introduce a Semantic Hierarchy Alignment frame-work with Multi-level Semantic Filtering (MSF) and primitive downsam-pling, which adaptively aligns annotation semantics with graphical primi-tives at different semantic levels and enables accurate cross-modal semantic injection and fusion. Experiments on real-world building-design datasets show that TextCAD effectively improves symbol spotting performance and achieves state-of-the-art results. 
+
+> 1Equal contribution. arXiv:2607.12678v1 [cs.CV] 14 Jul 2026
+
+Keywords: Panoptic Symbol Spotting, Textual Annotation, Multi-modal Fusion 
+
+1. Introduction 
+
+Computer-Aided Design (CAD) floor plans are vector-based design doc-uments composed of fine-grained graphical primitives such as lines and arcs, which explicitly encode the structural details of buildings [1, 2]. Owing to their precise geometric expressiveness, CAD drawings have been widely used throughout Architecture, Engineering, and Construction (AEC) work-flows [3, 4]. As intelligent Building Information Modeling (BIM) applications continue to advance, these drawings increasingly need to be parsed into structured semantic elements that support downstream understanding, reasoning, and digital management [5, 6, 7]. In this context, panoptic symbol spotting has emerged as a fundamental task for CAD analysis, aiming to jointly detect and classify all symbols in a floor plan, including both countable objects (e.g., doors and windows) and stuff-like structures (e.g., walls), at the primitive level [8]. It therefore serves as a key bridge between low-level CAD primitives and high-level BIM semantics [9]. Existing panoptic symbol spotting methods have mainly focused on im-proving the representation of graphical primitives. Early studies rasterize CAD vectors into images and apply image-based recognition pipelines [8, 10, 11], but rasterization often destroys the geometric and topological details that are critical in CAD floor plan drawings [12]. Later methods instead operate directly on vector primitives and organize them as basic units in different network architectures, such as graph-based, transformer-based, point-based, or line-based models [13, 14, 15, 16, 17, 18, 19, 20, 21]. Although these paradigms differ in representation and architecture, their common goal is to learn more discriminative primitive-level geometric features, and most of them remain predominantly primitive-centric. However, CAD floor plan drawings are not purely geometric. In practice, they also contain dense textual annotations that provide direct semantic cues about component identity, dimensions, functions, and material properties, as illustrated in Figure 1a. These annotations are often decisive for distinguish-ing structures that may be geometrically ambiguous, partially incomplete, or heavily overlapped. Therefore, the central problem is not merely how to 
+
+2(a) CAD with dense text notations.  
+
+> (b) Complex semantic structure.
+> (c) Multi-level semantic.
+> Figure 1: Characteristics of CAD text annotations: (a) CAD drawings contain dense text annotations which convey rich semantic cues. In (b) and (c), we illustrate the complex syntactic structures and multi-level semantics of CAD textual annotations.
+
+improve geometric representation of primitives, but how to effectively incor-porate CAD textual semantics into primitive-level spotting. 
+
+Achieving this is nontrivial because CAD annotations are neither generic natural language nor flat auxiliary labels; rather, they exhibit complex syn-tactic structures and multi-level semantics . Consequently, existing attempts that rely on naive text encoding [22] or direct text-to-primitive fusion [23] may lose critical semantics. Accordingly, integrating textual annotations into panoptic symbol spotting still faces two key challenges: 1) Concise yet dense CAD annotation syntax hinders unified type–attribute representation. CAD text annotations use highly compressed symbolic codes to convey rich meaning. For example, as shown in Figure 1b, in the string ‘ FM B 1321 ’, ‘ FM ’ denotes the type (fire door), while ‘ B 1321 ’ encodes two attributes—grade (Class B) and dimensions (13 dm × 21 dm). These short strings carry high information density. Off-the-shelf language models (LMs [24] / LLMs [25]) struggle here: their tokenizers often fail to segment such domain-specific patterns reliably [22] and incur computational cost [26]. Simple alternatives (e.g. MLPs [27] or lookup embeddings [28]) also fall short, as they cannot explicitly model and link type and attribute seman-tics, leading to representation bias. Hence, a key challenge is to efficiently fuse type and attribute within annotations under lightweight computation to 3yield robust semantic representations. 2) Multi-level semantics of CAD annotations make fusion with fine-grained primitives prone to se-mantic loss. As shown in Figure 1c, CAD annotations span multiple semantic scales: from the primitive-level (e.g. wall length ‘ 2650 ’), to the instance-level (e.g. ‘M0621 ’), and up to the region-level (e.g. ‘bathroom ’). Different annotations have varying scopes of semantic coverage, correspond-ing to primitives at different geometric scales. Naively injecting high-level annotations into low-level primitive representations can cause a mismatch be-tween semantic scope and geometric receptive field; for example, attaching a region-level tag to a single local primitive can attenuate or mislocalize its information through message passing. Therefore, a key challenge is to ensure that annotations operate at their corresponding semantic scales, avoiding information loss and cross-level interference. To address the above challenges, we propose a novel panoptic symbol spotting model, TextCAD , which enables the effective embedding and fu-sion of textual annotations within CAD floor plan drawings. Specifically, the model first embeds graphical primitives and textual annotations sepa-rately. For textual annotations, TextCAD introduces a Type-Attribute Cor-relation Encoder (TACE) to model the semantic correlations between anno-tation types and their attributes, thereby producing comprehensive textual representations. For multimodal fusion, TextCAD adopts a multi-level down-sampling–upsampling architecture to capture design semantics and structural details at different levels. During downsampling, as primitive representations are progressively reduced and evolve to encode broader semantic context, the proposed Multi-level Semantic Filtering (MSF) module selects seman-tically corresponding textual features for the downsampled primitives and fuses them to achieve cross-modal semantic alignment across different lev-els. The upsampling stage then performs a symmetric restoration process. Finally, the refined primitive features are fed into a decoder to produce the final spotting results. Extensive experiments on real-world building-design datasets show that TextCAD consistently outperforms existing baselines, es-pecially in the absence of priors (such as layers). Our main contributions are summarized as follows: 
+
+• Type-Attribute Correlation Encoder is proposed to capture the composi-tional semantics of textual annotations. It formulates annotations under a unified type –attribute schema and models their semantic dependencies through attention-based interactions, thereby producing expressive seman-4tic representations. 
+
+• Multi-level Semantic Filtering (MSF) is proposed to achieve level-consistent cross-modal fusion. Guided by downsampled primitive representations, MSF selectively injects hierarchy-consistent textual semantics into prim-itives at different stages, thereby reducing cross-level semantic mismatch and enabling semantically aligned fusion. 
+
+• A multimodal panoptic symbol spotting framework is proposed to integrate textual annotations with graphical primitives through a down–upsampling architecture. Experiments on real-world datasets show that it consistently improves the accuracy and robustness of symbol spotting over existing baselines, especially when prior information is unavailable. 
+
+2. Preliminary 
+
+This section formalizes the research task and notation for CAD floor plan drawings, covering primitives and text annotations. 
+
+2.1. Problem formalization 
+
+Given a CAD floor plan drawing, we consider two fundamental modalities: the graphical primitives Eg (including basic geometric elements such as lines, arcs, circles, and ellipses) and the text annotations Et. We formalize our target panoptic symbol spotting task as: 
+
+fθ : ( Eg, Et) −→ ( ˆY, ˆZ), (1) where ˆY = {ˆyi}Ng 
+
+> i=1
+
+are the predicted semantic labels for primitives e ig ∈ Eg,and ˆZ = {ˆzi}Ng 
+
+> i=1
+
+are the corresponding instance indices. Here, Ng = |Eg|
+
+is the number of graphical primitives and θ denotes the learnable model parameters. Each ˆzi ∈ Z≥0 ∪ {− 1}, with ˆzi = −1 reserved for primitives without a specific instance [8]. 
+
+2.2. Text annotations decomposition 
+
+For each text annotation eit ∈ Et, we write eit = {T i, Ai}, where Ti rep-resents the annotation-type indicator and Ai ∈ Ra is the attribute vector separated from the raw annotation. Here, a denotes the maximum number of properties (e.g. length or grade) captured in the syntactic structures. We additionally attach a mask vector Mi ∈ Ra to indicate the validity of each attribute. The detailed procedure of attribute separation in Appendix A.1. 53. Methodology: TextCAD 
+
+In this section, we describe the proposed TextCAD. As illustrated in Figure 2, the workflow of our model is as follows: For a given CAD drawing, we first decompose it into a set of graphical primitives Eg and a set of text annotations Et, which are respectively em-bedded by unimodal encoders. Here, the Type-Attribute Correlation Encoder 
+
+(TACE) is employed to embed the text annotations information, captur-ing their semantics by jointly modeling type and attributes, while graphical primitives are embedded based on the line-based method following [21]. 
+
+> Figure 2: Framework of our method. TextCAD proposes Type-Attribute Correlation En-coder to embed textual annotations and employ down-upsampling architecture for modal fusion by designing multi-level semantic filtering for modal alignment.
+
+Then we adopt down–upsampling architecture for multimodal fusion. As primitive features are aggregated through a downsampling process, textual features are progressively filtered through the Multi-Level Semantic Filter-ing (MSF) mechanism to align the semantic hierarchy. As shown at the bottom of Figure 2, low-level, instance-level and high-level annotations are progressively aligned with the discrete, instance-level, and region-level rep-resentations of primitives respectively. Note that this three-stage filtering is only a schematic illustration; in practice, MSF mechanism performs adaptive semantic alignment. The filtered aligned text semantics are then fused with 6corresponding primitive features at multi-levels and go through the upsam-pling phase for feature restoration. Finally, the refined primitive features are passed to the decoder for final prediction. 
+
+3.1. Unimodal encoder 
+
+We first employ two modality-specific encoders to separately embed the graphical primitives and text annotations. 
+
+3.1.1. Type-Attribute Correlation Encoder. 
+
+In CAD floor plan drawings, text annotations are written in highly com-pressed symbolic forms that specify a type and attach multiple attributes .The type conveys functional semantics, while the attributes encode charac-teristics such as scope or capacity; both are critical cues. Moreover, different type–attribute patterns induce different attribute semantics. For example, the same numeric attribute string may denote load capacity when associated with Elevator , but dimensions when associated with Door . Conventional NLP embeddings struggle in this high-semantic-density setting: language-model tokenizers are unstable, and simple embedding schemes cannot model the diverse type–attribute patterns. Therefore, we propose the Type–Attribute Correlation Encoder (TACE), which formulates CAD text annotations under a unified type–attribute rep-resentation schema and embeds them by leveraging cross type–attribute at-tention to associate each type with its attribute bundle, thereby capturing the essential semantics. The robustness of TACE is discussed in Appendix A.2. Specifically, as shown in Figure 3, for the text annotations Et, TACE first encodes their decomposed T ∈ RNt and A ∈ RNt×a separately, where 
+
+Nt denotes the number of text annotations. This process can be written as: 
+
+Ts = Embed (T ),
+
+As = Concat (MLP j (Aj )) , j ∈ { 1, . . . , a }, (2) where Aj ∈ RNt denotes the j-th attribute of Et. Embed (·) is a neural em-bedding layer that maps discrete indices to continuous vectors, while MLP j (·)
+
+consists of two linear layers with RELU activation between them. This pro-cess yields the type embedding Ts ∈ RNt×1×D and the concatenated attribute embedding As ∈ RNt×a×D, where D denotes the embedding dimension. Then, Ts and As are fed into a fusion module to model the latent seman-tic dependencies between the type and its attributes. We adopt a masked 7Figure 3: Type-attribute correlation encoder (TACE). It embeds text annotations by mod-eling semantic correlations between types and attributes by masked multi-head attention. 
+
+multi-head attention, where the type embedding provides the queries and the attribute embedding provides the keys and values. Formally, for the h-th head ( h = 1 , . . . , H ), we project 
+
+Qh = TsWQh , Kh = AsWKh , Vh = AsWVh , (3) and compute the masked attention weights as: 
+
+Wh = softmax 
+
+QhK⊤
+
+> h
+
+√D ⊙ M 
+
+
+
+, (4) where H is the number of heads, and M ∈ RNt×1×a is the validity mask for 
+
+a attributes. The outputs of all heads are then concatenated and fused with the type embedding to obtain the final semantic embedding St ∈ RNt×1×D:
+
+St = MLP  Concat( W1V1, . . . , WH VH ) + Ts
+
+. (5) Since text annotations also carry corresponding geometric cues, we further inject their geometric features Ft (e.g., annotation angle and length) into semantic embeddings St to yield initial textual embeddings X0 
+
+> t
+
+∈ RNt×D:
+
+X0 
+
+> t
+
+= St + MLP (Ft). (6) The embedding process of Ft is consistent with that of Fg, as detailed below, where each text annotation corresponds to a single line. 
+
+3.1.2. Primitives encoder. 
+
+To preserve the geometric continuity of primitives for accurate shape representations, following the prior work [21], we decompose each primitive 
+
+e ig ∈ Eg into a set of lines: 
+
+K ig = {k i,j g }n ig
+
+> j=1
+
+, (7) 8where n ig denotes the number of lines contained in the i-th graphical primitive 
+
+e ig. For the j-th line k i,j g in eig, we construct its geometric feature as: 
+
+f i,j g = ( bi,j , d i,j x , d i,j y , c i,j x , c i,j y , c ix, c iy), (8) where bi,j denotes the length of the line, (di,j x , d i,j y ) represents its direction unit vectors, (ci,j x , c i,j y ) is the midpoint of k i,j g and (c ix, c iy) denotes the geometric centroid of primitive e ig. Then, Fg = {f i,j g | e ig ∈ Eg, k i,j g ∈ K ig } is fed into a primitive encoder (MLP) to produce initial primitive-line embeddings: 
+
+X0 
+
+> g
+
+= MLP( Fg) ∈ RN 0 
+
+> g×D
+
+, (9) where D matches textual embedding dimension and N 0 
+
+> g
+
+= P|Eg | 
+
+> i=1
+
+n ig.
+
+3.2. Semantic Hierarchy Alignment framework 
+
+Since textual annotations cover multiple semantic levels and correspond to graphical primitives at different geometric scales, naively injecting high-level annotations into low-level primitives blurs and suppresses the intended semantic cues. We aim to align semantic hierarchies between two modalities for effective cross-modal fusion, allowing annotations to guide the refinement of corresponding primitives. To this end, we propose the Semantic Hierarchy Alignment Framework through a down-upsampling architecture. Specifically, to aggregate low-level primitives features into large-scale rep-resentations with higher semantics (e.g., progressively merging discrete primi-tive features into instance-level representations such as doors and further into region-level such as rooms), we adopt Point Transformer V3 [29] to hierarchi-cally downsample primitive-lines, reducing set cardinality while aggregating local neighborhood features. In parallel, a Multi-level Semantic Filtering 
+
+(MSF) mechanism is applied to select textual features that are semanti-cally aligned with each hierarchy level of primitive representations. Both the downsampling and filtering processes run in parallel for L layers. The aligned textual and primitive representations are then fused at corresponding layers to achieve fine-grained semantic interaction and feature enhancement. 
+
+3.2.1. Primitive-line downsampling. 
+
+Hierarchical downsampling aggregates local primitive features into higher-level representations; subsequent upsampling restores the resolution, giving discrete primitives a broader context. At the l-th downpooling layer: 
+
+X′ lg = Down l(P lg, X lg; γl), (10) 9Figure 4: Multi-level semantic filtering layer(MSF). It hierarchically filters textual features guided by primitive representations to achieve semantic alignment across modalities at multiple levels. 
+
+yielding X′ lg ∈ RN l+1  
+
+> g×Dl+1
+
+. Here, Down l(·) denotes a downsampling operation implemented via grid-based pooling [29] with the grid size rate γl, which partitions primitives into voxel clusters and aggregates features within each voxel to produce a higher-level summary. N l+1  
+
+> g
+
+denotes the number of voxel clusters after downsampling operation, and P lg denotes the representative positions of clusters and is used to establish neighborhood relations. 
+
+3.2.2. Multi-Level Semantic Filtering. 
+
+As geometric structures are aggregated and the semantic level of primi-tive features increases through downsampling, textual annotations need to be adaptively filtered to align with corresponding semantic-hierarchy, enabling cross-modal semantic fusion. To address this, we propose a Multi-level Se-mantic Filtering (MSF) mechanism. Coupled with the progressive downsam-pling of primitives, MSF uses primitive features as guidance to hierarchically filter textual features at the corresponding geometric scales, thereby mitigat-ing cross-level interference and preserving essential annotation semantics. Specifically, as shown in Figure 4, during the l-th semantic filtering layer among the total L layers, the downsampling primitive-line features X′ lg are used as guidance to filter the textual features Xlt ∈ RNt×Dl+1 
+
+which are pro-jected through Xlt = MLP l(X0 
+
+> t
+
+). The model first computes the cross-modal attention logits Cl ∈ RNt×N l+1  
+
+> g
+
+between Xlt and X′ lg. Then, the maximum value over the primitive dimension is taken to obtain the semantic relevance 
+
+rl ∈ RNt of each textual annotation with respect to the primitive lines at the 10 corresponding hierarchy, formulated as: 
+
+Cl = (XltWq)( X′ lgWk)T
+
+√Dl+1 ,
+
+rlm = max  
+
+> 1≤n≤Nl+1
+> g
+
+Clm,n , m = 1 , . . . , N t,
+
+(11) where Wq and Wk denote projection matrices. Clm,n ∈ Cl is the semantic correlation between m-th text annotation and n-th primitive-line at layer l.To enable differentiable and near-binary filtering, we apply hard-concrete relaxation [30] to semantic relevance scores rl. The gating-based selection is: 
+
+Gl = HardConcrete (rl, g),
+
+X′ lt = Gl ⊙ (XltWv). (12) where g ∈ RNt is Gumbel noise [31] injected for stochastic exploration, Gl ∈
+
+[0 , 1] Nt approximates binary gates (near 0: suppressed; near 1: activated), and Wv is a learnable projection. This formulation preserves end-to-end differentiability while sparsifying the selected textual features and retaining those most relevant to the current hierarchy. X′ lt denotes the semantically aligned textual features. Detailed procedures are given in Appendix B.1. With the primitive-feature guidance and the hard-concrete relaxation, MSF adaptively aligns text–primitive hierarchies, enabling fusion of more semantically precise textual cues. 
+
+3.2.3. Multimodal fusion. 
+
+After multi-level semantic filtering and downsampling process, taking the 
+
+l-th layer for example, we obtain filtered textual features X′ lt which is se-mantic aligned with primitive-line features X′ lg. We further feed back the semantic aligned X′ lt to fuse with X′ lg through a cross-attention block: 
+
+Xl+1  
+
+> g
+
+= AttnBlock (SerialAttn (X′ lg), X′ lt ), (13) where SerialAttn (·) denotes serialization attention operation [29] in Point Transformer V3 which captures structural dependencies among primitive lines. AttnBlock (·) represents a cross-attention module with spatial em-beddings [32] that enable the propagation of textual semantics within the corresponding hierarchical level. A symmetric upsampling pathway [29] is 11 then employed to progressively recover primitive lines and features by cou-pling with corresponding downsampling stages. During the l-th upsampling: 
+
+˜X′ lg = MLP (XL−lg ) + Up ( ˜X lg),
+
+˜Xl+1  
+
+> g
+
+= AttnBlock (SerialAttn ( ˜X′ lg), X′L−l−1 
+
+> t
+
+),
+
+(14) where Up (·) denotes the upsampling operation implemented via partition-based unpooling operation [29] that propagates lower-resolution features to higher-resolution based on voxel partitioning. ˜X′ lg represents the enhanced primitive features after upsampling and ˜X lg is the preceding lower-resolution features to be propagated. Detailed procedures are given in Appendix B.2. 
+
+3.2.4. Decoder. 
+
+The final primitive line features ˜XLg are passed to the decoder to obtain the final panoptic spotting results: 
+
+Y, Z = Decoder ( ˜XLg ), (15) where Y is the class prediction and Z is the instance prediction. Specifically, the decoder first applies group-wise pooling to aggregate line features within each primitive, resulting in primitive-level representa-tions [21]. These features are then enhanced through intra-layer feature fu-sion to capture layer-wise context [18]. Finally, a OneFormer3D-based [33] head is employed to generate the final predictions. 
+
+3.3. Loss function 
+
+We adopt an overall loss function formulated as follows: 
+
+L = λsem Lsem + λcls Lcls + λbce Lbce + λdice Ldice + λcLc, (16) where the cross-entropy loss Lsem is employed for semantic segmentation [34] and the classification loss Lcls is a multi-class cross-entropy loss [34] for in-stance category prediction. The binary cross-entropy [35] Lbce and the Dice loss Ldice [36] are combined to supervise instance-mask prediction. Besides the task-specific loss, we apply a complexity loss Lc [30] to regu-larize the semantic filtering process. By penalizing the expectation of active gates, it encourages the model to retain those most semantically relevant text annotations while suppressing redundant ones, leading to more discrimina-tive and semantically aligned filtering. Details are given in Appendix B.3. 12 4. Experiments 
+
+In this section, extensive experiments are conducted to demonstrate the superiority of TextCAD. We also perform ablation studies and case studies to further validate different parts of our model. 
+
+4.1. Experimental settings 
+
+We outlines the experimental settings, including the dataset, evaluation metrics, baselines and implementation details. 
+
+4.1.1. Dataset. 
+
+Our experiments are conducted on two real-world publicly available CAD floor plan datasets: FloorPlanCAD-V2 [8] and CubiCasa5K [37]. 
+
+FloorPlanCAD-V2 is the general dataset proposed for panoptic symbol spotting . Compared with its earlier release FloorPlanCAD-V1, this version contains 15,663 CAD drawings spanning a broader range of real-world archi-tectural scenarios, and, importantly, includes abundant textual annotations that are not available in the earlier version. To further evaluate the robust-ness of our model, we additionally conduct experiments on CubiCasa5K 
+
+which contains 5,000 CAD floorplans with various textual annotations. We split datasets into training, validation, and test sets with approximate ratios of {6 : 3 : 1 } for FloorPlanCAD-V2 and {8 : 1 : 1 } for CubiCasa5K. More details on data preprocessing provided in Appendix C.1. 
+
+4.1.2. Evaluation metrics. 
+
+We evaluate with multiple metrics following prior work [8, 16, 14, 17, 22, 38, 21, 20], including PQ (Panoptic Quality), tailored to panoptic symbol spotting and jointly assessing semantic classification and instance segmenta-tion, as well as PQ-Thing and PQ-Stuff to measure performance on count-able thing categories and uncountable stuff categories, respectively. Addi-tionally, the standard classification metrics F1 and wF1 (length-weighted F1) are for semantic spotting. Detailed definitions are in the Appendix C.2. 
+
+4.1.3. Baselines. 
+
+We compare TextCAD with baselines of multiple paradigms: image-based method PanCADNet [8], graph-based method GAT-CADNet [14] and CAD-Transformer [16], point cloud-based method SymPoint [17], SymPointV2 [18] and DPSS [20], line-based method VecFormer [21] and text-incoporated 13 methods PFL-Net [22], TNet [38] and TriNet [23]. Additional descriptions are provided in Appendix C.3. All baselines were reimplemented on both FloorPlanCAD-V2 with textual annotations and CubiCasa5K. 
+
+4.1.4. Implementation details. 
+
+Hyperparameters in TextCAD are extensively searched and set to their optimal values, with parameter sensitivity analysis provided in Appendix D. For the TACE, the number of attributes a is set to 4, the embedding dimen-sion D is set to 32, and the number of multi-heads H is set to 4. Within the Semantic Hierarchy Alignment framework, both the number of downpooling layers and the filtering layers L are set to 5, with grid size rates [1 , 2, 2, 2, 2] 
+
+for primitives lines. Notably, the first layer performs no downpooling or semantic filtering; it only performs projection to aligned feature dimensions. AdamW optimizer with an initial learning rate of 0.0001 and warm-up ratio of 0.05 is employed and training spans 700 epochs. All experiments, including baselines, are run three times and the average is reported; training uses four NVIDIA RTX A6000 GPUs with a batch size of 2. 
+
+4.2. Main performance 
+
+Herein, we analyze performances of various baselines and TextCAD under two experimental settings, with the corresponding results reported in Table 1. “w/ prior” denotes that the model is provided with prior primitive attributes, namely auxiliary properties of graphical primitives, such as layer assignments or color information, that may provide category-indicative cues. “w/o prior” denotes that such prior attributes are not used. Some methods (e.g. CADTransformer, SymPoint) are not included under the “w/ prior” setting because they do not inherently support the use of prior primitive attributes. Notably, for CubiCasa5K, results under “w/ prior” setting are not reported, as the dataset itself lacks such prior information. For clarity, all results are multiplied by 100. 
+
+4.2.1. TextCAD performance 
+
+Based on Table 1, we draw the following key observations: i) Under both settings, TextCAD consistently achieves the best perfor-mance across all metrics, outperforming the strongest baseline by nearly 2 percentage points on overall PQ which serves as the comprehensive evaluation of panoptic symbol spotting . This demonstrates TextCAD is able to leverage 14 Table 1: Main Performance of TextCAD Compared with Baselines.                                                                                                                                                                   
+
+> Setting Method FloorPlanCAD-V2 CubiCasa5K
+> PQ PQ-Thing PQ-Stuff F1 wF1 PQ PQ-Thing PQ-Stuff F1 wF1 w/o prior PanCADNet 57.60 65.78 53.34 78.7 78.0 60.80 67.32 46.89 80.5 76.4 GAT-CADNet 71.31 73.29 58.08 84.4 81.4 78.52 79.39 55.92 89.4 84.7 CADTransformer 71.75 73.65 58.39 80.4 78.5 74.74 74.89 53.98 82.0 84.1 SymPoint 83.27 86.68 57.26 85.7 84.7 89.16 90.58 50.47 93.6 88.7 SymPointV2 82.86 86.24 57.07 86.1 85.7 91.47 92.76 57.25 93.9 91.9 DPSS 84.46 87.56 61.45 91.5 91.0 91.33 92.56 59.15 94.1 93.5 VecFormer 88.14 87.26 89.17 87.8 89.8 94.58 95.59 86.95 96.2 96.4 PFL-Net 73.39 75.36 59.72 80.6 78.9 77.95 78.24 54.69 85.8 83.5 TNet 73.85 75.93 59.44 81.0 78.9 78.54 78.75 57.21 84.6 86.5 TriNet 83.98 87.25 59.23 91.2 90.2 90.31 91.66 53.69 94.1 93.4
+> TextCAD 91.09 91.22 90.97 91.7 91.4 96.53 97.23 91.48 98.1 98.3
+> w/ prior SymPointV2 89.34 90.55 81.01 89.3 88.7 –––––DPSS 89.39 90.54 81.31 92.2 91.5 –––––VecFormer 90.76 90.64 90.90 90.0 91.3 –––––
+> TextCAD 92.67 93.05 92.32 93.4 91.9 –––––
+
+critical cues within textual annotations effectively to improve overall perfor-mances as well as both countable thing and uncountable stuff categories. ii) Compared with methods that rely solely on graphical primitives [8, 14, 16, 17, 18, 20, 21], TextCAD delivers consistent gains across all metrics. These improvements stem from leveraging key semantic cues in abundant CAD textual annotations, such as functional descriptions and dimensional specifications, which enrich primitive representations, help distinguish incom-plete geometry structures or overlapping primitives, and ultimately enable more accurate detection. In contrast, primitive-only approaches operate from a single, limited modality and overlook these crucial annotation semantics, thereby hindering spotting performance. iii) Compared with methods that incorporate textual annotations [22, 38, 23], the superiority of TextCAD mainly stems from two aspects: (1) Accu-rate and lightweight textual semantic modeling : instead of relying on language models (e.g., PFL-Net), the proposed TACE adopts a lightweight architec-ture that explicitly captures type–attribute correlations, thereby producing more robust textual semantic. (2) Hierarchy-aligned cross-modal fusion :rather than simply injecting textual annotations via direct concatenation fusion (e.g., TriNet or TNet), TextCAD treats textual annotations as an independent modality and employs MSF to adaptively filter and align cross-modal semantics, enabling multimodal fusion under semantically aligned hi-15 Figure 5: Performance of TACE integrated into different baselines. TACE improves per-formance across baselines, including CADTransformer, SymPoint, and VecFormer, with negligible additional parameters shown in the legend. 
+
+erarchies. Together, these two advantages allow TextCAD to provide more accurate and direct semantic cues. iv) Under both “w/o prior” and “w/ prior” settings, TextCAD outperforms existing methods across all metrics, demonstrating strong robustness to prior information variations. Particularly on FloorPlan-V2, TextCAD suffers the smallest decrease in overall PQ when prior is unavailable. Since CubiCasa5K does not provide prior information, its “w/o prior” evaluation is not applica-ble. This verifies TextCAD can achieve robust predictions by constructing structured textual representations and effectively fusing semantic cues with geometric features, compensating for the absence of prior information. 
+
+4.2.2. Efficacy analysis 
+
+To assess the impact of TACE, we further integrate it into three represen-tative baselines: CADTransformer [16], SymPoint [17] and VecFormer [21]. As shown in Figure 5, on FloorPlanCAD-V2, adding TACE yields notable gains without materially increasing parameters, highlighting the value of incorporating annotations and demonstrating TACE’s ability to link type-attribute pairs and embed key semantic cues in a lightweight manner. 
+
+4.3. Ablation study 
+
+We conduct several ablation studies on FloorPlanCAD-V2 to further val-idate the effectiveness of certain designs in TextCAD. 16 Table 2: Comparison of TACE with Different Encoding Methods.                               
+
+> Method PQ PQ-Thing PQ-Stuff F1 wF1 Params TypeEmb 91.25 91.07 91.43 90.5 91.2 54.34M TypeAttrMLP 91.16 91.18 91.13 90.6 91.1 54.47M BertEmb 91.13 91.24 91.01 90.9 91.4 156.65M
+> TACE 91.69 91.84 91.54 91.7 91.6 54.35M
+
+4.3.1. Type-Attribute Correlation Encoder module. 
+
+To further verify the necessity of TACE in jointly modeling the semantic correlations between type and attributes, we replace TACE by “TypeEmb” (encoding only the type via embedding layer), “TypeAttrMLP” (concatenat-ing type and attributes followed by MLP) and “BertEmb” (encoding textual content using BERT[24]). As shown in Table 2, TACE consistently achieves the best performance, confirming the necessity of jointly capturing latent se-mantic correlations between type and attributes. In addition, TACE remains lightweight instead of employing the tokenizer of LM. 
+
+4.3.2. Multi-Level Semantic Filtering mechanism. 
+
+To evaluate the effectiveness of semantic hierarchy alignment, we ablate the MSF design in Table 3. Notation: ‘Text–GP’ treats textual annotations as part of the graphical-primitive modality; ‘Text–Uni.’ feeds text as a sep-arate unimodal input; ‘Multi-L.’ enables text injection at multiple hierarchy levels; ‘Filt.’ applies multi-level semantic filtering; ‘GP-G.’ uses primitive features to guide filtering.                                         
+
+> Table 3: Ablation Study of Semantic Filtering.
+> Text-GP Text-Uni. Multi-L. Filt. GP-G. PQ PQ-Thing PQ-Stuff F1 wF1
+> ✓91.69 91.84 91.54 91.7 91.6
+> ✓91.77 91.81 91.73 91.2 91.7
+> ✓✓91.50 90.83 92.08 90.9 91.4
+> ✓✓✓92.12 92.27 91.98 91.9 91.7
+> ✓✓✓✓92.67 93.05 92.32 93.4 91.9
+
+From Table 3, we derive the following key observations: treating CAD drawings as multi-modal (rather than folding text into the GP stream) yields better performance; however, naively injecting text at multiple levels with-out filtering degrades accuracy because misaligned text introduces cross-level 17 noise. Enabling multi-level semantic filtering mitigates this issue and im-proves spotting performance, and guiding the filtering with primitive features (GP-G.) provides the best alignment and further gains by directly coupling textual semantics with primitive geometry. More validation of semantic hierarchy alignment is provided in Appendix E. 
+
+4.4. Case study 
+
+The qualitative results on FloorplanCAD-V2 are visualized in Figure 6, which includes (a) ground truth, (b) predictions from TextCAD, and (c/d/e) those from three representative baselines. In Figure 6b, green regions high-light key regions of interest, and arrows represent results within these regions are affected by corresponding text annotations. Red regions in Figure 6d, Figure 6c and Figure 6e indicate wrong predictions from baselines models.     
+
+> (a) GT (b) TextCAD (c) CADTrans. (d) SymPoint (e) VecFormer
+> Figure 6: Qualitative comparison of different methods. TextCAD produces more accurate predictions, particularly in regions with partially incomplete or densely overlapping struc-tures. Its results are better aligned with the ground truth than other models.
+
+It can be clearly observed that TextCAD shows a high degree of consis-tency with the ground truth (GT). In highlighted regions, TextCAD demon-strates a clear advantage over baselines by explicitly leveraging the semantic 18 cues contained in annotations. Specifically, TextCAD achieves more robust and accurate results, particularly in complex regions with dense or overlap-ping line structures, or instance regions where graphical structures are par-tially incomplete. For instance, ‘ Washroom ’ helps accurately identify toilet-related primitives through interaction with corresponding graphical elements, while ‘ Staircase-11 ’ enables precise recognition of structures such as stairs and handrails by capturing the underlying semantic relationships indicated by the annotations. Additional results are provided in Appendix F. 
+
+5. Related work 
+
+Various research tasks were explored on CAD drawings [8, 15, 39, 40]. We focus on panoptic symbol spotting which was first proposed in [8] to address the limitation of focusing solely on countable things while neglecting uncountable stuffs [2]. Existing methods fall into the following categories: Early studies take conventional computer vision methods [8, 10, 11] by converting CAD drawings into raster images. PanCADNet [8] employs Faster R-CNN for instance recognition and Graph Convolutional Network (GCN) for semantic detection. However, converting vector primitives to pixels losses geometric precision and fine-grained structural details. Subsequent studies decompose vector drawings into primitives and lever-age Transformer-based [16] or GNN-based methods [14, 41, 42]. CADTrans-former [16] modifies Vision Transformer [43] to update primitive features, while GAT-CADNet [14] models primitives as graph nodes by employing Graph Attention Network (GAT) for feature propagation. Vector-based methods better preserve internal CAD structures but face challenges on com-plex drawings with numerous primitives due to memory constraints. SymPoint [17] treats CAD drawings as point cloud by abstracting primi-tives as point sets to enhance feature extraction. Subsequent studies follow this direction [18, 19, 20], but emphasize only on graphical features and structural relations, neglecting the semantics in textual annotations. Recently, VecFormer [21] proposed line-based representation to preserves the geometric continuity and enhance shape representation, but still stranded by the same issues that textual annotations semantics had been ignored. A few studies incorporate textual annotations but via language models such as BERT tokenizer [22] and CLIP text encoder [44]. Others either naively concatenate text categories to nearby primitive features [23] or simply embeds them from feature maps without structured semantic modeling or 19 effective cross-modal fusion [38]. They overlook the hierarchical semantics and syntactic structure of annotations, limiting their semantic. In contrast, our method syntactically represents textual annotations to capture latent semantics, and performs multi-level semantic filtering for cross-modal alignment and fusion, thereby enabling semantically enriched for dis-criminative primitive representations. 
+
+6. Conclusion 
+
+In this work, we propose TextCAD , a multi-modal framework that jointly integrates textual annotations and graphical primitives for panoptic symbol spotting . The proposed Type–Attribute Correlation Encoder (TACE) embeds rich annotation semantics by explicitly modeling intrinsic correla-tions between the type and attributes, yielding expressive semantic represen-tations. The Semantic Hierarchy Alignment framework applies Multi-level Semantic Filtering (MSF) with primitive downsampling, enabling semanti-cally hierarchy-consistent cross-modal alignment for effective modality fu-sion. Experiments show that TextCAD surpasses prior state of the art by nearly 2 percentage points on standard metrics, validating the benefit of tex-tual annotations incorporation. Ablation studies and case analyses further confirm the effectiveness and lightweight nature of TACE, and the necessity of MSF. Moreover, TextCAD generalizes well to diverse annotation styles: TACE accommodates varied type-attribute patterns, and the alignment mod-ule adapts across semantic levels. Future work will focus on more effective cross-modal fusion to improve reliability. 20 Appendix A. Further discussion 
+
+Here we discuss the type-attribute decomposing and the extensibility. 
+
+Appendix A.1. Type-attribute decomposing 
+
+We perform preprocessing on textual annotations to extract their type and attribute information. Based on the observation and syntactic analysis of CAD textual annota-tions, we categorize them into various types according to their syntactic struc-ture and associated attribute patterns. Each type is paired with a specific set of attributes, forming distinct type–attribute patterns . For instance, type 
+
+Elevator is attached by a numeric attribute denotes load capacity, and type 
+
+Door is paired with two numeric attributes represent dimensions. The num-ber of attributes a is set to 4, while among four attributes Aj , j ∈ { 1 . . . 4},
+
+A1, A2 and A3 denote numerical information and A4 is grade information. We design an automated parsing framework to separate CAD text anno-tations into their corresponding types T and attributes Aj . Based on pre-defined type–attribute structures, our tool employs regular-expression [45] based pattern matching to automatically identify and extract the attributes associated with different type. This process yields 166 types of textual an-notation with specific attribute combinations for FloorPlanCAD-V2 and 86 types for CubiCasa5K. We present 13 representative examples in Table A.4. 
+
+Table A.4: Examples of type–attribute patterns.                                                           
+
+> Attribute Number NumberDeci Multi Door FMDoor Elevator Window FMWindow Slope Weight Floor KW Kitchen
+> Attr1 Integer Decimal length width width load width width gradient kilogram floor kilowatt –
+> Attr2 ––width height height –height height –––––
+> Attr3 ––height ––––––––––
+> Attr4 ––––grade ––grade –––––
+
+The extracted type T and attributes Aj are independently embedded. The numerical attributes A1, A2 and A3 are embedded using the correspond-ing MLP j , while grade attribute A4 is encoded via an neural embedding layer. The proposed type-attribute representation schema can be explained by the concept of factorized representation: complex semantics are typically composed of multiple underlying factors of variation [46], and explicitly dis-entangling these factors improves both expressiveness and generalization. Our study formulates CAD textual annotations as type–attribute syntac-tic structure. This formulation can be viewed as a factorized representation, 21 which decomposes entangled semantics into multiple composable subspaces, thereby reducing representation complexity and improving generalization. 
+
+Appendix A.2. Extensibility and robustness 
+
+TACE and the unified type–attribute representation schema are not tied to a specific dataset; instead, it exhibits strong generality and extensibility. Specifically, the defined types capture representative textual annotation patterns in CAD floor plans. Rather than a fixed taxonomy, this type– attribute scheme provides a general structured representation framework that can be readily extended to other datasets by adding new types and defining their corresponding attributes structures under the principles of this schema. Additionally, in real-world design, CAD annotations typically follow en-gineering drafting conventions, resulting in regular and semi-structured pat-terns. TACE and its pipeline are specifically designed for such realistic and regular patterns. The robustness of this design is further supported by ex-perimental results on two real-world CAD datasets. Moreover, unmatched cases during TACE decomposition are mostly due to anomalous human an-notations, which are filtered to avoid noisy semantics. This information loss is also limited, as neighboring textual cues provide complementary context. 
+
+Appendix B. Model details 
+
+We make detailed supplements to our model, including multi-level seman-tic filtering, multimodal fusion, decoder, and loss function. 
+
+Appendix B.1. Multi-Level Semantic Filtering 
+
+Semantic filtering employs hard-concrete relaxation to obtain approxi-mated binary gates through the differentiable process. During the l-th se-mantic filtering layer ( l = 0 · · · L − 1), we first introduce randomness into rl
+
+by adding Gumbel noise g [31] for stochastic exploration, and then obtain a smooth activation probability sl ∈ RNt , formulated as: 
+
+g = − log( − log( u)) , u ∼ Uniform(0 , 1) Nt
+
+sl = σ
+
+rl + g
+
+τ
+
+
+
+, (B.1) where τ and σ denote the temperature and the softmax, respectively. The discrete gating behavior is then further approximated as: 
+
+Gl = min (1 , max (0 , sl(ζ − γ) + γ)) , (B.2) 22 where γ and ζ are the lower and upper predefined stretch limits. The ap-proximated binary gates Gl ∈ [0 , 1] Nt is generated by first linearly mapping 
+
+sl to an extended interval (γ, ζ ) and then clipping it to the range of [0 , 1] .
+
+Appendix B.2. Multimodal fusion and decoder 
+
+Here we make a detailed supplement to the process of multimodal fusion, primitive-line upsampling and the decoder. 
+
+Appendix B.2.1. Multimodal fusion 
+
+After the l-th multi-level semantic filtering and downsampling process, we obtain filtered textual features X′ lt which is semantic aligned with primitive-line features X′ lg. we fuse X′ lt back with X′ lg:
+
+Xl+1  
+
+> g
+
+= AttnBlock (SerialAttn (X′ lg), X′ lt ), (B.3) where SerialAttn (·) denotes the serialization attention operation in Point Transformer V3 which performs self-attention within patches derived from the serialized point sequence [29]. AttnBlock (·) is implemented as a cross-modal attention module, where primitive-line features X′ lg serve as queries and textual features X′ lt serve as keys and values. This enables textual semantics and geometric representa-tions to interact at the same hierarchical level. To enhance spatial awareness, spatial embeddings are further incorporated into attention computation and feature aggregation, allowing nearby textual features to exert stronger influ-ence on each primitive and promoting more semantically relevant cross-modal interactions. 
+
+Appendix B.2.2. Primitive-line upsampling 
+
+The upsampling structure is symmetric to downsampling stages. At the 
+
+l-th upsampling layer, the low-resolution features ˜X lg are interpolated onto higher-resolution: 
+
+˜X′ lg = MLP (XL−lg ) + Up ( ˜X lg). (B.4) Up (·) denotes an unpooling operation [29] based on the voxel clustering in-duced in the symmetric downsampling stage. The restored features ˜X′ lg are then fused with the aligned textual features X′L−l−1 
+
+> t
+
+:
+
+˜Xl+1  
+
+> g
+
+= AttnBlock (SerialAttn ( ˜X′ lg), X′L−l−1 
+
+> t
+
+), (B.5) where X′L−l−1 
+
+> t
+
+and ˜X′ lg share the aligned semantic level. The initial input ˜X1
+
+> g
+
+is set to the primitive point feature XLg from the final downsampling stage. 23 Appendix B.2.3. Decoder 
+
+After upsampling, we obtain final primitive-line features ˜XLg ∈ RP|Eg |   
+
+> i=1 nig×D
+
+,which are passed to the decoder for the final panoptic spotting prediction. Specifically, the decoder first adopts group-wise pooling strategy [21] Fg =
+
+Pool ( ˜XLg ) to aggregate line features within each primitive into primitive-level representations Fg ∈ RNg ×D where Ng = |Eg|.Then the decoder adopts layer enhancement operation [18] through aggre-gating the primitives features within the same layer by max pooling, average pooling and attention pooling as the layer-wise context, which is added back get the enhanced primitive feature ˜Fg = Fg + Pool layer (Fg).Next, we adopt a OneFormer3D [33] based head to obtain the final pre-diction. It composed U layers and first inits the learnable queries Q0 ∈ RO×D
+
+by query selection where O is the number of symbol queries. During the u-th layer within the decoder, the queries Qu are refined through self-attention and cross-attention with primitive features ˜Fg serves as key and value. Final semantic and instance predictions is obtained via: 
+
+IU = fcls (QU ),
+
+MU = finst (QU )( ˜Fg)⊤, (B.6) where fcls and finst are MLP based heads producing the semantic output 
+
+I = IU ∈ RO×C and instance mask M = MU ∈ RO×Ng . C is the number of categories. The decoder also applies post-processing strategy Branch Fusion Refinement [21] to resolve inconsistencies. Finally, to align with the task formalization, we integrate IU and MU to produce the final panoptic spotting result for primitives: 
+
+Y, Z = Φ( IU , MU ), (B.7) 
+
+Appendix B.3. Loss function 
+
+We apply the classification loss Lcls , cross-entropy loss Lsem , binary cross-entropy loss Lbce , dice loss Ldice and to jointly optimize the task branches. 
+
+Lcls and Lsem supervise semantic predictions: 
+
+Lcls = CrossEntropy( I, Igt ), Lsem = CrossEntropy( Y, Ygt ). (B.8) 
+
+I, Igt ∈ RO×C are the predicted and ground-truth classes of O symbols over 
+
+C categories. Y, Ygt ∈ RNg ×C are the semantic predictions and labels over 24 Ng primitives. Lbce and Ldice supervise instance masks predictions: 
+
+Lbce = BinaryCrossEntropy( M, Mgt ), Ldice = 1 − 2⟨M, Mgt ⟩∥M∥1 + ∥Mgt ∥1
+
+. (B.9) 
+
+M, Mgt ∈ RO×Ng are predicted and ground-truth instance mask of O symbols over Ng primitives. ⟨· , ·⟩ denotes the element-wise product summed over all elements, and ∥ · ∥ 1 denotes the sum of all elements. Besides task-specific losses, we apply complexity loss Lc [30] to regularize semantic filtering process and promote sparsity in textual feature selection: 
+
+Lc =
+
+> L
+
+X
+
+> l=1
+> Nt
+
+X
+
+> j=1
+
+σ rlj − τ log( ζ − γ) , (B.10) where rlj ∈ rl denotes the semantic relevance of the j-th annotation at l-th filtering layer. γ and ζ are predefined stretch limits. τ is the temperature and 
+
+σ(·) is the sigmoid activation. This term estimates the expectation of active gates across filtering layers, imposing an adaptive sparsity constraint. Min-imizing Lc encourages the model to retain those most semantically relevant textual features, yielding a more discriminative semantic filtering mechanism. In our experiments, we set the loss weights λcls : λbce : λdice : λcls :
+
+λc = 2 : 5 : 5 : 5 : 0 .0001 . The task-specific loss weight is set empirically according to [21]. Since Lc regularizes semantic filtering rather than directly supervising prediction, we assign it a small weight to balance regularization and task optimization. We evaluate λc ∈ { 1, 0.1, 0.01 , 0.001 , 0.0001 } and find that 0.0001 achieves the best performance and stability. 
+
+Appendix C. Datasets, metrics and baselines 
+
+Here we introduce additional details on datasets and evaluation metrics. 
+
+Appendix C.1. Dataset 
+
+This section outlines the data preprocessing steps for two datasets. 
+
+FloorPlanCAD-V2. We utilize the large-scale FloorPlanCAD-V2[8] which is designed for panoptic symbol spotting. Compared with its earlier version, this release offers improved scale and textual semantic diversity FloorPlanCAD-V2 contains 35 line-level annotated categories, distinguish-ing between 30 countable “thing” classes (e.g. doors, windows) and 5 uncount-able “stuff” classes (walls, curtain wall, parking spot, row chairs and railing). 25 We follow the official script 2 to assign semantic labels and instance indices to primitives, while additionally extracting relevant textual annotation in-formation in paralle. We split the dataset into train, validation and test sets with a approximate {6 : 3 : 1 } proportion, yielding {9533 : 4597 : 1533 }.
+
+CubiCasa5K. To further evaluate the robustness of our method, we use CubiCasa5K which is a real-world CAD dataset for floorplan image analysis. Since CubiCasa5K was not originally designed for this task, we refer to the official script 3 and the icon class mapping in the benchmark, obtaining 10 countable “thing” classes (window, door, closet, electrical appliance, toilet, sink, sauna bench, fireplace, bathtub and chimney) and 2 uncountable “stuff” classes (wall, railing), which serve as semantic labels for primitives. For 
+
+instance indices , all primitives belonging to the same symbol are assigned the same instance index for thing categories. For stuff categories, primitives are assigned only semantic labels and are not distinguished by instance indices. We split CubiCasa5K into training, validation, and test sets with {4200 : 400 : 400 } samples, following the benchmark [37]. 
+
+Appendix C.2. Evaluation metrics 
+
+Following [8], we use the comprehensive measurement PQ (Panoptic Quality), which is specifically designed for panoptic symbol spotting task, to jointly evaluate instance recognition and semantic segmentation: 
+
+P Q = |T P ||T P | + 12 |F P | + 12 |F N | ×
+
+P 
+
+> (spred ,s gt )∈T P
+
+IoU (spred , s gt )
+
+|T P |
+
+=
+
+P 
+
+> (spred ,s gt )∈T P
+
+IoU (spred , s gt )
+
+|T P | + 12 |F P | + 12 |F N | ,
+
+(C.1) where a prediction symbol spred (a set of primitives) is considered a match with ground truth sgt if they share the same predicted category and IoU 
+
+(spred , s gt ) > 0.5. The intersection over union (IoU) score are computed as follows: IoU (spred , s gt ) = 
+
+P  
+
+> eig∈spred ∩sgt
+
+log(1 + L(eig)) 
+
+P  
+
+> ejg∈spred ∪sgt
+
+log(1 + L(ejg)) , (C.2) where eig and ejg denote graphical primitives and L(·) calculates the arc length. 
+
+> 2https://github.com/VITA-Group/CADTransformer/
+> 3https://github.com/CubiCasa/CubiCasa5k
+
+26 We additionally report PQ-Thing and PQ-Stuff to measure the per-formance on countable thing and uncountable stuff categories, respectively. Semantic symbol spotting is evaluated using F1 and length-weighted F1 score 
+
+wF1 , where longer primitives receive larger weights. 
+
+Appendix C.3. Baselines 
+
+We compare our model against ten baselines spanning multiple paradigms: 
+
+• PanCADNet [8] uses a CNN backbone for raster feature extraction, GCN for semantic detection, and Faster R-CNN for instance recognition. 
+
+• CADTransformer [16] represents primitives from rasterizd feature maps extracted by a CNN backbone and employs a modified Vision Trans-former [43] with neighborhood-attention mechinism to refine the features. 
+
+• GAT-CADNet [14] constructs graph with primitives as nodes and em-ploys GAT for feature propagation. It also establishes edge features to capture spatial relationships, enabling more effective message passing. 
+
+• SymPoint [17] models graphical primitives as point cloud structure to en-hance the feature extraction. It uses Point Transformer to update features and employs Mask2Former decoder to obtain final predictions. 
+
+• SymPointV2 [18] improves SymPoint by encoding layer assignments into primitive features and proposes a position-guide training method to accel-erates the convergence of the model. 
+
+• DPSS [20] follows the point cloud structure but incorporates raster fea-tures from images to enhance primitive features, improving the perfor-mance and the robustness of the model. 
+
+• VecFormer [21] proposes line-based representation of graphical primi-tives, better preserving their original geometric structure. It also utilizes branch fusion refinement strategy to improve prediction reliability. 
+
+• PFL-Net [22] simply employs a pre-trained language model to embed text annotations, failing to capturing the semantics implicit in the complex syntactic structures of CAD annotations. 
+
+• TNet [38] treats text annotations as a distinct primitive type and embeds them via feature maps, failing to exploit semantic value. 
+
+• TriNet [23] relies on hand-crafted fusion of different modalities, where texts are merely assigned to graphical primitives by nearest-coordinate matching, without reasonable encoding and cross-modal alignment. 27 Appendix D. Parameter sensitivity analysis 
+
+We conducted experiments to report three key hyperparameters. 
+
+Appendix D.1. Embedding dimension 
+
+TACE embeds text annotations into X0 
+
+> t
+
+∈ RNt×D, where dimension D
+
+controls the capacity to capture textual semantic. We evaluate different di-mensions in Table D.5. The best performance is achieved at D = 32 : smaller dimension limits the representation capacity, leading to insufficient semantic encoding, while a larger dimension introduces redundant information.                     
+
+> Table D.5: Embedding Dimension Selection.
+> Dim PQ PQ-Thing PQ-Stuff F1 wF1
+> TACE
+> 64 91.32 91.39 91.27 91.1 91.4
+> 32 91.69 91.84 91.54 91.7 91.6
+> 16 91.19 90.83 91.51 90.7 91.2
+
+Appendix D.2. Primitives downsampling layer 
+
+During Semantic Hierarchy Alignment, graphical primitive-lines are down-sampled into higher-level representations. We evaluate the number of down-sampling layers of {7, 5, 3} with grid size rate of [1 , 2, 2, 1, 2, 1, 2] , [1 , 2, 2, 2, 2] 
+
+and [1 , 4, 4] in Table D.6. Fewer layers provide insufficient hierarchical ab-straction, while excessive downsampling layers may cause redundant trans-formations and feature smoothing. Five layers perform best.                     
+
+> Table D.6: Downsampling Layer Selection.
+> Layer PQ PQ-Thing PQ-Stuff F1 wF1
+> Down
+> 791.38 91.41 91.35 90.7 91.4
+> 591.69 91.84 91.54 91.7 91.6
+> 391.15 90.78 91.52 90.9 91.5
+
+Appendix D.3. Semantic filtering layer 
+
+During Multi-Level Semantic Filtering, textual features are progressively filtered to align with primitive features. The number of semantic filtering layers L controls the hierarchical adaptivity of semantic alignment. Based 28 on the parameter experiments of primitive downsampling layers, we evaluate different values of L under five primitive downsampling layers. As shown in Table D.7, L = 5 achieves the best performance, indicating that retaining five semantic filtering layers best exploit adaptive semantic alignment.                          
+
+> Table D.7: Semantic Filtering Layer Selection.
+> Layer PQ PQ-Thing PQ-Stuff F1 wF1
+> MSF
+> 091.50 90.83 92.08 90.9 91.4 191.77 91.81 91.73 91.2 91.7 391.97 92.15 91.80 91.8 91.5
+> 592.67 93.05 92.32 93.4 91.9
+> Figure D.7: Case study of MSF.
+
+Appendix E. Additional case study 
+
+We further illustrate the effectiveness of our proposed MSF module through an interesting case study. Figure D.7 illustrates the semantic filtering results of the third, forth and fifth layers within MSF, shown from left to right (in our configuration, the frist layer performs no actual filtering but only projection to align di-mensions, while the second layer mainly serves as a transitional stage where the semantic hierarchy has not yet been clearly differentiated). We visualize the retention degree of each textual annotation at layer l according to the approximated binary gate Gl: darker colors indicate higher retention gate (closer to 1), and lighter colors indicate lower retention gate (closer to 0). 29 As shown in Figure D.7, filtering results are largely consistent with the se-mantic hierarchy. Primitive-level annotations such as ‘ 300 ’ exhibit gradually weakened semantics as filtering deepens; semantics of instance-level annota-tions such as ‘ DT-2 ’ remain highly preserved in intermediate layers; region-level annotations such as ‘ Entrance ’ tend to be increasingly retained in higher layers. In parallel, downsampling naturally produces higher-level primitive feature abstractions, which is a standard property, resulting in aligned se-mantic across modalities. Note that the retention gate of instance or region-level is generally higher than primitive-level, probably because higher-level annotations convey more informative and semantically richer cues. 
+
+Appendix F. Additional qualitative results 
+
+Additional qualitative results are shown in Figure F.8. TextCAD achieves more accurate predictions in challenging regions across diverse scenarios by leveraging underlying semantic cues from relevant textual annotations.     
+
+> (a) GT (b) TextCAD (c) CADTrans. (d) SymPoint (e) VecFormer
+> Figure F.8: Additional qualitative comparison among different methods.
+
+30 References 
+
+[1] B. R. Hunde, A. D. Woldeyohannes, Future prospects of computer-aided design (cad)–a review from the perspective of artificial intelligence (ai), extended reality, and 3d printing, Results in Engineering 14 (100478) (2022) 1. [2] A. Rezvanifar, M. Cote, A. Branzan Albu, Symbol spotting for architec-tural drawings: state-of-the-art and new industry-driven developments, IPSJ Transactions on Computer Vision and Applications 11 (1) (2019) 2. [3] M. D. Shivegowda, P. Boonyasopon, S. M. Rangappa, S. Siengchin, A review on computer-aided design and manufacturing processes in design and architecture, Archives of Computational Methods in Engineering 29 (6) (2022) 3973–3980. [4] X. Zhao, A scientometric review of global bim research: Analysis and visualization, Automation in construction 80 (2017) 37–47. [5] X. Gao, P. Pishdad-Bozorgi, Bim-enabled facilities operation and main-tenance: A review, Advanced engineering informatics 39 (2019) 227–247. [6] A. Heidari, Y. Peyvastehgar, M. Amanzadegan, A systematic review of the bim in construction: From smart building management to interoper-ability of bim & ai, Architectural Science Review 67 (3) (2024) 237–254. [7] B. Yang, B. Liu, D. Zhu, B. Zhang, Z. Wang, K. Lei, Semiautomatic structural bim-model generation methodology using cad construction drawings, Journal of Computing in Civil Engineering 34 (3) (2020) 04020006. [8] Z. Fan, L. Zhu, H. Li, X. Chen, S. Zhu, P. Tan, Floorplancad: A large-scale cad drawing dataset for panoptic symbol spotting, in: Proceedings of the IEEE/CVF international conference on computer vision, 2021, pp. 10128–10137. [9] Z. Liu, Comparison and analysis of advantages and disadvantages be-tween bim and cad in civil drafting software, Applied and Computational Engineering 62 (2024) 192–197. 31 [10] J. Pang, Z. Dong, J. Deng, M. Zhu, Y. Zhang, Pixel-wise symbol spotting via progressive points location for parsing cad images, arXiv preprint arXiv:2404.10985 (2024). [11] A. Rezvanifar, M. Cote, A. B. Albu, Symbol spotting on digital architec-tural floor plans using a deep learning-based framework, in: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recog-nition Workshops, 2020, pp. 568–569. [12] S. Crommelinck, R. Bennett, M. Gerke, F. Nex, M. Y. Yang, G. Vos-selman, Review of automatic feature extraction from high-resolution optical sensor data for uav-based cadastral mapping, Remote Sensing 8 (8) (2016) 689. [13] X. Jiang, L. Liu, C. Shan, Y. Shen, X. Dong, D. Li, Recognizing vector graphics without rasterization, Advances in Neural Information Process-ing Systems 34 (2021) 24569–24580. [14] Z. Zheng, J. Li, L. Zhu, H. Li, F. Petzold, P. Tan, Gat-cadnet: Graph attention network for panoptic symbol spotting in cad drawings, in: Pro-ceedings of the IEEE/CVF conference on computer vision and pattern recognition, 2022, pp. 11747–11756. [15] B. Yang, H. Jiang, H. Pan, J. Xiao, Vectorfloorseg: Two-stream graph attention network for vectorized roughcast floorplan segmentation, in: Proceedings of the IEEE/CVF conference on computer vision and pat-tern recognition, 2023, pp. 1358–1367. [16] Z. Fan, T. Chen, P. Wang, Z. Wang, Cadtransformer: Panoptic sym-bol spotting transformer for cad drawings, in: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 2022, pp. 10986–10996. [17] W. Liu, T. Yang, Y. Wang, Q. Yu, L. Zhang, Symbol as points: Panoptic symbol spotting via point-based representation, arXiv preprint arXiv:2401.10556 (2024). [18] W. Liu, T. Yang, Q. Yu, L. Zhang, Sympoint revolutionized: boost-ing panoptic symbol spotting with layer feature enhancement, arXiv preprint arXiv:2407.01928 (2024). 32 [19] F. Yang, J. Mu, Y. Zhang, M. Zhang, J. Zhang, Y. Luo, L. Xu, J. Yu, Y. Shi, Y. Zhang, Cadspotting: Robust panoptic symbol spotting on large-scale cad drawings, arXiv preprint arXiv:2412.07377 (2024). [20] R. Luo, Z. Liu, T. Cheng, J. Wang, T. Wang, F. Cheng, F. Chai, Y. Li, X. Wei, H. Wang, et al., Archcad-400k: A large-scale cad drawings dataset and new baseline for panoptic symbol spotting, Advances in Neural Information Processing Systems 38 (2026) 127715–127739. [21] X. Wei, H. Wang, S. Ye, R. Luo, Z. Zhang, L. Gu, J. Dai, Y. Qiao, W. Wang, H. Zhang, Point or line? using line-based representation for panoptic symbol spotting in cad drawings, Advances in Neural Informa-tion Processing Systems 38 (2026) 50036–50061. [22] W. Wang, C. Song, H. Chen, C. Chen, C. Cao, J. Zhong, X. Cao, F. Yang, Panoramic symbol spotting for power design cad drawings based on primitives and text fusion with locally sensitive self-attention, in: 2025 Asia-Europe Conference on Cybersecurity, Internet of Things and Soft Computing (CITSC), IEEE, 2025, pp. 509–514. [23] J. Xing, G. Gao, T. Zeng, J. Shang, Y. Han, Z. Tao, G. Liu, Multi-modal integration for advanced floor plan symbol spotting, Automation in Construction 181 (2026) 106659. [24] J. Devlin, M.-W. Chang, K. Lee, K. Toutanova, Bert: Pre-training of deep bidirectional transformers for language understanding, in: Pro-ceedings of the 2019 conference of the North American chapter of the association for computational linguistics: human language technologies, volume 1 (long and short papers), 2019, pp. 4171–4186. [25] T. Brown, B. Mann, N. Ryder, M. Subbiah, J. D. Kaplan, P. Dhariwal, A. Neelakantan, P. Shyam, G. Sastry, A. Askell, et al., Language models are few-shot learners, Advances in neural information processing systems 33 (2020) 1877–1901. [26] X. Zhu, J. Li, Y. Liu, C. Ma, W. Wang, A survey on model compression for large language models, Transactions of the Association for Compu-tational Linguistics 12 (2024) 1556–1577. 33 [27] F. Rosenblatt, The perceptron: a probabilistic model for information storage and organization in the brain., Psychological review 65 (6) (1958) 386. [28] T. Mikolov, K. Chen, G. Corrado, J. Dean, Efficient estimation of word representations in vector space, arXiv preprint arXiv:1301.3781 (2013). [29] X. Wu, L. Jiang, P.-S. Wang, Z. Liu, X. Liu, Y. Qiao, W. Ouyang, T. He, H. Zhao, Point transformer v3: Simpler faster stronger, in: Pro-ceedings of the IEEE/CVF conference on computer vision and pattern recognition, 2024, pp. 4840–4851. [30] C. Louizos, M. Welling, D. P. Kingma, Learning sparse neural networks through l_0 regularization, in: International Conference on Learning Representations, 2018. [31] E. Jang, S. Gu, B. Poole, Categorical reparameterization with gumbel-softmax, in: International Conference on Learning Representations, 2017. [32] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, Ł. Kaiser, I. Polosukhin, Attention is all you need, Advances in neural information processing systems 30 (2017). [33] M. Kolodiazhnyi, A. Vorontsova, A. Konushin, D. Rukhovich, One-former3d: One transformer for unified point cloud segmentation, in: Proceedings of the IEEE/CVF Conference on Computer Vision and Pat-tern Recognition, 2024, pp. 20943–20953. [34] Y. LeCun, Y. Bengio, G. Hinton, Deep learning, nature 521 (7553) (2015) 436–444. [35] O. Ronneberger, P. Fischer, T. Brox, U-net: Convolutional networks for biomedical image segmentation, in: International Conference on Medical image computing and computer-assisted intervention, Springer, 2015, pp. 234–241. [36] F. Milletari, N. Navab, S.-A. Ahmadi, V-net: Fully convolutional neural networks for volumetric medical image segmentation, in: 2016 fourth international conference on 3D vision (3DV), Ieee, 2016, pp. 565–571. 34 [37] A. Kalervo, J. Ylioinas, M. Häikiö, A. Karhu, J. Kannala, Cubicasa5k: A dataset and an improved multi-task model for floorplan image analysis, in: Scandinavian Conference on Image Analysis, Springer, 2019, pp. 28–40. [38] X. Liu, Y. Gong, B. Li, J. Huang, B. Du, J. Ye, L. Xu, Text-enhanced panoptic symbol spotting, in: Behavioural and Social Computing: 12th International Conference, BESC 2025, Hong Kong SAR, China, October 16–18, 2025, Proceedings, Part II, Springer Nature, 2026, p. 410. [39] J. Xing, L. Wu, T. Zeng, Y. Wu, J. Shang, Comprehensive floor plan vectorization with sparse point set representation, Automation in Con-struction 173 (2025) 106023. [40] T. Yan, C. Zhu, X. Zhang, Y. Zeng, Substation drawing intelligent pars-ing framework with dense augmentation and semantic alignment, Energy Informatics 8 (1) (2025) 146. [41] Q. Zhao, L. Zhou, Y. Wang, P. Wang, Q. Li, Architecad: a large-scale architectural cad dataset for symbol spotting towards cad-to-bim con-version, International Journal on Document Analysis and Recognition (IJDAR) (2025) 1–19. [42] A. Carrara, S. Nousias, A. Borrmann, Vectorgraphnet: Graph atten-tion networks for accurate segmentation of complex technical drawings, Journal of Computing in Civil Engineering 39 (6) (2025) 04025085. [43] A. Dosovitskiy, An image is worth 16x16 words: Transformers for image recognition at scale, arXiv preprint arXiv:2010.11929 (2020). [44] Y. Wang, J. Xing, L. Wu, J. Shang, Enhanced semantic recognition of architectural floor plan recognition using clip and advanced sam-pling strategy, Journal of Computing in Civil Engineering 39 (6) (2025) 04025095. [45] J. Friedl, Mastering regular expressions, " O’Reilly Media, Inc.", 2006. [46] Y. Bengio, A. Courville, P. Vincent, Representation learning: A review and new perspectives, IEEE transactions on pattern analysis and ma-chine intelligence 35 (8) (2013) 1798–1828. 35

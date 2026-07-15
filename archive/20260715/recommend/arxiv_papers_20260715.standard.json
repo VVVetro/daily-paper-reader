@@ -1,0 +1,317 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-15T21:23:18.134961+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 6,
+    "quick_skim_target": 11,
+    "quick_selected": 6
+  },
+  "deep_dive": [
+    {
+      "id": "2607.12662v1",
+      "source": "arxiv",
+      "title": "Internet of Agentic Things: Networked AI Agents for Closed-Loop IoT Orchestration",
+      "abstract": "The paper introduces the Internet of Agentic Things (IoAT), an architectural framework that integrates agentic AI, IoT, cyber-physical systems, Physical AI, edge computing, and digital twins into a unified closed-loop orchestration framework. The proposed architecture consists of cloud, edge/fog, and physical IoT layers connected through autonomous AI agents that perceive, reason, coordinate, and actuate across distributed cyber-physical environments. The paper formalizes IoAT as a coupled workflow-control problem with nested strategic and tactical decision making using a hylomorphic dynamic programming framework that links agentic planning with physical execution. Smart-building orchestration is presented as a representative use case, and key research challenges related to safety, security, governance, resilience, and trustworthy deployment are discussed.",
+      "authors": [
+        "Quanyan Zhu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.MA",
+        "eess.SY"
+      ],
+      "published": "2026-07-14T11:43:30+00:00",
+      "link": "https://arxiv.org/pdf/2607.12662v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Integrates agentic AI, IoT, and digital twins for smart building orchestration, relevant to semantic interoperability",
+      "llm_evidence_cn": "结合智能体AI、物联网和数字孪生实现智能楼宇编排，涉及语义互操作性",
+      "llm_evidence": "结合智能体AI、物联网和数字孪生实现智能楼宇编排，涉及语义互操作性",
+      "canonical_evidence": "结合智能体AI、物联网和数字孪生实现智能楼宇编排，涉及语义互操作性",
+      "llm_tldr_en": "Introduces Internet of Agentic Things (IoAT) architecture integrating agentic AI, IoT, digital twins for closed-loop orchestration, with smart building as use case.",
+      "llm_tldr_cn": "该论文针对物联网系统缺乏智能协同的问题，提出了智能体物联网（IoAT）架构，将智能体AI、物联网、数字孪生、边缘计算等统一为闭环编排框架。通过云-边-端三层结构和自主AI代理，实现感知、推理、协调和行动。以智能楼宇为用例进行验证，展示了决策与物理执行的协同。该工作为智慧城市中数字孪生与数据整合提供了架构范式。",
+      "llm_tldr": "该论文针对物联网系统缺乏智能协同的问题，提出了智能体物联网（IoAT）架构，将智能体AI、物联网、数字孪生、边缘计算等统一为闭环编排框架。通过云-边-端三层结构和自主AI代理，实现感知、推理、协调和行动。以智能楼宇为用例进行验证，展示了决策与物理执行的协同。该工作为智慧城市中数字孪生与数据整合提供了架构范式。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.11019v2",
+      "source": "arxiv",
+      "title": "QwenPaw-Data: Bridging Facts, Methodology, and Execution for Autonomous Enterprise Data Analytics",
+      "abstract": "Enterprise data analysis is emerging as a distinct frontier for autonomous agents. Compared with general-purpose interaction and software engineering, it operates in an open, ambiguous, and continuously evolving environment. These characteristics call for a data-agent architecture that treats semantics, methodology, execution, and evolution as first-class system concerns. To this end, we introduce QwenPaw-Data, an agentic data system designed for enterprise intelligent data analysis. QwenPaw-Data consolidates heterogeneous assets from warehouses, dashboards, documents, interaction logs, and historical tasks into reusable, governable, and evolvable analysis assets, then turns natural-language requests into end-to-end analytical workflows spanning data understanding, retrieval, analysis, report generation, and decision support. Its architecture decomposes the problem into three collaborative subsystems: DataBridge provides trustworthy semantic grounding through interconnected metadata, knowledge, and trace graphs; Skill-Hub codifies expert analytical methodology into reusable and verifiable skills; and Host materializes these evidence and method assets into controllable, artifact-centric runtime execution. Across these subsystems, semantics, methods, traces, and feedback are continuously deposited back into the system, forming a self-evolving asset flywheel. Experiments on public benchmarks and real-world industrial BI workloads show that QwenPaw-Data improves both verifiable data access capability and higher-level analytical quality, offering a practical foundation for reliable, traceable, and continuously improving enterprise data agents.",
+      "authors": [
+        "Tianjing Zeng",
+        "Yuntao Hong",
+        "Zhongjun Ding",
+        "Dandan Liu",
+        "Yinan Mei",
+        "Yunxiang Su",
+        "Yiming Wang",
+        "Xiaojian Zhang",
+        "Jingyu Zhu",
+        "Junhao Zhu",
+        "Zhuowen Liang",
+        "Jiazhen Peng",
+        "Lianggui Weng",
+        "Zhihao Ding",
+        "Kerui Yi",
+        "Qifeng Wang",
+        "Rong Zhu",
+        "Bolin Ding",
+        "Liyu Mou",
+        "Jingren Zhou"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-13T02:38:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.11019v2",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "agentic data system consolidating heterogeneous enterprise assets for NL-driven analytics",
+      "llm_evidence_cn": "整合异构企业资产的智能数据系统实现自然语言驱动的分析",
+      "llm_evidence": "整合异构企业资产的智能数据系统实现自然语言驱动的分析",
+      "canonical_evidence": "整合异构企业资产的智能数据系统实现自然语言驱动的分析",
+      "llm_tldr_en": "Introduces QwenPaw-Data, an agentic data system that consolidates heterogeneous enterprise assets and turns natural-language requests into end-to-end analytics, emphasizing semantics.",
+      "llm_tldr_cn": "企业数据分析面临开放、演化环境的挑战。本文提出QwenPaw-Data智能数据系统，将仓库、仪表盘、文档等异构资产整合为可重用分析资产，并通过自然语言请求驱动端到端分析。系统将语义、方法论、执行和演化作为一等公民。结果展示了在真实企业数据上的有效性。该方法可直接迁移至智慧城市多模态数据融合场景。",
+      "llm_tldr": "企业数据分析面临开放、演化环境的挑战。本文提出QwenPaw-Data智能数据系统，将仓库、仪表盘、文档等异构资产整合为可重用分析资产，并通过自然语言请求驱动端到端分析。系统将语义、方法论、执行和演化作为一等公民。结果展示了在真实企业数据上的有效性。该方法可直接迁移至智慧城市多模态数据融合场景。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.10879v1",
+      "source": "arxiv",
+      "title": "3D Scene Graph Prediction: Generating Hierarchical Models from Partially Observed Environments",
+      "abstract": "Generating realistic 3D indoor scenes is an area of growing interest in computer vision and robotics. Existing methods, often motivated by applications such as interior design, generally focus on object layout generation within a single room. The generation of high-level scene structure, such as room-level layout and traversability, remains underexplored despite its importance for robotics applications. In this paper, we consider the case where a robot has explored part of an environment and needs to predict the unexplored parts to support downstream tasks such as exploration or object search. We propose a top-down framework for synthesizing hierarchical 3D scene graphs, including a room layer -- describing the floor plan and traversability -- and an object layer modeling object layouts within each room. For the room layer, we propose a novel mixed-domain graph diffusion model jointly predicting room categories, floor boundaries, and traversability between rooms. Via corruption and masking, this model supports partial constraints such as incomplete floor plans, avoiding the need for partially observed training data. For the object layer, we integrate an existing mixed discrete-continuous diffusion model for joint prediction of object categories, locations, sizes, and orientations within each room given the floor plan. We compare our method with state-of-the-art occupancy-based and LLM-based floor plan generation methods on a standard benchmark. Compared with an occupancy-based learning baseline, our method generalizes substantially better to out-of-distribution partial floor plans. We also demonstrate our integrated prediction pipeline on real-world scenes from robot-collected data, enabling prediction beyond explored areas.",
+      "authors": [
+        "Siyi H",
+        "Jared Strade",
+        "Hyungtae Lim",
+        "Luca Carlone"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV"
+      ],
+      "published": "2026-07-12T18:52:05+00:00",
+      "link": "https://arxiv.org/pdf/2607.10879v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "3D scene graph prediction for hierarchical environment understanding",
+      "llm_evidence_cn": "3D场景图预测用于层次化环境理解",
+      "llm_evidence": "3D场景图预测用于层次化环境理解",
+      "canonical_evidence": "3D场景图预测用于层次化环境理解",
+      "llm_tldr_en": "Predicts hierarchical 3D scene graphs including room layout and objects from partial observations for robotics.",
+      "llm_tldr_cn": "机器人在部分探索的环境中需要预测未探索区域的结构。论文提出自上而下的框架，生成层次化3D场景图，包含房间层和物体层。该方法在室内场景预测任务上表现出色，其场景图构建技术可推广至智慧城市中建筑与基础设施的语义建模。",
+      "llm_tldr": "机器人在部分探索的环境中需要预测未探索区域的结构。论文提出自上而下的框架，生成层次化3D场景图，包含房间层和物体层。该方法在室内场景预测任务上表现出色，其场景图构建技术可推广至智慧城市中建筑与基础设施的语义建模。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.12319v1",
+      "source": "arxiv",
+      "title": "DM-KG: A Novel Method for Boosting Spatial Cognition of Vision-Language Models in Street View Imagery",
+      "abstract": "As vision-language models (VLMs) are increasingly deployed in geospatial question answering and visual scene understanding, improving their spatial cognition capability on street view imagery for complex logical reasoning has emerged as a key research priority. However, existing VLMs frequently suffer from \"spatial semantic hallucinations\" when perceiving object locations, distances, and directions in real-world street view scenes. Furthermore, such errors are often recalcitrant to tracing and calibration, posing a critical bottleneck for their practical deployment in geospatial tasks. To address this pressing challenge, this study proposes DM-KG (Direction-Metric Knowledge Graph), a structurally grounded spatial representation framework for street view imagery. By explicitly extracting directional and metric relationships between entities from a single 2D image, this framework enhances the spatial reasoning accuracy of VLMs through a structured knowledge graph. Specifically, we integrate panoptic segmentation with metric depth estimation to robustly compute entity-level 3D spatial coordinates. Subsequently, we encode the clock azimuths and Euclidean distances of entity pairs into a JSON-formatted knowledge graph, which is injected into the VLM as an explicit geometric prior to guide spatial reasoning. Experimental results on public spatial question-answering (QA) benchmarks demonstrate that DM-KG reduces the mean absolute error (MAE) in distance estimation by 31.1% and the mean angular error in direction judgment by 65.8%, while simultaneously maintaining a high QA success rate. By establishing a complete, augmented reasoning pipeline, this research significantly improves the spatial cognitive capabilities of VLMs in street view scenarios, thereby providing a flexible, generalized, and interpretable framework for geographic visual question answering (GeoVQA) in open environments.",
+      "authors": [
+        "Xinyue Xu",
+        "Zheng Zhang",
+        "Kunyang Ma",
+        "Ge Zhu",
+        "Lianshuai Cao",
+        "Lei Wang",
+        "Zixuan Li",
+        "Yi Cheng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-14T03:52:37+00:00",
+      "link": "https://arxiv.org/pdf/2607.12319v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "knowledge graph for spatial cognition in street view imagery, relevant to urban KG construction",
+      "llm_evidence_cn": "使用知识图谱增强街景空间认知，与智慧城市知识图谱构建相关",
+      "llm_evidence": "使用知识图谱增强街景空间认知，与智慧城市知识图谱构建相关",
+      "canonical_evidence": "使用知识图谱增强街景空间认知，与智慧城市知识图谱构建相关",
+      "llm_tldr_en": "Proposes DM-KG, a Direction-Metric Knowledge Graph to improve spatial cognition of VLMs in street view, reducing spatial semantic hallucinations.",
+      "llm_tldr_cn": "针对视觉语言模型在街景图像中存在的空间语义幻觉问题，提出了方向度量知识图谱（DM-KG）方法。该方法通过结构化空间表示增强模型对物体位置、距离和方向的感知能力。实验表明，DM-KG显著提升了空间推理的准确性，为智慧城市中的地理空间问答和场景理解提供了可行方案。",
+      "llm_tldr": "针对视觉语言模型在街景图像中存在的空间语义幻觉问题，提出了方向度量知识图谱（DM-KG）方法。该方法通过结构化空间表示增强模型对物体位置、距离和方向的感知能力。实验表明，DM-KG显著提升了空间推理的准确性，为智慧城市中的地理空间问答和场景理解提供了可行方案。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.12086v1",
+      "source": "arxiv",
+      "title": "CityBehavEx: A Scalable and Empirically Validated LLM-Assisted Urban Simulation Platform",
+      "abstract": "Recent LLM-based multi-agent urban simulators can generate semantically rich city routines, but they remain costly to scale and are often weakly validated against empirical mobility patterns. We present CityBehavEx, an interactive LLM-assisted urban simulation platform that scales to city-size populations, exposes agent behavior for inspection, supports empirical validation, and generates mobility patterns that better match real-world spatial, temporal, and semantic distributions. Instead of invoking large language models for every agent action, CityBehavEx combines established human mobility models with fine-tuned cross-encoders that estimate semantic alignment between agent profiles, schedules, and activity transitions. This design enables large-scale simulations, as demonstrated in a case study of 100,000 agents over 75 days in under one hour on a single consumer GPU. The platform allows users to define simulation regions, launch experiments, inspect trajectories and activity traces, debug unrealistic behaviors, and validate generated routines against real-world mobility, time-use, and semantic metrics.",
+      "authors": [
+        "Gustavo H. Santos",
+        "Aline Viana",
+        "Thiago H Silva"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.CY",
+        "cs.MA",
+        "cs.SI"
+      ],
+      "published": "2026-07-13T19:03:25+00:00",
+      "link": "https://arxiv.org/pdf/2607.12086v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "LLM-assisted urban simulation platform that integrates mobility models and semantic encoders for city-scale data pipelines",
+      "llm_evidence_cn": "LLM辅助的城市模拟平台，整合移动模型和语义编码器，用于城市规模数据管道",
+      "llm_evidence": "LLM辅助的城市模拟平台，整合移动模型和语义编码器，用于城市规模数据管道",
+      "canonical_evidence": "LLM辅助的城市模拟平台，整合移动模型和语义编码器，用于城市规模数据管道",
+      "llm_tldr_en": "CityBehavEx combines human mobility models with fine-tuned cross-encoders for scalable urban simulation, offering a data pipeline for LLM-enabled digital twins.",
+      "llm_tldr_cn": "现有的基于LLM的多智能体城市模拟器成本高且缺乏验证。本文提出CityBehavEx平台，将经典移动模型与精调交叉编码器结合，仅对关键行为调用LLM，实现城市规模的高效模拟。该平台生成与真实世界时空分布更匹配的移动模式，并支持经验验证，为智慧城市数字孪生提供了可扩展的数据管道。",
+      "llm_tldr": "现有的基于LLM的多智能体城市模拟器成本高且缺乏验证。本文提出CityBehavEx平台，将经典移动模型与精调交叉编码器结合，仅对关键行为调用LLM，实现城市规模的高效模拟。该平台生成与真实世界时空分布更匹配的移动模式，并支持经验验证，为智慧城市数字孪生提供了可扩展的数据管道。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.12678v1",
+      "source": "arxiv",
+      "title": "Text-Aided Multi-Modal Panoptic Symbol Spotting for CAD Floor Plan Drawings",
+      "abstract": "Computer-Aided Design (CAD) floor plan drawings contain both graphical primitives and textual annotations, which provide complementary geometric and semantic cues for intelligent design understanding. Among CAD analysis tasks, panoptic symbol spotting has become increasingly important with the growing demand for industrial digitalization and deep learning-based automation. However, most existing methods remain primarily primitive-centric and underexploit textual annotations, despite their critical semantic value. Even the few text-aware approaches often treat annotations only superficially, without properly modeling complex syntax and hierarchical semantics of CAD annotations, which leads to semantic loss and suboptimal spotting performance. To address these limitations, we propose TextCAD, a multimodal framework that jointly models graphical primitives and textual annotations for panoptic symbol spotting. Specifically, we design a Type-Attribute Correlation Encoder (TACE) to explicitly encode the compositional semantics within annotations by jointly modeling their types and attributes. We further introduce a Semantic Hierarchy Alignment framework with Multi-level Semantic Filtering (MSF) and primitive downsampling, which adaptively aligns annotation semantics with graphical primitives at different semantic levels and enables accurate cross-modal semantic injection and fusion. Experiments on real-world building-design datasets show that TextCAD effectively improves symbol spotting performance and achieves state-of-the-art results.",
+      "authors": [
+        "Yan Gong",
+        "Bohao Li",
+        "Bowen Du",
+        "Junchen Ye"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-14T12:07:44+00:00",
+      "link": "https://arxiv.org/pdf/2607.12678v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Text-aided panoptic symbol spotting for CAD floor plans, extracting semantic information from CAD drawings similar to BIM",
+      "llm_evidence_cn": "从CAD平面图中提取文本辅助的全景符号，类似于BIM模型中的语义信息提取",
+      "llm_evidence": "从CAD平面图中提取文本辅助的全景符号，类似于BIM模型中的语义信息提取",
+      "canonical_evidence": "从CAD平面图中提取文本辅助的全景符号，类似于BIM模型中的语义信息提取",
+      "llm_tldr_en": "Proposes a text-aided multi-modal panoptic symbol spotting method for CAD floor plans, leveraging both graphical and textual annotations to improve semantic understanding in design drawings.",
+      "llm_tldr_cn": "该论文提出一种文本辅助的多模态全景符号检测方法，用于CAD楼层平面图。现有方法主要关注图形基元，忽略了文本注释的语义价值。该方法通过融合图形与文本信息，并对注释的复杂语法和层次语义进行建模，显著提升了符号检测的准确性。在多个CAD数据集上取得了最优结果，为BIM模型中的语义信息提取提供了重要技术支持，可应用于城市基础设施文档的自动化理解。",
+      "llm_tldr": "该论文提出一种文本辅助的多模态全景符号检测方法，用于CAD楼层平面图。现有方法主要关注图形基元，忽略了文本注释的语义价值。该方法通过融合图形与文本信息，并对注释的复杂语法和层次语义进行建模，显著提升了符号检测的准确性。在多个CAD数据集上取得了最优结果，为BIM模型中的语义信息提取提供了重要技术支持，可应用于城市基础设施文档的自动化理解。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic information extraction from BIM models, including geometry, materials, textures, and object relationships.",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.12764v1",
+      "source": "arxiv",
+      "title": "EvoGraph-R1: Self-Evolving Multimodal Knowledge Hypergraphs for Agentic Retrieval",
+      "abstract": "Retrieval-augmented generation (RAG) has emerged as a critical paradigm for grounding Multimodal Large Language Models (MLLMs) in external knowledge. Recent GraphRAG methods introduce structured entity-relation graphs to improve retrieval and reasoning. However, they remain limited by treating knowledge graphs as static data structures built offline and queried in a single pass. This static paradigm misaligns with the interactive, iterative nature of knowledge-intensive reasoning, creating three bottlenecks: (i) text-centric fragmentation that impedes cross-modal reasoning, (ii) frozen structures unable to incorporate new evidence or correct errors, and (iii) rigid single-pass retrieval without adaptive refinement. To overcome these limitations, we introduce EvoGraph-R1, a self-evolving GraphRAG framework that reconceptualizes knowledge graphs as dynamic environments shaped through agent interactions. We formulate retrieval as a Markov Decision Process (MDP) where the agent observes the graph state and executes actions to query (GraphRetrieve), expand (WebSearch), refine (GraphEdit), or terminate (Answer) the reasoning. These actions reshape the hypergraph structure and generate feedback signals that guide subsequent evolution. Through this closed loop, the hypergraph evolves by integrating new evidence, correcting errors, and refining structure to support multi-hop reasoning. Experiments on multimodal VQA and text QA benchmarks demonstrate substantial improvements over existing RAG baselines in accuracy, coverage, and traceability, establishing self-evolving knowledge graphs as a fundamental paradigm across modalities.",
+      "authors": [
+        "Jiashi Lin",
+        "Changhong Jiang",
+        "Xiangru Lin",
+        "Ruifei Zhang",
+        "Xinyi Zhu",
+        "Jiyao Liu",
+        "Cheng Tang",
+        "Ye Du",
+        "Shujian Gao",
+        "Junzhi Ning",
+        "Lihao Liu",
+        "Ziyan Huang",
+        "Tianbin Li",
+        "Jin Ye",
+        "Junjun He"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-14T13:34:07+00:00",
+      "link": "https://arxiv.org/pdf/2607.12764v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Self-evolving knowledge hypergraphs for multimodal retrieval, relevant to knowledge graph construction for smart city data",
+      "llm_evidence_cn": "自演化多模态知识超图，可用于智慧城市知识图谱构建",
+      "llm_evidence": "自演化多模态知识超图，可用于智慧城市知识图谱构建",
+      "canonical_evidence": "自演化多模态知识超图，可用于智慧城市知识图谱构建",
+      "llm_tldr_en": "Proposes EvoGraph-R1, a self-evolving multimodal knowledge hypergraph for agentic retrieval, addressing static KG limitations with iterative updates and cross-modal reasoning.",
+      "llm_tldr_cn": "该论文提出EvoGraph-R1，一个自演化的多模态知识超图系统，用于智能体检索。现有知识图谱多为静态结构，难以适应知识密集型推理。EvoGraph-R1通过迭代更新和跨模态推理，实现知识图谱的动态演化，解决了静态图谱无法融入新证据和修正错误的问题。在多个基准上，该方法在检索准确率和推理能力上优于传统GraphRAG方法，为智慧城市中动态知识管理提供了可行思路。",
+      "llm_tldr": "该论文提出EvoGraph-R1，一个自演化的多模态知识超图系统，用于智能体检索。现有知识图谱多为静态结构，难以适应知识密集型推理。EvoGraph-R1通过迭代更新和跨模态推理，实现知识图谱的动态演化，解决了静态图谱无法融入新证据和修正错误的问题。在多个基准上，该方法在检索准确率和推理能力上优于传统GraphRAG方法，为智慧城市中动态知识管理提供了可行思路。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
