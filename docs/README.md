@@ -6,43 +6,38 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-15
-- 运行时间：2026-07-15 21:28:37 UTC
+- 最新运行日期：2026-07-16
+- 运行时间：2026-07-16 21:29:43 UTC
 - 运行状态：成功
-- 本次总论文数：7
+- 本次总论文数：6
 - 精读区：1
-- 速读区：6
+- 速读区：5
 
 ### 今日简报（AI）
-今日精读一篇关于Agentic IoT的高分论文（8.0分），速读涵盖企业数据分析、街景空间认知和CAD图纸符号检测的三个方向。
-最值得看的是《Internet of Agentic Things》，其提出的网络化AI代理实现闭环IoT编排架构颇具前瞻性。
-建议优先精读该高分论文，了解AI代理与物联网结合的新范式，再辅以速读中的具体应用案例。
-- 详情：[/202607/15/README](/202607/15/README)
+今天精读1篇高分论文《Multi-Agent Collaborative Reasoning with Tool-Augmented Evidence for Urban Region Profiling》，速读5篇（含重复的Infinity-Parser2技术报告）。最值得关注的是精读论文提出的多智能体协同推理与工具增强证据方法，为城市区域画像研究提供了新范式。建议优先精读该论文，从中学习如何结合多智能体协作与工具调用解决复杂推理任务。
+- 详情：[/202607/16/README](/202607/16/README)
 
 ### 精读区论文标签
-1. [Internet of Agentic Things: Networked AI Agents for Closed-Loop IoT Orchestration](/202607/15/2607.12662v1-internet-of-agentic-things-networked-ai-agents-for-closed-loop-iot-orchestration)  
+1. [Multi-Agent Collaborative Reasoning with Tool-Augmented Evidence for Urban Region Profiling](/202607/16/2607.13558v1-multi-agent-collaborative-reasoning-with-tool-augmented-evidence-for-urban-region-profiling)  
    标签：评分：8.0/10、query:smart-city
-   evidence：结合智能体AI、物联网和数字孪生实现智能楼宇编排，涉及语义互操作性
+   evidence：多智能体框架融合异构城市数据用于区域画像
 
 ### 速读区论文标签
-1. [QwenPaw-Data: Bridging Facts, Methodology, and Execution for Autonomous Enterprise Data Analytics](/202607/15/2607.11019v2-qwenpaw-data-bridging-facts-methodology-and-execution-for-autonomous-enterprise-data-analytics)  
-   标签：评分：7.0/10、query:smart-city
-   evidence：整合异构企业资产的智能数据系统实现自然语言驱动的分析
-2. [DM-KG: A Novel Method for Boosting Spatial Cognition of Vision-Language Models in Street View Imagery](/202607/15/2607.12319v1-dm-kg-a-novel-method-for-boosting-spatial-cognition-of-vision-language-models-in-street-view-imagery)  
-   标签：评分：7.0/10、query:smart-city
-   evidence：使用知识图谱增强街景空间认知，与智慧城市知识图谱构建相关
-3. [Text-Aided Multi-Modal Panoptic Symbol Spotting for CAD Floor Plan Drawings](/202607/15/2607.12678v1-text-aided-multi-modal-panoptic-symbol-spotting-for-cad-floor-plan-drawings)  
-   标签：评分：7.0/10、query:smart-city
-   evidence：从CAD平面图中提取文本辅助的全景符号，类似于BIM模型中的语义信息提取
-4. [3D Scene Graph Prediction: Generating Hierarchical Models from Partially Observed Environments](/202607/15/2607.10879v1-3d-scene-graph-prediction-generating-hierarchical-models-from-partially-observed-environments)  
+1. [Infinity-Parser2 Technical Report](/202607/16/2607.07836v1-infinity-parser2-technical-report)  
    标签：评分：6.0/10、query:smart-city
-   evidence：3D场景图预测用于层次化环境理解
-5. [CityBehavEx: A Scalable and Empirically Validated LLM-Assisted Urban Simulation Platform](/202607/15/2607.12086v1-citybehavex-a-scalable-and-empirically-validated-llm-assisted-urban-simulation-platform)  
+   evidence：多模态文档解析，可控制数据合成管道
+2. [Infinity-Parser2 Technical Report](/202607/16/2607.07836v2-infinity-parser2-technical-report)  
    标签：评分：6.0/10、query:smart-city
-   evidence：LLM辅助的城市模拟平台，整合移动模型和语义编码器，用于城市规模数据管道
-6. [EvoGraph-R1: Self-Evolving Multimodal Knowledge Hypergraphs for Agentic Retrieval](/202607/15/2607.12764v1-evograph-r1-self-evolving-multimodal-knowledge-hypergraphs-for-agentic-retrieval)  
+   evidence：多模态文档解析，可控制数据合成管道
+3. [Infinity-Parser2 Technical Report](/202607/16/2607.07836v3-infinity-parser2-technical-report)  
    标签：评分：6.0/10、query:smart-city
-   evidence：自演化多模态知识超图，可用于智慧城市知识图谱构建
+   evidence：多模态文档解析，可控制数据合成管道
+4. [NGM-RAG: Neural Graph Matching based Retrieval-Augmented Generation](/202607/16/2607.11159v1-ngm-rag-neural-graph-matching-based-retrieval-augmented-generation)  
+   标签：评分：6.0/10、query:smart-city
+   evidence：神经图匹配用于知识图谱构建与推理
+5. [LakeQuest: A Three-Domain Benchmark for Grounded Question Answering across Data Lakes](/202607/16/2607.12310v1-lakequest-a-three-domain-benchmark-for-grounded-question-answering-across-data-lakes)  
+   标签：评分：6.0/10、query:smart-city
+   evidence：跨域异构数据湖问答基准测试
 
 
 <div class="dpr-home-promo-card">

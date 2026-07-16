@@ -1,0 +1,286 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-16T21:22:58.341070+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2607.13558v1",
+      "source": "arxiv",
+      "title": "Multi-Agent Collaborative Reasoning with Tool-Augmented Evidence for Urban Region Profiling",
+      "abstract": "Urban region profiling constitutes a core problem in urban computing, supporting applications such as population estimation, economic assessment, and environmental monitoring. Existing methods typically formulate this task as multimodal representation learning, fusing heterogeneous urban data, e.g., satellite imagery, points of interest, textual descriptions, and 3D building information, into latent embeddings for prediction. However, these approaches are largely correlation-driven, assume cross-modal consistency, and rely on static pipelines, which limit their robustness in heterogeneous or unseen urban regions. We propose UrbanAgent, an agentic framework that reframes urban region profiling as a reasoning-driven inference problem. UrbanAgent instantiates an independent agent for each data modality and performs structured multi-agent collaborative reasoning to explicitly address cross-modal inconsistencies rather than absorbing them into a single representation. In addition, UrbanAgent extends indicator prediction as a closed-loop process of active evidence acquisition and iterative reasoning, enabling agents to verify uncertain inferences through tool-augmented retrieval of external knowledge optimized via reinforcement learning. Extensive experiments on global urban datasets for Carbon emissions, GDP, and Population estimation show that UrbanAgent consistently outperforms existing baselines, achieving an average improvement of 8.1% in R2, and exhibiting strong generalization performance in unseen-city settings.",
+      "authors": [
+        "Xixuan Hao",
+        "Yutian Jiang",
+        "Jiabo Liu",
+        "Yihang Yang",
+        "Guangyin Jin",
+        "Song Gao",
+        "Yuxuan Liang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-15T08:01:42+00:00",
+      "link": "https://arxiv.org/pdf/2607.13558v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Multi-agent framework fusing heterogeneous urban data for region profiling",
+      "llm_evidence_cn": "多智能体框架融合异构城市数据用于区域画像",
+      "llm_evidence": "多智能体框架融合异构城市数据用于区域画像",
+      "canonical_evidence": "多智能体框架融合异构城市数据用于区域画像",
+      "llm_tldr_en": "UrbanAgent reframes urban region profiling as reasoning-driven inference with tool-augmented evidence from heterogeneous data.",
+      "llm_tldr_cn": "该论文针对现有城市区域画像方法依赖静态多模态融合、鲁棒性不足的问题，提出了UrbanAgent框架。该框架采用多智能体协作推理，结合工具增强的证据（如卫星图像、POI、3D建筑信息）进行区域推断。实验表明，该方法在人口估计和经济评估等任务上优于传统融合方法。其为智慧城市中多源异构数据的智能融合与推理提供了一种新颖的范式，尤其适用于动态城市环境。",
+      "llm_tldr": "该论文针对现有城市区域画像方法依赖静态多模态融合、鲁棒性不足的问题，提出了UrbanAgent框架。该框架采用多智能体协作推理，结合工具增强的证据（如卫星图像、POI、3D建筑信息）进行区域推断。实验表明，该方法在人口估计和经济评估等任务上优于传统融合方法。其为智慧城市中多源异构数据的智能融合与推理提供了一种新颖的范式，尤其适用于动态城市环境。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.07836v1",
+      "source": "arxiv",
+      "title": "Infinity-Parser2 Technical Report",
+      "abstract": "We present Infinity-Parser2, a large multimodal model that couples a controllable data-synthesis pipeline with multi-task reinforcement learning for end-to-end document parsing, addressing the persistent scarcity of faithfully annotated parsing corpora. Our contributions are threefold. First, we build a scalable synthesis engine, pairing a controllable rendering framework with an iterative refinement loop, and use it to construct and open-source Infinity-Doc2-5M: a 5-million-sample bilingual (Chinese/English) corpus spanning diverse document types, annotated with element bounding boxes, canonical content forms (Markdown, HTML, LaTeX, SMILES, structured charts), and full-page reading order. Second, we introduce a verifiable, multi-task reward system that enables Joint Reinforcement Learning across eight co-trained objectives (document parsing, layout analysis, table parsing, math formula parsing, chart parsing, chemical formula parsing, document VQA, and general multimodal understanding), unifying perception, structure, and reasoning in a single optimization signal. Third, we release two variants under a shared architecture: Infinity-Parser2-Flash, optimized for low-latency inference with a $3.68\\times$ throughput gain over Infinity-Parser-7B, and Infinity-Parser2-Pro, engineered for precision-critical settings. Infinity-Parser2-Pro reaches state-of-the-art 87.6% on olmOCR-Bench and 74.3% on ParseBench, surpassing DeepSeek-OCR-2, PaddleOCR-VL-1.5, and MinerU2.5, with strong generalization to charts, chemical formulas, and document VQA.",
+      "authors": [
+        "Zuming Huang",
+        "Jun Huang",
+        "Kexuan Ren",
+        "Baode Wang",
+        "Weizhen Li",
+        "Jianming Feng",
+        "Yu Wang",
+        "Yichen Yao",
+        "Shijun Lin",
+        "Yige Tang",
+        "Cheng Peng",
+        "Weidi Xu",
+        "Wei Chu",
+        "Yinghui Xu",
+        "Yuan Qi"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-08T18:17:21+00:00",
+      "link": "https://arxiv.org/pdf/2607.07836v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Multimodal document parsing with controllable data synthesis",
+      "llm_evidence_cn": "多模态文档解析，可控制数据合成管道",
+      "llm_evidence": "多模态文档解析，可控制数据合成管道",
+      "canonical_evidence": "多模态文档解析，可控制数据合成管道",
+      "llm_tldr_en": "Infinity-Parser2 is a large multimodal model with a controllable data-synthesis pipeline and multi-task RL for end-to-end document parsing.",
+      "llm_tldr_cn": "该论文针对文档解析中真实标注语料稀缺的问题，提出了Infinity-Parser2多模态模型。其核心包括一个可扩展的数据合成引擎和多任务强化学习奖励体系，生成了500万样本的中英文双语语料库。方法支持多种文档类型和输出格式，为多模态信息提取提供了通用工具。虽然不直接针对智慧城市，但其数据合成和解析能力可迁移至城市文档处理。",
+      "llm_tldr": "该论文针对文档解析中真实标注语料稀缺的问题，提出了Infinity-Parser2多模态模型。其核心包括一个可扩展的数据合成引擎和多任务强化学习奖励体系，生成了500万样本的中英文双语语料库。方法支持多种文档类型和输出格式，为多模态信息提取提供了通用工具。虽然不直接针对智慧城市，但其数据合成和解析能力可迁移至城市文档处理。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.07836v2",
+      "source": "arxiv",
+      "title": "Infinity-Parser2 Technical Report",
+      "abstract": "We present Infinity-Parser2, a large multimodal model that couples a controllable data-synthesis pipeline with multi-task reinforcement learning for end-to-end document parsing, addressing the persistent scarcity of faithfully annotated parsing corpora. Our contributions are threefold. First, we build a scalable synthesis engine, pairing a controllable rendering framework with an iterative refinement loop, and use it to construct and open-source Infinity-Doc2-5M: a 5-million-sample bilingual (Chinese/English) corpus spanning diverse document types, annotated with element bounding boxes, canonical content forms (Markdown, HTML, LaTeX, SMILES, structured charts), and full-page reading order. Second, we introduce a verifiable, multi-task reward system that enables Joint Reinforcement Learning across eight co-trained objectives (document parsing, layout analysis, table parsing, math formula parsing, chart parsing, chemical formula parsing, document VQA, and general multimodal understanding), unifying perception, structure, and reasoning in a single optimization signal. Third, we release two variants under a shared architecture: Infinity-Parser2-Flash, optimized for low-latency inference with a 3.68x throughput gain over Infinity-Parser-7B, and Infinity-Parser2-Pro, engineered for precision-critical settings. Infinity-Parser2-Pro reaches state-of-the-art 87.6% on olmOCR-Bench and 74.3% on ParseBench, surpassing DeepSeek-OCR-2, PaddleOCR-VL-1.5, and MinerU2.5, with strong generalization to charts, chemical formulas, and document VQA.",
+      "authors": [
+        "Zuming Huang",
+        "Jun Huang",
+        "Kexuan Ren",
+        "Baode Wang",
+        "Weizhen Li",
+        "Jianming Feng",
+        "Yu Wang",
+        "Yichen Yao",
+        "Shijun Lin",
+        "Yige Tang",
+        "Cheng Peng",
+        "Weidi Xu",
+        "Wei Chu",
+        "Yinghui Xu",
+        "Yuan Qi"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-08T18:17:21+00:00",
+      "link": "https://arxiv.org/pdf/2607.07836v2",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Multimodal document parsing with controllable data synthesis",
+      "llm_evidence_cn": "多模态文档解析，可控制数据合成管道",
+      "llm_evidence": "多模态文档解析，可控制数据合成管道",
+      "canonical_evidence": "多模态文档解析，可控制数据合成管道",
+      "llm_tldr_en": "Infinity-Parser2 is a large multimodal model with a controllable data-synthesis pipeline and multi-task RL for end-to-end document parsing.",
+      "llm_tldr_cn": "该论文针对文档解析中真实标注语料稀缺的问题，提出了Infinity-Parser2多模态模型。其核心包括一个可扩展的数据合成引擎和多任务强化学习奖励体系，生成了500万样本的中英文双语语料库。方法支持多种文档类型和输出格式，为多模态信息提取提供了通用工具。虽然不直接针对智慧城市，但其数据合成和解析能力可迁移至城市文档处理。",
+      "llm_tldr": "该论文针对文档解析中真实标注语料稀缺的问题，提出了Infinity-Parser2多模态模型。其核心包括一个可扩展的数据合成引擎和多任务强化学习奖励体系，生成了500万样本的中英文双语语料库。方法支持多种文档类型和输出格式，为多模态信息提取提供了通用工具。虽然不直接针对智慧城市，但其数据合成和解析能力可迁移至城市文档处理。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.07836v3",
+      "source": "arxiv",
+      "title": "Infinity-Parser2 Technical Report",
+      "abstract": "We present Infinity-Parser2, a large multimodal model that couples a controllable data-synthesis pipeline with multi-task reinforcement learning for end-to-end document parsing, addressing the persistent scarcity of faithfully annotated parsing corpora. Our contributions are threefold. First, we build a scalable synthesis engine, pairing a controllable rendering framework with an iterative refinement loop, and use it to construct and open-source Infinity-Doc2-5M: a 5-million-sample bilingual (Chinese/English) corpus spanning diverse document types, annotated with element bounding boxes, canonical content forms (Markdown, HTML, LaTeX, SMILES, structured charts), and full-page reading order. Second, we introduce a verifiable, multi-task reward system that enables Joint Reinforcement Learning across eight co-trained objectives (document parsing, layout analysis, table parsing, math formula parsing, chart parsing, chemical formula parsing, document VQA, and general multimodal understanding), unifying perception, structure, and reasoning in a single optimization signal. Third, we release two variants under a shared architecture: Infinity-Parser2-Flash, optimized for low-latency inference with a 3.68x throughput gain over Infinity-Parser-7B, and Infinity-Parser2-Pro, engineered for precision-critical settings. Infinity-Parser2-Pro reaches state-of-the-art 87.6% on olmOCR-Bench and 74.3% on ParseBench, surpassing DeepSeek-OCR-2, PaddleOCR-VL-1.5, and MinerU2.5, with strong generalization to charts, chemical formulas, and document VQA.",
+      "authors": [
+        "Zuming Huang",
+        "Jun Huang",
+        "Kexuan Ren",
+        "Baode Wang",
+        "Weizhen Li",
+        "Jianming Feng",
+        "Yu Wang",
+        "Yichen Yao",
+        "Shijun Lin",
+        "Yige Tang",
+        "Cheng Peng",
+        "Weidi Xu",
+        "Wei Chu",
+        "Yinghui Xu",
+        "Yuan Qi"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-08T18:17:21+00:00",
+      "link": "https://arxiv.org/pdf/2607.07836v3",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Multimodal document parsing with controllable data synthesis",
+      "llm_evidence_cn": "多模态文档解析，可控制数据合成管道",
+      "llm_evidence": "多模态文档解析，可控制数据合成管道",
+      "canonical_evidence": "多模态文档解析，可控制数据合成管道",
+      "llm_tldr_en": "Infinity-Parser2 is a large multimodal model with a controllable data-synthesis pipeline and multi-task RL for end-to-end document parsing.",
+      "llm_tldr_cn": "该论文针对文档解析中真实标注语料稀缺的问题，提出了Infinity-Parser2多模态模型。其核心包括一个可扩展的数据合成引擎和多任务强化学习奖励体系，生成了500万样本的中英文双语语料库。方法支持多种文档类型和输出格式，为多模态信息提取提供了通用工具。虽然不直接针对智慧城市，但其数据合成和解析能力可迁移至城市文档处理。",
+      "llm_tldr": "该论文针对文档解析中真实标注语料稀缺的问题，提出了Infinity-Parser2多模态模型。其核心包括一个可扩展的数据合成引擎和多任务强化学习奖励体系，生成了500万样本的中英文双语语料库。方法支持多种文档类型和输出格式，为多模态信息提取提供了通用工具。虽然不直接针对智慧城市，但其数据合成和解析能力可迁移至城市文档处理。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.11159v1",
+      "source": "arxiv",
+      "title": "NGM-RAG: Neural Graph Matching based Retrieval-Augmented Generation",
+      "abstract": "Retrieval-Augmented Generation (RAG) significantly enhances the ability of Large Language Models (LLMs) to provide accurate and contextually relevant answers by dynamically integrating external databases. However, traditional RAG methods are primarily constrained by their reliance on text-based retrieval strategies, which often struggle with complex questions requiring multi-hop reasoning. To address this limitation, we introduce Neural Graph Matching based Retrieval-Augmented Generation (NGM-RAG), a novel framework that leverages graph structures to effectively capture and utilize relational knowledge for improved retrieval and answer generation. NGM-RAG explicitly incorporates graph construction, graph matching, and answer generation into a unified process. Within this framework, we propose a neural graph matching approach that combines text-based matching with Graph Neural Networks (GNNs). By employing an adaptive weighting strategy, NGM-RAG efficiently integrates multiple matching methods to select the most relevant contextual node information for answer generation. Experimental results on multi-hop question answering and long-context summarization tasks demonstrate that our NGM-RAG model achieves superior performance compared to both traditional NaiveRAG methods and state-of-the-art graph-enhanced approaches such as GraphRAG and LightRAG.",
+      "authors": [
+        "Guo Chen",
+        "Ziwen Li",
+        "Maolin Zheng",
+        "Hao Gao",
+        "Junjie Huang",
+        "Tao Jia"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR"
+      ],
+      "published": "2026-07-13T06:51:57+00:00",
+      "link": "https://arxiv.org/pdf/2607.11159v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "neural graph matching for knowledge graph construction and reasoning",
+      "llm_evidence_cn": "神经图匹配用于知识图谱构建与推理",
+      "llm_evidence": "神经图匹配用于知识图谱构建与推理",
+      "canonical_evidence": "神经图匹配用于知识图谱构建与推理",
+      "llm_tldr_en": "NGM-RAG introduces graph construction and matching into RAG to capture relational knowledge for complex reasoning.",
+      "llm_tldr_cn": "传统RAG依赖文本检索，难以处理多跳推理。本文提出NGM-RAG框架，将图构建、图匹配和答案生成统一在一个流程中，通过图结构捕捉关系知识。实验表明该方法在需要多跳推理的问答任务上显著优于基线。其图匹配方法可直接用于智慧城市知识图谱的构建与推理。",
+      "llm_tldr": "传统RAG依赖文本检索，难以处理多跳推理。本文提出NGM-RAG框架，将图构建、图匹配和答案生成统一在一个流程中，通过图结构捕捉关系知识。实验表明该方法在需要多跳推理的问答任务上显著优于基线。其图匹配方法可直接用于智慧城市知识图谱的构建与推理。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.12310v1",
+      "source": "arxiv",
+      "title": "LakeQuest: A Three-Domain Benchmark for Grounded Question Answering across Data Lakes",
+      "abstract": "While modern question answering (QA) systems excel on clean, schema-aligned corpora, real-world knowledge is rarely so neatly packaged. Answering questions over enterprise and scientific data lakes requires systems to navigate heterogeneous, weakly structured collections of tables, passages, and linked metadata. Current benchmarks abstract away this noisy discovery process, failing to evaluate end-to-end performance. To bridge this gap, we introduce LakeQuest, a human-validated benchmark of 9,846 QA pairs designed to evaluate the end-to-end retrieve-and-synthesize pipeline over realistic data lakes. LakeQuest spans three diverse domains (AI/ML metadata, retail banking, and multimodal biomedical drug information) and pairs every question with exact, modality-aware evidence pointers. By isolating source discovery from cross-modal synthesis, LakeQuest exposes critical failure modes in modern QA systems. Our baseline evaluations, including standard Retrieval-Augmented Generation (RAG) and agentic tool-use methods, reveal that high-quality retrieval does not guarantee correct reasoning. Systems consistently struggle with relation chaining in metadata graphs, policy grounding in bank ledgers, and joint tabular QA in biomedical contexts, highlighting the need for robust discovery and faithful cross-file composition mechanisms in future agentic QA systems.",
+      "authors": [
+        "Michael Solodko",
+        "Steven Gong",
+        "Guangwei Yu",
+        "Satya Krishna Gorti",
+        "Jesse C. Cresswell",
+        "Victor Zhong"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-07-14T03:33:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.12310v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "benchmark for QA over heterogeneous data lakes across domains",
+      "llm_evidence_cn": "跨域异构数据湖问答基准测试",
+      "llm_evidence": "跨域异构数据湖问答基准测试",
+      "canonical_evidence": "跨域异构数据湖问答基准测试",
+      "llm_tldr_en": "LakeQuest is a benchmark for grounded QA over heterogeneous data lakes, evaluating end-to-end retrieve-and-synthesize pipelines.",
+      "llm_tldr_cn": "为评估问答系统在真实数据湖上的端到端性能，本文提出LakeQuest基准，包含9846个问答对，覆盖AI/ML元数据、零售银行和多模态药物信息三个领域，要求系统跨异构表格、段落和元数据检索并合成答案，填补了当前基准忽略发现过程的空白。",
+      "llm_tldr": "为评估问答系统在真实数据湖上的端到端性能，本文提出LakeQuest基准，包含9846个问答对，覆盖AI/ML元数据、零售银行和多模态药物信息三个领域，要求系统跨异构表格、段落和元数据检索并合成答案，填补了当前基准忽略发现过程的空白。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
