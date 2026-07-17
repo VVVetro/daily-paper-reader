@@ -1,0 +1,54 @@
+{
+  "label": "2026-07-17",
+  "date": "2026-07-17",
+  "generated_at": "2026-07-17T21:26:35",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202607/17/2607.14542v1-cityllm-a-framework-for-natural-language-querying-of-semantic-3d-city-models",
+      "section": "deep",
+      "title_en": "CityLLM: A framework for natural-language querying of semantic 3D city models",
+      "authors": "Rabindra Lamsal, Sisi Zlatanova, Johnson Xuesong Shen",
+      "date": "2026-07-16",
+      "pdf": "https://arxiv.org/pdf/2607.14542v1",
+      "score": "9.0",
+      "evidence": "自然语言查询语义3D城市模型，支持城市数字孪生",
+      "tldr": "语义3D城市模型结构复杂且格式专有，非专家难以查询。CityLLM框架结合空间和图数据库与LLM工作流，支持迭代查询和跨数据库链。在鹿特丹CityJSON数据集上，使用GPT-OSS、Gemini 3.1和GPT-5.4测试54个自然语言查询，答案正确率85.2%-100%，可视化正确率92.9%-100%，查询成功率100%，重试少于3次。该框架提供轻量可扩展的对话式数据访问方案。",
+      "tags": "query:smart-city",
+      "abstract_en": "Semantic 3D city models provide rich geometric and semantic information, but remain challenging for non-experts and interdisciplinary researchers to access and query due to their complex structures and specialized data formats. To address this issue, we present CityLLM, a framework for natural-language querying of semantic 3D city models alongside complementary urban datasets. The framework combines spatial and graph databases within an LLM-based workflow that supports iterative query refinement and cross-database chaining. We evaluate CityLLM on a CityJSON dataset of Rotterdam (853 LoD2 buildings) using GPT-OSS, Gemini 3.1, and GPT-5.4, along with selected variants, across multiple metrics: answer correctness, visualization correctness, query success, and retry attempts. A total of 54 natural-language queries are curated across four scenarios: spatial, graph, cross-database, and conversational. Results show strong overall performance, with answer correctness ranging from 85.2% to 100%, visualization correctness from 92.9% to 100%, a 100% query success rate, and fewer than three retries across all 54 queries. Overall, the findings suggest that CityLLM provides a lightweight and extensible approach for conversational access to semantic 3D city data.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/17/2607.14510v1-vlt-a-vision-language-time-series-multimodal-foundation-model-for-industrial-intelligence",
+      "section": "quick",
+      "title_en": "VLT: A Vision-Language-Time Series Multimodal Foundation Model for Industrial Intelligence",
+      "authors": "Haiteng Wang, Jingheng Yan, Xiaokang Wang, Lei Ren",
+      "date": "2026-07-16",
+      "pdf": "https://arxiv.org/pdf/2607.14510v1",
+      "score": "6.0",
+      "evidence": "时间序列、视觉和文本多模态基础模型",
+      "tldr": "工业时间序列是设备预测与健康管理的基础，但现有方法局限于单模态建模，泛化性差。VLT以频谱为视觉桥接，联合时间、频谱与文本的多模态建模，通过Time-MoE捕获时间动态，Frequency-Text学习器融合语义，梯度对齐缓解优化冲突。在多个工业数据集上，VLT在少样本、噪声和不完整模态下性能超越现有方法。该工作为工业智能提供了有效的多模态基础模型，显著提升了鲁棒性和泛化能力。",
+      "tags": "query:smart-city",
+      "abstract_en": "Industrial time series serve as the foundation for Prognostics and Health Management (PHM) to ensure the reliability and safety of industrial equipment such as aero-engines. However, existing approaches are typically limited to single-modality modeling, which restricts their generalization in complex scenarios. Although recent advances in large language models (LLMs) provide new opportunities for multimodal learning, bridging continuous time-series signals and discrete textual semantics remains an open challenge. To this end, we propose VLT, a multimodal foundation model that jointly models time-series, frequency-spectrum visual representations, and textual knowledge. A key insight is to utilize the frequency spectrum as a visual bridge to connect continuous temporal signals with discrete semantics. Specifically, a Time-aware Mixture-of-Experts (Time-MoE) is designed to capture heterogeneous temporal dynamics, while a Frequency-Text Augmented Learner enables joint modeling of spectral and semantic features within a shared representation space. Furthermore, a time-centric gradient alignment mechanism is introduced to mitigate cross-modal optimization conflicts via gradient normalization and reliability-aware dynamic reweighting. Extensive experiments on multiple industrial datasets demonstrate that VLT outperforms state-of-the-art methods, achieving superior robustness and generalization under few-shot, noisy, and incomplete-modality settings.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/17/2607.14561v1-mars-multi-hop-adaptive-retrieval-and-sparql-generation-for-kgqa",
+      "section": "quick",
+      "title_en": "MARS: Multi-hop Adaptive Retrieval and SPARQL Generation for KGQA",
+      "authors": "Nikit Srivastava, Daniel Vollmers, René Speck, Nikolaos Karalis, Hamada M. Zahera, Axel-Cyrille Ngonga Ngomo",
+      "date": "2026-07-16",
+      "pdf": "https://arxiv.org/pdf/2607.14561v1",
+      "score": "6.0",
+      "evidence": "知识图谱问答方法，支持多跳检索和SPARQL生成",
+      "tldr": "大语言模型在知识密集型任务中易产生幻觉，MARS提出一种无需微调的可扩展知识图谱问答方法。它通过结构化多跳自适应检索，逐步遍历图谱并决定何时生成SPARQL查询，避免开放式探索。在多个基准上取得与最先进方法竞争的性能，同时保持高效和可扩展性。",
+      "tags": "query:smart-city",
+      "abstract_en": "Large language models (LLMs) have demonstrated strong reasoning performance, but their tendency to hallucinate limits their reliability in knowledge-intensive tasks requiring up-to-date and grounded information. Combining knowledge graphs (KGs) with LLMs facilitates the use of explicit symbolic knowledge that can be continuously updated without costly fine-tuning, while benefiting from rapidly advancing LLM reasoning. We propose MARS, a scalable knowledge graph question answering (KGQA) approach that requires no model fine-tuning. Rather than relying on open-ended agentic exploration, MARS performs a structured retrieval procedure that links question entities to the KG and iteratively retrieves relevant next-hop information. At each step, MARS decides whether to continue graph traversal or to generate the final SPARQL query, allowing the model to adapt the retrieval depth to the question while keeping the overall pipeline more predictable than fully agentic approaches. We evaluate MARS on three established KGQA benchmarks across several LLMs and settings, including multilingual evaluation, and provide insights through ablation studies and error analysis. Our approach achieves competitive performance relative to state-of-the-art methods while remaining efficient and scalable. The evaluation results, code and resources are publicly available: https://github.com/dice-group/mars-kgqa.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,132 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-17T21:24:04.174194+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2607.14542v1",
+      "source": "arxiv",
+      "title": "CityLLM: A framework for natural-language querying of semantic 3D city models",
+      "abstract": "Semantic 3D city models provide rich geometric and semantic information, but remain challenging for non-experts and interdisciplinary researchers to access and query due to their complex structures and specialized data formats. To address this issue, we present CityLLM, a framework for natural-language querying of semantic 3D city models alongside complementary urban datasets. The framework combines spatial and graph databases within an LLM-based workflow that supports iterative query refinement and cross-database chaining. We evaluate CityLLM on a CityJSON dataset of Rotterdam (853 LoD2 buildings) using GPT-OSS, Gemini 3.1, and GPT-5.4, along with selected variants, across multiple metrics: answer correctness, visualization correctness, query success, and retry attempts. A total of 54 natural-language queries are curated across four scenarios: spatial, graph, cross-database, and conversational. Results show strong overall performance, with answer correctness ranging from 85.2% to 100%, visualization correctness from 92.9% to 100%, a 100% query success rate, and fewer than three retries across all 54 queries. Overall, the findings suggest that CityLLM provides a lightweight and extensible approach for conversational access to semantic 3D city data.",
+      "authors": [
+        "Rabindra Lamsal",
+        "Sisi Zlatanova",
+        "Johnson Xuesong Shen"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-07-16T03:55:51+00:00",
+      "link": "https://arxiv.org/pdf/2607.14542v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "natural-language querying of semantic 3D city models for urban digital twins",
+      "llm_evidence_cn": "自然语言查询语义3D城市模型，支持城市数字孪生",
+      "llm_evidence": "自然语言查询语义3D城市模型，支持城市数字孪生",
+      "canonical_evidence": "自然语言查询语义3D城市模型，支持城市数字孪生",
+      "llm_tldr_en": "CityLLM enables non-experts to query semantic 3D city models via natural language, combining spatial/graph databases with LLM-based workflow, evaluated on 853 buildings.",
+      "llm_tldr_cn": "本文针对语义3D城市模型（如CityJSON）难以被非专业人士访问的问题，提出了CityLLM框架。该框架结合空间数据库和图数据库，利用大语言模型实现自然语言查询，支持迭代式查询优化和跨数据库链接。在鹿特丹853栋建筑数据集上评估了GPT-OSS、Gemini和GPT-5.4等多个模型，在回答准确性、可视化正确性等指标上表现优异，为城市数字孪生的语义互操作性提供了实用工具。",
+      "llm_tldr": "本文针对语义3D城市模型（如CityJSON）难以被非专业人士访问的问题，提出了CityLLM框架。该框架结合空间数据库和图数据库，利用大语言模型实现自然语言查询，支持迭代式查询优化和跨数据库链接。在鹿特丹853栋建筑数据集上评估了GPT-OSS、Gemini和GPT-5.4等多个模型，在回答准确性、可视化正确性等指标上表现优异，为城市数字孪生的语义互操作性提供了实用工具。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.14510v1",
+      "source": "arxiv",
+      "title": "VLT: A Vision-Language-Time Series Multimodal Foundation Model for Industrial Intelligence",
+      "abstract": "Industrial time series serve as the foundation for Prognostics and Health Management (PHM) to ensure the reliability and safety of industrial equipment such as aero-engines. However, existing approaches are typically limited to single-modality modeling, which restricts their generalization in complex scenarios. Although recent advances in large language models (LLMs) provide new opportunities for multimodal learning, bridging continuous time-series signals and discrete textual semantics remains an open challenge. To this end, we propose VLT, a multimodal foundation model that jointly models time-series, frequency-spectrum visual representations, and textual knowledge. A key insight is to utilize the frequency spectrum as a visual bridge to connect continuous temporal signals with discrete semantics. Specifically, a Time-aware Mixture-of-Experts (Time-MoE) is designed to capture heterogeneous temporal dynamics, while a Frequency-Text Augmented Learner enables joint modeling of spectral and semantic features within a shared representation space. Furthermore, a time-centric gradient alignment mechanism is introduced to mitigate cross-modal optimization conflicts via gradient normalization and reliability-aware dynamic reweighting. Extensive experiments on multiple industrial datasets demonstrate that VLT outperforms state-of-the-art methods, achieving superior robustness and generalization under few-shot, noisy, and incomplete-modality settings.",
+      "authors": [
+        "Haiteng Wang",
+        "Jingheng Yan",
+        "Xiaokang Wang",
+        "Lei Ren"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-16T02:53:54+00:00",
+      "link": "https://arxiv.org/pdf/2607.14510v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multimodal foundation model for time-series, visual, and textual data",
+      "llm_evidence_cn": "时间序列、视觉和文本多模态基础模型",
+      "llm_evidence": "时间序列、视觉和文本多模态基础模型",
+      "canonical_evidence": "时间序列、视觉和文本多模态基础模型",
+      "llm_tldr_en": "Proposes VLT, a multimodal foundation model jointly modeling time-series, frequency-spectrum visual representations, and text for industrial PHM; transferable to smart city sensor fusion.",
+      "llm_tldr_cn": "本文提出VLT多模态基础模型，联合建模时间序列、频谱视觉表示和文本知识，用于工业设备预测与健康管理。该方法通过频谱作为视觉桥梁解决多模态对齐问题，可迁移至智慧城市中传感器、图像和文本数据的融合场景。实验表明模型在工业故障诊断任务上表现优异。",
+      "llm_tldr": "本文提出VLT多模态基础模型，联合建模时间序列、频谱视觉表示和文本知识，用于工业设备预测与健康管理。该方法通过频谱作为视觉桥梁解决多模态对齐问题，可迁移至智慧城市中传感器、图像和文本数据的融合场景。实验表明模型在工业故障诊断任务上表现优异。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.14561v1",
+      "source": "arxiv",
+      "title": "MARS: Multi-hop Adaptive Retrieval and SPARQL Generation for KGQA",
+      "abstract": "Large language models (LLMs) have demonstrated strong reasoning performance, but their tendency to hallucinate limits their reliability in knowledge-intensive tasks requiring up-to-date and grounded information. Combining knowledge graphs (KGs) with LLMs facilitates the use of explicit symbolic knowledge that can be continuously updated without costly fine-tuning, while benefiting from rapidly advancing LLM reasoning. We propose MARS, a scalable knowledge graph question answering (KGQA) approach that requires no model fine-tuning. Rather than relying on open-ended agentic exploration, MARS performs a structured retrieval procedure that links question entities to the KG and iteratively retrieves relevant next-hop information. At each step, MARS decides whether to continue graph traversal or to generate the final SPARQL query, allowing the model to adapt the retrieval depth to the question while keeping the overall pipeline more predictable than fully agentic approaches. We evaluate MARS on three established KGQA benchmarks across several LLMs and settings, including multilingual evaluation, and provide insights through ablation studies and error analysis. Our approach achieves competitive performance relative to state-of-the-art methods while remaining efficient and scalable. The evaluation results, code and resources are publicly available: https://github.com/dice-group/mars-kgqa.",
+      "authors": [
+        "Nikit Srivastava",
+        "Daniel Vollmers",
+        "René Speck",
+        "Nikolaos Karalis",
+        "Hamada M. Zahera",
+        "Axel-Cyrille Ngonga Ngomo"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-07-16T04:40:05+00:00",
+      "link": "https://arxiv.org/pdf/2607.14561v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "knowledge graph question answering method with multi-hop retrieval and SPARQL generation",
+      "llm_evidence_cn": "知识图谱问答方法，支持多跳检索和SPARQL生成",
+      "llm_evidence": "知识图谱问答方法，支持多跳检索和SPARQL生成",
+      "canonical_evidence": "知识图谱问答方法，支持多跳检索和SPARQL生成",
+      "llm_tldr_en": "MARS performs multi-hop adaptive retrieval and SPARQL generation for KGQA without fine-tuning, linking question entities and iteratively retrieving relevant information.",
+      "llm_tldr_cn": "针对大语言模型在知识密集型任务中易幻觉的问题，论文提出MARS方法，无需微调即可执行知识图谱问答。它通过结构化检索过程链接问题实体，迭代获取下一跳信息并生成SPARQL查询。实验在多个KGQA基准上取得先进结果，兼顾了可伸缩性与可解释性，为融合符号知识与LLM推理提供了实用方案。",
+      "llm_tldr": "针对大语言模型在知识密集型任务中易幻觉的问题，论文提出MARS方法，无需微调即可执行知识图谱问答。它通过结构化检索过程链接问题实体，迭代获取下一跳信息并生成SPARQL查询。实验在多个KGQA基准上取得先进结果，兼顾了可伸缩性与可解释性，为融合符号知识与LLM推理提供了实用方案。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
