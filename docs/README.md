@@ -6,31 +6,37 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-17
-- 运行时间：2026-07-17 21:26:29 UTC
+- 最新运行日期：2026-07-18
+- 运行时间：2026-07-18 20:25:20 UTC
 - 运行状态：成功
-- 本次总论文数：3
+- 本次总论文数：5
 - 精读区：1
-- 速读区：2
+- 速读区：4
 
 ### 今日简报（AI）
-今日精读高分论文《CityLLM》，速读工业智能与知识图谱相关研究各一篇。  
-最值得关注《CityLLM》提出的自然语言查询语义3D城市模型框架，以及《MARS》用于知识图谱问答的多跳检索与SPARQL生成方法。  
-建议进一步了解CityLLM在智慧城市中的落地潜力，并对比MARS在复杂查询中的检索效率。
-- 详情：[/202607/17/README](/202607/17/README)
+今日精读1篇高分论文《Not Your Usual Type(s)》并速读3篇，覆盖数据契约、多元图可视化和知识图谱验证。  
+最值得关注的是数据契约作为跨语言引擎的类型系统（8.0分），以及结合谓词逻辑的多元图可视化分析工具ZipLine。  
+建议优先精读数据契约论文，并尝试将ZipLine的多变量图推理思路应用到自己的数据分析任务中。
+- 详情：[/202607/18/README](/202607/18/README)
 
 ### 精读区论文标签
-1. [CityLLM: A framework for natural-language querying of semantic 3D city models](/202607/17/2607.14542v1-cityllm-a-framework-for-natural-language-querying-of-semantic-3d-city-models)  
-   标签：评分：9.0/10、query:smart-city
-   evidence：自然语言查询语义3D城市模型，支持城市数字孪生
+1. [Not Your Usual Type(s): Data contracts as types across languages and engines](/202607/18/2607.13339v1-not-your-usual-types-data-contracts-as-types-across-languages-and-engines)  
+   标签：评分：8.0/10、query:smart-city
+   evidence：数据合约作为类型，用于统一语义数据模型和标准
 
 ### 速读区论文标签
-1. [VLT: A Vision-Language-Time Series Multimodal Foundation Model for Industrial Intelligence](/202607/17/2607.14510v1-vlt-a-vision-language-time-series-multimodal-foundation-model-for-industrial-intelligence)  
+1. [ZipLine: Visual Analysis of Multivariate Graphs with Predicate Logic](/202607/18/2607.13767v1-zipline-visual-analysis-of-multivariate-graphs-with-predicate-logic)  
+   标签：评分：7.0/10、query:smart-city
+   evidence：使用谓词逻辑的多变量图分析，可用于知识图谱推理
+2. [AgentKGV: Agentic LLM-RAG Framework with Two-Stage Training for the Fact Verification of Knowledge Graphs](/202607/18/2607.09092v1-agentkgv-agentic-llm-rag-framework-with-two-stage-training-for-the-fact-verification-of-knowledge-graphs)  
    标签：评分：6.0/10、query:smart-city
-   evidence：时间序列、视觉和文本多模态基础模型
-2. [MARS: Multi-hop Adaptive Retrieval and SPARQL Generation for KGQA](/202607/17/2607.14561v1-mars-multi-hop-adaptive-retrieval-and-sparql-generation-for-kgqa)  
+   evidence：通过代理式LLM-RAG进行知识图谱事实验证
+3. [The INRIA DataLake: A Generic and Scalable Ecosystem of Pipelines for HAL Applied to Software Mentions Tracking](/202607/18/2607.09824v1-the-inria-datalake-a-generic-and-scalable-ecosystem-of-pipelines-for-hal-applied-to-software-mentions-tracking)  
    标签：评分：6.0/10、query:smart-city
-   evidence：知识图谱问答方法，支持多跳检索和SPARQL生成
+   evidence：通用可扩展的管道生态系统，用于数据准备和提取
+4. [GRAFT: Graph-Matched Retrieval and Fusion of Tables in Data Lakes](/202607/18/2607.12717v1-graft-graph-matched-retrieval-and-fusion-of-tables-in-data-lakes)  
+   标签：评分：6.0/10、query:smart-city
+   evidence：基于图匹配的数据湖中表格检索与融合方法，用于异构表格数据集成
 
 
 <div class="dpr-home-promo-card">

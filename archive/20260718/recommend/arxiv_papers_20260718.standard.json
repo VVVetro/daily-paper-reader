@@ -1,0 +1,214 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-18T20:23:15.668807+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2607.13339v1",
+      "source": "arxiv",
+      "title": "Not Your Usual Type(s): Data contracts as types across languages and engines",
+      "abstract": "Composable data systems promise to let developers combine languages, engines, and catalogs without sacrificing a coherent user experience. In practice, however, pipeline-node boundaries remain weakly specified: transformations exchange tables through schemas that are often checked late, enforced unevenly across languages, and disconnected from the semantics business users care about. Based on over a year of operating millions of jobs in Bauplan, we share the design principles behind our new SDK, which treats data contracts as types for a composable, multi-language lakehouse. Users, whether humans or agents, annotate input and output tables with schema objects that encode column types, constraints, documentation, and lineage; Bauplan then interprets these annotations at different points in the execution lifecycle. We show how this design addresses common production failures, and how an ''everything-as-code'' philosophy enables both deterministic and non-deterministic reasoning over data flows across languages and engines.",
+      "authors": [
+        "Aldrin Montana",
+        "Colin Marc",
+        "Luca Bigon",
+        "Jacopo Tagliabue"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB"
+      ],
+      "published": "2026-07-14T23:55:40+00:00",
+      "link": "https://arxiv.org/pdf/2607.13339v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "data contracts as types for unified semantic data models and standards",
+      "llm_evidence_cn": "数据合约作为类型，用于统一语义数据模型和标准",
+      "llm_evidence": "数据合约作为类型，用于统一语义数据模型和标准",
+      "canonical_evidence": "数据合约作为类型，用于统一语义数据模型和标准",
+      "llm_tldr_en": "Proposes data contracts as types for composable multi-language lakehouses, encoding column types, constraints, documentation, and lineage, enabling unified semantic data models.",
+      "llm_tldr_cn": "针对数据管道边界处模式不统一的问题，论文提出将数据合约作为类型，在表接口上编码列类型、约束、文档和血缘，支持跨语言引擎的统一数据语义，为智能城市异构数据的语义建模和集成提供了可直接借鉴的设计原则。",
+      "llm_tldr": "针对数据管道边界处模式不统一的问题，论文提出将数据合约作为类型，在表接口上编码列类型、约束、文档和血缘，支持跨语言引擎的统一数据语义，为智能城市异构数据的语义建模和集成提供了可直接借鉴的设计原则。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing unified data standards and semantic data models for integrating heterogeneous smart city construction data, including BIM, GIS, documents, images, videos, point clouds, and structured databases.",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.13767v1",
+      "source": "arxiv",
+      "title": "ZipLine: Visual Analysis of Multivariate Graphs with Predicate Logic",
+      "abstract": "Multivariate graphs unite two distinct data perspectives: a topological structure defined by nodes and edges, and attribute data associated with each node. Analyzing such graphs therefore requires reasoning across two complementary spaces. However, existing systems typically emphasize the analysis of one space at a time, focusing either on topology or on attributes. As a result, exploration, analysis, and pattern discovery that depend on their interaction remain difficult. In this paper, we present ZipLine, a system designed to support integrative analysis of multivariate graphs by bridging both topology and attribute spaces. ZipLine introduces a predicate language that enables analysts to express patterns involving topology, node attributes, and neighborhood relations with a unified formalism. The system further provides a predicate-learning algorithm that maps analyst interactions across both topology (e.g., subgraph selection) and attribute views (e.g., value brushing), into the predicate language, enabling learned expressions that bridge the two spaces. This integrative approach supports iterative analysis by enabling analysts to refine patterns through coordinated reasoning over topology and attributes. We demonstrate ZipLine through three case studies in energy infrastructure, cybersecurity, and drug discovery analysis. The results show that ZipLine enables expressive multivariate graph analysis through unified reasoning across topology and attributes.",
+      "authors": [
+        "Sjoerd Vink",
+        "Suyang Li",
+        "Brian Montambault",
+        "Michael Behrisch",
+        "Mingwei Li",
+        "Remco Chang"
+      ],
+      "primary_category": "cs.HC",
+      "categories": [
+        "cs.HC"
+      ],
+      "published": "2026-07-15T12:29:02+00:00",
+      "link": "https://arxiv.org/pdf/2607.13767v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "multivariate graph analysis with predicate logic for knowledge graph reasoning",
+      "llm_evidence_cn": "使用谓词逻辑的多变量图分析，可用于知识图谱推理",
+      "llm_evidence": "使用谓词逻辑的多变量图分析，可用于知识图谱推理",
+      "canonical_evidence": "使用谓词逻辑的多变量图分析，可用于知识图谱推理",
+      "llm_tldr_en": "ZipLine integrates topology and attribute analysis of multivariate graphs using a predicate language, enabling pattern discovery across both spaces, applicable to knowledge graph reasoning in smart cities.",
+      "llm_tldr_cn": "针对多变量图分析中拓扑与属性空间割裂的问题，ZipLine提出基于谓语逻辑的集成分析方法，通过引入谓词语言支持跨拓扑和属性空间的模式发现，为智能城市知识图谱的复杂推理提供了可通用的可视化分析工具。",
+      "llm_tldr": "针对多变量图分析中拓扑与属性空间割裂的问题，ZipLine提出基于谓语逻辑的集成分析方法，通过引入谓词语言支持跨拓扑和属性空间的模式发现，为智能城市知识图谱的复杂推理提供了可通用的可视化分析工具。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.09092v1",
+      "source": "arxiv",
+      "title": "AgentKGV: Agentic LLM-RAG Framework with Two-Stage Training for the Fact Verification of Knowledge Graphs",
+      "abstract": "Knowledge graphs (KGs) are often automatically constructed from large-scale corpora, but they inevitably contain factual errors due to noisy sources and extraction failures, and verifying them reliably at industrial scale remains a critical challenge. To address this, we propose AgentKGV, the Agentic LLM-RAG framework for KG fact Verification, that integrates dynamic routing and iterative query rewriting, which handles surface-form mismatch in document-level retrieval. To make this framework more accurate and cost-efficient for industrial deployment, we further introduce a two-stage training strategy: turn-level distillation-based SFT that transfers reasoning ability from a large teacher model into a small model for stable query rewriting and reasoning, and trajectory-level GRPO that optimizes the search policy to reduce unnecessary retrieval at scale. On the long-tail-predicate split of the open-domain T-REx benchmark, our framework improves macro-F1 over single-turn RAG by 5.5 \\%p, and two-stage training does it further by 9.4 \\%p. GRPO also cuts the average number of search calls from 3.24 to 1.63 without lowering accuracy.",
+      "authors": [
+        "Yumin Heo",
+        "Hyeon-gu Lee",
+        "Sumin Seo",
+        "Youngjoong Ko"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-07-10T04:22:34+00:00",
+      "link": "https://arxiv.org/pdf/2607.09092v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "fact verification of knowledge graphs via agentic LLM-RAG",
+      "llm_evidence_cn": "通过代理式LLM-RAG进行知识图谱事实验证",
+      "llm_evidence": "通过代理式LLM-RAG进行知识图谱事实验证",
+      "canonical_evidence": "通过代理式LLM-RAG进行知识图谱事实验证",
+      "llm_tldr_en": "AgentKGV uses an agentic LLM-RAG framework with two-stage training for scalable fact verification of knowledge graphs.",
+      "llm_tldr_cn": "针对大规模知识图谱中事实错误难以校核的问题，AgentKGV提出代理式LLM-RAG框架，集成动态路由与迭代查询重写，并通过两阶段蒸馏训练实现高效准确的事实验证，可用于智能城市知识图谱质量控制。",
+      "llm_tldr": "针对大规模知识图谱中事实错误难以校核的问题，AgentKGV提出代理式LLM-RAG框架，集成动态路由与迭代查询重写，并通过两阶段蒸馏训练实现高效准确的事实验证，可用于智能城市知识图谱质量控制。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.09824v1",
+      "source": "arxiv",
+      "title": "The INRIA DataLake: A Generic and Scalable Ecosystem of Pipelines for HAL Applied to Software Mentions Tracking",
+      "abstract": "Research repositories contain a large amount of scientific knowledge, but access to structured articles and specialised information, such as datasets or software metadata, remains limited. In this paper, we present the INRIA DataLake project, which provides an ecosystem of scalable and interconnected pipelines for preparing scientific literature, extracting structured information, and applying specialised treatments. Using a large-scale shared infrastructure, Grid'5000/ABACA, we demonstrate our ecosystem through a concrete use case: extracting software mentions from scientific articles deposited daily and visualising them after validation in the HAL research portal. Our results show that the system can efficiently process large volumes of scientific literature while supporting user validation and interoperability with external systems. Designed to grow by integrating additional pipelines and sharing the preparation effort across research groups, this project already contributes to open science through improved visibility and tracking of research software.",
+      "authors": [
+        "Luca Foppiano",
+        "Vipul Gupta",
+        "Samuel Scalbert",
+        "Estelle Niveaut",
+        "Kumar Guha",
+        "Yannick Barborini",
+        "Alain Monteil",
+        "Laurent Romary"
+      ],
+      "primary_category": "cs.DL",
+      "categories": [
+        "cs.DL"
+      ],
+      "published": "2026-07-10T09:25:14+00:00",
+      "link": "https://arxiv.org/pdf/2607.09824v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "generic scalable ecosystem of pipelines for data preparation and extraction",
+      "llm_evidence_cn": "通用可扩展的管道生态系统，用于数据准备和提取",
+      "llm_evidence": "通用可扩展的管道生态系统，用于数据准备和提取",
+      "canonical_evidence": "通用可扩展的管道生态系统，用于数据准备和提取",
+      "llm_tldr_en": "INRIA DataLake provides a generic ecosystem of scalable pipelines for preparing scientific literature and extracting structured information, demonstrated on software mention tracking.",
+      "llm_tldr_cn": "针对科学文献结构化信息获取困难的问题，INRIA DataLake构建了可扩展的管道生态系统，支持文献预处理和信息提取，并在软件提及追踪用例中展示了高效性，其管道架构可迁移至智能城市多源数据预处理。",
+      "llm_tldr": "针对科学文献结构化信息获取困难的问题，INRIA DataLake构建了可扩展的管道生态系统，支持文献预处理和信息提取，并在软件提及追踪用例中展示了高效性，其管道架构可迁移至智能城市多源数据预处理。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.12717v1",
+      "source": "arxiv",
+      "title": "GRAFT: Graph-Matched Retrieval and Fusion of Tables in Data Lakes",
+      "abstract": "Autonomous data agents resolve analytical queries by retrieving and reasoning over evidence in tabular data lakes. Existing methods score tables independently against the query and ignore the joinability and unionability that link them, returning fragmented evidence that downstream agents cannot integrate. We propose GRAFT (Graph-matched Retrieval and Fusion of Tables), structured around two principal contributions. First, we cast table retrieval as a graph matching problem between a query-derived intent graph and a heterogeneous data lake graph, and introduce IGMS, a log-determinant reward that couples semantic relevance, structural compatibility, and evidence diversity in a single objective. Second, we recast subgraph generation as a Markov decision process and learn a value function via implicit Q-learning on self-generated trajectories produced by a canonical compression operator that inverts the homomorphism. We further design a three-stage online pipeline that exploits anchor reachability, predicate admissibility, and reward monotonicity to greatly prune the candidate space before exact IGMS evaluation. On Spider and BIRD adapted to the tabular data lake setting, GRAFT achieves the best Recall, Precision, F1, and Sufficiency among point-wise, greedy-expansion, and structure-aware baselines, with relative gains of 7.8% in F1 and 10.6% in Sufficiency over the strongest baseline, while maintaining high search efficiency.",
+      "authors": [
+        "Daomin Ji",
+        "Hui Luo",
+        "Zhifeng Bao",
+        "Shane Culpepper",
+        "Shazia Sadiq"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB"
+      ],
+      "published": "2026-07-14T12:42:22+00:00",
+      "link": "https://arxiv.org/pdf/2607.12717v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Graph-matched retrieval and fusion of tables in data lakes for integrating heterogeneous tabular data",
+      "llm_evidence_cn": "基于图匹配的数据湖中表格检索与融合方法，用于异构表格数据集成",
+      "llm_evidence": "基于图匹配的数据湖中表格检索与融合方法，用于异构表格数据集成",
+      "canonical_evidence": "基于图匹配的数据湖中表格检索与融合方法，用于异构表格数据集成",
+      "llm_tldr_en": "GRAFT casts table retrieval as graph matching between query intent and data lake graph, enabling fusion of joinable and unionable tables via a Markov decision process.",
+      "llm_tldr_cn": "现有数据湖表格检索方法独立评分，忽略了表间的连接性和可合并性。GRAFT将表格检索建模为查询意图图和异构数据湖图之间的图匹配问题，提出IGMS奖励函数同时考虑语义相关性和结构兼容性，并通过马尔可夫决策过程生成子图。该方法有效提升了表格集成的完整性，为数据湖中的异构数据整合提供了新方案。",
+      "llm_tldr": "现有数据湖表格检索方法独立评分，忽略了表间的连接性和可合并性。GRAFT将表格检索建模为查询意图图和异构数据湖图之间的图匹配问题，提出IGMS奖励函数同时考虑语义相关性和结构兼容性，并通过马尔可夫决策过程生成子图。该方法有效提升了表格集成的完整性，为数据湖中的异构数据整合提供了新方案。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
