@@ -1,0 +1,170 @@
+Title: LLM-Driven Approach to Modeling Tool Interoperability in Automotive Domain
+
+URL Source: https://arxiv.org/pdf/2607.14659v1
+
+Published Time: Fri, 17 Jul 2026 00:42:54 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+# LLM-Driven Approach to Modeling Tool Interoperability in Automotive Domain 
+
+Nenad Petrovic, Jiajie Zhang, Vahid Zolfaghari and Alois Knoll 
+
+Chair of Robotics, Artificial Intelligence and Real-Time Systems 
+
+Technical University of Munich, Munich, Germany Email: {nenad.petrovic, jiajie.zhang, v.zolfaghari, k }@tum.de 
+
+Abstract —Interoperability between heterogeneous modeling tools remains a significant challenge in Model-Driven Engineering (MDE), particularly in the automotive domain where multiple modeling languages, as well as defacto standard proprietary and open-source tools coexist. This paper presents an LLM-driven approach for automated model interoperability by considering two relevant aspects: 1) mapping model instances to a target metamodel 2) merging of metamodels. The proposed methodology is demonstrated through transformations involving Ecore and SysML v2 based metamodels and incorporates structural vali-dation of generated model instances against user-defined target models. Automotive case studies illustrate the feasibility of the approach and show that large language models can significantly reduce manual transformation effort while generating struc-turally valid target models for cross-tool interoperability. 
+
+Index Terms —automotive, Ecore, Large Language Models (LLMs), Model-Driven Engineering (MDE), SysML 
+
+I. I NTRODUCTION 
+
+Model-Driven Engineering (MDE) has become a fundamen-tal engineering paradigm for the development of modern au-tomotive systems, particularly in the era of Software-Defined Vehicles (SDVs), where complex software, hardware, and system architectures are developed using a variety of modeling languages and engineering tools [1]. Industrial environments, including CATIA Magic [2] and IBM Engineering Systems Design Rhapsody [3], provide comprehensive support for standards such as SysML [4], while Ecore-based ecosystems [5], including the Eclipse Modeling Framework (EMF), are widely used for domain-specific modeling and model-driven software engineering. As organizations increasingly employ heterogeneous modeling platforms across the development lifecycle, interoperability between these tools has become a major challenge. Engineering artifacts are frequently ex-changed between tools based on different metamodels, re-quiring model transformations that preserve semantics while conforming to the target modeling language. Conventional model transformation techniques rely on man-ually developed transformation rules, such as ATLAS Tran-sofrmation Language (ATL) [6] or Query/View/Transforma-tion (QVT) [7] mappings, which require extensive domain 
+
+> This work has received funding from the European Chips Joint Undertak-ing under Framework Partnership Agreement No. 101139789 (HAL4SDV), including national funding from the Federal Ministry of Research, Technology and Space of Germany under grant number 16MEE00471K. The responsibility for the content of this publication lies with the authors.
+
+expertise and detailed knowledge of both source and target metamodels. Developing and maintaining these transforma-tions is labor-intensive, particularly as metamodels evolve or when multiple target modeling environments must be sup-ported [1] . Moreover, transformations between heterogeneous modeling technologies often require semantic interpretation beyond straightforward structural mappings, making rule-based approaches increasingly difficult to scale. Recent advances in Large Language Models (LLMs) have demonstrated remarkable capabilities when it comes to text summarization, understanding structured and unstructured tex-tual artifacts, reasoning over domain concepts, and generating formal representations. These capabilities suggest that LLMs can serve as intelligent transformation engines capable of auto-matically generating target model instances while preserving the semantics of the source model. However, ensuring that generated models conform to the target metamodel remains a critical challenge, necessitating automated validation and refinement mechanisms. This paper presents an LLM-driven approach for model-ing tool interoperability that automatically transforms model instances between heterogeneous modeling technologies and merges multiple metamodels into a unified metamodel in a specified target format. Rather than generating explicit transformation rules, the proposed approach directly produces target-compliant model instances for model transformation tasks and unified target-compliant metamodels for metamodel integration tasks. To ensure correctness, all generated arti-facts are structurally validated against the corresponding user-defined target metamodel or target metamodel specification, enabling the automatic detection of inconsistencies and sup-porting iterative refinement and regeneration when necessary. The proposed methodology is demonstrated using represen-tative automotive case studies covering four transformation scenarios: 1) Ecore-to-Ecore transformations between different metamodels, 2) SysML v2-to-SysML v2 transformations, 3) Ecore-to-SysML v2 transformations, and 4) SysML v2-to-Ecore transformations. These scenarios reflect common inter-operability requirements encountered in modern automotive engineering environments involving heterogeneous modeling tools. The goal of the proposed approach is to demonstrate how generative AI can significantly simplify model interoperability workflows, reduce manual engineering effort, and facilitate the arXiv:2607.14659v1 [cs.SE] 16 Jul 2026 integration of heterogeneous modeling ecosystems in future automotive MDE environments. II. R ELATED WORKS 
+
+Semantic interoperability has become one of the MDE bottlenecks, particularly with the emergence of heterogeneous engineering toolchains and digital engineering ecosystems. While traditional interoperability approaches rely on standard-ized exchange formats and rule-based model transformations, recent research has investigated the use of Large Language Models (LLMs) to infer semantic correspondences between independently developed models. Li et al. [8] proposed an LLM-assisted framework for semantic alignment and integration of collaborative SysML v2 models. Their approach combines prompt engineering with iterative semantic matching and verification to identify corre-spondences between independently developed models while exploiting SysML v2 constructs such as aliases, imports, and metadata to preserve traceability. The work demonstrates that LLMs can effectively support semantic interoperability without requiring manually defined transformation rules. Bader et al. [9] investigated interoperability from aknowledge-centric perspective by integrating SysML v2 repos-itories into a Graph Retrieval-Augmented Generation (GRAG) pipeline. Their approach represents SysML v2 models as semantic knowledge graphs, enabling relevant model frag-ments to be retrieved and injected into LLM prompts. The re-sulting framework improves natural-language interaction with engineering models while preserving the underlying semantic relationships between model elements. Recent work has also explored AI-assisted generation and integration of SysML models. In [10] , the authors oproposed an end-to-end workflow that automatically derives SysML diagrams from natural-language documents before generating executable computational models. Their framework combines NLP techniques and LLMs to extract entities, relationships, and block definitions, demonstrating the role of semantic modeling as an intermediate representation for interoperability. Although these approaches significantly advance semantic interoperability within the SysML ecosystem, they primarily focus on semantic alignment, knowledge retrieval, or model generation. In contrast, the proposed framework addresses the complementary problem of instance model interoperability across heterogeneous metamodels. Given an existing model instance and an arbitrary target metamodel, the framework employs prompt-guided LLM reasoning to perform semantic migration and subsequently validates the generated instance against the target metamodel. By integrating conversational orchestration, semantic mapping, and automated conformance validation into a unified workflow, the proposed approach enables end-to-end interoperability between heterogeneous model-driven engineering environments. The proposed approach builds upon our previous expe-riences in LLM-driven Ecore metamodel construction [12], model instance creation and validation [11]. For implementa-tion, we adopt good practices of leveraging n8n workflow [13].   
+
+> Fig. 1. Integrated code generation toolchain based on n8n.
+> Fig. 2. Integrated code generation toolchain based on n8n.
+
+Additionally, in this work we primarily focus on adoption of locally deployable LLMs, as control over information flow is one of main barriers when it comes to AI-based automation in critical areas, such as automotive [14]. III. I MPLEMENTATION OVERVIEW 
+
+Automated workflow was implemented using n8n , integrat-ing conversational interaction, file management, LLM infer-ence, and model validation into a single execution pipeline. Conceptual workflow, shown in Fig. 1, supports both Ecore 
+
+and SysML mapping scenarios, while the screenshot of its n8n implementation can be seen in Fig. 2 . The execution begins when a user submits a request through the chat interface. A routing component determines the de-sired mapping variant (Ecore or SysML) and activates the corresponding processing branch. The workflow subsequently requests two artifacts from the user: 1) the target metamodel and 2) the source model instance. Uploaded files are converted into plain-text representations and stored locally for subse-quent processing. The mapping stage (denoted as step 3) invokes a Python-based orchestration script that reads both the source instance model and the target metamodel and constructs the LLM prompt dynamically. Two prompts are employed. The system prompt specializes the LLM as a model transformation engine: 
+
+> You are converting a given model instance to comply with a target Ecore metamodel. Map as many elements as possible from the model instance to the target metamodel. The result must be an Ecore XMI model instance compliant with the target metamodel.
+
+On other side, for SysML, the system prompt requires additional explicit instructions in order to avoid ambiguity coming from the nature of the notation itself. 
+
+> You are an expert in SysML v2 model transformation. Convert the given source model instance into a SysML v2 textual instance that conforms to the provided target
+
+SysML model definition. Preserve as much semantic in-formation as possible while ensuring that the generated model conforms to the target definitions. Generate the output as a SysML v2 instance using the same structure as the target model, including a package declaration, re-quired imports, a typed top-level part usage, nested “part redefines” statements, and “attribute redefines” assign-ments for property values. Create a package containing typed top-level part usages using the required SysML v2 syntax. Reuse only definitions declared in the target SysML model. Return only the resulting SysML v2 model without explanations, comments, or Markdown code fences. 
+
+The corresponding user prompt embeds the complete con-tents of both uploaded models: 
+
+Map the following model instance: {instance model con-tents } to comply with the following target metamodel: 
+
+{target metamodel contents }. Return only the resulting model instance without explanations or Markdown code fences. 
+
+The mapping request is submitted to an OpenAI-compatible inference endpoint hosting the LLMs. The generated response is post-processed to remove potential Markdown formatting before being stored as output file representing the target instance model (step 4). To ensure correctness of the generated model, the work-flow automatically executes a validation stage following the mapping process (step 5). For Ecore-based transformations, a dedicated Python validator, implemented using the PyEcore framework, loads both the target Ecore metamodel and the generated XMI instance to verify structural and semantic conformance. The validation process performs XML parsing, resolves the metamodel, instantiates the model according to the corresponding Ecore definitions, and evaluates EMF vali-dation constraints. The performed checks include XML well-formedness, metamodel conformance, containment hierarchy consistency, reference resolution, multiplicity constraints, at-tribute type compatibility, and mandatory feature validation. All detected inconsistencies are classified as errors or warnings and returned to the workflow, enabling immediate feedback on the quality of the generated model. For SysML-based transformations, the workflow follows the same orchestration and LLM mapping pipeline, while the validation component can be replaced by a SysML-specific conformance checker as supported by the underlying modeling environment. This modular architecture separates model generation from vali-dation, allowing additional modeling languages and domain-specific metamodels to be integrated with minimal changes to the overall workflow. Integrating automated validation into the transformation pipeline provides a formal verification step that complements the generative capabilities of the LLM and supports iterative refinement by identifying precisely which model elements violate the target metamodel. The proposed workflow combines conversational interaction, automated file handling, LLM-driven semantic transformation, and formal model validation into a reproducible pipeline. Integrating validation directly into the generation process enables rapid feedback regarding the correctness of generated instance mod-els and provides a foundation for iterative refinement of LLM-based model transformations (step 6), using the update prompt in a similar way as in our previous work [12]: 
+
+Update the model instance: {instance model contents }
+
+based on validation outcomes: {validation results }.
+
+In a similar manner, a workflow is defined for merging two metamodels into a selected target format. The objective is to generate a unified metamodel that preserves all unique concepts, relationships, and constraints from both source meta-models while ensuring compliance with the target represen-tation. The underlying prompt follows the structure shown below: 
+
+Merge the following two source metamodels into one unified target metamodel. First source metamodel: {first source metamodel contents }. Second source metamodel: 
+
+{second source metamodel contents }. Target modeling language: {target modeling language }. Preserve all com-patible classes, attributes, references, inheritance rela-tionships, multiplicities, containment relationships, and data types. Identify equivalent concepts and merge them instead of creating duplicates. Integrate complementary concepts from both metamodels. Resolve naming and structural conflicts consistently. Preserve the semantics of both source metamodels as much as possible. Generate one valid metamodel in the requested target modeling language. Return only the resulting metamodel without explanations, comments, or Markdown code fences. 
+
+For metamodel merging, we rely on workflow based on the one presented in 1, with two main differences: 1) instead of instance model, in the second step we provide a metamodel 2) validation of metamodels, instead of instances. IV. A UTOMOTIVE HARDWARE ABSTRACTION SCENARIOS 
+
+A. Model Instance Mapping 
+
+To demonstrate the proposed framework, an illustrative automotive hardware abstraction scenario is considered in which an existing hardware configuration represented as a SysML v2 instance model is automatically transformed into an Ecore/XMI instance conforming to a user-defined Ecore metamodel. In the considered example, the source SysML v2 instance model (given in Listing 1) describes a sensor platform comprising a front-facing camera and a LiDAR sensor. The model captures the hardware architecture through typed part usages and redefined attributes, including sensor resolution, field of view, and sensing range.                                                 
+
+> 1package AutomotiveHardwareInstances {
+> 23import AutomotiveHardwareDefinitions::*;
+> 45part frontSensorPlatform :SensorPlatform {
+> 67part redefines camera {
+> 8attribute redefines resolution ="1920x1080";
+> 9attribute redefines fieldOfView =120.0;
+> 10 }
+> 11 12 part redefines lidar {
+> 13 attribute redefines resolution ="0.2";
+> 14 attribute redefines fieldOfView =360.0;
+> 15 attribute redefines range =200.0;
+> 16 }
+> 17 }
+> 18 }
+> Listing 1. Source SysML v2 instance model.
+
+Fig. 3. Target Ecore metamodel. 
+
+The target Ecore metamodel (shown in Fig.3) represents the same hardware configuration using Ecore classes, containment references, and typed attributes, providing a machine-readable representation suitable for EMF-based applications. The objective of the transformation is to preserve the seman-tics of the original hardware configuration while expressing it as an Ecore-compliant XMI instance. Instead of relying on manually specified transformation rules, the proposed frame-work provides both the source SysML v2 instance model and the target Ecore metamodel directly to the LLM. Based on the semantic descriptions contained in both artifacts, the model infers the correspondence between SysML part definitions and Ecore classes (e.g., Camera → CameraSensor , Lidar →
+
+LidarSensor ) and maps redefined properties such as resolution, field of view, and sensing range to the corresponding Ecore attributes. The generated XMI instance (shown in Listing 2) preserves the hierarchical structure of the original system while conforming to the structural constraints imposed by the target metamodel.                      
+
+> 1<? xml version ="1.0" encoding="UTF-8"?>
+> 2<hw:HardwarePlatform
+> 3xmi:version="2.0"
+> 4xmlns:xmi="http://www.omg.org/XMI"
+> 5xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+> 6xmlns:hw="http://example.org/automotive/hardware"
+> 7name="frontSensorPlatform">
+> 89<sensors
+> 10 xsi:type="hw:CameraSensor"
+> 11 name="camera"
+> 12 resolution="1920x1080"
+> 13 fov="120.0"/>
+> 14 15 <sensors
+> 16 xsi:type="hw:LidarSensor"
+> 17 name="lidar"
+> 18 resolution="0.2"
+> 19 fov="360.0"
+> 20 range="200.0"/>
+> 21 22 </hw:HardwarePlatform>
+
+Listing 2. Generated XMI instance conforming to the target Ecore metamodel. 
+
+B. Metamodel Merging 
+
+To demonstrate the metamodel merging capability, let us assume that we want to merge the SysML v2 metamodel 
+
+Fig. 4. Merged Ecore metamodel containing both sensors and actuators. 
+
+describing vehicle actuators, shown in Listing 3, with the previously introduced Ecore automotive hardware metamodel from Fig. 3. The Ecore metamodel already defines the platform and sensor hierarchy, while the SysML model in-troduces the actuator hierarchy together with a vehicle control component containing brake and steering actuators.                                                  
+
+> 1package VehicleDefinitions {
+> 23abstract part def Actuator {
+> 4attribute name :String;
+> 5}
+> 67part def BrakeActuator
+> 8specializes Actuator {
+> 910 attribute brakingLevel :Real;
+> 11 }
+> 12 13 part def SteeringActuator
+> 14 specializes Actuator {
+> 15 16 attribute steeringAngle :Real;
+> 17 }
+> 18 19 part def VehicleControl {
+> 20 21 part brakes :BrakeActuator;
+> 22 part steering :SteeringActuator;
+> 23 }
+> 24 }
+
+Listing 3. Source SysML v2 metamodel covering actuator aspects used for merging with the Ecore automotive hardware metamodel. 
+
+The objective of the merge operation is to combine the complementary concepts from both metamodels into a single unified Ecore metamodel without introducing duplicate or conflicting elements. During the transformation, equivalent concepts are identified, inheritance hierarchies are preserved, and the actuator definitions together with their attributes and containment relationships are integrated into the target metamodel. The resulting merged metamodel contains both sensing and actuation concepts within a common automotive hardware representation, enabling subsequent model instances to simultaneously describe sensors and actuators while remain-ing compliant with a single Ecore metamodel. The result is depicted in Fig. 4. V. E VALUATION 
+
+The proposed LLM-driven model mapping framework was evaluated on four representative transformation scenarios: 
+
+Ecore-to-Ecore , SysML v2-to-SysML v2 , Ecore-to-SysML v2 ,TABLE I COMPARISON OF MODEL INSTANCE MAPPING PERFORMANCE ACROSS TRANSFORMATION SCENARIOS (SEMANTIC MATCHING /SYNTAX CORRECTNESS PERCENTAGE ).                       
+
+> Scenario Gemma Qwen
+> Ecore →Ecore 100% / 100% 100% / 100% Ecore →SysML v2 100% / 80% 100% / 60% SysML v2 →SysML v2 100% / 60% 100% / 40% SysML v2 →Ecore 100% / 100% 100% / 100% Average performance 100% / 85% 100% / 75% Time (s) 5.1 46.5
+
+and SysML v2-to-Ecore . The evaluation compares two lo-cally deployable LLMs, google/gemma-4-31B-it and 
+
+Qwen/Qwen3.5-122B-A10B , on their ability to automati-cally generate target model instances that conform to the corre-sponding target metamodel. Both homogeneous and heteroge-neous transformations were considered to assess the generality of the proposed approach. The models are deployed locally using an OpenAI API-compatible inference server running on three NVIDIA H200 NVL GPUs (141 GB each), while default model parameters available in documentation were used [15] [16]. A benchmark is based on representative automotive hard-ware models describing sensing and actuation of a vehicular system. The target metamodel consists of 27 elements, cover-ing camera, LiDAR, radar, brake, and steering components. The corresponding source instance models contains hierar-chical compositions with typed attributes and engineering parameters representative in automotive area. It contains 1 hardware platform, 5 component instances (3 sensors and 2 actuators), 16 attribute-value assignments, and 5 containment relationships. Reference transformations were manually pre-pared with expert support and used as the ground truth for evaluation. Two aspects of result quality were considered: 1) semantic matching - percentage of semantically equivalent elements mapped 2) syntax correctness - percentage of tries (out of 5) when the generated instance model passes the corresponding validation script. Table I summarizes the obtained results. The last two rows consider average performance and execution time based on 5 runs for each of the models. Both evaluated LLMs achieved complete semantic mapping across all four transformation sce-narios, correctly preserving every expected model element re-gardless of whether the transformation was performed between homogeneous (Ecore →Ecore and SysML v2 →SysML v2) or heterogeneous (Ecore →SysML v2 and SysML v2 →Ecore) modeling languages. This demonstrates that current locally deployable LLMs are capable of inferring semantic correspon-dences between heterogeneous metamodels without relying on manually specified transformation rules. The primary differences between the evaluated models are reflected in the syntactic correctness of the generated models. For transformations targeting Ecore/XMI, both models consis-tently generated syntactically valid instances that successfully passed the automated validation stage. In contrast, SysML v2 generation proved considerably more challenging. While the generated models remained semantically complete, both LLMs occasionally produced SysML v2 syntax that deviated from the expected textual notation, primarily through incorrect use of redefines constructs, inconsistent import statements, or generation of typed part usages instead of inherited feature redefinitions. Consequently, syntax correctness decreased to 80% and 60% for the Ecore →SysML v2 scenario and to 60% and 40% for SysML v2 →SysML v2 for Gemma and Qwen, respectively. These results indicate that the principal limitation of current LLM-based model transformation lies not in semantic under-standing, but in strict adherence to the formal textual syntax required by SysML v2. Since the generated models preserve the complete engineering semantics, many of these syntactic inconsistencies could be potentially addressed through more specific prompts or lightweight post-processing. The generated instance models were automatically vali-dated against the target metamodel using dedicated Ecore and SysML v2 validators. Validation detects structural in-consistencies, missing mandatory elements, incorrect ref-erences, typing violations, and serialization errors, en-suring that only metamodel-compliant models are ac-cepted. The average end-to-end execution time, includ-ing model generation and validation, was approximately 5.1 s for google/gemma-4-31B-it and 46.5 s for 
+
+Qwen/Qwen3.5-122B-A10B . The lower execution time of Gemma is primarily attributed to its smaller computational footprint and higher inference throughput, whereas Qwen’s larger architecture incurs additional reasoning and generation overhead. All reported results represent the average of five independent executions. While For the SysML v2 →Ecore transformation, both Gemma and Qwen achieved 100% semantic mapping accuracy while producing syntactically valid XMI instances, in few cases - Gemma generated non-standard XMI serialization (e.g., qualified containment elements). However, the semantic con-tent remained complete and only minor serialization-related corrections were required to obtain a fully compliant model. On the other side, for model merging, the experiment combines two complementary metamodels while excluding intermediate container elements from the evaluation. The first metamodel contains four relevant classes describing sensors: Sensor , CameraSensor , LidarSensor ,and RadarSensor . It defines five domain-relevant attributes. The second metamodel contains three relevant classes: CameraSensor , BrakeActuator , and 
+
+SteeringActuator , with seven attribute definitions. The CameraSensor class is present in both metamodels and represents the main overlapping concept. Its attributes 
+
+name , resolution , and fov also overlap semantically. The remaining three classes from the first one and remaining two classes from the second are complementary, non-overlapping concepts. Consequently, the expected merged metamodel con-tains six unique domain classes and nine unique attribute TABLE II COMPARISON OF METAMODEL MERGING PERFORMANCE ACROSS TARGET MODELING LANGUAGES (SEMANTIC MATCHING /SYNTAX CORRECTNESS PERCENTAGE ). 
+
+Scenario Gemma Qwen 
+
+Ecore + SysML v2 → Ecore 100% / 100% 100% / 100% Ecore + SysML v2 → SysML v2 100% / 60% 100% / 40% Average performance 100% / 80% 100% / 70% Time (s) 15.2 58.3 
+
+definitions. A correct merge should preserve the shared camera concept only once while integrating the lidar, radar, brake, and steering concepts without information loss. The results of model merging performed under the same conditions and summarized in Table II. When it comes to both the result matching and average execution time, similar trends can be also noticed on metamodel-level merging in this case, with Gemma’s slight advantage regarding the syntactical correct-ness in case of SysML target format. The complete implementation of the proposed framework, including the model mapping and merging workflows, Ecore and SysML v2 validators, example metamodels, model in-stances, and all experimental scenarios used in this paper, is publicly available at https://github.com/np-tum-air/tum hal4sdv model mapper/. VI. C ONCLUSION 
+
+This paper presented an LLM-assisted workflow for seman-tic instance model mapping across heterogeneous metamod-els, combining conversational, prompt-driven transformation and automated model validation into a unified pipeline. By leveraging locally deployable LLMs to infer semantic cor-respondences directly from the source instance model and target metamodel, the proposed approach eliminates the need for manually specified transformation rules while maintain-ing structural conformance through formal validation. The integration of n8n-based orchestration enables an end-to-end automated process encompassing artifact acquisition, model transformation, validation, and result reporting. Compared with traditional rule-based transformation tech-niques, the proposed framework offers greater flexibility when dealing with evolving metamodels, heterogeneous modeling languages, and domains where explicit transformation rules are unavailable or prohibitively expensive to develop and maintain. The modular architecture allows the same orches-tration pipeline to support multiple modeling environments, currently including Ecore and SysML, by adapting prompts and validation components rather than redesigning transfor-mation logic. This substantially lowers the effort required to establish interoperability between modeling ecosystems while preserving compatibility with existing MDE toolchains. When it comes to future works and further research direc-tions, we will work on handling large model files using Model Context Protocol (MCP) and Retrieval Augmented Generation (RAG) in order to tackle the cases when context size might not be large enough to include the full model, building upon our previous work from [17] . REFERENCES [1] G. Macher, E. Armengaud, and C. Kreiner, “Integration of Heteroge-neous Tools to a Seamless Automotive Toolchain,” in Systems, Soft-ware and Services Process Improvement (EuroSPI 2015) , CCIS, vol. 543, Cham, Switzerland: Springer, 2015, pp. 51–62, doi: 10.1007/ 978-3-319-24647-5 5. [2] Dassault Syst` emes, “CATIA Magic – Model-Based Systems Engineer-ing,” Available: https://www.3ds.com/products/catia/catia-magic/, Ac-cessed: Jul. 2026. [3] IBM, “IBM Engineering Systems Design Rhapsody,” Available: https://www.ibm.com/products/engineering-systems-design-rhapsody/, Accessed: Jul. 2026. [4] Object Management Group (OMG), “Systems Modeling Language (SysML) Version 2.0 Specification,” 2025. [Online]. Available: https://www.omg.org/spec/SysML/. [5] Eclipse Foundation, “Eclipse Modeling Framework (EMF),” Available: https://eclipse.dev/modeling/emf/, Accessed: Jul. 2026. [6] F. Jouault, F. Allilaire, J. B´ ezivin, and I. Kurtev, “ATL: A Model Transformation Tool,” Science of Computer Programming , vol. 72, no. 1–2, pp. 31–39, Jun. 2008. [7] Object Management Group (OMG), “Meta Object Facility (MOF) 2.0 Query/View/Transformation (QVT),” Version 1.3, Jun. 2016. [Online]. Available: https://www.omg.org/spec/QVT/. [8] Z. Li, S. Husung, and H. Wang, “LLM-Assisted Semantic Align-ment and Integration in Collaborative Model-Based Systems Engineer-ing Using SysML v2,” in Proc. IEEE International Symposium on Systems Engineering (ISSE) , Palaiseau, France, 2025, pp. 1–8, doi: 10.1109/ISSE65546.2025.11369983. [9] E. Bader, J.-A. Gross, K. Polanec, M. M. Peter, and C. Neure-iter, “Integrating SysML v2 into a GRAG LLM Pipeline: Design, Implementation and Evaluation,” in Proc. IEEE International Sym-posium on Systems Engineering (ISSE) , Vienna, Austria, 2025, doi: 10.1109/ISSE65546.2025.11369999. [10] M. A. Hendricks and A. Cicirello, “Text to Model via SysML: Auto-mated Generation of Dynamical System Computational Models from Unstructured Natural Language Text via Enhanced System Modeling Language Diagrams,” arXiv preprint arXiv:2507.06803 , 2025. [Online]. Available: https://arxiv.org/abs/2507.06803. [11] N. Petrovic, F. Pan, V. Zolfaghari, K. Lebioda, A. Schamschurko, and A. Knoll, “GenAI for Automotive Software Development: From Requirements to Wheels,” arXiv preprint arXiv:2507.18223, 2025. [12] N. Petrovic, F. Pan, V. Zolfaghari, and A. Knoll, “LLM-based Iterative Approach to Metamodeling in Automotive,” in Proc. 2nd International Generative AI and Computational Language Modelling Conference (GACLM) , Valencia, Spain, 2025, pp. 266–271, doi: 10.1109/GA-CLM67198.2025.11232159. [13] n8n, “n8n: Workflow Automation Platform,” Available: https://n8n.io/, Accessed: July 2026. [14] N. Petrovic et al., “Survey of GenAI for Automotive Software Develop-ment: From Requirements to Executable Code,” 2025 2nd International Generative AI and Computational Language Modelling Conference (GACLM), Valencia, Spain, 2025, pp. 184–197, doi: 10.1109/GA-CLM67198.2025.11232000. [15] Google, “Gemma 4 31B IT,” Hugging Face, 2026. [Online]. Available: https://huggingface.co/google/gemma-4-31B-it. Accessed: Jul. 2026. [16] Qwen Team, “Qwen3.5-122B-A10B,” Hugging Face, 2026. [Online]. Available: https://huggingface.co/Qwen/Qwen3.5-122B-A10B. Accessed: Jul. 2026. [17] L. Mazur, N. Petrovic, J. P. Miranda, A. Radermacher, R. Rasche, and A. Knoll, “Querying Large Automotive Software Models: Agentic vs. Direct LLM Approaches,” in Proc. 2nd International Generative AI and Computational Language Modelling Conference (GACLM) , Valencia, Spain, 2025, pp. 221–228, doi: 10.1109/GACLM67198.2025.11232128.

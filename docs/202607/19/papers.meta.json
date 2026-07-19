@@ -1,0 +1,69 @@
+{
+  "label": "2026-07-19",
+  "date": "2026-07-19",
+  "generated_at": "2026-07-19T20:45:57",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202607/19/2607.13693v1-social-simulations-from-agent-based-modeling-to-digital-twins",
+      "section": "deep",
+      "title_en": "Social Simulations: from Agent-Based Modeling to Digital Twins",
+      "authors": "Erica Cau, Andrea Failla, Valentina Pansanella, Giulio Rossetti",
+      "date": "2026-07-15",
+      "pdf": "https://arxiv.org/pdf/2607.13693v1",
+      "score": "8.0",
+      "evidence": "从智能体到数字孪生的演化",
+      "tldr": "社会模拟从基于智能体的经典模型逐步演变为AI增强与数字孪生范式。最初，智能体按显式规则交互，用于研究一般社会机制；随后引入大型语言模型提升行为真实性；最终发展为高保真、数据驱动的社会数字孪生，能精确表示特定社会技术系统。该演变凸显了从抽象模型向具象计算表示的范式转移。",
+      "tags": "query:smart-city",
+      "abstract_en": "This book chapter covers the evolution of social simulation from classical agent-based models, in which agents interact according to explicitly defined behavioral rules, to AI-enhanced simulations based on Large Language Models and, ultimately, Social Digital Twins: high-fidelity, data-driven representations of real-world socio-technical systems. Along this trajectory, we discuss the main methodological foundations, applications, advantages, and limitations of each paradigm, highlighting the progressive shift from abstract models designed to investigate general social mechanisms toward increasingly realistic computational representations of specific social systems.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/19/2607.11838v1-haste-a-platform-for-rapid-post-disaster-building-damage-assessment",
+      "section": "quick",
+      "title_en": "HASTE: A Platform for Rapid Post-Disaster Building Damage Assessment",
+      "authors": "Caleb Robinson, Anthony Ortiz, Simone Fobi Nsutezo, Cameron Birge, Meygha Machado, Marcelo Duarte, Joaquin Rivero Rodriguez, Anthony Cintron Roman, Kevin White, Inbal Becker-Reshef, Juan M. Lavista Ferres",
+      "date": "2026-07-13",
+      "pdf": "https://arxiv.org/pdf/2607.11838v1",
+      "score": "7.0",
+      "evidence": "利用卫星图像对建筑进行语义分割以评估灾后损伤",
+      "tldr": "大型灾害后急需快速建筑损伤评估，但现有模型依赖匹配前后图像和历史训练数据。HASTE是无代码Web平台，让非机器学习分析师通过标注少量灾后图像，即可训练小语义分割模型或利用预训练视觉嵌入快速评分。在xBD上仅需二十分之一标签即可匹配全监督ResNet-50基线。自2023年起支持30多次真实灾害响应，数小时到数天内输出结果。",
+      "tags": "query:smart-city",
+      "abstract_en": "When a large disaster strikes, responders need a map of which buildings are damaged within hours. The models that do well on public benchmarks assume matched before-and-after imagery and a training set drawn from similar past events, and neither is usually available for a new disaster in its first day. We present HASTE (High-speed Assessment and Satellite Tracking for Emergencies), a no-code web platform that lets analysts who are not machine learning engineers produce per-building damage maps from post-disaster satellite imagery. HASTE implements two methods that share one interface. The first requires the user to label polygons over the post-disaster scene, trains a small semantic segmentation model on that single scene, runs it over the whole image, and joins the per-pixel output to existing building footprints. The second embeds every footprint with a pretrained vision model, requires the user to label a handful of buildings, and fits a logistic regression in the browser that scores the rest of the scene in seconds. We describe the platform, both methods, and the engineering that supports them. We also report preliminary experiments on xBD showing that foundation-model embeddings pooled over footprints separate damaged from intact buildings using post-disaster imagery alone, matching a fully supervised ResNet-50 baseline with a twentieth of its labels. HASTE and its predecessors have supported more than thirty real-world disaster responses since 2023, spanning earthquakes, hurricanes, cyclones, floods, wildfires, and tornadoes, delivering results to humanitarian partners within hours to days of imagery becoming available. We close with the directions we think are most promising, including vision-language assessment, active learning, and damage models for roads and other infrastructure. HASTE is open source at https://github.com/microsoft/haste.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/19/2607.14659v1-llm-driven-approach-to-modeling-tool-interoperability-in-automotive-domain",
+      "section": "quick",
+      "title_en": "LLM-Driven Approach to Modeling Tool Interoperability in Automotive Domain",
+      "authors": "Nenad Petrovic, Jiajie Zhang, Vahid Zolfaghari, Alois Knoll",
+      "date": "2026-07-16",
+      "pdf": "https://arxiv.org/pdf/2607.14659v1",
+      "score": "7.0",
+      "evidence": "汽车领域基于LLM的建模工具互操作，可迁移至建设领域",
+      "tldr": "汽车领域异构建模工具互操作性是模型驱动工程的难题。本文提出基于LLM的方法，实现模型实例到目标元模型的自动映射与元模型合并。通过Ecore和SysML v2案例验证，生成的结构有效目标模型显著减少了手动转换工作。贡献在于为跨工具互操作性提供了高效自动化方案。",
+      "tags": "query:smart-city",
+      "abstract_en": "Interoperability between heterogeneous modeling tools remains a significant challenge in Model-Driven Engineering (MDE), particularly in the automotive domain where multiple modeling languages, as well as defacto standard proprietary and open-source tools coexist. This paper presents an LLM-driven approach for automated model interoperability by considering two relevant aspects: 1) mapping model instances to a target metamodel 2) merging of metamodels. The proposed methodology is demonstrated through transformations involving Ecore and SysML v2 based metamodels and incorporates structural validation of generated model instances against user-defined target models. Automotive case studies illustrate the feasibility of the approach and show that large language models can significantly reduce manual transformation effort while generating structurally valid target models for cross-tool interoperability.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/19/2607.14756v1-ai-vs-human-expert-reasoning-assessing-agreements-in-building-typology-predictions-based-on-street-view-imagery",
+      "section": "quick",
+      "title_en": "AI vs Human Expert Reasoning: Assessing Agreements in Building Typology Predictions based on Street View Imagery",
+      "authors": "Zahratu Shabrina, Muhammad Asa, Jin Rui, Lu Yin, Stephen Law",
+      "date": "2026-07-16",
+      "pdf": "https://arxiv.org/pdf/2607.14756v1",
+      "score": "7.0",
+      "evidence": "利用视觉语言模型从街景图像推断建筑类型，支持城市场景理解",
+      "tldr": "本研究比较了GPT-4o、Claude 3.5 Sonnet和Gemini 2.0 Flash等视觉语言模型与人类专家从街景图像推断建筑类型（构造、用途、层数）的准确性。采用链式思维提示等策略，发现AI主要依赖视觉线索而专家更侧重上下文知识，平均准确率约70%。结果表明VLM可大规模近似专家能力，但需结合人类优势以实现互补。",
+      "tags": "query:smart-city",
+      "abstract_en": "This research investigates the potential of Vision-Language Models (VLMs) to infer building typologies: Construction, Current Use, and Storeys from Google Street View (GSV) images. Predictions generated by VLMs are compared with inference by human experts (civil engineers and architects) as a source of manually labelled ground-truth data. We evaluate several state-of-the-art VLMs, including GPT-4o, Claude 3.5 Sonnet, and Gemini 2.0 Flash. By applying different scaling strategies and prompting techniques, we found that Chain-of-Thought prompts provide an overall more stable model performance. We also investigate the reasoning behind VLMs' building-typology predictions by examining the probabilities of keywords appearing in AI explanations. This enabled us to analyse patterns in these reasonings and identify key themes driving both agreements and disagreements between VLM and expert labels. We find that AI tends to focus on visual indicators, whereas human experts place greater emphasis on broader contextual cues and domain knowledge, in addition to visual cues. Overall, VLM can approximate experts' capability in building-typology classification at scale, with an average accuracy of approximately 70%. The study demonstrates the VLM's potential for AI automation in tasks that require pattern recognition and object identification in an urban context. AI have the potential to serve as complementary and collaborative tools for urban analysis, leveraging their strengths in understanding visual patterns. This study contributes to the exploration of the efficiency and scalability of AI visual prediction and provides insights into the reasoning processes that could support automation processes in urban analysis and prediction.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,181 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-19T20:43:27.614102+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2607.13693v1",
+      "source": "arxiv",
+      "title": "Social Simulations: from Agent-Based Modeling to Digital Twins",
+      "abstract": "This book chapter covers the evolution of social simulation from classical agent-based models, in which agents interact according to explicitly defined behavioral rules, to AI-enhanced simulations based on Large Language Models and, ultimately, Social Digital Twins: high-fidelity, data-driven representations of real-world socio-technical systems. Along this trajectory, we discuss the main methodological foundations, applications, advantages, and limitations of each paradigm, highlighting the progressive shift from abstract models designed to investigate general social mechanisms toward increasingly realistic computational representations of specific social systems.",
+      "authors": [
+        "Erica Cau",
+        "Andrea Failla",
+        "Valentina Pansanella",
+        "Giulio Rossetti"
+      ],
+      "primary_category": "cs.MA",
+      "categories": [
+        "cs.MA",
+        "cs.AI",
+        "cs.SI",
+        "physics.soc-ph"
+      ],
+      "published": "2026-07-15T10:42:25+00:00",
+      "link": "https://arxiv.org/pdf/2607.13693v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "digital twins evolution from agent-based models",
+      "llm_evidence_cn": "从智能体到数字孪生的演化",
+      "llm_evidence": "从智能体到数字孪生的演化",
+      "canonical_evidence": "从智能体到数字孪生的演化",
+      "llm_tldr_en": "Reviews the evolution of social simulation from ABM to AI-enhanced simulations and Social Digital Twins, discussing methodologies and applications.",
+      "llm_tldr_cn": "本章节综述社会模拟从经典智能体模型到LLM增强仿真，直至社会数字孪生的演进路径。重点讨论了各范式的理论基础、应用优势与局限，并指出从抽象机制研究向具体系统高保真表示的转变，为智慧城市数字孪生建设提供了全面的方法论参考。",
+      "llm_tldr": "本章节综述社会模拟从经典智能体模型到LLM增强仿真，直至社会数字孪生的演进路径。重点讨论了各范式的理论基础、应用优势与局限，并指出从抽象机制研究向具体系统高保真表示的转变，为智慧城市数字孪生建设提供了全面的方法论参考。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.11838v1",
+      "source": "arxiv",
+      "title": "HASTE: A Platform for Rapid Post-Disaster Building Damage Assessment",
+      "abstract": "When a large disaster strikes, responders need a map of which buildings are damaged within hours. The models that do well on public benchmarks assume matched before-and-after imagery and a training set drawn from similar past events, and neither is usually available for a new disaster in its first day. We present HASTE (High-speed Assessment and Satellite Tracking for Emergencies), a no-code web platform that lets analysts who are not machine learning engineers produce per-building damage maps from post-disaster satellite imagery. HASTE implements two methods that share one interface. The first requires the user to label polygons over the post-disaster scene, trains a small semantic segmentation model on that single scene, runs it over the whole image, and joins the per-pixel output to existing building footprints. The second embeds every footprint with a pretrained vision model, requires the user to label a handful of buildings, and fits a logistic regression in the browser that scores the rest of the scene in seconds. We describe the platform, both methods, and the engineering that supports them. We also report preliminary experiments on xBD showing that foundation-model embeddings pooled over footprints separate damaged from intact buildings using post-disaster imagery alone, matching a fully supervised ResNet-50 baseline with a twentieth of its labels. HASTE and its predecessors have supported more than thirty real-world disaster responses since 2023, spanning earthquakes, hurricanes, cyclones, floods, wildfires, and tornadoes, delivering results to humanitarian partners within hours to days of imagery becoming available. We close with the directions we think are most promising, including vision-language assessment, active learning, and damage models for roads and other infrastructure. HASTE is open source at https://github.com/microsoft/haste.",
+      "authors": [
+        "Caleb Robinson",
+        "Anthony Ortiz",
+        "Simone Fobi Nsutezo",
+        "Cameron Birge",
+        "Meygha Machado",
+        "Marcelo Duarte",
+        "Joaquin Rivero Rodriguez",
+        "Anthony Cintron Roman",
+        "Kevin White",
+        "Inbal Becker-Reshef",
+        "Juan M. Lavista Ferres"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-13T17:27:53+00:00",
+      "link": "https://arxiv.org/pdf/2607.11838v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "semantic segmentation of buildings from satellite imagery for damage assessment",
+      "llm_evidence_cn": "利用卫星图像对建筑进行语义分割以评估灾后损伤",
+      "llm_evidence": "利用卫星图像对建筑进行语义分割以评估灾后损伤",
+      "canonical_evidence": "利用卫星图像对建筑进行语义分割以评估灾后损伤",
+      "llm_tldr_en": "HASTE rapidly produces per-building damage maps from post-disaster satellite imagery using a no-code platform with single-scene segmentation model training.",
+      "llm_tldr_cn": "灾害发生后快速获得建筑损伤图是个难题。HASTE提供了一个无代码平台，用户只需标注部分多边形，即可训练一个针对该场景的轻量级语义分割模型，快速生成整幅图像的建筑损伤图。方法无需匹配前后图像或历史训练数据，具有实际应急响应价值。该平台可推广至智能城市中建筑和基础设施的快速语义理解任务。",
+      "llm_tldr": "灾害发生后快速获得建筑损伤图是个难题。HASTE提供了一个无代码平台，用户只需标注部分多边形，即可训练一个针对该场景的轻量级语义分割模型，快速生成整幅图像的建筑损伤图。方法无需匹配前后图像或历史训练数据，具有实际应急响应价值。该平台可推广至智能城市中建筑和基础设施的快速语义理解任务。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.14659v1",
+      "source": "arxiv",
+      "title": "LLM-Driven Approach to Modeling Tool Interoperability in Automotive Domain",
+      "abstract": "Interoperability between heterogeneous modeling tools remains a significant challenge in Model-Driven Engineering (MDE), particularly in the automotive domain where multiple modeling languages, as well as defacto standard proprietary and open-source tools coexist. This paper presents an LLM-driven approach for automated model interoperability by considering two relevant aspects: 1) mapping model instances to a target metamodel 2) merging of metamodels. The proposed methodology is demonstrated through transformations involving Ecore and SysML v2 based metamodels and incorporates structural validation of generated model instances against user-defined target models. Automotive case studies illustrate the feasibility of the approach and show that large language models can significantly reduce manual transformation effort while generating structurally valid target models for cross-tool interoperability.",
+      "authors": [
+        "Nenad Petrovic",
+        "Jiajie Zhang",
+        "Vahid Zolfaghari",
+        "Alois Knoll"
+      ],
+      "primary_category": "cs.SE",
+      "categories": [
+        "cs.SE",
+        "cs.AI"
+      ],
+      "published": "2026-07-16T07:25:17+00:00",
+      "link": "https://arxiv.org/pdf/2607.14659v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "LLM-driven interoperability of modeling tools in automotive, transferable to construction",
+      "llm_evidence_cn": "汽车领域基于LLM的建模工具互操作，可迁移至建设领域",
+      "llm_evidence": "汽车领域基于LLM的建模工具互操作，可迁移至建设领域",
+      "canonical_evidence": "汽车领域基于LLM的建模工具互操作，可迁移至建设领域",
+      "llm_tldr_en": "Proposes an LLM-driven approach for model interoperability in automotive MDE, mapping and merging metamodels, directly transferable to smart city data integration from manufacturing.",
+      "llm_tldr_cn": "汽车领域中异构建模工具互操作性是一大挑战。本文提出基于LLM的自动模型互操作方法，包括模型实例到目标元模型的映射以及元模型合并。该方法通过Ecore和SysML v2案例验证了可行性。该工作直接将制造/工业数字孪生中的互操作技术迁移至智慧城市建设中的跨领域数据整合，对城市级数据平台具有重要启示。",
+      "llm_tldr": "汽车领域中异构建模工具互操作性是一大挑战。本文提出基于LLM的自动模型互操作方法，包括模型实例到目标元模型的映射以及元模型合并。该方法通过Ecore和SysML v2案例验证了可行性。该工作直接将制造/工业数字孪生中的互操作技术迁移至智慧城市建设中的跨领域数据整合，对城市级数据平台具有重要启示。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing cross domain data management methodologies transferred from manufacturing or industrial digital twins to construction, infrastructure, and smart city data integration.",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.14756v1",
+      "source": "arxiv",
+      "title": "AI vs Human Expert Reasoning: Assessing Agreements in Building Typology Predictions based on Street View Imagery",
+      "abstract": "This research investigates the potential of Vision-Language Models (VLMs) to infer building typologies: Construction, Current Use, and Storeys from Google Street View (GSV) images. Predictions generated by VLMs are compared with inference by human experts (civil engineers and architects) as a source of manually labelled ground-truth data. We evaluate several state-of-the-art VLMs, including GPT-4o, Claude 3.5 Sonnet, and Gemini 2.0 Flash. By applying different scaling strategies and prompting techniques, we found that Chain-of-Thought prompts provide an overall more stable model performance. We also investigate the reasoning behind VLMs' building-typology predictions by examining the probabilities of keywords appearing in AI explanations. This enabled us to analyse patterns in these reasonings and identify key themes driving both agreements and disagreements between VLM and expert labels. We find that AI tends to focus on visual indicators, whereas human experts place greater emphasis on broader contextual cues and domain knowledge, in addition to visual cues. Overall, VLM can approximate experts' capability in building-typology classification at scale, with an average accuracy of approximately 70%. The study demonstrates the VLM's potential for AI automation in tasks that require pattern recognition and object identification in an urban context. AI have the potential to serve as complementary and collaborative tools for urban analysis, leveraging their strengths in understanding visual patterns. This study contributes to the exploration of the efficiency and scalability of AI visual prediction and provides insights into the reasoning processes that could support automation processes in urban analysis and prediction.",
+      "authors": [
+        "Zahratu Shabrina",
+        "Muhammad Asa",
+        "Jin Rui",
+        "Lu Yin",
+        "Stephen Law"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-16T09:41:33+00:00",
+      "link": "https://arxiv.org/pdf/2607.14756v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uses VLMs to infer building typology from street view imagery for urban scene understanding",
+      "llm_evidence_cn": "利用视觉语言模型从街景图像推断建筑类型，支持城市场景理解",
+      "llm_evidence": "利用视觉语言模型从街景图像推断建筑类型，支持城市场景理解",
+      "canonical_evidence": "利用视觉语言模型从街景图像推断建筑类型，支持城市场景理解",
+      "llm_tldr_en": "This paper evaluates VLMs (GPT-4o, Claude 3.5, Gemini 2.0) for building typology prediction from street view images, comparing with human experts, finding Chain-of-Thought prompting improves stability.",
+      "llm_tldr_cn": "建筑类型推断（施工、当前用途、层数）对城市规划具有重要意义。本文评估了多个先进视觉语言模型从谷歌街景图像推断建筑类型的能力，并与人类专家（土木工程师和建筑师）的推理进行比较。发现链式思考提示能提升模型稳定性，并分析了模型推理过程，为基于街景的智能城市感知提供实证。",
+      "llm_tldr": "建筑类型推断（施工、当前用途、层数）对城市规划具有重要意义。本文评估了多个先进视觉语言模型从谷歌街景图像推断建筑类型的能力，并与人类专家（土木工程师和建筑师）的推理进行比较。发现链式思考提示能提升模型稳定性，并分析了模型推理过程，为基于街景的智能城市感知提供实证。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
