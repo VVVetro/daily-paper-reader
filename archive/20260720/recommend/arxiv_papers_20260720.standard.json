@@ -1,0 +1,432 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-20T21:33:18.473568+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 7,
+    "quick_skim_target": 11,
+    "quick_selected": 7
+  },
+  "deep_dive": [
+    {
+      "id": "2607.15908v1",
+      "source": "arxiv",
+      "title": "Trans-Domain Digital Twin: Conceptual Foundations, Architecture, and Research Outlook",
+      "abstract": "Complex systems comprise heterogeneous domains whose states, uncertainties, risks, and control consequences can cross domain boundaries. Existing cross-domain digital twin approaches broadly focus on comparison, reuse, semantic mapping, standardization, and interoperability, but do not inherently require operational connections among domain states, errors, objectives, constraints, decisions, and controls. This article proposes the trans-domain digital twin as an operational formulation along the continuum of Composite/Federated Digital Twin Systems. This approach connects heterogeneous domain twins through an aligned shared state, explicit coupling of data, models, states, errors, objectives, and controls, heterogeneous temporal coordination, joint decision-making, and feedback-based adaptation. The proposed framework presents a seven-layer conceptual architecture, a trans-domain orchestration core, minimum compliance conditions, a general operational formalism, progressive fast-meso-slow loops, and a single-episode offline training mechanism linked to bounded online adaptation. It also describes conceptual validation and evaluation criteria, a maturity model, a reference deployment architecture, and requirements for runtime safety, provenance, versioning, and model lifecycle management. The framework is conceptually mappable to standards for digital twins, model exchange, distributed simulation, and smart transducers; however, its formal compliance and operational effectiveness must be examined through independent benchmarks, uncertainty quantification, ablation testing, and field validation.",
+      "authors": [
+        "Mansoorali Amiri"
+      ],
+      "primary_category": "cs.SE",
+      "categories": [
+        "cs.SE"
+      ],
+      "published": "2026-07-17T12:32:28+00:00",
+      "link": "https://arxiv.org/pdf/2607.15908v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Trans-domain digital twin with cross-domain semantic mapping and interoperability",
+      "llm_evidence_cn": "跨域数字孪生概念，包含语义映射和互操作性",
+      "llm_evidence": "跨域数字孪生概念，包含语义映射和互操作性",
+      "canonical_evidence": "跨域数字孪生概念，包含语义映射和互操作性",
+      "llm_tldr_en": "Proposes trans-domain digital twin connecting heterogeneous domain twins through shared state, explicit coupling, and semantic interoperability, relevant to construction and smart city integration.",
+      "llm_tldr_cn": "复杂系统跨域状态、风险和控制相互影响，现有数字孪生缺乏操作连接。本文提出跨域数字孪生概念，沿复合/联邦数字孪生连续体定义操作公式，通过对齐共享状态、显式耦合数据模型误差目标控制、异构时间协调，连接异质领域孪生。该框架为从制造到建筑基础设施的数字孪生跨域数据管理提供理论基础，可直接应用于智慧城市数据整合。",
+      "llm_tldr": "复杂系统跨域状态、风险和控制相互影响，现有数字孪生缺乏操作连接。本文提出跨域数字孪生概念，沿复合/联邦数字孪生连续体定义操作公式，通过对齐共享状态、显式耦合数据模型误差目标控制、异构时间协调，连接异质领域孪生。该框架为从制造到建筑基础设施的数字孪生跨域数据管理提供理论基础，可直接应用于智慧城市数据整合。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing cross domain data management methodologies transferred from manufacturing or industrial digital twins to construction, infrastructure, and smart city data integration.",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.15418v1",
+      "source": "arxiv",
+      "title": "DrawingVQA: A Real-World Benchmark for Multi-Depth Visual-Textual Reasoning on Construction Drawings",
+      "abstract": "We introduce DrawingVQA, the first benchmark designed to evaluate multimodal large language models (MLLMs) on real-world construction drawings -- a core media in architecture, civil, and many other engineering practices. Unlike natural images or schematic floor plans, construction drawings fuse abstract geometry, symbolic notation, tabular data, annotations, and domain-specific text, forming a uniquely complex visual-textual domain core to engineering workflows. DrawingVQA bridges this gap with 33 \"Issued for Construction\" drawings and 92 expertly curated question-answer pairs, spanning three reasoning depths: perceptual understanding, contextual interpretation, and domain-expert reasoning. To evaluate model capabilities, we present a dual categorization framework to jointly analyze performance across seven construction-engineering and four MLLM capability dimensions -- the first to explicitly map engineering workflows to AI reasoning competencies. Evaluations of state-of-the-art MLLMs reveal a substantial gap between model and expert performance, particularly at higher reasoning depths. This benchmark lays a foundation for domain-specialized multimodal reasoning to allow for advancement on integration of AI-driven understanding and real-world engineering workflows.",
+      "authors": [
+        "Yoonhwa Jung",
+        "Junryu Fu",
+        "Mani Golparvar-Fard"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CV"
+      ],
+      "published": "2026-07-16T19:44:03+00:00",
+      "link": "https://arxiv.org/pdf/2607.15418v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Benchmark for visual-textual reasoning on construction drawings with geometry, symbols, tables",
+      "llm_evidence_cn": "建筑图纸视觉-文本推理基准，包含几何、符号、表格",
+      "llm_evidence": "建筑图纸视觉-文本推理基准，包含几何、符号、表格",
+      "canonical_evidence": "建筑图纸视觉-文本推理基准，包含几何、符号、表格",
+      "llm_tldr_en": "DrawingVQA introduces a benchmark for MLLMs on construction drawings, covering perceptual, contextual, and domain-expert reasoning across 33 drawings and 92 QA pairs.",
+      "llm_tldr_cn": "建筑图纸对工程实践至关重要，但缺乏专门的多模态大语言模型评估基准。DrawingVQA提供33张施工图纸和92个问答对，涵盖感知理解、上下文解释和领域专家推理三个深度。该基准直接涉及建筑图纸中的几何、符号、表格和文本融合，为BIM语义信息提取（包括几何、材质和对象关系）提供评估平台。",
+      "llm_tldr": "建筑图纸对工程实践至关重要，但缺乏专门的多模态大语言模型评估基准。DrawingVQA提供33张施工图纸和92个问答对，涵盖感知理解、上下文解释和领域专家推理三个深度。该基准直接涉及建筑图纸中的几何、符号、表格和文本融合，为BIM语义信息提取（包括几何、材质和对象关系）提供评估平台。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic information extraction from BIM models, including geometry, materials, textures, and object relationships.",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.11673v1",
+      "source": "arxiv",
+      "title": "ABot-3DWorld 0: A Universal World Model to Explore Any 3D Space",
+      "abstract": "We present ABot-3DWorld 0, a universal multimodal 3D world model that turns text, image, and video inputs into high-fidelity, explorable 3D worlds. At the heart of our framework is a unified Spatial Generative Primitive (SGP), a compact tuple of a high-quality panorama and a spatial point cloud that delivers an efficient description of any 3D space. Multimodal inputs are first lifted into this primitive; a 3D-consistent panoramic video generator then explores the primitive along a planned trajectory; finally, our panoramic video reconstruction engine converts the generated video into a clean, photorealistic 3D Gaussian Splatting (3DGS) world. This pipeline covers two regimes: rich inputs (multi-view sets, casual video) are lifted into the SGP through a geometry-rigorous recovery that mirrors the observed scene, while a single image or sentence is completed generatively into a creative world. The result is one low-barrier engine for general 3D content creation that further anchors generated worlds to geographic points of interest, enabling map-native spatial exploration at consumer scale. Experiments show that ABot-3DWorld 0 sets the state of the art among open-source methods and demonstrates stronger scene fidelity than Marble under rich multimodal inputs.",
+      "authors": [
+        "Mingchao Sun",
+        "Luyang Tang",
+        "Yu Liu",
+        "Xu Yan",
+        "Zhan Li",
+        "Yunwei Zhang",
+        "Fei Yu",
+        "Zengye Ge",
+        "Yumin Liu",
+        "Jiacheng Zhang",
+        "Yongchang Zhang",
+        "Jiawei Zhang",
+        "Zhicheng Liu",
+        "Zhongxu Sun",
+        "Tianjian Ouyang",
+        "Wenzheng Chen",
+        "Shixing Yang",
+        "Nianfei Fan",
+        "Guodong Sun",
+        "Huan Li",
+        "Zheng Zhou",
+        "Yongze Li",
+        "Yingliang Peng",
+        "Mengmeng Du",
+        "Yuan Liu",
+        "Haozhe Shi",
+        "Chunnuo Gong",
+        "Chengzhen Yu",
+        "Chunxue Jia",
+        "Yang Liu",
+        "Shiying Zeng",
+        "Junnan Lai",
+        "Hang Zhang",
+        "Ning Guo",
+        "Baoquan Chen",
+        "Mu Xu",
+        "Hongyu Pan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-13T15:14:48+00:00",
+      "link": "https://arxiv.org/pdf/2607.11673v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "proposes 3D world model from multimodal inputs using point cloud and panoramic video, directly applicable to urban digital twin data pipelines",
+      "llm_evidence_cn": "提出使用点云和全景视频从多模态输入生成3D世界模型的方法，可直接应用于城市数字孪生数据管道",
+      "llm_evidence": "提出使用点云和全景视频从多模态输入生成3D世界模型的方法，可直接应用于城市数字孪生数据管道",
+      "canonical_evidence": "提出使用点云和全景视频从多模态输入生成3D世界模型的方法，可直接应用于城市数字孪生数据管道",
+      "llm_tldr_en": "ABot-3DWorld 0 introduces a universal multimodal 3D world model that converts text, image, and video into explorable 3D worlds using a spatial generative primitive of panorama and point cloud, enabling efficient 3D reconstruction for digital twin applications.",
+      "llm_tldr_cn": "针对当前生成高质量3D世界模型需要大量数据和复杂处理的问题，本文提出ABot-3DWorld 0，一个通用多模态3D世界模型。核心是空间生成基元（SGP），由高质量全景图和空间点云组成，能高效描述任意3D空间。多模态输入首先提升为SGP，然后沿规划轨迹生成3D一致的全景视频，最后转化为高质量3D高斯散射世界。该方法支持多种输入，实现了从文本、图像到可探索3D世界的端到端生成，为数字孪生和元宇宙等应用提供了高效的数据管道。",
+      "llm_tldr": "针对当前生成高质量3D世界模型需要大量数据和复杂处理的问题，本文提出ABot-3DWorld 0，一个通用多模态3D世界模型。核心是空间生成基元（SGP），由高质量全景图和空间点云组成，能高效描述任意3D空间。多模态输入首先提升为SGP，然后沿规划轨迹生成3D一致的全景视频，最后转化为高质量3D高斯散射世界。该方法支持多种输入，实现了从文本、图像到可探索3D世界的端到端生成，为数字孪生和元宇宙等应用提供了高效的数据管道。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.11192v2",
+      "source": "arxiv",
+      "title": "GDP.pdf: Benchmarking Grounded Multimodal Reasoning over Professional PDF Documents",
+      "abstract": "A large share of day-to-day work in professional domains happens inside PDF files: benefits packets, leases, datasheets, clinical guidelines, construction plans. Benchmarks for document AI have generally measured the required capabilities in isolation: OCR, layout analysis, chart reasoning, table QA, document VQA. A high score on any one of them does not necessarily reveal whether a model can answer a realistic question that someone in the field would actually ask about a specific PDF. GDP_pdf is a benchmark built to measure this directly. It consists of question-document pairs authored by working professionals in ten fields, and a candidate question was kept only when at least two frontier multimodal models failed it in a way that mattered: a wrong answer, missed decisive evidence, or a fabricated claim, rather than a superficial difference such as style. Each item comes with a rubric of atomic criteria, so we can report a graded rubric score as well as a strict task-level pass rate, and each item is tagged against a taxonomy of eleven capabilities in three tiers, spanning text extraction and grounding, table and chart comprehension, cross-referencing, spatial reasoning, and abstention on unsupported queries. We evaluated seven frontier models on the 100-item benchmark. The best model passed only 15% of the items and the worst passed 1%. Most errors trace back to a small set of recurring loss patterns: misaligned tables, misread charts, skipped footnotes and exclusions, miscounted floor-plan symbols, scan noise, and amendments that supersede earlier text.",
+      "authors": [
+        "Suhaas Garre",
+        "Emily Ritchie",
+        "Sushant Mehta",
+        "Edwin Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-13T07:44:07+00:00",
+      "link": "https://arxiv.org/pdf/2607.11192v2",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "includes construction plans in benchmark; evaluates multimodal reasoning over professional PDFs, relevant to smart city document fusion",
+      "llm_evidence_cn": "基准中包含施工图纸，评估专业PDF的多模态推理能力，与智慧城市文档融合相关",
+      "llm_evidence": "基准中包含施工图纸，评估专业PDF的多模态推理能力，与智慧城市文档融合相关",
+      "canonical_evidence": "基准中包含施工图纸，评估专业PDF的多模态推理能力，与智慧城市文档融合相关",
+      "llm_tldr_en": "GDP.pdf is a benchmark for grounded multimodal reasoning over professional PDF documents, covering ten fields including construction plans, measuring if frontier multimodal models can answer realistic domain questions.",
+      "llm_tldr_cn": "针对现有文档AI基准孤立评估OCR、布局分析等能力的问题，本文构建GDP.pdf基准，包含来自十个领域的专业PDF问答对，涵盖施工图纸等。每个问题都经过严格筛选，确保至少两个前沿多模态模型无法回答。该基准直接评估模型在实际工作场景中对专业PDF的推理能力，对智慧城市中多模态文档融合与理解具有重要参考价值。",
+      "llm_tldr": "针对现有文档AI基准孤立评估OCR、布局分析等能力的问题，本文构建GDP.pdf基准，包含来自十个领域的专业PDF问答对，涵盖施工图纸等。每个问题都经过严格筛选，确保至少两个前沿多模态模型无法回答。该基准直接评估模型在实际工作场景中对专业PDF的推理能力，对智慧城市中多模态文档融合与理解具有重要参考价值。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.11673v2",
+      "source": "arxiv",
+      "title": "ABot-3DWorld 0: A Universal World Model to Explore Any 3D Space",
+      "abstract": "We present ABot-3DWorld 0, a universal multimodal 3D world model that turns text, image, and video inputs into high-fidelity, explorable 3D worlds. At the heart of our framework is a unified Spatial Generative Primitive (SGP), a compact tuple of a high-quality panorama and a spatial point cloud that delivers an efficient description of any 3D space. Multimodal inputs are first lifted into this primitive; a 3D-consistent panoramic video generator then explores the primitive along a planned trajectory; finally, our panoramic video reconstruction engine converts the generated video into a clean, photorealistic 3D Gaussian Splatting (3DGS) world. This pipeline covers two regimes: rich inputs (multi-view sets, casual video) are lifted into the SGP through a geometry-rigorous recovery that mirrors the observed scene, while a single image or sentence is completed generatively into a creative world. The result is one low-barrier engine for general 3D content creation that further anchors generated worlds to geographic points of interest, enabling map-native spatial exploration at consumer scale. Experiments show that ABot-3DWorld 0 sets the state of the art among open-source methods and demonstrates stronger scene fidelity than Marble under rich multimodal inputs.",
+      "authors": [
+        "Mingchao Sun",
+        "Luyang Tang",
+        "Yu Liu",
+        "Xu Yan",
+        "Zhan Li",
+        "Yunwei Zhang",
+        "Fei Yu",
+        "Zengye Ge",
+        "Yumin Liu",
+        "Jiacheng Zhang",
+        "Yongchang Zhang",
+        "Jiawei Zhang",
+        "Zhicheng Liu",
+        "Zhongxu Sun",
+        "Tianjian Ouyang",
+        "Wenzheng Chen",
+        "Shixing Yang",
+        "Nianfei Fan",
+        "Guodong Sun",
+        "Huan Li",
+        "Zheng Zhou",
+        "Yongze Li",
+        "Yingliang Peng",
+        "Mengmeng Du",
+        "Yuan Liu",
+        "Haozhe Shi",
+        "Chunnuo Gong",
+        "Chengzhen Yu",
+        "Chunxue Jia",
+        "Yang Liu",
+        "Shiying Zeng",
+        "Junnan Lai",
+        "Hang Zhang",
+        "Ning Guo",
+        "Baoquan Chen",
+        "Mu Xu",
+        "Hongyu Pan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-13T15:14:48+00:00",
+      "link": "https://arxiv.org/pdf/2607.11673v2",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "proposes 3D world model from multimodal inputs using point cloud and panoramic video, directly applicable to urban digital twin data pipelines",
+      "llm_evidence_cn": "提出使用点云和全景视频从多模态输入生成3D世界模型的方法，可直接应用于城市数字孪生数据管道",
+      "llm_evidence": "提出使用点云和全景视频从多模态输入生成3D世界模型的方法，可直接应用于城市数字孪生数据管道",
+      "canonical_evidence": "提出使用点云和全景视频从多模态输入生成3D世界模型的方法，可直接应用于城市数字孪生数据管道",
+      "llm_tldr_en": "ABot-3DWorld 0 introduces a universal multimodal 3D world model that converts text, image, and video into explorable 3D worlds using a spatial generative primitive of panorama and point cloud, enabling efficient 3D reconstruction for digital twin applications.",
+      "llm_tldr_cn": "针对当前生成高质量3D世界模型需要大量数据和复杂处理的问题，本文提出ABot-3DWorld 0，一个通用多模态3D世界模型。核心是空间生成基元（SGP），由高质量全景图和空间点云组成，能高效描述任意3D空间。多模态输入首先提升为SGP，然后沿规划轨迹生成3D一致的全景视频，最后转化为高质量3D高斯散射世界。该方法支持多种输入，实现了从文本、图像到可探索3D世界的端到端生成，为数字孪生和元宇宙等应用提供了高效的数据管道。",
+      "llm_tldr": "针对当前生成高质量3D世界模型需要大量数据和复杂处理的问题，本文提出ABot-3DWorld 0，一个通用多模态3D世界模型。核心是空间生成基元（SGP），由高质量全景图和空间点云组成，能高效描述任意3D空间。多模态输入首先提升为SGP，然后沿规划轨迹生成3D一致的全景视频，最后转化为高质量3D高斯散射世界。该方法支持多种输入，实现了从文本、图像到可探索3D世界的端到端生成，为数字孪生和元宇宙等应用提供了高效的数据管道。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.11683v1",
+      "source": "arxiv",
+      "title": "RAGU: A Multi-Step GraphRAG Engine with a Compact Domain-Adapted LLM",
+      "abstract": "Graph retrieval-augmented generation (GraphRAG) enhances large language models with structured knowledge, yet existing systems construct knowledge graphs in a single extraction pass, producing noisy entities and brittle retrieval. RAGU, an open-source modular GraphRAG engine, addresses this by separating extraction from consolidation: entities and relations pass through two-stage typed extraction, DBSCAN-backed deduplication, LLM summarization, and Leiden community detection. A key insight motivates a compact extractor: the skills an in-pipeline LLM needs - comprehension, extraction, reasoning over context - are language skills that grow only weakly with model size, unlike factual world knowledge. Accordingly, we train Meno-Lite-0.1, a 7B model optimized for language skills, which outperforms Qwen2.5-32B on knowledge-graph construction (+12.5% relative harmonic mean) and matches it on English GraphRAG tasks. On GraphRAG-Bench (Medical), RAGU retrieves the most complete context at every factoid level (evidence recall up to 0.84 vs. $\\leq$0.76) and overtakes HippoRAG2 on synthesis tasks; on multi-hop factoid QA, the apparent HippoRAG2 advantage is shown to be largely an answer-format artifact. RAGU is installable via $\\texttt{pip install graph_ragu}$, runs on a single GPU, and is released under MIT. The source code is publicly available at https://github.com/RaguTeam/RAGU, and the Meno-Lite-0.1 model can be obtained from https://huggingface.co/bond005/meno-lite-0.1.",
+      "authors": [
+        "Mikhail Komarov",
+        "Ivan Bondarenko",
+        "Stanislav Shtuka",
+        "Oleg Sedukhin",
+        "Roman Shuvalov",
+        "Yana Dementyeva",
+        "Matvey Solovyov",
+        "Nikolay O. Nikitin"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-07-13T15:20:51+00:00",
+      "link": "https://arxiv.org/pdf/2607.11683v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Knowledge graph construction via two-stage extraction and consolidation",
+      "llm_evidence_cn": "两阶段提取与合并的知识图谱构建方法",
+      "llm_evidence": "两阶段提取与合并的知识图谱构建方法",
+      "canonical_evidence": "两阶段提取与合并的知识图谱构建方法",
+      "llm_tldr_en": "RAGU presents a modular GraphRAG engine that separates extraction from consolidation, reducing noise and improving retrieval, with a compact domain-adapted LLM.",
+      "llm_tldr_cn": "现有GraphRAG系统单次提取知识图谱导致噪音和脆弱检索。RAGU提出模块化引擎，将提取与合并分离：通过两阶段类型化提取、DBSCAN去重、LLM摘要和Leiden社区检测构建干净图谱，并训练紧凑型领域适应7B模型。实验表明该方法在减少噪音同时保持检索质量，为知识图谱构建提供高效可迁移框架。",
+      "llm_tldr": "现有GraphRAG系统单次提取知识图谱导致噪音和脆弱检索。RAGU提出模块化引擎，将提取与合并分离：通过两阶段类型化提取、DBSCAN去重、LLM摘要和Leiden社区检测构建干净图谱，并训练紧凑型领域适应7B模型。实验表明该方法在减少噪音同时保持检索质量，为知识图谱构建提供高效可迁移框架。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.15592v1",
+      "source": "arxiv",
+      "title": "MGDT: MLLM-Guided Diffusion Transformer with Relation-Adaptive Mixture-of-Experts for Multimodal Knowledge Graph Completion",
+      "abstract": "Multimodal Knowledge Graph Completion (MKGC) requires inferring missing entities from structural, textual, and visual cues. Existing diffusion-based MKGC methods usually denoise directly on raw multimodal features. Such a design forces the denoiser to simultaneously perform relation-dependent cue selection, cross-modal semantic alignment, and structure-aware entity generation, which introduces noisy and semantically inconsistent conditions for diffusion and consequently leads to suboptimal completion performance. To address this limitation, we propose MGDT: MLLM-Guided Diffusion Transformer with Relation-Adaptive Mixture-of-Experts (MGDT), a novel MKGC framework built on an align-then-diffuse paradigm. MGDT first employs a Relation-Adaptive Semantic Routing Mixture-of-Experts (RASR-MoE) module to select relation-relevant multimodal semantic transformation paths and suppress irrelevant modality interference. MGDT then uses a frozen Multimodal Large Language Model (MLLM) as a semantic anchor to align the routed multimodal representations into a unified latent space and reduce cross-modal semantic heterogeneity. Finally, a Knowledge Graph Diffusion Transformer (KGDT) performs graph-conditioned denoising generation in the aligned space to produce the missing entity representation. Experiments on three benchmark datasets show that MGDT consistently outperforms strong baselines.",
+      "authors": [
+        "Xu Hou",
+        "Meiyu Liang",
+        "Wei Huang",
+        "Yawen Li",
+        "Zhe Xue",
+        "Wu Liu",
+        "Guanhua Ye",
+        "Lei Shi",
+        "Kangkang Lu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-17T03:39:43+00:00",
+      "link": "https://arxiv.org/pdf/2607.15592v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Multimodal knowledge graph completion method applicable to smart city knowledge graph construction",
+      "llm_evidence_cn": "多模态知识图谱补全方法可应用于智慧城市知识图谱构建",
+      "llm_evidence": "多模态知识图谱补全方法可应用于智慧城市知识图谱构建",
+      "canonical_evidence": "多模态知识图谱补全方法可应用于智慧城市知识图谱构建",
+      "llm_tldr_en": "Proposes MGDT framework for multimodal knowledge graph completion using diffusion transformers and relation-adaptive MoE, enhancing entity inference from structural and visual cues.",
+      "llm_tldr_cn": "现有扩散式多模态知识图补全方法在原始多模态特征上直接去噪，导致条件噪声和语义不一致。本文提出MGDT框架，采用对齐后扩散的范式，利用MLLM引导的扩散Transformer和关系自适应混合专家模型，有效整合结构、文本和视觉线索进行实体推理。在多个基准上实验表明，该方法显著优于现有方法，为智慧城市等领域的多模态知识融合提供了新思路。",
+      "llm_tldr": "现有扩散式多模态知识图补全方法在原始多模态特征上直接去噪，导致条件噪声和语义不一致。本文提出MGDT框架，采用对齐后扩散的范式，利用MLLM引导的扩散Transformer和关系自适应混合专家模型，有效整合结构、文本和视觉线索进行实体推理。在多个基准上实验表明，该方法显著优于现有方法，为智慧城市等领域的多模态知识融合提供了新思路。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.13492v1",
+      "source": "arxiv",
+      "title": "CASA-SDF: Curriculum-Aware Spatial Adaptation with Curvature-Guided Density for Neural Implicit Surface Reconstruction",
+      "abstract": "Neural implicit representations have emerged as a powerful paradigm for 3D reconstruction. However, high-fidelity indoor surface reconstruction remains a significant challenge, primarily due to the pronounced \\emph{geometric heterogeneity} of indoor scenes. Large texture-less planar regions typically require stronger regularization to suppress high-frequency artifacts, while thin structures demand sharper, more adaptive representations to mitigate the spectral bias of multi-layer perceptrons (MLPs) and prevent over-smoothing. Existing approaches often rely on spatially indiscriminate prior supervision and a scene-global SDF-to-density transformation, which constrains their ability to balance planar smoothness and detail preservation. In this paper, we propose CASA-SDF (Curriculum-Aware Spatial Adaptation for SDF), a unified framework that addresses this challenge via complementary adaptations of supervision and representation capacity. Specifically, Hybrid Spatially-Adaptive Uncertainty Annealing (SAUA) fuses semantic and photometric uncertainties to construct a pixel-wise curriculum for monocular prior supervision. This strategy maintains regularization in reliable regions while attenuating unreliable supervision early in training to enable data-driven photometric refinement. Meanwhile, Curvature-Aware Locally Adaptive Density Transformation (CALADT) progressively modulates the sharpness of the SDF-to-density mapping via a curvature proxy to enhance the representation of thin structures. Extensive experiments on benchmark indoor datasets demonstrate that CASA-SDF improves surface completeness and detail recovery on high-frequency structures, without compromising the stability of planar surfaces.",
+      "authors": [
+        "Lei Yang",
+        "Weiqing Li",
+        "Zhiyong Su",
+        "Liang Xiao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-07-15T06:38:23+00:00",
+      "link": "https://arxiv.org/pdf/2607.13492v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Neural implicit surface reconstruction for indoor scenes from point clouds",
+      "llm_evidence_cn": "基于点云的室内场景神经隐式表面重建",
+      "llm_evidence": "基于点云的室内场景神经隐式表面重建",
+      "canonical_evidence": "基于点云的室内场景神经隐式表面重建",
+      "llm_tldr_en": "Proposes CASA-SDF for neural implicit surface reconstruction with curriculum-aware spatial adaptation and curvature-guided density to handle geometric heterogeneity in indoor scenes.",
+      "llm_tldr_cn": "室内场景表面重建面临几何异质性挑战，大平面需强正则化，薄结构需自适应表示。本文提出CASA-SDF，采用课程感知空间适应和曲率引导密度变换，在复杂室内场景中实现高保真重建。实验表明该方法在多个室内数据集上优于现有方法，为建筑点云场景理解提供了关键技术。",
+      "llm_tldr": "室内场景表面重建面临几何异质性挑战，大平面需强正则化，薄结构需自适应表示。本文提出CASA-SDF，采用课程感知空间适应和曲率引导密度变换，在复杂室内场景中实现高保真重建。实验表明该方法在多个室内数据集上优于现有方法，为建筑点云场景理解提供了关键技术。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.15436v1",
+      "source": "arxiv",
+      "title": "Complete Trip: A Linked Multimodal Human Mobility Dataset",
+      "abstract": "Human mobility data have become fundamental to research across transportation, public health, urban science, and disaster resilience. However, existing mobility datasets typically capture only isolated aspects of travel behavior and rarely provide linked multimodal journeys together with network-level route representations and population-level inference. Here we present Complete Trip, a mobility dataset that reconstructs linked multimodal travel behavior from passively collected smartphone location-based services (LBS) data. The first released implementation covers six counties in Utah throughout 2020 and represents journeys across car, bus, rail, and active transportation through a four-stage workflow consisting of trip identification, mode imputation, route reconstruction, and trip linking. Complete Trip preserves journey-level relationships by linking sequential travel segments where multiple segments belong to the same travel episode, provides network-based route representations on digital transportation networks, and supports population-level analyses through statistically calibrated expansion weights. By providing a representation of linked multimodal human mobility, Complete Trip enables reproducible research across transportation, public health, urban science, disaster resilience, and related fields.",
+      "authors": [
+        "Ruohan Li",
+        "Weiyu Luo",
+        "Xin Wu",
+        "Chenfeng Xiong"
+      ],
+      "primary_category": "cs.CY",
+      "categories": [
+        "cs.CY"
+      ],
+      "published": "2026-07-16T20:15:02+00:00",
+      "link": "https://arxiv.org/pdf/2607.15436v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Multimodal human mobility dataset linking car, bus, rail, active transport",
+      "llm_evidence_cn": "链接汽车、公交、铁路、主动交通的多模态人类移动数据集",
+      "llm_evidence": "链接汽车、公交、铁路、主动交通的多模态人类移动数据集",
+      "canonical_evidence": "链接汽车、公交、铁路、主动交通的多模态人类移动数据集",
+      "llm_tldr_en": "Complete Trip reconstructs linked multimodal travel behavior from smartphone LBS data, covering six counties in Utah with trip identification, mode imputation, and route reconstruction.",
+      "llm_tldr_cn": "人类移动数据对交通、城市科学至关重要，但现有数据集缺乏多模态旅程链接。Complete Trip基于智能手机位置数据，通过四个阶段工作流（行程识别、模式推断、路线重建）重构链接的多模态出行行为，覆盖2020年犹他州六个县。该数据集整合了多种交通方式，为多源数据融合与智慧城市基础设施管理提供示例。",
+      "llm_tldr": "人类移动数据对交通、城市科学至关重要，但现有数据集缺乏多模态旅程链接。Complete Trip基于智能手机位置数据，通过四个阶段工作流（行程识别、模式推断、路线重建）重构链接的多模态出行行为，覆盖2020年犹他州六个县。该数据集整合了多种交通方式，为多源数据融合与智慧城市基础设施管理提供示例。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
