@@ -6,47 +6,50 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-20
-- 运行时间：2026-07-20 21:40:04 UTC
+- 最新运行日期：2026-07-21
+- 运行时间：2026-07-21 21:14:32 UTC
 - 运行状态：成功
-- 本次总论文数：9
-- 精读区：2
+- 本次总论文数：10
+- 精读区：3
 - 速读区：7
 
 ### 今日简报（AI）
-今日共推荐9篇论文，其中精读2篇，重点聚焦跨领域数字孪生与建筑图纸视觉推理。最值得关注的是《Trans-Domain Digital Twin》提出的跨领域数字孪生概念基础与架构（9.0分），以及《DrawingVQA》在建筑图纸多深度图文推理上的真实世界基准（8.0分）。建议普通读者优先从这两篇精读切入，前者可拓展数字孪生应用视野，后者有助于理解多模态推理落地场景。
-- 详情：[/202607/20/README](/202607/20/README)
+今日精读2篇高分论文（8.0）并速读3篇，聚焦机器人仿真与LLM驱动本体扩展。最值得关注方向：基于图论的BIM-智能体离散事件仿真平台，以及利用LLMs实现需求驱动、可扩展的本体构建。建议下一步可深入探索语义分割的多模态融合或知识图谱的智能查询生成。
+- 详情：[/202607/21/README](/202607/21/README)
 
 ### 精读区论文标签
-1. [Trans-Domain Digital Twin: Conceptual Foundations, Architecture, and Research Outlook](/202607/20/2607.15908v1-trans-domain-digital-twin-conceptual-foundations-architecture-and-research-outlook)  
-   标签：评分：9.0/10、query:smart-city
-   evidence：跨域数字孪生概念，包含语义映射和互操作性
-2. [DrawingVQA: A Real-World Benchmark for Multi-Depth Visual-Textual Reasoning on Construction Drawings](/202607/20/2607.15418v1-drawingvqa-a-real-world-benchmark-for-multi-depth-visual-textual-reasoning-on-construction-drawings)  
+1. [A BIM-enabled, Agent-based Discrete-event Simulation Platform for Robotic Studies: A Method based on Graph Theory](/202607/21/2607.16920v1-a-bim-enabled-agent-based-discrete-event-simulation-platform-for-robotic-studies-a-method-based-on-graph-theory)  
    标签：评分：8.0/10、query:smart-city
-   evidence：建筑图纸视觉-文本推理基准，包含几何、符号、表格
+   evidence：基于BIM的仿真平台，提取几何、材料和语义属性用于机器人任务
+2. [OntoExtend: A Framework for Requirement-driven and Scalable Ontology Extension with LLMs](/202607/21/2607.17963v1-ontoextend-a-framework-for-requirement-driven-and-scalable-ontology-extension-with-llms)  
+   标签：评分：8.0/10、query:smart-city
+   evidence：基于LLM的本体扩展框架，可直接用于智慧城市数据的知识图谱构建
+3. [Natural Language Access to Domain-Specific Metadata: A Reusable Framework for LLM Query Generation](/202607/21/2607.18029v1-natural-language-access-to-domain-specific-metadata-a-reusable-framework-for-llm-query-generation)  
+   标签：评分：8.0/10、query:smart-city
+   evidence：利用OWL本体实现自然语言查询生成，支持领域特定档案的语义互操作
 
 ### 速读区论文标签
-1. [ABot-3DWorld 0: A Universal World Model to Explore Any 3D Space](/202607/20/2607.11673v1-abot-3dworld-0-a-universal-world-model-to-explore-any-3d-space)  
+1. [UMSS: Towards Unsupervised Multi-modal Semantic Segmentation](/202607/21/2607.12372v1-umss-towards-unsupervised-multi-modal-semantic-segmentation)  
    标签：评分：7.0/10、query:smart-city
-   evidence：提出使用点云和全景视频从多模态输入生成3D世界模型的方法，可直接应用于城市数字孪生数据管道
-2. [ABot-3DWorld 0: A Universal World Model to Explore Any 3D Space](/202607/20/2607.11673v2-abot-3dworld-0-a-universal-world-model-to-explore-any-3d-space)  
+   evidence：无监督多模态语义分割方法，与城市场景理解和数据整合相关
+2. [SAGA: Schema-Aware Grounding for Agentic Text-to-SPARQL Generation](/202607/21/2607.14494v1-saga-schema-aware-grounding-for-agentic-text-to-sparql-generation)  
    标签：评分：7.0/10、query:smart-city
-   evidence：提出使用点云和全景视频从多模态输入生成3D世界模型的方法，可直接应用于城市数字孪生数据管道
-3. [MGDT: MLLM-Guided Diffusion Transformer with Relation-Adaptive Mixture-of-Experts for Multimodal Knowledge Graph Completion](/202607/20/2607.15592v1-mgdt-mllm-guided-diffusion-transformer-with-relation-adaptive-mixture-of-experts-for-multimodal-knowledge-graph-completion)  
+   evidence：基于模式感知的文本到SPARQL生成，支持知识图谱查询构建
+3. [Artificial Intelligence for Understanding and Managing Transportation Behavior in Sustainable Smart Cities](/202607/21/2607.17694v1-artificial-intelligence-for-understanding-and-managing-transportation-behavior-in-sustainable-smart-cities)  
    标签：评分：7.0/10、query:smart-city
-   evidence：多模态知识图谱补全方法可应用于智慧城市知识图谱构建
-4. [GDP.pdf: Benchmarking Grounded Multimodal Reasoning over Professional PDF Documents](/202607/20/2607.11192v2-gdppdf-benchmarking-grounded-multimodal-reasoning-over-professional-pdf-documents)  
+   evidence：智慧城市交通行为管理中的多源数据整合
+4. [Toward Federated Multimodal Graph Foundation Models: A Topology-Aware Multimodal Alignment Framework](/202607/21/2607.15687v1-toward-federated-multimodal-graph-foundation-models-a-topology-aware-multimodal-alignment-framework)  
    标签：评分：6.0/10、query:smart-city
-   evidence：基准中包含施工图纸，评估专业PDF的多模态推理能力，与智慧城市文档融合相关
-5. [RAGU: A Multi-Step GraphRAG Engine with a Compact Domain-Adapted LLM](/202607/20/2607.11683v1-ragu-a-multi-step-graphrag-engine-with-a-compact-domain-adapted-llm)  
+   evidence：多模态图对齐框架，可应用于智慧城市数据融合
+5. [From Modalities to Propositions: A Language-Centric Framework for Multimodal Intelligence](/202607/21/2607.16560v1-from-modalities-to-propositions-a-language-centric-framework-for-multimodal-intelligence)  
    标签：评分：6.0/10、query:smart-city
-   evidence：两阶段提取与合并的知识图谱构建方法
-6. [CASA-SDF: Curriculum-Aware Spatial Adaptation with Curvature-Guided Density for Neural Implicit Surface Reconstruction](/202607/20/2607.13492v1-casa-sdf-curriculum-aware-spatial-adaptation-with-curvature-guided-density-for-neural-implicit-surface-reconstruction)  
+   evidence：提出基于命题的多模态融合框架，实现统一语义表示
+6. [When Do Multimodal and Graph-Augmented RAG Help? A Controlled Evaluation for Document Question Answering](/202607/21/2607.16604v1-when-do-multimodal-and-graph-augmented-rag-help-a-controlled-evaluation-for-document-question-answering)  
    标签：评分：6.0/10、query:smart-city
-   evidence：基于点云的室内场景神经隐式表面重建
-7. [Complete Trip: A Linked Multimodal Human Mobility Dataset](/202607/20/2607.15436v1-complete-trip-a-linked-multimodal-human-mobility-dataset)  
+   evidence：多模态图增强RAG用于文档问答
+7. [An Explicit World Model Based on Data-First Ontology: DaoQL Multimodal Storage Validation and Counterfactual Reasoning Evaluation](/202607/21/2607.17269v1-an-explicit-world-model-based-on-data-first-ontology-daoql-multimodal-storage-validation-and-counterfactual-reasoning-evaluation)  
    标签：评分：6.0/10、query:smart-city
-   evidence：链接汽车、公交、铁路、主动交通的多模态人类移动数据集
+   evidence：基于本体的显式世界模型用于多模态数据
 
 
 <div class="dpr-home-promo-card">
