@@ -1,0 +1,54 @@
+{
+  "label": "2026-07-22",
+  "date": "2026-07-22",
+  "generated_at": "2026-07-22T20:57:35",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202607/22/2607.18997v1-benchmarking-deep-learning-approaches-for-aec-engineering-drawing-layout-detection-and-information-extraction",
+      "section": "deep",
+      "title_en": "Benchmarking Deep Learning Approaches for AEC Engineering Drawing Layout Detection and Information Extraction",
+      "authors": "Tianyang Huang, Alessio Lombardi, Ahmed Elnagar, Ahmed Zalouk, George Paul, Sepehr Najjarpour, Arvid Sigurdsson, Khalid Ismail, Mohamed Ragab, Edlira Vakaj",
+      "date": "2026-07-21",
+      "pdf": "https://arxiv.org/pdf/2607.18997v1",
+      "score": "9.0",
+      "evidence": "建筑工程图纸布局检测与信息提取深度学习基准测试",
+      "tldr": "建筑工程图纸信息提取受限于人工效率，而布局检测作为组织图形与文本层级的关键中间件研究不足。通用文档布局模型在工程图纸上缺乏验证。本文构建了AEC专用布局数据集，并评估了五种深度学习架构。RF-DETR以mAP_{50} 0.949达到最优检测性能，视觉语言模型Qwen3-VL以F1-score 0.911领先。但通用文档预训练模型存在“领域干扰”，性能下降。该工作为自动化信息提取建立了坚实基础。",
+      "tags": "query:smart-city",
+      "abstract_en": "Information Extraction (IE) from Architecture, Engineering, and Construction (AEC) drawings remains hindered by manual inefficiency, while Layout Detection, a vital 'middleware' organizing graphical and textual hierarchies, is underexplored. General document layout models, optimized for text-centric content, lack validation on engineering drawings. This study constructs a custom AEC-specific layouts dataset and benchmarks five deep learning architectures. RF-DETR achieves state-of-the-art performance with an $mAP_{50}$ of 0.949, while the Vision-Language Model Qwen3-VL attains a leading F1-score of 0.911. Conversely, models pre-trained on general document datasets suffer from \"domain interference\", causing performance degradation. This establishes a robust technical foundation for automated IE in AEC.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/22/2607.15781v1-agentfair-a-multi-agent-collaborative-framework-for-fairness-evaluation-of-geospatial-datasets",
+      "section": "quick",
+      "title_en": "AgentFAIR: A Multi-Agent Collaborative Framework for FAIRness Evaluation of Geospatial Datasets",
+      "authors": "Ming Chen, Pranav Pai",
+      "date": "2026-07-17",
+      "pdf": "https://arxiv.org/pdf/2607.15781v1",
+      "score": "7.0",
+      "evidence": "城市地理空间数据统一标准评估",
+      "tldr": "地理空间数据集FAIR评估因现有工具标准不一、易失败，导致评分差异显著。提出AgentFAIR多代理框架，结合结构化元数据提取与13个LLM子原则评估器，并引入批评者进行证据检查。在50数据集上，FAR平均得分45-80%，子原则一致性89%，专家评估高度一致（κ=0.71）。该框架提升了可审计性与可行性，但准确性受限于有限基准与单一模型。",
+      "tags": "query:smart-city",
+      "abstract_en": "Geospatial datasets support applications from urban planning to climate modeling, yet consistent assessment of FAIR compliance is difficult. Existing evaluators use different rubrics and evidence sources and may fail on JavaScript-rendered pages or repository-specific identifiers. For 50 datasets from 10 repositories, the standard deviation of normalized scores across available tools averages 15.0 percentage points and reaches 30.3 for one dataset. Because these outputs are not equivalent measurements, we use them to characterize disagreement and failure modes, not comparative accuracy. We present AgentFAIR, a multi-agent framework combining structured metadata extraction with 13 sub-principle-specific LLM evaluators. Each produces a 0-3 maturity score, cited evidence, and recommendations; a critic checks evidence and consistency and can request targeted re-evaluation. Mean Findability, Accessibility, Interoperability, and Reusability scores are 79.7%, 70.4%, 45.3%, and 72.0%. Rank correlations with four baseline tools range from 0.31 to 0.61; the FAIR-enough comparison is not statistically significant. On a 10-dataset repeated-run subset, sub-principle agreement averages 89% (standard deviation: 3 percentage points), versus 71% without the critic. A preliminary 15-dataset expert study yields Fleiss' kappa of 0.71 and 82% alignment with expert consensus. API cost is approximately USD 0.054 per dataset. These results support auditability and feasibility, while the limited benchmark, incomplete ablations, and single-model-family validation constrain claims about accuracy and generalization.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/22/2607.19128v1-one-model-many-graphs-learning-over-attributed-graphs-across-heterogeneous-modalities-with-vision-language-models",
+      "section": "quick",
+      "title_en": "One Model, Many Graphs: Learning over Attributed Graphs across Heterogeneous Modalities with Vision-Language Models",
+      "authors": "Jiayi Yang, Yifang Chen, Yuanfu Sun, Jiajin Liu, Qiaoyu Tan",
+      "date": "2026-07-21",
+      "pdf": "https://arxiv.org/pdf/2607.19128v1",
+      "score": "6.0",
+      "evidence": "利用VLM的多模态属性图统一学习框架",
+      "tldr": "现有图学习方法针对固定模态设计，难以处理同时包含文本、图像或多模态节点属性的异质图。本文提出OMG-VLM框架，利用预训练视觉语言模型（VLM）作为共享骨干，结合结构感知图适配器，在单一模型上统一处理文字属性、图像属性及多模态属性的图。实验表明，该模型在节点分类和链接预测任务上超越GNN和LLM基线，并能有效泛化到未见图及不同模态模式，为图学习提供通用方案。",
+      "tags": "query:smart-city",
+      "abstract_en": "Vision-language models (VLMs) provide a unified representation space for textual and visual information, yet their potential as general-purpose backbones for graph-structured data remains largely unexplored. In practice, attributed graphs exhibit substantial modality heterogeneity: some graphs contain only textual node attributes, others only visual attributes, while still others provide both. Existing graph learning approaches are typically designed for fixed modality schemas, requiring separate models for different settings and limiting scalability and cross-graph generalization. To bridge this gap, we present OMG-VLM (One Model, Many Graphs with Vision-Language Models), a unified framework for learning over attributed graphs across heterogeneous modality schemas. OMG-VLM leverages a pretrained VLM as a shared backbone and introduces structure-aware graph adapters that integrate neighborhood information while remaining compatible with the VLM's native embedding space. This design enables effective learning over text-attributed, image-attributed, and multi-attributed graphs within a single model. Extensive experiments across diverse domains show that OMG-VLM consistently outperforms state-of-the-art GNN- and LLM-based baselines on attributed graph learning tasks such as node classification and link prediction, while exhibiting strong generalization to unseen graphs and varying modality schemas. The source code is available at https://github.com/Jo-eyang/OMG-VLM.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

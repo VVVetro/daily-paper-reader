@@ -6,50 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-21
-- 运行时间：2026-07-21 21:14:32 UTC
+- 最新运行日期：2026-07-22
+- 运行时间：2026-07-22 20:57:25 UTC
 - 运行状态：成功
-- 本次总论文数：10
-- 精读区：3
-- 速读区：7
+- 本次总论文数：3
+- 精读区：1
+- 速读区：2
 
 ### 今日简报（AI）
-今日精读2篇高分论文（8.0）并速读3篇，聚焦机器人仿真与LLM驱动本体扩展。最值得关注方向：基于图论的BIM-智能体离散事件仿真平台，以及利用LLMs实现需求驱动、可扩展的本体构建。建议下一步可深入探索语义分割的多模态融合或知识图谱的智能查询生成。
-- 详情：[/202607/21/README](/202607/21/README)
+今日精读1篇9分AEC工程图纸深度学习基准研究，速读2篇涉及多智能体地理数据FAIR评估与跨模态图学习。最值得深挖的是工程图纸智能化处理的前沿成果，以及多智能体协作评估数据可发现性的新框架。建议优先通读精读论文掌握布局检测与信息抽取方法，再速览速读论文拓展多智能体与图学习视野。
+- 详情：[/202607/22/README](/202607/22/README)
 
 ### 精读区论文标签
-1. [A BIM-enabled, Agent-based Discrete-event Simulation Platform for Robotic Studies: A Method based on Graph Theory](/202607/21/2607.16920v1-a-bim-enabled-agent-based-discrete-event-simulation-platform-for-robotic-studies-a-method-based-on-graph-theory)  
-   标签：评分：8.0/10、query:smart-city
-   evidence：基于BIM的仿真平台，提取几何、材料和语义属性用于机器人任务
-2. [OntoExtend: A Framework for Requirement-driven and Scalable Ontology Extension with LLMs](/202607/21/2607.17963v1-ontoextend-a-framework-for-requirement-driven-and-scalable-ontology-extension-with-llms)  
-   标签：评分：8.0/10、query:smart-city
-   evidence：基于LLM的本体扩展框架，可直接用于智慧城市数据的知识图谱构建
-3. [Natural Language Access to Domain-Specific Metadata: A Reusable Framework for LLM Query Generation](/202607/21/2607.18029v1-natural-language-access-to-domain-specific-metadata-a-reusable-framework-for-llm-query-generation)  
-   标签：评分：8.0/10、query:smart-city
-   evidence：利用OWL本体实现自然语言查询生成，支持领域特定档案的语义互操作
+1. [Benchmarking Deep Learning Approaches for AEC Engineering Drawing Layout Detection and Information Extraction](/202607/22/2607.18997v1-benchmarking-deep-learning-approaches-for-aec-engineering-drawing-layout-detection-and-information-extraction)  
+   标签：评分：9.0/10、query:smart-city
+   evidence：建筑工程图纸布局检测与信息提取深度学习基准测试
 
 ### 速读区论文标签
-1. [UMSS: Towards Unsupervised Multi-modal Semantic Segmentation](/202607/21/2607.12372v1-umss-towards-unsupervised-multi-modal-semantic-segmentation)  
+1. [AgentFAIR: A Multi-Agent Collaborative Framework for FAIRness Evaluation of Geospatial Datasets](/202607/22/2607.15781v1-agentfair-a-multi-agent-collaborative-framework-for-fairness-evaluation-of-geospatial-datasets)  
    标签：评分：7.0/10、query:smart-city
-   evidence：无监督多模态语义分割方法，与城市场景理解和数据整合相关
-2. [SAGA: Schema-Aware Grounding for Agentic Text-to-SPARQL Generation](/202607/21/2607.14494v1-saga-schema-aware-grounding-for-agentic-text-to-sparql-generation)  
-   标签：评分：7.0/10、query:smart-city
-   evidence：基于模式感知的文本到SPARQL生成，支持知识图谱查询构建
-3. [Artificial Intelligence for Understanding and Managing Transportation Behavior in Sustainable Smart Cities](/202607/21/2607.17694v1-artificial-intelligence-for-understanding-and-managing-transportation-behavior-in-sustainable-smart-cities)  
-   标签：评分：7.0/10、query:smart-city
-   evidence：智慧城市交通行为管理中的多源数据整合
-4. [Toward Federated Multimodal Graph Foundation Models: A Topology-Aware Multimodal Alignment Framework](/202607/21/2607.15687v1-toward-federated-multimodal-graph-foundation-models-a-topology-aware-multimodal-alignment-framework)  
+   evidence：城市地理空间数据统一标准评估
+2. [One Model, Many Graphs: Learning over Attributed Graphs across Heterogeneous Modalities with Vision-Language Models](/202607/22/2607.19128v1-one-model-many-graphs-learning-over-attributed-graphs-across-heterogeneous-modalities-with-vision-language-models)  
    标签：评分：6.0/10、query:smart-city
-   evidence：多模态图对齐框架，可应用于智慧城市数据融合
-5. [From Modalities to Propositions: A Language-Centric Framework for Multimodal Intelligence](/202607/21/2607.16560v1-from-modalities-to-propositions-a-language-centric-framework-for-multimodal-intelligence)  
-   标签：评分：6.0/10、query:smart-city
-   evidence：提出基于命题的多模态融合框架，实现统一语义表示
-6. [When Do Multimodal and Graph-Augmented RAG Help? A Controlled Evaluation for Document Question Answering](/202607/21/2607.16604v1-when-do-multimodal-and-graph-augmented-rag-help-a-controlled-evaluation-for-document-question-answering)  
-   标签：评分：6.0/10、query:smart-city
-   evidence：多模态图增强RAG用于文档问答
-7. [An Explicit World Model Based on Data-First Ontology: DaoQL Multimodal Storage Validation and Counterfactual Reasoning Evaluation](/202607/21/2607.17269v1-an-explicit-world-model-based-on-data-first-ontology-daoql-multimodal-storage-validation-and-counterfactual-reasoning-evaluation)  
-   标签：评分：6.0/10、query:smart-city
-   evidence：基于本体的显式世界模型用于多模态数据
+   evidence：利用VLM的多模态属性图统一学习框架
 
 
 <div class="dpr-home-promo-card">
