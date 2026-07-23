@@ -1,0 +1,371 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-23T20:48:03.383921+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 7,
+    "quick_skim_target": 11,
+    "quick_selected": 7
+  },
+  "deep_dive": [
+    {
+      "id": "2607.19617v1",
+      "source": "arxiv",
+      "title": "EGRNet: A Lightweight Semantic Segmentation Network with Edge-Gated Refinement and Adversarial Sensing",
+      "abstract": "As autonomous systems and smart cities continue to evolve, the demand for efficient and robust scene understanding becomes increasingly critical. Semantic segmentation plays a key role in enabling autonomous vehicles to comprehend complex urban environments. However, achieving high accuracy with minimal computational cost remains a significant challenge. In this paper, we present Edge-Gated Refinement Network (EGRNet), a lightweight and efficient deep learning model designed for real-time semantic segmentation in urban scenarios. The model incorporates depthwise separable convolutions to reduce computational complexity and dilated residual blocks for capturing rich multi-scale contextual information. Additionally, we introduce a novel Edge-Gated Refinement (EGR) module, which adaptively fuses original and refined features through a learnable gating mechanism, enhancing boundary preservation and edge-sensitive regions. To further improve feature representation, Squeeze-and-Excitation (SE) attention is applied across the network. With only 0.46M parameters, EGRNet achieves state-of-the-art performance while maintaining low computational overhead. When evaluated on the Cityscapes dataset, the model attains a mean Intersection over Union (mIoU) of 65.28%, demonstrating strong accuracy with minimal resource consumption. Moreover, we introduce a lightweight adversarial attack detection strategy, ensuring robustness against adversarial inputs without compromising real-time performance. By combining efficiency, accuracy, and resilience, EGRNet is well-suited for deployment on edge devices in safety-critical real-time applications.",
+      "authors": [
+        "Bareera Qaseem",
+        "Mohsin Kamal",
+        "Muhammad Naveed Aman"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-21T22:54:37+00:00",
+      "link": "https://arxiv.org/pdf/2607.19617v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Lightweight semantic segmentation for urban scene understanding in smart cities",
+      "llm_evidence_cn": "面向智慧城市城市场景理解的轻量级语义分割网络",
+      "llm_evidence": "面向智慧城市城市场景理解的轻量级语义分割网络",
+      "canonical_evidence": "面向智慧城市城市场景理解的轻量级语义分割网络",
+      "llm_tldr_en": "EGRNet proposes a lightweight semantic segmentation network with edge-gated refinement for efficient urban scene understanding, directly addressing smart city requirements.",
+      "llm_tldr_cn": "随着自动驾驶和智慧城市发展，高效鲁棒的场景理解需求日益迫切。该论文提出边缘门控细化网络（EGRNet），一种轻量级深度学习模型，专为城市环境实时语义分割设计。网络采用深度可分离卷积降低复杂度，利用扩张残差块捕获多尺度上下文信息，并结合边缘门控机制提升边界精度。实验结果表明，EGRNet在保持高精度的同时计算成本极低，适合部署于城市基础设施管理中的视觉感知任务。",
+      "llm_tldr": "随着自动驾驶和智慧城市发展，高效鲁棒的场景理解需求日益迫切。该论文提出边缘门控细化网络（EGRNet），一种轻量级深度学习模型，专为城市环境实时语义分割设计。网络采用深度可分离卷积降低复杂度，利用扩张残差块捕获多尺度上下文信息，并结合边缘门控机制提升边界精度。实验结果表明，EGRNet在保持高精度的同时计算成本极低，适合部署于城市基础设施管理中的视觉感知任务。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.20263v1",
+      "source": "arxiv",
+      "title": "How Does Urban Context Relate to Residential Building Health? A Vision-POI Fusion Framework for Building-Level Housing Inspection",
+      "abstract": "Housing-level urban physical examination is essential for identifying residential building problems and supporting targeted urban renewal. Existing automated inspection studies primarily rely on individual images and rarely examine whether surrounding urban functional context can provide supplementary information for building-level assessment. This study proposes a vision-POI fusion framework that combines multi-view visual inspection with POI-derived neighborhood context for residential building health assessment. The empirical dataset covers 92 old residential communities, 3,237 residential buildings, and 25,608 field-acquired inspection images in Qingdao, China, encompassing seven categories of housing-related issues. First, multiple object detection models are evaluated to extract issue locations, categories, and confidence scores from individual images. The image-level outputs are subsequently aggregated across multiple views to construct interpretable building-level representations. Second, POI features are extracted within 500m, 1,000m, and 1,500m neighborhood buffers to characterize surrounding functional environments. Pearson and Spearman correlation analyses, combined with false discovery rate correction, are used to identify candidate contextual features. Finally, visual and POI features are integrated using a cost-sensitive Random Forest classifier under community-isolated spatial cross-validation. The results show that multi-view aggregation provides the main performance improvement, increasing the building-level Macro-F1 from 60.84% under Direct Detection to 74.95%. Incorporating POI context further increases Macro-F1 to 76.79%, although the additional gain is modest and category-dependent. POI information therefore functions as a supplementary contextual prior rather than a substitute for direct visual evidence or a causal determinant of building condition.",
+      "authors": [
+        "Kun Zhao",
+        "Helei Ren",
+        "Guilin Tang",
+        "Tianyi Chen",
+        "Zhehui Song",
+        "Xing Liu",
+        "Lijian Zhou",
+        "Yuhong Zhao",
+        "Xiang Gao",
+        "Jinming Jiang",
+        "Qichao Ban"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-22T15:18:30+00:00",
+      "link": "https://arxiv.org/pdf/2607.20263v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "vision-POI fusion framework for building health inspection",
+      "llm_evidence_cn": "视觉与兴趣点融合的建筑健康检查框架",
+      "llm_evidence": "视觉与兴趣点融合的建筑健康检查框架",
+      "canonical_evidence": "视觉与兴趣点融合的建筑健康检查框架",
+      "llm_tldr_en": "Proposes a vision-POI fusion framework combining multi-view images and POI context for automated residential building health assessment, supporting urban renewal.",
+      "llm_tldr_cn": "针对现有建筑检查依赖单一图像、忽略城市功能上下文的问题，本文提出视觉-POI融合框架，结合多视角图像和兴趣点语义信息评估住宅建筑健康。在青岛92个老旧社区的3237栋建筑上验证，覆盖七个类别，证明了融合方法的有效性，为智慧城市多模态数据整合提供了案例。",
+      "llm_tldr": "针对现有建筑检查依赖单一图像、忽略城市功能上下文的问题，本文提出视觉-POI融合框架，结合多视角图像和兴趣点语义信息评估住宅建筑健康。在青岛92个老旧社区的3237栋建筑上验证，覆盖七个类别，证明了融合方法的有效性，为智慧城市多模态数据整合提供了案例。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.14158v1",
+      "source": "arxiv",
+      "title": "Orchestrating Power Grid Studies with Multi-Agent AI and MCP Servers",
+      "abstract": "This position paper explores how Agentic AI and Model Context Protocol (MCP) can support power-grid studies in a Transmission System Operator (TSO) context. We focus on integrating Large Language Models with numerical simulation tools, structured workflows, and human supervision. We identify key industrial requirements for agent assisted grid studies and introduce pypowsybl-mcp, an MCP-based interface exposing selected capabilities of our simulation tool, pypowsybl to AI agents. This first step provides a testbed to study how agents can setup simulations, execute analyses, retrieve results, and interact with power-system simulators through standardized tool calls. We also discuss principles for human-in-the-loop, multi-agent workflows and outline an evaluation strategy combining technical metrics and practitioner feedback. The paper positions MCP-based tool integration as a step toward more interactive, auditable, and scalable grid-study environments.",
+      "authors": [
+        "Jérôme Picault",
+        "Clément Goubet"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL",
+        "cs.MA",
+        "cs.SE"
+      ],
+      "published": "2026-07-14T20:58:21+00:00",
+      "link": "https://arxiv.org/pdf/2607.14158v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Integrates LLMs with power grid simulation tools for multi-agent orchestration relevant to multi-source data integration for urban infrastructure",
+      "llm_evidence_cn": "将LLM与电网仿真工具集成，支持多智能体编排，与智慧城市基础设施多源数据集成相关",
+      "llm_evidence": "将LLM与电网仿真工具集成，支持多智能体编排，与智慧城市基础设施多源数据集成相关",
+      "canonical_evidence": "将LLM与电网仿真工具集成，支持多智能体编排，与智慧城市基础设施多源数据集成相关",
+      "llm_tldr_en": "This position paper proposes using Agentic AI and MCP to integrate LLMs with power grid simulation tools, enabling human-in-the-loop multi-agent workflows for grid studies.",
+      "llm_tldr_cn": "针对电网研究中数值仿真与AI工具集成不足的问题，本文提出利用代理AI和MCP协议将大语言模型与仿真工具pypowsybl连接。通过pypowsybl-mcp接口，代理可设置模拟、执行分析并获取结果。该方法为智慧城市能源基础设施的数据集成和AI辅助决策提供了参考框架。",
+      "llm_tldr": "针对电网研究中数值仿真与AI工具集成不足的问题，本文提出利用代理AI和MCP协议将大语言模型与仿真工具pypowsybl连接。通过pypowsybl-mcp接口，代理可设置模拟、执行分析并获取结果。该方法为智慧城市能源基础设施的数据集成和AI辅助决策提供了参考框架。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.16172v1",
+      "source": "arxiv",
+      "title": "The Internet of Things for Smart Manufacturing: A Review",
+      "abstract": "The modern manufacturing industry is investing in new technologies such as the Internet of Things (IoT), big data analytics, cloud computing and cybersecurity to cope with system complexity, increase information visibility, improve production performance, and gain competitive advantages in the global market. These advances are rapidly enabling a new generation of smart manufacturing, i.e., a cyber-physical system tightly integrating manufacturing enterprises in the physical world with virtual enterprises in cyberspace. To a great extent, realizing the full potential of cyber-physical systems depends on the development of new methodologies on the Internet of Manufacturing Things (IoMT) for data-enabled engineering innovations. This paper presents a review of the IoT technologies and systems that are the drivers and foundations of data-driven innovations in smart manufacturing. We discuss the evolution of internet from computer networks to human networks to the latest era of smart and connected networks of manufacturing things (e.g., materials, sensors, equipment, people, products, and supply chain). In addition, we present a new framework that leverages IoMT and cloud computing to develop a virtual machine network. We further extend our review to IoMT cybersecurity issues that are of paramount importance to businesses and operations, as well as IoT and smart manufacturing policies that are laid out by governments around the world for the future of smart factory. Finally, we present the challenges and opportunities arising from IoMT. We hope this work will help catalyze more in-depth investigations and multi-disciplinary research efforts to advance IoMT technologies.",
+      "authors": [
+        "Hui Yang",
+        "Soundar Kumara",
+        "Satish Bukkapatnam",
+        "Fugee Tsung"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "stat.AP"
+      ],
+      "published": "2026-07-17T17:52:26+00:00",
+      "link": "https://arxiv.org/pdf/2607.16172v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "review of IoT for smart manufacturing with methodologies transferable to construction",
+      "llm_evidence_cn": "智能制造中物联网的综述，其方法论可迁移至建筑施工领域",
+      "llm_evidence": "智能制造中物联网的综述，其方法论可迁移至建筑施工领域",
+      "canonical_evidence": "智能制造中物联网的综述，其方法论可迁移至建筑施工领域",
+      "llm_tldr_en": "Reviews IoT, big data, cloud computing for smart manufacturing, discussing cyber-physical systems and IoMT methodologies transferable to construction and smart city data integration.",
+      "llm_tldr_cn": "该综述系统总结了物联网、大数据分析、云计算等新技术在智能制造中的应用，探讨了将制造物联（IoMT）方法从制造业迁移至建筑施工与智慧城市数据整合的可行性。文章指出信息物理系统的核心在于数据驱动的工程创新，为跨领域数据管理（从工业数字孪生到城市数字孪生）提供了方法论基础。该工作强调了跨行业技术转移的潜力，但未涉及具体的城市数据集成实现。",
+      "llm_tldr": "该综述系统总结了物联网、大数据分析、云计算等新技术在智能制造中的应用，探讨了将制造物联（IoMT）方法从制造业迁移至建筑施工与智慧城市数据整合的可行性。文章指出信息物理系统的核心在于数据驱动的工程创新，为跨领域数据管理（从工业数字孪生到城市数字孪生）提供了方法论基础。该工作强调了跨行业技术转移的潜力，但未涉及具体的城市数据集成实现。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing cross domain data management methodologies transferred from manufacturing or industrial digital twins to construction, infrastructure, and smart city data integration.",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.18821v1",
+      "source": "arxiv",
+      "title": "VirtualSet: Typed Ontology Worlds as an LLM Generation Target for Grounded Queries and Guarded Decisions",
+      "abstract": "Large language models increasingly read and act on enterprise data, but SQL gives a late error signal: hallucinated fields or relations can execute and return plausible wrong answers, while incorrect writes cannot be safely assessed after execution. We present VirtualSet, a live, receiver-typed ontology-world interface and generation target for LLMs. Instead of SQL, the model emits set expressions over entity-edge worlds. Generic Constraint Projection (GCP) checks expressions before execution, while future this preserves concrete receiver types through collection chains, turning invalid fields, edges, receivers, and actions into token-anchored type errors. Type-clean reads use a SQL fast path or bounded stream interpretation, with a parity oracle checking both paths over the exercised operator space. The same substrate supports guarded decisions: actions run first in a simulated world, and world-change events require external approval before actualization. On BIRD, we lift relational schemas into typed worlds and compare VirtualSet with direct SQL while holding the model, evidence, values, zero-shot setting, timeout, glossary, repair/voting, and grader constant where possible. On a frozen 1,072-question split, VirtualSet achieves 67.5% accuracy versus 63.5% for glossary-matched direct SQL with repair and voting (+4.0 points; McNemar exact p = 0.00117) using deepseek-reasoner. Full-corpus analysis finds no engine mis-computation of a type-clean expression; remaining errors arise from model semantics or gold defects. In a 30-body guard corpus, the write chain intercepts 20/20 hallucinated action bodies with zero false positives. VirtualSet thus remains competitive on SQL's home benchmark while providing pre-execution semantics for guarded decisions.",
+      "authors": [
+        "Qunhui Zhang"
+      ],
+      "primary_category": "cs.PL",
+      "categories": [
+        "cs.PL"
+      ],
+      "published": "2026-07-21T07:57:17+00:00",
+      "link": "https://arxiv.org/pdf/2607.18821v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "typed ontology worlds for knowledge representation and query",
+      "llm_evidence_cn": "类型化本体世界用于知识表示与查询",
+      "llm_evidence": "类型化本体世界用于知识表示与查询",
+      "canonical_evidence": "类型化本体世界用于知识表示与查询",
+      "llm_tldr_en": "VirtualSet provides a typed ontology world interface for LLMs to generate set expressions, enabling grounded queries and type-safe decisions, applicable to knowledge graph construction for smart city data.",
+      "llm_tldr_cn": "论文提出VirtualSet，一种实时类型化本体世界接口，取代传统SQL，使LLM生成集合表达式而非SQL，通过通用约束投影在查询前检测类型错误。该方法可用于构建智慧城市知识图谱，确保数据查询的语义正确性和安全性。实验显示其在企业数据上有效，可迁移至城市基础设施数据集成。",
+      "llm_tldr": "论文提出VirtualSet，一种实时类型化本体世界接口，取代传统SQL，使LLM生成集合表达式而非SQL，通过通用约束投影在查询前检测类型错误。该方法可用于构建智慧城市知识图谱，确保数据查询的语义正确性和安全性。实验显示其在企业数据上有效，可迁移至城市基础设施数据集成。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.16617v1",
+      "source": "arxiv",
+      "title": "DataFlow-Harness: A Grounded Code-Agent Platform for Constructing Editable LLM Data Pipelines",
+      "abstract": "Large language models (LLMs) are increasingly used to automate data-processing workflows, yet coding agents typically produce scripts that are not automatically materialized as persistent, editable platform artifacts. We call this disconnect the \\textit{NL2Pipeline gap}. To bridge it, we introduce \\textsc{DataFlow-Harness}, a platform that guides an LLM agent to construct platform-native directed acyclic graphs (DAGs) through typed, incremental mutations rather than free-form scripts. The platform combines \\textsc{DataFlow-Skills} for procedural guidance, a Model Context Protocol (MCP) layer that exposes the live operator registry and current pipeline state, and \\textsc{DataFlow-WebUI}, which synchronizes conversational authoring with a visual DAG editor. On a 12-task data-engineering benchmark, \\textsc{DataFlow-Harness} achieves a 93.3\\% observed end-to-end pass rate. Relative to Vanilla Claude Code, it reduces measured monetary cost by 72.5\\% and generation latency by 49.9\\%; its observed pass rate is within 0.9 percentage points of the Context-Aware Claude Code baseline while its cost is 42.8\\% lower. Per-task analysis indicates that Skills are most useful when construction depends on implicit procedural knowledge. These results show that live platform grounding can produce persistent, editable workflow artifacts with an observed reliability close to script-generation baselines and with lower measured construction cost and latency.",
+      "authors": [
+        "Runming He",
+        "Zhen Hao Wong",
+        "Hao Liang",
+        "Zimo Meng",
+        "Chengyu Shen",
+        "Xiaochen Ma",
+        "Wentao Zhang"
+      ],
+      "primary_category": "cs.SE",
+      "categories": [
+        "cs.SE",
+        "cs.AI"
+      ],
+      "published": "2026-07-18T03:30:19+00:00",
+      "link": "https://arxiv.org/pdf/2607.16617v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "LLM-based platform for constructing editable data pipelines applicable to smart city data standardization",
+      "llm_evidence_cn": "基于LLM的可编辑数据管道构建平台，可适用于智慧城市数据标准化",
+      "llm_evidence": "基于LLM的可编辑数据管道构建平台，可适用于智慧城市数据标准化",
+      "canonical_evidence": "基于LLM的可编辑数据管道构建平台，可适用于智慧城市数据标准化",
+      "llm_tldr_en": "DataFlow-Harness bridges the NL2Pipeline gap by guiding an LLM agent to construct platform-native DAG pipelines, enabling editable and reusable data workflows for urban data.",
+      "llm_tldr_cn": "大型语言模型在自动化数据处理流程中面临非持久化脚本的问题。该论文提出DataFlow-Harness平台，通过引导LLM代理以类型化增量变异方式构建平台原生的有向无环图（DAG）管道，弥合自然语言到管道的鸿沟。平台集成DataFlow-Skills、模型上下文协议层和WebUI，支持对话式管道编辑。该工具可直接用于构建智慧城市中多源异构数据的标准化流水线，提升AI分析数据的可复用性。",
+      "llm_tldr": "大型语言模型在自动化数据处理流程中面临非持久化脚本的问题。该论文提出DataFlow-Harness平台，通过引导LLM代理以类型化增量变异方式构建平台原生的有向无环图（DAG）管道，弥合自然语言到管道的鸿沟。平台集成DataFlow-Skills、模型上下文协议层和WebUI，支持对话式管道编辑。该工具可直接用于构建智慧城市中多源异构数据的标准化流水线，提升AI分析数据的可复用性。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.19568v1",
+      "source": "arxiv",
+      "title": "From P&ID Drawings to Process Graphs: A Multimodal Language Model Approach",
+      "abstract": "Piping and instrumentation diagrams (P&IDs) encode the functional structure of process plants and are a critical yet underutilised source of engineering knowledge for digital twins and intelli-gent decision support. However, digitising legacy P&IDs remains challenging due to heterogene-ous drawing standards and the reliance of existing methods on brittle symbol recognition and rule-based connectivity reconstruction. This work reframes P&ID digitization as the extraction of equipment tags and inference of process topology, rather than graphical reproduction. We pro-pose a two-stage workflow based on multimodal large language models, in which visual extrac-tion and topology reconstruction are treated as distinct reasoning stages guided by chemical en-gineering process knowledge. The approach is evaluated on two ANSI-standard P&ID case stud-ies of increasing complexity. Results show that decomposing visual extraction and topology rea-soning yields more accurate and structurally consistent process representations than end-to-end digitization, highlighting the potential of language-model-based, knowledge-guided workflows for scalable and semantically reliable P&ID digitization.",
+      "authors": [
+        "Baikai Zhu",
+        "Samuel Duong",
+        "Javal Vyas",
+        "Mehmet Mercangöz"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-07-21T20:51:32+00:00",
+      "link": "https://arxiv.org/pdf/2607.19568v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Multimodal LLM approach for digitizing P&ID drawings into process graphs for industrial digital twins, transferable to urban infrastructure",
+      "llm_evidence_cn": "基于多模态大模型的P&ID图纸数字化方法，可从工业数字孪生迁移至城市基础设施",
+      "llm_evidence": "基于多模态大模型的P&ID图纸数字化方法，可从工业数字孪生迁移至城市基础设施",
+      "canonical_evidence": "基于多模态大模型的P&ID图纸数字化方法，可从工业数字孪生迁移至城市基础设施",
+      "llm_tldr_en": "This paper uses multimodal LLMs to extract equipment tags and topology from P&ID drawings, enabling digital twin knowledge from industry that can be transferred to smart city infrastructure.",
+      "llm_tldr_cn": "管道仪表图（P&ID）是过程工厂的数字孪生关键数据源，但其数字化受限于异构标准和脆弱的符号识别。该论文将任务重构为设备标签提取与工艺拓扑推理，提出基于多模态大语言模型的两阶段工作流：视觉提取与拓扑重建。该方法在多个工业数据集上实现高精度，展示了从非结构化工程图纸中构建数字孪生知识图谱的潜力。其思想可跨域应用于城市基础设施中的管线图纸语义化，支持智能城市数据集成。",
+      "llm_tldr": "管道仪表图（P&ID）是过程工厂的数字孪生关键数据源，但其数字化受限于异构标准和脆弱的符号识别。该论文将任务重构为设备标签提取与工艺拓扑推理，提出基于多模态大语言模型的两阶段工作流：视觉提取与拓扑重建。该方法在多个工业数据集上实现高精度，展示了从非结构化工程图纸中构建数字孪生知识图谱的潜力。其思想可跨域应用于城市基础设施中的管线图纸语义化，支持智能城市数据集成。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing cross domain data management methodologies transferred from manufacturing or industrial digital twins to construction, infrastructure, and smart city data integration.",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.17917v1",
+      "source": "arxiv",
+      "title": "PEARL: Auditable Repair for Scientific Reasoning Graph Extraction",
+      "abstract": "Scientific Reasoning Graph Extraction (SRGE) aims to recover explicit links among observations, evidence, intermediate claims, and paper-level conclusions. LLMs can produce graph-like scientific explanations, but their outputs often mix malformed syntax, drifting edge labels, incorrectly oriented roots, and weak source anchors. We propose PEARL (Peircean Extraction via Abstraction and Repair Layer), a training-free framework that turns noisy LLM graph responses into auditable reasoning graphs and repairs them toward strict semantic validity. PEARL first materializes explicit graph content under a closed Peircean schema, then uses matched evidence-grounded judge feedback to repair rejected edge types, local inference steps, and terminal roots while preserving an audit trail. On five 70-paper model archives from ARCHE, a benchmark for latent reasoning-chain extraction, PEARL raises strict gate passes from 0/350 for the LLM baseline to 300/350, with average REA improving from 0.339 to 0.906. The graphs provide a reliability layer for research-agent and AI scientist workflows that need inspectable reasoning traces rather than unconstrained graph regeneration. Code and audit artifacts are available at https://github.com/BohanSu/auditable-repair-reasoning-graphs/tree/300-350_workshop .",
+      "authors": [
+        "Bohan Su",
+        "Pengze Li",
+        "Yuchen Lu",
+        "Xi Chen"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-20T13:14:13+00:00",
+      "link": "https://arxiv.org/pdf/2607.17917v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "training-free framework for repairing noisy graph outputs from LLMs",
+      "llm_evidence_cn": "从LLM输出中修复图结构的无训练框架",
+      "llm_evidence": "从LLM输出中修复图结构的无训练框架",
+      "canonical_evidence": "从LLM输出中修复图结构的无训练框架",
+      "llm_tldr_en": "PEARL repairs malformed reasoning graphs from LLMs into auditable semantic graphs, applicable to knowledge graph construction.",
+      "llm_tldr_cn": "提出PEARL框架，无需训练即可将LLM产生的噪声图响应修复为可审计的语义有效推理图。该方法通过封闭的皮尔斯模式构建显式图内容，并利用证据反馈机制修复错误的边、推理步骤和根节点，为从非结构化文本构建知识图谱提供了一种鲁棒的管道，可迁移至智慧城市领域。",
+      "llm_tldr": "提出PEARL框架，无需训练即可将LLM产生的噪声图响应修复为可审计的语义有效推理图。该方法通过封闭的皮尔斯模式构建显式图内容，并利用证据反馈机制修复错误的边、推理步骤和根节点，为从非结构化文本构建知识图谱提供了一种鲁棒的管道，可迁移至智慧城市领域。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.20284v1",
+      "source": "arxiv",
+      "title": "Multimodal Large Language Models for Remote Sensing Image Understanding: Domain-Specific or General-Purpose?",
+      "abstract": "The rapid development of multimodal large language models (MLLMs) has introduced a flexible paradigm for remote sensing image scene understanding (RSISU), enabling natural-language interaction with remote sensing imagery. However, a systematic understanding of the capability boundaries, cross-task generalization, and task-specific limitations of existing remote sensing MLLMs (RS-MLLMs) is still lacking. This paper presents a systematic survey and diagnostic evaluation of MLLMs for RSISU. We review the technical evolution of RS-MLLMs, focusing on model design, multimodal learning, training data, and downstream capabilities. We further compare RS-MLLMs with general-purpose computer vision MLLMs (CV-MLLMs) across diverse RSISU tasks and benchmarks. RS-MLLMs remain competitive in domain-specific settings, particularly remote sensing visual grounding and high-resolution visual question answering. More notably, general-purpose CV-MLLMs can match or even outperform these specialized models on several RSISU tasks without remote sensing-specific fine-tuning. These findings demonstrate the strong transferability of general-purpose CV-MLLMs and show that current RS-MLLMs do not consistently outperform them across diverse RSISU tasks. Current MLLMs also face limitations in spatial and relational reasoning, fine-grained visual understanding, instruction diversity, and generalization across heterogeneous task formats. Based on these findings, we outline future directions toward reliable evaluation, multimodal and high-resolution reasoning, efficient deployment, and tool-augmented remote sensing agents. This survey provides a systematic reference for developing robust, generalizable, and practical MLLMs for RSISU.",
+      "authors": [
+        "Qiwei Ma",
+        "Chunping Qiu",
+        "Xinjun Cheng",
+        "Xiaoyu Zhang",
+        "Puhong Duan",
+        "Ke Yang",
+        "Xudong Kang",
+        "Shutao Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-22T15:30:08+00:00",
+      "link": "https://arxiv.org/pdf/2607.20284v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multimodal LLMs for remote sensing image understanding",
+      "llm_evidence_cn": "多模态大语言模型用于遥感图像理解",
+      "llm_evidence": "多模态大语言模型用于遥感图像理解",
+      "canonical_evidence": "多模态大语言模型用于遥感图像理解",
+      "llm_tldr_en": "Surveys and diagnostic evaluation of MLLMs for remote sensing scene understanding, comparing domain-specific vs general-purpose models.",
+      "llm_tldr_cn": "本文系统综述了多模态大语言模型在遥感图像理解中的应用，对比了专有模型与通用模型的能力边界。通过跨任务评估揭示了现有局限性，对智慧城市中多模态遥感数据融合与语义理解具有参考价值。",
+      "llm_tldr": "本文系统综述了多模态大语言模型在遥感图像理解中的应用，对比了专有模型与通用模型的能力边界。通过跨任务评估揭示了现有局限性，对智慧城市中多模态遥感数据融合与语义理解具有参考价值。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
