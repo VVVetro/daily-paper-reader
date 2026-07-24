@@ -1,0 +1,249 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-24T21:29:45.718953+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2607.21357v1",
+      "source": "arxiv",
+      "title": "Toward Federated Cognitive Digital Twins over the Edge-to-Cloud Continuum",
+      "abstract": "Digital Twins (DTs) are increasingly adopted to monitor, analyze, and optimize Cyber-Physical Systems (CPSs) through continuous interaction between physical assets and their digital counterparts. However, current DT architectures often rely on centralized and monolithic designs, leading to scalability, latency, and resilience issues in distributed environment such as smart cities. Moreover, they provide limited support for semantic integration and high-level reasoning, reducing the effectiveness of DT-based decision-making. Recent studies on Federated Digital Twins (FDTs) have addressed scalability by decomposing complex systems into interacting twins, but they still largely centralize intelligence in cloud components. In parallel, Cognitive Digital Twins (CDTs) enhance DTs with semantic reasoning, explainability, and AI-driven decision support, yet they are typically difficult to integrate into distributed architectures. This paper proposes a Federated Cognitive Digital Twin (FCDT) architecture that combines federation and cognition within a unified approach. The architecture distributes intelligence across the edge-to-cloud continuum through local twins, which provide real-time monitoring and lightweight cognitive capabilities, and global twins, which perform system-level reasoning, simulation, and coordination. By integrating distributed autonomy with cognitive reasoning, the proposed approach improves scalability, responsiveness, and decision-making in complex distributed CPSs",
+      "authors": [
+        "Alessandra Somma",
+        "Alessio Bucaioni"
+      ],
+      "primary_category": "cs.SE",
+      "categories": [
+        "cs.SE"
+      ],
+      "published": "2026-07-23T14:20:59+00:00",
+      "link": "https://arxiv.org/pdf/2607.21357v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "federated cognitive digital twins for smart cities with semantic integration",
+      "llm_evidence_cn": "面向智能城市的联邦认知数字孪生与语义集成",
+      "llm_evidence": "面向智能城市的联邦认知数字孪生与语义集成",
+      "canonical_evidence": "面向智能城市的联邦认知数字孪生与语义集成",
+      "llm_tldr_en": "This paper proposes a federated cognitive digital twin architecture over edge-to-cloud continuum to address scalability and semantic integration challenges in smart cities, enabling high-level reasoning and decentralized intelligence.",
+      "llm_tldr_cn": "针对当前数字孪生在分布式智能城市中存在的可扩展性差和语义集成不足的问题，本文提出联邦认知数字孪生架构。该架构通过边缘-云协同实现认知能力和语义集成，支持分布式智能城市中的高层次推理。论文提供了概念框架并讨论了关键挑战，为城市级数字孪生平台提供了可扩展的认知增强方案。",
+      "llm_tldr": "针对当前数字孪生在分布式智能城市中存在的可扩展性差和语义集成不足的问题，本文提出联邦认知数字孪生架构。该架构通过边缘-云协同实现认知能力和语义集成，支持分布式智能城市中的高层次推理。论文提供了概念框架并讨论了关键挑战，为城市级数字孪生平台提供了可扩展的认知增强方案。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.18917v1",
+      "source": "arxiv",
+      "title": "TAP-RAG: Task-Aware Policy Control for Long-Document Multimodal Question Answering",
+      "abstract": "Long-document multimodal question answering requires more than retrieving relevant chunks from a large document. Different queries require different evidence behavior. Existing multimodal RAG systems improve evidence access through text chunks, page images, graph links, or heterogeneous document elements, but they often apply a largely query-agnostic evidence-use strategy. We present TAP-RAG, a task-aware policy-controlled RAG framework for long-document multimodal QA. TAP-RAG contains a main controller, the Task-Aware Policy Controller (TAPC), and two policy-guided evidence executors: Task-Aware Query-Guided Flow Diffusion (TA-QFD) and Task-Aware Visual Enhancement (TAVE). For each query, TAPC predicts the task prior, estimates visual/local/global evidence signals, and produces an executable policy. TA-QFD then expands textual and structural evidence over the multimodal document graph, while TAVE selectively inspects page images when visual or layout evidence is needed. A guarded synthesis stage fuses text, visual, and structural evidence and abstains when support is insufficient. On DocBench and MMLongBench-Doc, TAP-RAG achieves the best overall accuracy among the compared systems, improving over a matched multimodal-RAG baseline by +9.1 points (61.1 to 70.2) and +4.5 points (42.2 to 46.7), respectively.",
+      "authors": [
+        "Zhong Ji",
+        "Keqi Jin",
+        "Yan Zhang",
+        "Jiasheng Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-21T09:59:13+00:00",
+      "link": "https://arxiv.org/pdf/2607.18917v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "task-aware multimodal RAG framework for heterogeneous document elements",
+      "llm_evidence_cn": "面向异构文档元素的任务感知多模态RAG框架",
+      "llm_evidence": "面向异构文档元素的任务感知多模态RAG框架",
+      "canonical_evidence": "面向异构文档元素的任务感知多模态RAG框架",
+      "llm_tldr_en": "Proposes TAP-RAG, a task-aware policy-controlled retrieval-augmented generation framework that adaptively selects and enhances evidence from text, images, and graphs for long-document multimodal QA.",
+      "llm_tldr_cn": "该论文针对长文档多模态问答中检索策略与查询任务不匹配的问题，提出TAP-RAG框架。其核心是任务感知控制器（TAPC），能根据查询预测任务先验并动态选择证据来源（文本块、页面图像、图链接等），并结合两种策略执行器进行视觉增强和注意力引导。在多个长文档QA基准上，TAP-RAG优于现有方法。其多模态融合策略可迁移至智慧城市中各类异构数据（文档、图像、BIM模型）的联合分析。",
+      "llm_tldr": "该论文针对长文档多模态问答中检索策略与查询任务不匹配的问题，提出TAP-RAG框架。其核心是任务感知控制器（TAPC），能根据查询预测任务先验并动态选择证据来源（文本块、页面图像、图链接等），并结合两种策略执行器进行视觉增强和注意力引导。在多个长文档QA基准上，TAP-RAG优于现有方法。其多模态融合策略可迁移至智慧城市中各类异构数据（文档、图像、BIM模型）的联合分析。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.16338v1",
+      "source": "arxiv",
+      "title": "DMFNet: Dual-Backbone Multiscale Fusion Network for Urban Scene Classification",
+      "abstract": "This article presents DMFNet, a dual-backbone multiscale feature fusion framework with residual feature propagation and spatial attention for remote sensing scene classification. Existing approaches often face challenges in effectively capturing multiscale feature interactions and learning robust feature representations from complex aerial scenes with high intra-class variability and inter-class similarity. To address these limitations, the proposed framework employs two pretrained backbone networks to extract diverse hierarchical feature representations. A multiscale feature fusion mechanism with residual feature propagation is introduced to enhance feature interaction across multiple resolution levels. In addition, a spatial attention module is introduced to emphasize informative spatial regions in multi-object scenes. Further, a two-stage training strategy consisting of backbone freezing followed by selective fine-tuning is adopted to ensure stable optimization and improved generalization. Experiments conducted on the benchmark AID dataset demonstrate that the DMFNet achieves an average accuracy of 97.46\\% $\\pm$ 0.14\\%. Ablative analysis further show the importance of various components in unison.",
+      "authors": [
+        "Anamitra Ghosh",
+        "Abhiroop Chatterjee",
+        "Susmita Ghosh"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-16T10:31:32+00:00",
+      "link": "https://arxiv.org/pdf/2607.16338v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "dual-backbone multiscale fusion network for urban scene classification",
+      "llm_evidence_cn": "双骨干多尺度融合网络用于城市场景分类",
+      "llm_evidence": "双骨干多尺度融合网络用于城市场景分类",
+      "canonical_evidence": "双骨干多尺度融合网络用于城市场景分类",
+      "llm_tldr_en": "Presents DMFNet, a dual-backbone multiscale feature fusion framework with residual propagation and spatial attention for remote sensing scene classification.",
+      "llm_tldr_cn": "针对遥感图像场景分类中类内差异大、类间相似度高的问题，本文提出DMFNet双骨干多尺度融合网络。该框架使用两个预训练骨干提取多样特征，通过残差传播机制增强多尺度特征交互，并引入空间注意力模块。在多个遥感数据集上取得了优于现有方法的分类性能，为城市场景理解提供了有力工具。",
+      "llm_tldr": "针对遥感图像场景分类中类内差异大、类间相似度高的问题，本文提出DMFNet双骨干多尺度融合网络。该框架使用两个预训练骨干提取多样特征，通过残差传播机制增强多尺度特征交互，并引入空间注意力模块。在多个遥感数据集上取得了优于现有方法的分类性能，为城市场景理解提供了有力工具。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.19949v1",
+      "source": "arxiv",
+      "title": "SenWorld: A Digital-Twin Simulation for Generating Context-Rich Evaluation Data",
+      "abstract": "Smartphone personal assistants reason over longitudinal personal data, yet evaluating them requires context-rich evaluation data whose correct answers are known, and real device traces are too privacy-sensitive to share. To address this challenge, we present SenWorld, a physically grounded, deterministic, event-sourced digital-twin simulation that generates such data with ground truth fixed by construction. In SenWorld, personas live through a full day in a world built from real map, weather, holiday, and network data; every observable signal is archived in full-system snapshots; and each evaluation case is labeled by a pointer to an existing record rather than by post-hoc annotation or a large language model (LLM) judge. We evaluate this method with 16 personas in Beijing. The generated data closely matches the held-out real-user benchmark in category distribution (Jensen--Shannon divergence (JSD) 0.070) and in the daily rhythm of communication records (JSD below 0.1), though generated records remain shorter than real ones. Without scripted interaction, personas form a fully reciprocated dialogue subgraph and differentiated behavioral repertoires. Projected into 717 evaluation cases, the generated data exposes 78 failures in a production smartphone assistant, concentrating on call and Short Message Service (SMS) records while contacts, schedules, and alarms never fail. The snapshot pointer confirms each failure as an assistant-side retrieval error, with no LLM judge involved. Overall, SenWorld offers a privacy-safe, reproducible, and distribution-checked path to evaluation data whose labels are fixed by construction.",
+      "authors": [
+        "Zenghui Zhou",
+        "Xiaoyang Li",
+        "Xiaoxuan Qiao",
+        "Zhilang Wei",
+        "Tianming Lei"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CY"
+      ],
+      "published": "2026-07-22T09:25:47+00:00",
+      "link": "https://arxiv.org/pdf/2607.19949v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "digital-twin simulation for generating evaluation data",
+      "llm_evidence_cn": "用于生成评估数据的数字孪生仿真",
+      "llm_evidence": "用于生成评估数据的数字孪生仿真",
+      "canonical_evidence": "用于生成评估数据的数字孪生仿真",
+      "llm_tldr_en": "Presents SenWorld, a physically grounded digital-twin simulation that generates context-rich evaluation data with ground truth fixed by construction, for smartphone personal assistant evaluation.",
+      "llm_tldr_cn": "针对智能个人助手评估需要上下文丰富且带标签的真值数据但真实设备数据隐私敏感的问题，本文提出SenWorld数字孪生仿真系统。该系统基于真实地图、气象、假日和网络数据构建虚拟世界，让虚拟人物在其中活动一天，自动记录所有信号并为每个评估用例提供基于存在记录的真值标签。实验验证了该仿真数据在智能助手评估中的有效性。",
+      "llm_tldr": "针对智能个人助手评估需要上下文丰富且带标签的真值数据但真实设备数据隐私敏感的问题，本文提出SenWorld数字孪生仿真系统。该系统基于真实地图、气象、假日和网络数据构建虚拟世界，让虚拟人物在其中活动一天，自动记录所有信号并为每个评估用例提供基于存在记录的真值标签。实验验证了该仿真数据在智能助手评估中的有效性。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.19949v2",
+      "source": "arxiv",
+      "title": "SenWorld: A Digital-Twin Simulation for Generating Context-Rich Evaluation Data",
+      "abstract": "Smartphone personal assistants reason over longitudinal personal data, yet evaluating them requires context-rich evaluation data whose correct answers are known, and real device traces are too privacy-sensitive to share. To address this challenge, we present SenWorld, a physically grounded, deterministic, event-sourced digital-twin simulation that generates such data with ground truth fixed by construction. In SenWorld, personas live through a full day in a world built from real map, weather, holiday, and network data; every observable signal is archived in full-system snapshots; and each evaluation case is labeled by a pointer to an existing record rather than by post-hoc annotation or a large language model (LLM) judge. We evaluate this method with 16 personas in Beijing. The generated data closely matches the held-out real-user benchmark in category distribution (Jensen--Shannon divergence (JSD) 0.070) and in the daily rhythm of communication records (JSD below 0.1), though generated records remain shorter than real ones. Without scripted interaction, personas form a fully reciprocated dialogue subgraph and differentiated behavioral repertoires. Projected into 717 evaluation cases, the generated data exposes 78 failures in a production smartphone assistant, concentrating on call and Short Message Service (SMS) records while contacts, schedules, and alarms never fail. The snapshot pointer confirms each failure as an assistant-side retrieval error, with no LLM judge involved. Overall, SenWorld offers a privacy-safe, reproducible, and distribution-checked path to evaluation data whose labels are fixed by construction.",
+      "authors": [
+        "Zenghui Zhou",
+        "Xiaoyang Li",
+        "Xiaoxuan Qiao",
+        "Zhilang Wei",
+        "Tianming Lei"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CY"
+      ],
+      "published": "2026-07-22T09:25:47+00:00",
+      "link": "https://arxiv.org/pdf/2607.19949v2",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "digital twin simulation for generating context-rich evaluation data",
+      "llm_evidence_cn": "用于生成上下文丰富评估数据的数字孪生模拟",
+      "llm_evidence": "用于生成上下文丰富评估数据的数字孪生模拟",
+      "canonical_evidence": "用于生成上下文丰富评估数据的数字孪生模拟",
+      "llm_tldr_en": "SenWorld generates context-rich evaluation data via a physically grounded digital-twin simulation, enabling ground-truth labeling for smartphone assistants.",
+      "llm_tldr_cn": "针对智能手机个人助理评估数据缺乏真实标注的问题，本文提出了SenWorld，一个基于物理规律的事件溯源数字孪生模拟平台，可在固定真实世界的条件下生成具有内在真值的评估数据。该方法融合真实地图、天气、假日等数据构建模拟世界，并通过全系统快照存档所有信号，避免后验证或大语言模型评判。实验验证了生成数据的有效性与确定性。该工作为数字孪生驱动的数据生成提供了可复用的方法论框架。",
+      "llm_tldr": "针对智能手机个人助理评估数据缺乏真实标注的问题，本文提出了SenWorld，一个基于物理规律的事件溯源数字孪生模拟平台，可在固定真实世界的条件下生成具有内在真值的评估数据。该方法融合真实地图、天气、假日等数据构建模拟世界，并通过全系统快照存档所有信号，避免后验证或大语言模型评判。实验验证了生成数据的有效性与确定性。该工作为数字孪生驱动的数据生成提供了可复用的方法论框架。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.21137v1",
+      "source": "arxiv",
+      "title": "Safety-oriented sidewalk and road segmentation for smartphone-based assistive navigation",
+      "abstract": "Independent sidewalk mobility is essential for blind and visually impaired pedestrians (BVIPs), yet smartphone-based assistive navigation requires perception models that distinguish walkable sidewalks from adjacent unsafe regions. This study presents a safety-oriented semantic segmentation framework for future mobile guidance. We introduce SENSATION-DS, a chest-height pedestrian-view dataset with 2,752 image-mask pairs and nine-class navigation-relevant taxonomy. External urban and sidewalk datasets were harmonized to this label space, and five segmentation architectures were evaluated using staged target-domain adaptation with mask-conditioned synthetic images and Segment Anything Model 2 (SAM2) pseudo-labels. Models were assessed using mean Intersection over Union (mIoU), road- and sidewalk-specific metrics, Road-as-Sidewalk Error Rate as a proxy false-safe measure, and Android Open Neural Network Exchange benchmarking. Synthetic augmentation generally improved segmentation accuracy, whereas SAM2 pseudo-labels more consistently reduced Road-as-Sidewalk errors. UPerNet-MobileNetV3 achieved the highest offline mIoU (0.715 +/- 0.006), while DeepLabV3Plus-MobileNetV3 achieved the lowest Road-as-Sidewalk Error Rate (0.079) and highest Android runtime at 512x384 (7.383 FPS). These results show that assistive sidewalk perception should be evaluated jointly by segmentation accuracy, proxy false-safe behavior, and smartphone deployment feasibility, while real-world benefit requires validation with BVIP users. This evaluation supports selecting models that balance accurate perception, conservative error behavior, and practical runtime.",
+      "authors": [
+        "Hakan Calim",
+        "Anamaria Dumitrescu",
+        "Adarsh Bhandary Panambur",
+        "Huzaifa Asif",
+        "Andreas Maier"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-07-23T10:16:43+00:00",
+      "link": "https://arxiv.org/pdf/2607.21137v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "semantic segmentation for urban sidewalk environments",
+      "llm_evidence_cn": "城市人行道环境的语义分割",
+      "llm_evidence": "城市人行道环境的语义分割",
+      "canonical_evidence": "城市人行道环境的语义分割",
+      "llm_tldr_en": "Proposes a safety-oriented semantic segmentation framework for smartphone-based assistive navigation, introduces a pedestrian-view dataset with 9 classes, and evaluates multiple architectures using domain adaptation and SAM2 pseudo-labels.",
+      "llm_tldr_cn": "针对视障人士的独立出行需求，本文提出了一种面向安全的人行道与道路语义分割框架。该方法构建了行人视角的SENSATION-DS数据集，包含2752张图像和9类导航相关标签，并通过阶段式目标域自适应与SAM2伪标签技术，评估了五种分割架构。实验表明该框架能有效区分可通行区域与不安全区域，为移动辅助导航提供了可靠的感知基础。",
+      "llm_tldr": "针对视障人士的独立出行需求，本文提出了一种面向安全的人行道与道路语义分割框架。该方法构建了行人视角的SENSATION-DS数据集，包含2752张图像和9类导航相关标签，并通过阶段式目标域自适应与SAM2伪标签技术，评估了五种分割架构。实验表明该框架能有效区分可通行区域与不安全区域，为移动辅助导航提供了可靠的感知基础。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
