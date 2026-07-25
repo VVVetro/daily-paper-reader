@@ -1,0 +1,57 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-25T20:57:04.212100+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.15942v1",
+      "source": "arxiv",
+      "title": "More with Less: a Large Scale Remote Sensing VLM with a Simple Recipe",
+      "abstract": "Remote sensing vision-language models are increasingly expected to support open-ended reasoning over Earth Observation data and a variety of tasks. Most recent progress in this area has been driven by remote-sensing-specific architectural designs, often introducing new encoders, alignment modules, or task-specific fusion mechanisms. In this work, we challenge the necessity of such architectural specialization. We show that a generally capable vision-language model can achieve competitive or state-of-the-art performance at challenging remote sensing benchmarks, provided that it is trained at sufficient scale across diverse data and tasks. Our model uses a single language policy that can either answer directly in text or invoke a localization tool for segmentation and grounding. To train this heterogeneous behaviour, we employ a multi-task reinforcement learning framework with adaptive task rewards covering multiple-choice VQA, free-form VQA, captioning, detection, and segmentation across a large variety of input types. Our approach achieves competitive results across a broad set of benchmarks, including high-resolution, multi-temporal, multi-modal and multi-view tasks. Further, as training data scales, our experiments show consistent improvements across most tasks both in and out of distribution, which correlate with per-task data diversity. These findings suggest that, for remote sensing VLMs, data scale is more important than architectural novelty.",
+      "authors": [
+        "Stefan Maria Ailuro",
+        "Mario Markov",
+        "Mohammad Mahdi",
+        "Luc Van Gool",
+        "Danda Pani Paudel"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-07-17T13:25:44+00:00",
+      "link": "https://arxiv.org/pdf/2607.15942v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "remote sensing VLM as multimodal fusion method, applicable to smart city data integration",
+      "llm_evidence_cn": "遥感视觉语言模型作为多模态融合方法，可应用于智慧城市数据集成",
+      "llm_evidence": "遥感视觉语言模型作为多模态融合方法，可应用于智慧城市数据集成",
+      "canonical_evidence": "遥感视觉语言模型作为多模态融合方法，可应用于智慧城市数据集成",
+      "llm_tldr_en": "Shows that a large-scale remote sensing VLM without specialized architectural modifications achieves SOTA across diverse benchmarks via scaling data and tasks.",
+      "llm_tldr_cn": "论文挑战了遥感视觉语言模型需专用架构的假设，提出简单配方：通过大规模多任务训练，通用VLM即可在多项遥感基准上达到最优性能，该结论为智慧城市多模态融合提供了低成本高效能的设计思路。",
+      "llm_tldr": "论文挑战了遥感视觉语言模型需专用架构的假设，提出简单配方：通过大规模多任务训练，通用VLM即可在多项遥感基准上达到最优性能，该结论为智慧城市多模态融合提供了低成本高效能的设计思路。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

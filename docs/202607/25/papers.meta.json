@@ -1,0 +1,24 @@
+{
+  "label": "2026-07-25",
+  "date": "2026-07-25",
+  "generated_at": "2026-07-25T20:58:41",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/25/2607.15942v1-more-with-less-a-large-scale-remote-sensing-vlm-with-a-simple-recipe",
+      "section": "quick",
+      "title_en": "More with Less: a Large Scale Remote Sensing VLM with a Simple Recipe",
+      "authors": "Stefan Maria Ailuro, Mario Markov, Mohammad Mahdi, Luc Van Gool, Danda Pani Paudel",
+      "date": "2026-07-17",
+      "pdf": "https://arxiv.org/pdf/2607.15942v1",
+      "score": "7.0",
+      "evidence": "遥感视觉语言模型作为多模态融合方法，可应用于智慧城市数据集成",
+      "tldr": "遥感视觉语言模型通常依赖专用架构。本文挑战这一观念，提出一个简单通用的大规模VLM，通过多任务强化学习统一文本回答与定位任务。实验表明，在多种遥感基准上取得竞争结果，且数据规模扩大带来一致改进。贡献在于强调数据多样性比架构新颖性更重要。",
+      "tags": "query:smart-city",
+      "abstract_en": "Remote sensing vision-language models are increasingly expected to support open-ended reasoning over Earth Observation data and a variety of tasks. Most recent progress in this area has been driven by remote-sensing-specific architectural designs, often introducing new encoders, alignment modules, or task-specific fusion mechanisms. In this work, we challenge the necessity of such architectural specialization. We show that a generally capable vision-language model can achieve competitive or state-of-the-art performance at challenging remote sensing benchmarks, provided that it is trained at sufficient scale across diverse data and tasks. Our model uses a single language policy that can either answer directly in text or invoke a localization tool for segmentation and grounding. To train this heterogeneous behaviour, we employ a multi-task reinforcement learning framework with adaptive task rewards covering multiple-choice VQA, free-form VQA, captioning, detection, and segmentation across a large variety of input types. Our approach achieves competitive results across a broad set of benchmarks, including high-resolution, multi-temporal, multi-modal and multi-view tasks. Further, as training data scales, our experiments show consistent improvements across most tasks both in and out of distribution, which correlate with per-task data diversity. These findings suggest that, for remote sensing VLMs, data scale is more important than architectural novelty.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

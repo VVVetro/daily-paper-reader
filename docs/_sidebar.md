@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-07-25 <!--dpr-date:20260725-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202607/25/2607.15942v1-more-with-less-a-large-scale-remote-sensing-vlm-with-a-simple-recipe" data-sidebar-item="{&quot;title&quot;: &quot;More with Less: a Large Scale Remote Sensing VLM with a Simple Recipe&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2607.15942v1-more-with-less-a-large-scale-remote-sensing-vlm-with-a-simple-recipe&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;smart-city&quot;}], &quot;evidence&quot;: &quot;遥感视觉语言模型作为多模态融合方法，可应用于智慧城市数据集成&quot;}">More with Less: a Large Scale Remote Sensing VLM with a Simple Recipe</a>
   * 2026-07-24 <!--dpr-date:20260724-->
     * 精读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202607/24/2607.21357v1-toward-federated-cognitive-digital-twins-over-the-edge-to-cloud-continuum" data-sidebar-item="{&quot;title&quot;: &quot;Toward Federated Cognitive Digital Twins over the Edge-to-Cloud Continuum&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2607.21357v1-toward-federated-cognitive-digital-twins-over-the-edge-to-cloud-continuum&quot;, &quot;score&quot;: &quot;8.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;smart-city&quot;}], &quot;evidence&quot;: &quot;面向智能城市的联邦认知数字孪生与语义集成&quot;}">Toward Federated Cognitive Digital Twins over the Edge-to-Cloud Continuum</a>
