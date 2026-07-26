@@ -6,26 +6,27 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-25
-- 运行时间：2026-07-25 20:58:34 UTC
+- 最新运行日期：2026-07-26
+- 运行时间：2026-07-26 20:25:00 UTC
 - 运行状态：成功
-- 本次总论文数：1
+- 本次总论文数：2
 - 精读区：0
-- 速读区：1
+- 速读区：2
 
 ### 今日简报（AI）
-今日速读1篇遥感视觉大模型论文，提出用更少资源实现更好性能的简单配方。  
-该文指出大规模遥感视觉语言模型可通过简化训练配方实现高效学习，适合资源受限场景。  
-建议关注该简化方法在遥感图像理解中的实际应用，特别是如何降低计算成本。
-- 详情：[/202607/25/README](/202607/25/README)
+今日聚焦两篇6分论文，分别探索LLM与本体世界的结合以及数据可视化的语义驱动新范式。最值得关注的是《VirtualSet》中提出的类型化本体世界方法，能提升LLM对地面查询的准确性和决策可靠性；《Flint》则为可视化工具提供了语义中间语言的新思路。建议读者可优先浏览《VirtualSet》的核心思想，了解如何用结构化本体增强LLM的推理能力。
+- 详情：[/202607/26/README](/202607/26/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [More with Less: a Large Scale Remote Sensing VLM with a Simple Recipe](/202607/25/2607.15942v1-more-with-less-a-large-scale-remote-sensing-vlm-with-a-simple-recipe)  
-   标签：评分：7.0/10、query:smart-city
-   evidence：遥感视觉语言模型作为多模态融合方法，可应用于智慧城市数据集成
+1. [VirtualSet: Typed Ontology Worlds as an LLM Generation Target for Grounded Queries and Guarded Decisions](/202607/26/2607.18821v2-virtualset-typed-ontology-worlds-as-an-llm-generation-target-for-grounded-queries-and-guarded-decisions)  
+   标签：评分：6.0/10、query:smart-city
+   evidence：针对LLM的有类型本体世界，支持语义互操作
+2. [Flint: A Semantics-Driven Data Visualization Intermediate Language](/202607/26/2607.20775v1-flint-a-semantics-driven-data-visualization-intermediate-language)  
+   标签：评分：6.0/10、query:smart-city
+   evidence：面向异构数据表示的语义驱动模型
 
 
 <div class="dpr-home-promo-card">

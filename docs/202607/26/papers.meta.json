@@ -1,0 +1,39 @@
+{
+  "label": "2026-07-26",
+  "date": "2026-07-26",
+  "generated_at": "2026-07-26T20:25:07",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/26/2607.18821v2-virtualset-typed-ontology-worlds-as-an-llm-generation-target-for-grounded-queries-and-guarded-decisions",
+      "section": "quick",
+      "title_en": "VirtualSet: Typed Ontology Worlds as an LLM Generation Target for Grounded Queries and Guarded Decisions",
+      "authors": "Qunhui Zhang",
+      "date": "2026-07-21",
+      "pdf": "https://arxiv.org/pdf/2607.18821v2",
+      "score": "6.0",
+      "evidence": "针对LLM的有类型本体世界，支持语义互操作",
+      "tldr": "LLM在数据库查询中常因幻觉字段导致错误。VirtualSet提出类型化本体世界接口，使模型输出集合表达式，通过通用约束投影（GCP）在执行前检查错误。在BIRD基准上，VirtualSet准确率67.5%优于SQL的63.5%（p=0.00117），且写操作链可拦截20/20幻觉动作。该方法在保持SQL竞争力同时提供预执行语义，保障决策安全。",
+      "tags": "query:smart-city",
+      "abstract_en": "Large language models increasingly read and act on enterprise data, but SQL gives a late error signal: hallucinated fields or relations can execute and return plausible wrong answers, while incorrect writes cannot be safely assessed after execution. We present VirtualSet, a live, receiver-typed ontology-world interface and generation target for LLMs. Instead of SQL, the model emits set expressions over entity-edge worlds. Generic Constraint Projection (GCP) checks expressions before execution, while future this preserves concrete receiver types through collection chains, turning invalid fields, edges, receivers, and actions into token-anchored type errors. Type-clean reads use a SQL fast path or bounded stream interpretation, with a parity oracle checking both paths over the exercised operator space. The same substrate supports guarded decisions: actions run first in a simulated world, and world-change events require external approval before actualization. On BIRD, we lift relational schemas into typed worlds and compare VirtualSet with direct SQL while holding the model, evidence, values, zero-shot setting, timeout, glossary, repair/voting, and grader constant where possible. On a frozen 1,072-question split, VirtualSet achieves 67.5% accuracy versus 63.5% for glossary-matched direct SQL with repair and voting (+4.0 points; McNemar exact p = 0.00117) using deepseek-reasoner. Full-corpus analysis finds no engine mis-computation of a type-clean expression; remaining errors arise from model semantics or gold defects. In a 30-body guard corpus, the write chain intercepts 20/20 hallucinated action bodies with zero false positives. VirtualSet thus remains competitive on SQL's home benchmark while providing pre-execution semantics for guarded decisions.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/26/2607.20775v1-flint-a-semantics-driven-data-visualization-intermediate-language",
+      "section": "quick",
+      "title_en": "Flint: A Semantics-Driven Data Visualization Intermediate Language",
+      "authors": "Yunhai Wang, Kecheng Lu, Junhao Chen, Alper Sarikaya, Chenglong Wang",
+      "date": "2026-07-22",
+      "pdf": "https://arxiv.org/pdf/2607.20775v1",
+      "score": "6.0",
+      "evidence": "面向异构数据表示的语义驱动模型",
+      "tldr": "当前可视化工具从数据表层结构推断默认配置，导致选择脆弱。Flint提出分层数据语义模型，允许用户明确字段含义，编译器据此自动推导尺度、坐标轴等配置。系统生成库无关的配置，并转译为Vega-Lite、ECharts等完整规范。实验表明，Flint简化了创作流程且保持视觉质量，适合人类和AI代理使用。",
+      "tags": "query:smart-city",
+      "abstract_en": "We present Flint, an intermediate language that enables authors to create high-quality visualizations from concise, semantics-driven specifications without explicitly configuring low-level parameters such as scales, axes, and formatting. Unlike prior systems that infer default configurations from surface-level data representations, often producing brittle choices, Flint introduces a hierarchical data semantic model that allows users to specify the meanings of data fields structurally and helps the compiler derive appropriate visualization configurations. From a concise specification, the system generates and optimizes library-agnostic visualization configurations and translates them into complete, executable specifications for multiple target grammars, including Vega-Lite, Apache ECharts, and Chart.js. We demonstrate that Flint simplifies the authoring process without compromising on visual quality, and it is an effective intermediate language for both humans and AI agents to create visualizations.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

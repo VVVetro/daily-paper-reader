@@ -1,0 +1,92 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-26T20:23:42.367383+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.18821v2",
+      "source": "arxiv",
+      "title": "VirtualSet: Typed Ontology Worlds as an LLM Generation Target for Grounded Queries and Guarded Decisions",
+      "abstract": "Large language models increasingly read and act on enterprise data, but SQL gives a late error signal: hallucinated fields or relations can execute and return plausible wrong answers, while incorrect writes cannot be safely assessed after execution. We present VirtualSet, a live, receiver-typed ontology-world interface and generation target for LLMs. Instead of SQL, the model emits set expressions over entity-edge worlds. Generic Constraint Projection (GCP) checks expressions before execution, while future this preserves concrete receiver types through collection chains, turning invalid fields, edges, receivers, and actions into token-anchored type errors. Type-clean reads use a SQL fast path or bounded stream interpretation, with a parity oracle checking both paths over the exercised operator space. The same substrate supports guarded decisions: actions run first in a simulated world, and world-change events require external approval before actualization. On BIRD, we lift relational schemas into typed worlds and compare VirtualSet with direct SQL while holding the model, evidence, values, zero-shot setting, timeout, glossary, repair/voting, and grader constant where possible. On a frozen 1,072-question split, VirtualSet achieves 67.5% accuracy versus 63.5% for glossary-matched direct SQL with repair and voting (+4.0 points; McNemar exact p = 0.00117) using deepseek-reasoner. Full-corpus analysis finds no engine mis-computation of a type-clean expression; remaining errors arise from model semantics or gold defects. In a 30-body guard corpus, the write chain intercepts 20/20 hallucinated action bodies with zero false positives. VirtualSet thus remains competitive on SQL's home benchmark while providing pre-execution semantics for guarded decisions.",
+      "authors": [
+        "Qunhui Zhang"
+      ],
+      "primary_category": "cs.PL",
+      "categories": [
+        "cs.PL"
+      ],
+      "published": "2026-07-21T07:57:17+00:00",
+      "link": "https://arxiv.org/pdf/2607.18821v2",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "typed ontology world for LLM query generation enabling semantic interoperability",
+      "llm_evidence_cn": "针对LLM的有类型本体世界，支持语义互操作",
+      "llm_evidence": "针对LLM的有类型本体世界，支持语义互操作",
+      "canonical_evidence": "针对LLM的有类型本体世界，支持语义互操作",
+      "llm_tldr_en": "VirtualSet introduces a typed ontology world interface for LLMs to generate set expressions instead of SQL, leveraging Generic Constraint Projection to catch type errors before execution, enabling safer enterprise data queries.",
+      "llm_tldr_cn": "现有LLM在查询企业数据时使用SQL易产生幻觉且错误信号滞后。本文提出VirtualSet，一种接收器类型化的本体世界接口，让LLM生成集合表达式而非SQL。通过通用约束投影（GCP）在执行前检测类型错误，确保字段、关系、接收器和操作的类型安全。类型清洁的查询可回退到SQL快速路径或有限流解释。实验表明该方法有效降低查询错误率，提升了LLM在企业数据查询中的可靠性。",
+      "llm_tldr": "现有LLM在查询企业数据时使用SQL易产生幻觉且错误信号滞后。本文提出VirtualSet，一种接收器类型化的本体世界接口，让LLM生成集合表达式而非SQL。通过通用约束投影（GCP）在执行前检测类型错误，确保字段、关系、接收器和操作的类型安全。类型清洁的查询可回退到SQL快速路径或有限流解释。实验表明该方法有效降低查询错误率，提升了LLM在企业数据查询中的可靠性。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.20775v1",
+      "source": "arxiv",
+      "title": "Flint: A Semantics-Driven Data Visualization Intermediate Language",
+      "abstract": "We present Flint, an intermediate language that enables authors to create high-quality visualizations from concise, semantics-driven specifications without explicitly configuring low-level parameters such as scales, axes, and formatting. Unlike prior systems that infer default configurations from surface-level data representations, often producing brittle choices, Flint introduces a hierarchical data semantic model that allows users to specify the meanings of data fields structurally and helps the compiler derive appropriate visualization configurations. From a concise specification, the system generates and optimizes library-agnostic visualization configurations and translates them into complete, executable specifications for multiple target grammars, including Vega-Lite, Apache ECharts, and Chart.js. We demonstrate that Flint simplifies the authoring process without compromising on visual quality, and it is an effective intermediate language for both humans and AI agents to create visualizations.",
+      "authors": [
+        "Yunhai Wang",
+        "Kecheng Lu",
+        "Junhao Chen",
+        "Alper Sarikaya",
+        "Chenglong Wang"
+      ],
+      "primary_category": "cs.HC",
+      "categories": [
+        "cs.HC",
+        "cs.PL"
+      ],
+      "published": "2026-07-22T22:42:34+00:00",
+      "link": "https://arxiv.org/pdf/2607.20775v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "semantics-driven data model for heterogeneous data representation",
+      "llm_evidence_cn": "面向异构数据表示的语义驱动模型",
+      "llm_evidence": "面向异构数据表示的语义驱动模型",
+      "canonical_evidence": "面向异构数据表示的语义驱动模型",
+      "llm_tldr_en": "Introduces Flint, a semantics-driven intermediate language with a hierarchical data semantic model that enables automatic generation of visualization configurations, applicable to smart city data standards.",
+      "llm_tldr_cn": "本文针对现有可视化系统因缺乏语义支持而导致配置脆弱的问题，提出了Flint中间语言和层次化数据语义模型。用户通过语义规范描述字段含义，系统自动推导可视化配置并生成多目标代码。该工作为异构数据的语义化表示提供了新思路，可迁移至智慧城市数据标准与集成场景。",
+      "llm_tldr": "本文针对现有可视化系统因缺乏语义支持而导致配置脆弱的问题，提出了Flint中间语言和层次化数据语义模型。用户通过语义规范描述字段含义，系统自动推导可视化配置并生成多目标代码。该工作为异构数据的语义化表示提供了新思路，可迁移至智慧城市数据标准与集成场景。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing unified data standards and semantic data models for integrating heterogeneous smart city construction data, including BIM, GIS, documents, images, videos, point clouds, and structured databases.",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
