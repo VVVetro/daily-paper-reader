@@ -1,0 +1,672 @@
+Title: MSSI: Middleware for Unified Semantic and Syntactic Interoperability in IoT
+
+URL Source: https://arxiv.org/pdf/2607.21784v1
+
+Published Time: Mon, 27 Jul 2026 00:09:51 GMT
+
+Number of Pages: 10
+
+Markdown Content:
+1
+
+# MSSI: Middleware for Unified Semantic and Syntactic Interoperability in IoT 
+
+Sanku Kumar Roy, Student Member, IEEE , Sudip Misra, Fellow, IEEE , and Narendra Singh Raghuwanshi 
+
+Abstract —With the growing demand of Internet of Things (IoT), there is a need for seamless and reliable communication between heterogeneous IoT devices and the cyber-world to ensure autonomous control over any application process. More specifically, seamless communication requires interoperability between heterogeneous devices (actors) having different semantics and data formats (syntaxes), while making it more challenging. In this paper, we propose a middleware solution for unified semantic and syntactic interoperability in the publisher-subscriber framework of IoT network. The proposed framework automatically translates the subscribers (users) compatible syntax and semantics of the receiver message from the publishers (IoT devices). First, we propose a novel method of syntax translation of messages, to solve the syntactic disparities between users and devices, while providing the information in the user requested syntax. Thereafter, a multilayer perceptron (MLP)-based semantic interoperability framework is proposed to translate the device information to the user requested semantics. Additionally, a novel algorithm is proposed for extracting raw and discriminative features, which are to be fitted to the MLP model as inputs. To show the effectiveness of the proposed middleware, we evaluate different parameters, while considering various publicly used data formats and semantic annotations of attributes to ensure the versatility of the proposed middleware in the practical scenario. The overall classification accuracy using MLP is 
+
+95 .78 % for determining the standard meaning of each attribute of the incoming message from the publisher to address the semantic interoperability problem in IoT. 
+
+Index Terms —Internet of Things (IoT), Heterogeneity, Middleware, Semantic Interoperability, Artificial Neural Network. 
+
+✦
+
+1 INTRODUCTION 
+
+# INTERNET OF THINGS (IoT) is a vast network of intercon-nected sensors, devices, and systems bridging the digital and physical realms [1]–[3]. IoT devices are manufactured by different vendors. These vendors use different syntaxes, structures, and semantics to represent device data both inside and outside any given context [3]. Thus, there is a requirement of seamless interoperability between all actors in the IoT network. As an example, if two devices want to communicate with each another, they should have a shared knowledge in terms of syntax and semantics of exchanged data. Achieving shared knowledge is a nontrivial task due to the existence of numerous technologies, protocols, and manufacturers at the communication of device. In IoT, the popular communication protocols such as Message Queuing Telemetry Transport (MQTT), Con-strained Application Protocol (CoAP), and Hypertext Trans-fer Protocol (HTTP) follow the publisher-subscribe frame-work (PSF), which is shown in Fig.1. In this framework, both the publishers (IoT devices) and the subscribers (users) register themselves to the message data broker (server). The message data broker decouples the data transmission between the publishers and subscribers according to the service demand. 
+
+• S. K. Roy was affiliated with the Department of Computer Science and Engineering, Indian Institute of Technology, Kharagpur, 721302, India, during this work. He is currently with the Department of Computing Science at the University of Alberta, Edmonton, AB, Canada, T6G 2E8. E-mail: sankukumarroy@gmail.com 
+
+• S. Misra is with the Department of Computer Science and Engineering, Indian Institute of Technology, Kharagpur, 721302, India. E-mail: smisra@cse.iitkgp.ac.in 
+
+• N S Raghuwanshi is with the Department of Agricultural and Food Engineering, Indian Institute of Technology, Kharagpur, 721302, India. E-mail: nsr@agfe.iitkgp.ac.in 
+
+Fig. 1. Publisher/Subscriber Framework 
+
+In general, PSF uses standard data formats such as JavaScript Object Notation (JSON), Extensible Markup Lan-guage (XML), and Comma-Separated Values (CSV) as well as different semantic annotations. Therefore, to achieve seamless communication between a pair of device and user, there is a need of a translator between them, as different devices and users have different data format structures, i.e., different syntaxes, and use different attribute/element names to represent the same or different concepts, i.e. dif-ferent semantics. The different data formats (syntaxes) and semantic annotations represent syntactic and semantic in-teroperability, respectively. To solve the problem mentioned above, the translator first interprets the shared information and then translates the sender information to the receiver compatible information format and semantics. So, it is clear that each pair of devices and users requires a specific translator for seamless communication between them. In the case of a large number of devices/users, the possible arXiv:2607.21784v1 [cs.NI] 23 Jul 2026 2
+
+number of translators is even larger than the number of devices/users. For example, if N number of devices/users want to interact among themselves while each device uses a different semantic and format, the maximum number of required translators is N 2 −N , which is even larger than the number of devices/users [4]. This problem can be addressed if we introduce an automated translator, which converts the received messages to the compatible syntax and semantics of the users. To address the problem, researchers [5], [6] focused on semantic interoperability. More specific, Xiao et al. [7] focused on both semantic and syntactic interoperability be-tween users and devices. Köpke [5] proposed the semantic translation method and semantic matching algorithm using path-based semantic annotations and reference ontologies for document transformations. Likewise, Nambi et al. [6] proposed unification of knowledge through the develop-ment of a collection of ontologies to enable automatic ser-vice representation, composition, and discovery in dynamic IoT environments. However, the authors [5], [6] focus on modeling a set of ontologies, which describe devices and its functionalities. However, in an IoT network, all devices or users may not adopt the same set of ontologies for different contexts, which makes the interaction between them difficult [7]. As a solution of the mentioned problem, Xiao et al. [7] proposed a user interoperability framework for seamless communication between IoT devices and users, which is based on the collaborative conceptualization the-ory. In their proposed framework, before communication, the device agents must build a collaborative semantically consistent sign of their devices to make a cosign dictionary. Thus, there is a need of automatic translator framework for semantic and syntactic interoperability to ensure seamless communication between devices and users without any prior information of the devices in terms of semantics and syntaxes. To address the above-mentioned issues, in this work, we present a middleware, named Middleware for Semantic and 
+
+Syntactic Interoperability (MSSI), in PSF of IoT network. MSSI automatically translates user compatible syntaxes and semantics of the received information from the devices without prior information of devices’ packet formats and semantic annotations. In summary, the contributions of this paper are as follows. 
+
+1.1 Contribution  
+
+> •
+
+We present a semantic interoperability framework to ensure seamless communication between users and devices using a multilayer perceptron (MLP).  
+
+> •
+
+A novel algorithm is proposed for extracting raw and discriminative features, which are to be fitted to the MLP model as inputs to find out a correct standard name of the given attribute.  
+
+> •
+
+In order to solve the syntactic disparities between users and devices, we propose a method of syntax translation of messages, which provides information in the user requested format, while presenting an algorithm for syntax identification and interoperabil-ity.  
+
+> •
+
+To show the effectiveness of MSSI, we evaluate dif-ferent parameters, while considering various used data formats and semantic annotations of attributes to ensure versatility of the proposed framework in a real-life scenario. The remainder of the paper is organized as follows. Section 2 summarizes the state-of-the-art existing works on seamless communication between the IoT devices and users in IoT. Section 3 presents the problem scenario and the proposed architecture of semantic and syntactic interoperability mid-dleware. The process of semantic and syntactic translation is presented in Section 4. Experimental setup and results of the proposed solution are shown in Section 5. Finally, we conclude the paper and discuss future research directions of the work in Section 6. 
+
+2 RELATED WORKS 
+
+This section highlights the existing works related to seam-less message sharing between IoT devices and users, while considering semantic and syntactic interoperability. Köpke [5] proposed a semantic translation method and semantic matching algorithm using path-based semantic annotations and reference ontologies for document transformations. Likewise, Nambi et al. [6] proposed unification of knowl-edge through the development of a collection of ontologies to enable automatic service representation, composition, and discovery in dynamic IoT environments. Ontologies may be used to capture domain knowledge and infer new information from classes and relationships between them, which are not directly apparent from raw device data. On the other hand, to evaluate the interoperability of device, Henrik Dibowski proposed semantic evaluation interop-erability model [8]. Similarly, Yang et. al. proposed inter-operability framework between users and devices for se-mantic interoperability using divide-and-conquer technique [9]. However, in an IoT network, all devices or users may not adopt the same set of ontologies for different contexts, which make the interaction between the devices and users difficult [7]. To solve the limitation of ontology, Xiao et al. proposed a user interoperability framework for seamless communi-cation between IoT devices and users, which is based on the collaborative conceptualization theory [7]. Moreover, to support the interaction between devices and users in different contexts, the authors adopted the collaborative sign 
+
+(cosign) dictionary approach. To make a cosign dictionary for all devices situated in different contexts, the device agents must collaborate to build semantic sign of all the devices. However, before communication, the device agents must collaboratively build a semantic consistent sign of their devices to make cosign dictionary. This induces the depen-dency of the device agents on the platform for registering their device. On the other hand, Moutinho et al. [4] addressed data association and added complementary data with the trans-mitter message, which is an issue of concern in semantic and syntactic interoperability. In [4], the proposed framework first collects the data format of both the sender and the receiver in the form of XML schema and verifies semantic compatibility. However, the framework is designed more specifically for supporting the association of temperature value with its unit and adding complementary data values 3
+
+in the transmitter data. Additionally, the authors only con-sidered XML data format in their proposed scheme. In [3], a semantic rule engine (SRE) is proposed to maintain interoperability between the IIoT network gate-way and heterogeneous sensor/actuators communication. Semantic tags are used by the SRE to access the connected devices to ensure semantic interoperability between them. Similarly, Givehchi et al. [10] proposed a distinct interop-erability layer between the cyber and the physical system to enable interoperability. A Common Information Model is applied in the interoperability layer based on the ISA95 industrial standard to ensure the interoperability for the legacy systems. The interoperability layer consists of three components — raw data importer, mapper, and information provider, which collect the raw data from heterogeneous physical device and maps it to the receiver end format. On the other hand, Ichise [11] used a learning based method for mapping between the concepts of ontologies based on multiple similarity measures. The measures de-fined in the paper are string-based, graph-based, instance based, and knowledge based. These measures are input to the Support Vector Machine to predict both positive and negative examples. Similarly, Doan et al. [12] adopted a unique approach towards the application of machine learn-ing to solve the mapping problem on the Semantic Web. In their work, the authors described a way to find the most similar term for a concept in one ontology to a concept in another. The instances of concept A are used to learn a classifier for A which classifies the instances of B, and vice versa. Synthesis: A critical analysis of the existing works unfold the existence of a research gap in semantic and syntactic interoperability in IoT network. Mainly, the existing works [5], [6], [8] focused on semantic interoperability, which are inefficient in an IoT network using a set of ontologies. However, in the IoT network, all devices or users may not adopt the same set of ontologies for different contexts, which make the interaction between the devices and users difficult [4], [7]. Some of them [7] attempted to solve the problem, but there is a dependency of the device agents on the platform for registering their device. In this paper, we present a framework, which automatically generates the users compatible syntax and semantics of the received information from the devices. 
+
+3 SYSTEM ARCHITECTURE 
+
+3.1 Problem Scenario 
+
+The seamless communication between the devices and users is a big challenge in practice in the IoT scenario due to the usage of different data formats (syntaxes) and different semantic annotations to represent device data in any given context. The devices available in the market are manufac-tured by different vendors, who use different keywords and data formats such as JSON, XML, and CSV to represent the same concept. As an example, we present a problem scenario where a IoT device sends XML data packet of humidity sensor, as listed in Listing 1, and on the other hand, an user expects to receive data packet in JSON for-mat containing the attributes date, time, humidity value, unit, device voltage, and battery voltage from the publisher 
+
+> Syntactic Translator - A
+> Syntactic Translator - B
+> ubscribers (Users) Publishers (IoT Device
+> Fig. 2. Proposed Architecture of MSSI
+
+in their compatible semantics, as listed in Listing 2. The publisher sends attributes named ‘DT’, ‘T’, ‘Humidity’, ‘MeasuredUnit’, ‘Dev_Voltage’, and ‘Batt_Volt’ instead of standard attribute names viz. date, time, humidity value, unit, device voltage, and battery voltage, respectively. 
+
+> Listing 1. Publisher sent XML message sample
+
+<ndata > <DT>29− Jan −17</DT> <T>2 3 : 3 0 : 0 6 </T> <Humidity >14.48 </Humidity> <MeasuredUnit >%</MeasuredUnit > <Dev_Voltage >4.97 </Dev_Voltage > < B a t t _ V o l t >12.73 </ B a t t _ V o l t > </ndata > 
+
+> Listing 2. Subscriber expected JSON message sample
+
+{" MeasurementDate " : " 2 0 − 0 8 − 2 0 1 5 " , " MeasurementTime " : " 2 2 : 5 0 : 0 5 " , " MeasurementRelativeHumidity " : " 9 3 . 6 4 " , " MeasurementUnit " : " % " , " MeasurementSystemVoltage " : " 4 . 9 8 " , " MeasurementBatteryVoltage " : " 1 2 . 5 7 " }Similarly, the user uses attribute names ‘Measurement-Date’, ‘MeasurementTime’, ‘MeasurementRelativeHumid-ity’, ‘MeasurementUnit’, ‘MeasurementSystemVoltage’, and ‘MeasurementBatteryVoltage’ instead of standard attribute names date, time, humidity value, unit, device voltage, and battery voltage, respectively. In general, the meaning of usage attribute names are the same for both the users and the devices, but they use different keywords (semantics) to represent the same concept. Also, they use two different data formats to represent their data. Therefore, the usage of numerous semantics and several syntaxes by billions of the devices manufactured by different vendors, makes the seamless communication between the devices and users in IoT more complex. 
+
+3.2 Proposed Architecture of MSSI 
+
+In this section, we propose an architecture of middleware framework to ensure unified semantic and syntactic inter-operability between the users and the devices, as illustrated in Fig. 2. The proposed framework consists of two parts — a) syntactic translator and b) semantic translator. MSSI identifies the subscriber compatible syntaxes and semantics during the service request. The detailed process of syntax and semantic translation is shown in Fig. 3. 4   
+
+> Syntax Identifier Syntax Converter Semantic Classifier Syntax Converter
+> Semantic Mapper
+> Publisher Sent Message Subscriber Expected Message
+
+Fig. 3. Functional block diagram of the proposed middleware for unified semantic and syntactic interoperability 
+
+3.2.1 Syntactic Translator 
+
+The syntactic translator performs the syntax/data format translation of incoming message into a hierarchical data structure format and vice versa, as shown in Fig. 2. In this paper, we only concentrate on the two extensively used information exchange formats — JSON and XML, for syntactic interoperability, as the devices and users generally represent data using one of them data formats in the PSF. However, the method can be extended to more data formats as required. The syntactic translator is divided into two parts — a) syntactic translator-A and b) syntactic translator-B, as shown in Fig. 2. The devices send data using either the XML or JSON data formats to the MSSI middleware framework. The syntactic identifier of syntactic translator-A first identifies the actual data format of incoming data sent by publisher, then the syntax converter converts the data into a hierarchical data structure format. After semantic translation, the syntax converter of syntactic translator-B translates the data into the subscriber expected data format. 
+
+3.2.2 Semantic Translator 
+
+The semantic translator consists of two components called semantic classifier and semantic mapper. The devices use different attribute/element names to represent the same or different concept. So, the semantic translator first deter-mines the standard meaning of each attribute of the received packet from the devices by the semantic classifier and then translates them into the user required attribute annotation. Each attribute has its own name and value. To identify the standard meaning of each attribute/element, we extract 26 
+
+raw and 5 discriminative features from the name and value of the attributes, respectively. Then we map these features to the MLP model as inputs and find out the standard name of the given attribute. Later, according to the shared semantic notation of users, the semantic mapper translates the standard attribute name to user’s expected attribute name and appends the value of the corresponding attribute. The detailed process of semantic classification is discussed in Section 4.2. 
+
+4 MSSI: T HE PROPOSED MIDDLEWARE FOR UNI -
+
+FIED SEMANTIC AND SYNTACTIC INTEROPERABILITY 
+
+The detail of syntactic and semantic translations of incoming packets is shown in Fig. 3. 
+
+4.1 Syntactic Translation 
+
+In the first step, the proposed framework undertakes in order to ensure interoperability in IoT networks is to pro-vide syntactic compatibility between the publishers and the subscribers of the messages. During the whole transforma-tion process, in the flow between the publishers and the subscribers, data are syntactically translated twice. In the first step, translation of JSON or XML to a hierarchical data structure format takes place in order to provide easy access to data for semantic determination, as shown in Algorithm 1, where ‘isXML’ function identifies that the incoming sen-sor packet is in XML format or not. The ‘isXML’ function tries to identify standard syntax of a XML element, which has starting and ending tag. If the value of isXML function is false, the packet is in JSON format. After the identifica-tion process, the translator validates the incoming packet. During the second translation, intermediate representation to JSON or XML takes place in order to give data to the user in the subscriber requested data format, as shown in Algorithm 2. 
+
+Algorithm 1 Syntax Translation: XML/JSON to a hierarchi-cal data structure format 
+
+> INPUT:
+
+1: Fm ⊲ Fm is the message received from the publisher 
+
+> OUTPUT:
+
+1: Mm ⊲ Mm is the hierarchical data structure format of the message 
+
+> PROCEDURE:
+
+1: if isXML( Fm) then ⊲ Checking the message containing XML data format or else 
+
+2: if isValideXML( Fm) then ⊲ Validation of XML data format 
+
+3: Mm= XML2Structure ( Fm) ⊲ Convert XML to a hierarchical data structure format 
+
+4: else ⊲ Then the message containing JSON data format 
+
+5: if isValideJSON( Fm) then ⊲ Validation of JSON data format 
+
+6: Mm= JSON2Structure ( Fm) ⊲ Convert JSON to ahierarchical data structure format  
+
+> return Mm
+
+Algorithm 2 Syntax Translation: a hierarchical data struc-ture format to XML/JSON 
+
+> INPUT:
+
+1: M†     
+
+> m⊲M†
+> mis the hierarchical data structure format of the message after semantic translation
+> OUTPUT:
+
+1: F †      
+
+> m⊲F†
+> mis the message following subscriber data format
+> PROCEDURE:
+
+1: if isSubscriberFormat(XML) then ⊲ Checking subscriber requested data format 
+
+2: F †  
+
+> m= Structure2XML ( M†
+> m)⊲Convert a hierarchical data structure format to XML
+
+3: if isValideXML( F †       
+
+> mthen )⊲Validation of XML data format
+> return F†
+> m
+
+4: else ⊲ Then the message containing JSON data format 
+
+5: F †    
+
+> m= Structure2JSON ( M†
+> m)⊲Convert a hierarchical data structure format to JSON
+
+6: if isValideJSON( F †       
+
+> mthen ⊲Validation of JSON data format
+> return F†
+> m
+
+4.2 Semantic Translation 
+
+In Section 3.1, we presented a problem scenario and dis-cussed how the usage of numerous semantics by billions of sensors, actuators, and systems manufactured by differ-ent vendors, make the seamless communication between the devices and users in IoT more complex. Similarly, the following example presents a scenario, where three pub-lishers send XML messages containing data about relative 5
+
+humidity, ambient temperature, and soil moisture to the subscribers. The messages of three publishers are listed in Listings 3, 4, and 5. All three publishers use different semantic notation to represent the same or different concept. As an example, publishers 1, 2, and 3 use ‘dat’, ‘date’, and ‘SensDate’ to represent date, respectively and similarly for other attributes. From Listings 1, 3, 4, and 5, it is evident that the semantic annotations of attribute are extremely diverse.  
+
+> Listing 3. Publisher 1 sent XML message of relative humidity sensor
+> <Moto> <dat >2004−03−02</ dat > <time > 2 3 : 3 0 : 0 6 . 9 9 < / time > <pac ke t _i d >1</ pac ke t _i d > <Node_id >8</Node_id> <humiditySensorValue >4.97 </ humiditySensorValue> < v o l t >2.68742 </ v o l t > </Moto>
+> Listing 4. Publisher 2 sent XML message of ambient temperature sensor
+> <Motopacket> <date >2004−03−02</ date > <T > 2 3 : 3 0 : 0 6 . 9 9 < / T> <packet_No >776</ packet_No > <motoid >34</motoid> <TempValue >14.97 </ TempValue> < s y s v o l t >2.68742 </ s y s v o l t > </Motopacket>
+> Listing 5. Publisher 3 sent XML message of soil moisture sensor
+> <SM20Moto> <SensDate >1/1/2017</SensDate > <SensTime >23:30 </ SensTime> <MeasuredSensor> S o i l Moisture </MeasuredSensor> <S o i l m o i s t ur e Val ue >28.69 </ S o i l m o i s t ur e Val ue > < I n s t a l l e d D e pt h >20cm</ I n s t a l l e d D e pt h > </SM20Moto>
+
+Therefore, in the process of semantic translation, our first objective is to determine the standard meaning of each attribute/element of the incoming message from the devices. Once we find out the standard meaning of each attribute, it is easier to translate it into the user required attribute annotation. In this paper, we mainly focus on how to identify the standard meaning of the incoming attributes for semantic interoperability. Every message contains multiple attributes and each attribute has its name and value. The identification process follows three steps: data organization , feature extraction , and 
+
+attribute classification .
+
+4.2.1 Data Organization 
+
+Apart from different semantic annotations, different pub-lishers also use special characters with the attribute name (or sometimes use a combination of upper and lower case letters), as listed in Listings 1, 3, 4, and 5. Therefore, we make a uniform text format to represent all attribute names and use the following preprocessing steps. (i) Remove special characters such as underscore (_), hy-phen (-), white space, and dot (.) from the attribute name. (ii) Convert all the attribute names to lower case. (iii) Find out the distinct possible attributes in the dataset. Let us consider M number of distinct pos-sible attributes or classes in the dataset. The set of possible distinct output classes is defined as, 
+
+> (a) Raw features vector
+> (b) Discriminative features vector
+> Fig. 4. Example of feature extraction
+
+CS = {C 1, C2, C3, . . . , CM}. Example: date, time, sensor name, unit, device voltage, battery voltage, network id, device address, and soil depth. (iv) Find out the possible name of each distinct attribute. Let us consider that there exists N number of pos-sible names for Ci distinct class. The set of possi-ble names in Ci distinct class is expressed as, Ci =
+
+{C i
+
+> 1
+
+, Ci
+
+> 2
+
+, Ci
+
+> 3
+
+, . . . , Ci 
+
+> N
+
+} ∀i ∈ M . For example, a distinct attribute/class ‘date’ different possible names can be dat, d, sensingdate, measureddate, period, dt, mea-surementdate, and sensdat 
+
+4.2.2 Feature Extraction 
+
+In this process, our objective is to identify unique features, which are to be fitted to the MLP model as inputs to find out a correct standard name of the given attribute. The name of the attribute consists of only alphabets or alphanumerics. On the other hand, the value of the attribute is represented by alphabets, alphanumerics, numerics, numerics with spe-cial character, only special characters, or alphabets with special character. The feature extraction process is divided into two categories — raw feature extraction and discriminative feature extraction .
+
+a) Raw Feature Extraction: Raw features are defined as the frequency of occurrence of each alphabet/letter in the attribute name. English alphabet consists of 26 letters. Ac-cording to the frequency of occurrence of each letter, we extract the 26 -dimension feature vector FR from the name of the attribute. The process of raw feature extraction from the attribute name is presented in Algorithm 3, where the function letterCount() is used to calculate the frequency of occurrence of each letter in the attribute name. 
+
+b) Discriminative Feature: We additionally extract 5-dimensional discriminative features to preserve intraclass distance and increase interclass distance. Towards that, we find out the distinct pattern of the value of all attributes. Accordingly, the discriminative features are date, time, unit, numerical value, and sum of ASCII of all characters, which are extracted from the value of the attribute. Algorithm 3 presents the process of extraction of discriminative features from the attribute value, where FD is the 5-dimension discriminative feature vector. 
+
+> Listing 6. Attribute Annotation
+
+<s e ns ingda t e >2004−03−02</s e ns ingda t e > We present an example of an attribute in Listing 6. Using Algorithm 3, the calculated raw and discriminative features of the attribute are shown in Figs. 4(a) and 4(b). The combination of raw and discriminative features of the 6
+
+Algorithm 3 Features Extraction 
+
+> INPUT:
+
+1: An , Av , FR(26 X1) , FD(5 X1) ⊲               
+
+> An,Av,FR,and FDare the attribute name, attribute value, zeros matrix with 26 dimension, and zeros matrix with 5dimension, respectively
+> OUTPUT:
+
+1: Ftotal ⊲ 31 dimension feature vector 
+
+> PROCEDURE:
+
+1: FR [:,1] = letterCount( An ) ⊲ Frequency of occurrence of each letter in the attribute name 
+
+2: if isNum( Av ) then ⊲ Checking the attribute value is only numeric or else 
+
+3: FD [4,1]= Av ⊲ Copy the numeric value in index 4 of 5  
+
+> dimensional discriminative feature vector
+
+4: else 
+
+5: if isCharThere( Av ,‘-’) | isCharThere( Av ,‘/’) & charCount( Av ,‘-’) >1|    
+
+> charCount( Av,‘/’) >1then ⊲To find out date format
+
+6: FD [1,1]=date2num ( Av ) ⊲ Convert date to numerical 
+
+7: else if isCharThere( Av ,‘:’) then ⊲ To find out time format 
+
+8: FD [2,1]=ASCII( Av ) ⊲ Convert time to ASCII of character ‘:’ 
+
+9: else if isCharThere( Av ,‘%’) then ⊲ To find out special character for unit 
+
+10: FD [3,1]=ASCII( Av ) ⊲ Convert ‘%’ to ASCII value 
+
+11: else 
+
+12: temp = removeSpeChar( Av ,‘_’,‘-’,‘ ’,‘.’) ⊲ Remove special characters from text 
+
+13: temp = lowerCase(temp) ⊲ Converting to lower case 
+
+14: FD [5,1]=sum(ASCII(temp)) ⊲ Calculating sum of ASCII value of all character in the text 
+
+15: Ftotal =[ FR ; FD ] ⊲ Making 31 dimension features vector 
+
+16: return Ftotal 
+
+attribute is the 31 dimension feature vector, which is to be mapped to the MLP model as inputs to find out the standard name of the given attribute. The histogram of discriminative features is shown in Fig. 5. Figs. 5(a), 5(b), 5(c), 5(d), and 5(e) show the range of date, time, unit, numerical value, and sum of ASCII of string, respectively. From these figures, it is evident that the range of each discriminative feature values is distinct from the other features. In Fig. 5(a), the value of the date feature lies in the order of 10 5. Similarly, the value feature belongs from 0 to 10 4 order, as shown in Fig. 5(b). On the other hand, the range of time and unit features is 57 .5 to 58 .5 and 36 .5
+
+to 37 .5, respectively. However, there are some overlapping features between two features, but that can be solved by using raw features. Therefore, the discriminative features increase the interclass distance and reduce the intraclass distance, which help to classify all attributes properly. The discriminative features extraction is the core contribution of this work. 
+
+4.2.3 Attribute Classification 
+
+In order to identify the standard name of each attribute, we use the Gaussian Mixture Model (GMM), Naive Bayes (NB), and the Artificial Neural Network (ANN) methods. The details derivation of GMM is described in Appendix A.1 [13]. In this experiment, the Expectation Maximization (EM) algorithm is used to maximize the value of log like-lihood of each class for GMM [14]. The derivation of NB is described in Appendix A.2 [15]. On the other hand, we use multilayer perceptron (MLP) algorithm for ANN and the derivation of MLP is described in Appendix A.3 [13]. The proposed neural network has three layers, i.e., input, hidden, and output, while considering different parameters such as learning rate, momentum, and epoch. Furthermore, random numbers are used for setting the initial weights         
+
+> 000 0 0 0 0 0 0 0      
+> 000
+> 0
+
+(a) Date             
+
+> 5 5 5 5 5         
+> 
+> 55 
+
+(b) Time       
+
+> 3 3 3 3 3      
+> 
+> 
+
+(c) Unit         
+
+> 00000 0000 0000 0000 0000 0000       
+> 000
+> 0
+
+(d) Numerical value             
+
+> 000 000 00 000        
+> 000
+> 0 
+
+(e) Sum of ASCII of characters 
+
+Fig. 5. Histogram of discriminative features 
+
+of the connections between nodes, and also for shuffling the training data. Error backpropagation algorithm is used to iteratively update the parameters of MLP [16]. As an activation function, we use sigmoid function. The extracted 
+
+31 features vectors of an attribute, as discussed in Section 4.2.2, are mapped to these classifiers as inputs to find out the standard name of the given attribute, which is produced as an output. 
+
+5 PERFORMANCE EVALUATION 
+
+5.1 Experimental Setup 
+
+In our experiment, we used public datasets [17], [18] as well as a private dataset [19] of various sensor data, while considering weather and agriculture sensor parameters such as ambient temperature, relative humidity, solar radiation, wind speed, rainfall, soil moisture, air pressure, luminosity, and soil temperature. It is noteworthy that all the sources have their own attribute annotation and its corresponding value. Also, the data in these datasets have no data format. Thus, to use these datasets in our experiment, we converted all excel data into JSON/XML data format. As an example, the conversion of sensor data into XML/JSON format is listed in Listings 1, 2, 3, 4, and 5. Apart from the above-mentioned semantic annotations to ensure the robustness and adaptability of the proposed framework, we experimented with other possible semantic annotations. To do this, we used the semantic annotations 7                  
+
+> TABLE 1 Experimental setup
+> Parameter Value
+> Number of Gaussians 2-16
+> Learning rate for MLP 0.1
+> Momentum for MLP 0.2
+> Epoch for MLP 500
+> Neurons in input layer 31
+> Number of hidden layer 1
+> Number of neurons in the hidden layer 20-35
+> Neurons in output layer 15
+> Input features vector including class label 32
+> Output classes 15
+> Total number of training data set 4961876
+> Total number of test data set 1158412
+> -4.5x10 7
+> -4x10 7
+> -3.5x10 7
+> -3x10 7
+> -2.5x10 7
+> -2x10 7
+> -1.5x10 7
+> -1x10 7
+> -5x10 6
+> 0
+> 510 15 20 25 30
+> Negative Log Likelihood Number of Iterations C1
+> C2
+> C3
+> C4
+> C5
+> C6
+> C7
+> C8
+> C9
+> C10
+> C11
+> C12
+> C13
+> C14
+> C15
+> Fig. 6. Negative log likelihood of different classes
+
+defined in [4], [20], [21], where the authors have used var-ious different annotations. For example, to define a device id ( C9), the authors used nodeid, moteid, iotdeviceid, devi-ceid etc. Similarly, we followed the semantic annotations for other classes also. In the dataset, there are 15 (M)distinct possible attributes/classes such as date ( C1), time (C2), sensor name ( C3), sensor value ( C4), unit ( C5), device voltage ( C6), battery voltage ( C7), network id ( C8), device id (C9), channel id ( C10 ), momentary ( C11 ), automatic readout (C12 ), epoch ( C13 ), soil depth ( C14 ), and description ( C15 ). Therefore, the number of input feature vectors and classes are 31 and 15 , respectively. The experimental setup is discussed in Table 1. In the datasets, total number of messages for training and test is 
+
+2633597 and 754183 , respectively. The number of attributes in a message varies from source-to-source. However, the total number of attributes for training and testing is 4961876 
+
+and 1158412 , respectively. It is noteworthy that the pro-posed solution approach consists of two parts — syntactic interoperability and semantic interoperability. The solution for syntactic interoperability of the messages is presented in Section 4.1. For semantic interoperability, after feature ex-traction, our objective is to determine the standard meaning of each attribute/element of the incoming message from the devices using GMM, NB, and MLP, as discussed in Section 4.2.3. Then, it is easier to map the standard attribute name into the user required attribute annotation by the semantic mapper, discussed in Section 3.2.2. 
+
+5.2 Results and Discussion 
+
+This section presents the performance of MSSI to show the effectiveness of the proposed solution. 
+
+5.2.1 Convergence Analysis 
+
+We evaluate the negative log likelihood (NLL) of all classes for training dataset in GMM, as shown in Fig. 6. The value of NLL acts as a stopping criteria to preserve the optimal pa-rameters of GMM viz. mean, variance, and a priori weights. We stop GMM training if the difference between the present and the previous NLL value is less than 10 −3, which is negligible. From Fig. 6, it is evident that all the classes properly converged after a certain number of iterations. In addition, the value of negative log likelihood for each class is distinct from other classes. Hence, the distinct value of negative log likelihood for each class helps to calculate unique value of mean and variance of each class. Therefore, the distinct values of negative log likelihood for all classes improve the accuracy of attributes classification.        
+
+> 70
+> 80
+> 90
+> 100
+> 4812 16
+> Accuracy (%) Number of Gaussians
+> (a) Varying Gaussians
+> 70
+> 80
+> 90
+> 100
+> 20 25 30 35 40
+> Accuracy (%) Number of Neurons
+> (b) Varying Neurons
+> Fig. 7. Accuracy analysis. (a) Varying Gaussians. (b) Varying Neurons.
+
+5.2.2 Accuracy Analysis 
+
+We analyze the classification accuracy of attributes using GMM and MLP to choose the optimal value of different pa-rameters of these classifiers to get the highest classification accuracy for the test dataset, as shown in Fig. 7. 
+
+a) Varying Gaussians: Fig. 7(a) presents the classification accuracy of attributes using GMM, while varying the num-ber of Gaussians ( NG). NG is chosen empirically to find out the optimal number of Gaussians for our experimental test dataset. From Fig. 7(a), it is shown that the classification accuracy is maximum when NG is 2 for GMM model. The classification accuracy of one Gaussian is less than two Gaussians because the data distribution of the proposed features is not properly captured by one Gaussian. On the other hand, the classification accuracy of more than two Gaussians is less than two Gaussians due to the problem of data insufficiency problem, which may occur for increasing 
+
+NG. Furthermore, when NG increases, GMM tries to form overlapping clusters, which is unnecessary. Additionally, the computation of additional means, variance, and the weights become more expensive. Thus, Fig. 7(a) signifies that two Gaussians are sufficient to capture the data distri-bution of the proposed features. Therefore, NG is set to 2 for other experiments in the rest of the paper. 
+
+b) Varying Neurons/Nodes: Similar to GMM, we conducted another experiment to select optimal number of neurons (NN ) of hidden layer 1 for our test dataset. Fig. 7(b) shows the classification accuracy using the MLP model, while varying the number of neurons. NN of hidden layer 1 is chosen to find out the optimal number for our test dataset. 8
+
+From this figure, it is evident that the classification accuracy is maximum when NN is 25 for the MLP model. Therefore, the standard value of NN of hidden layer 1 is chosen as 
+
+25 , which is to be used for other experiments in the rest of the paper. The choice of 1 hidden layer projects the non-separable input data into a high dimensional space, where the patterns are expected to be linearly separable. Once the input features are separable at hidden layer 1, the additional hidden layers are not necessary, which may also become computationally expensive to calculate the weights between the additional layers.                                                                                                                                                                                                                                 
+
+> 11  11 1 1 1 1
+>  
+> 1
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 1 
+> 11
+> 1
+> 1
+> 1
+> 1
+>  
+>                               
+> 
+> 
+> 
+> 
+> 
+
+(a) Using GMM                                                                                                                                                                                                                                  
+
+> 11  11 1 1 1 1
+>  
+> 1
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 1 
+> 11
+> 1
+> 1
+> 1
+> 1
+>  
+>                           
+> 
+> 
+> 
+> 
+> 
+
+(b) Using Naive Bayes                                                                                                                                                                                                                                 
+
+> 11  11 1 1 1 1
+>   
+> 1
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 1 
+> 11
+> 1
+> 1
+> 1
+> 1
+>    
+>                       
+> 
+> 
+> 
+> 
+> 
+
+(c) Using MLP 
+
+Fig. 8. Confusion matrix. (a) Using GMM. (b) Using Naive Bayes. (c) Using MLP. 
+
+5.2.3 Confusion Matrix Analysis 
+
+We evaluate the confusion matrix of this attribute classifi-cation problem using GMM, as shown in Fig. 8(a). Fig. 8(a) shows a summary of the percentage of correct and incorrect predictions of each class using GMM. From this figure, it is evident that all the classes are properly predicted on the test dataset. However, the classification accuracy of some 
+
+TABLE 2 Classification accuracy comparison 
+
+Name of classifier Percentage of accuracy 
+
+GMM 87 .58 
+
+Naive Bayes 87 .27 
+
+MLP 95 .78 
+
+classes such as C4, C9, C10 , C14 , and C15 is lesser compared to the other classes. We observe that the misclassification of a class occurs due to the closeness of mean vectors of the true positive class and false negative classes in GMM. Similarly, Fig. 8(b) is evident that all the classes are properly predicted on the test dataset using NB. However, the classification accuracy of some classes such as C7, C8,and C15 is lesser compared to the other classes. We observe that the misclassification of a class occurs due to the low values of precision, recall, and f-measure of these classes. Fig. 8(c) presents a summary of the percentage of correct and incorrect predictions of each class using MLP. Fig. 8(c) shows that all the classes are properly classified with a higher rate of true positive (TP). Although the rate of TP of class C6 and C8 is slightly lower than that of other classes using MLP. However, the overall rate of TP of all classes using MLP is significantly higher compared to that using GMM and NB due to the very high average value of precision, recall, and f-measure of all classes in the MLP model, which is 0.955 , 0.958 , and 0.954 , respectively. 
+
+5.2.4 Accuracy of Semantic Classification 
+
+The overall accuracy of semantic classification using GMM, NB, and MLP is 87 .58 %, 87 .27 %, and 95 .78 %, respectively, as shown in Table 2. It is found that the MLP algorithm provides more accuracy compared to GMM and NB, as MLP generates the posterior vector, where we can obtain the probability of the test features belonging to other classes as well. On the other hand, in the GMM, the test data is evaluated based on the log likelihood score generated from the GMM parameters. The GMM parameters do not provide the probability of the test features belonging to other classes, which only give the likelihood score. On the other side, NB has a higher error rate with respect to the growth of the size of data-instances. Thus, MLP is adopted to determine the standard meaning of each attribute/element of the incoming message from the devices to solve semantic interoperability problem in IoT network. The overall classification accuracy is 95 .78 %. 
+
+5.3 Real-Life Applicability of MSSI 
+
+In this section, we discuss the practical use of our proposed MSSI in a smart industrial scenario. Typically in an IoT based smart factory environment, the manufacturing equip-ments are equipped with sensors, which collect data and forward it to the sensor-cloud servers for further analysis and critical observation. This sensor data is observed by various units of the factory such as manufacturing unit, maintenance unit, inventory tracking unit and so on. Sensor-cloud environment virtually connects these units with the physical sensors and fulfills the different demands gener-ated by various units. As an example, manufacturing unit 9
+
+requests sensor-cloud for the consistent real-time sensor data so that if there are any intricacies during the man-ufacturing process, they will be detected beforehand. But, the sensors use different semantics and data formats to represent the data as these equipments are manufactured by different vendors. Also, each unit use its own semantic annotation and data formats. Hence, the communication between physical sensors and the units is not possible. Therefore, there is a need to have an adaptive semantic and syntactic interoperability framework installed in sensor-cloud for seamless communication between the sensors and the units. 
+
+6 CONCLUSION 
+
+In this paper, we propose a middleware framework, which has the capability to automatically translate the subscribers compatible syntax and semantics of the received message from the publishers without prior knowledge of publishers semantics and syntax in PSF of IoT network. We propose a method of syntax translation of messages to solve the syntactic disparities between publishers and subscribers. An MLP-based semantic interoperability framework is pro-posed to translate device information to the user requested semantics. Additionally, an algorithm is proposed for ex-tracting raw and discriminative features, which are to be fitted to the GMM, NB, and MLP as inputs. To show the effectiveness of MSSI, we evaluated different parameters, while considering various used data formats and semantics annotations of attributes to ensure versatility of the pro-posed framework in the practical scenario. The overall clas-sification accuracy using MLP is 95 .78 % for determining the standard meaning of each attribute of the incoming message from the publisher to solve the semantic interoperability problem in an IoT network. To achieve seamless communication, there is a need of communication protocols interoperability apart from se-mantic and syntactic interoperability. The proposed frame-work can be extended in the future to address this issue. 
+
+APPENDIX A
+
+A classification function can be represented as below, 
+
+Y = f (X ) (1) 
+
+X ∈ RN ×F is the input features vector, where N and F are the number of samples and the dimension of input feature vectors, respectively. On the other hand, Y ∈ RN ×M is the classification output (also called the “class"), where M is the number of classes in the dataset. y is an example of M
+
+dimensional output, which is one-hot encoding vector. 
+
+A.1 Gaussian Mixture Model (GMM) 
+
+GMM is a type of generative classification, which is a probabilistic model of the probability density distribution of features. The goal here is to learn the clusters present in the data in an unsupervised manner as per the equation given below. The same approach is further tailored to support classification, where the number of clusters learnt from the training data is equal to the no of classes in classification and thus every cluster represents a class in the data. 
+
+P(x) = 
+
+> M
+
+∑
+
+> k=1
+
+P(x|yk)P(yk) (2) where, P(yk) is uniform distribution. The typical assump-tion is that P(x|yk) follows normal distribution, which represents each class in the data. Therefore, P(x|yk) can be written as 
+
+P(x|yk) = N (x|μk, σ 2 
+
+> k
+
+) (3) where μk and σ2 
+
+> k
+
+are the mean and variance of the kth class. We use Expectation maximization (EM) algorithm to predict the learning parameters such as mean ( μ) and variance ( σ2). Once the parameters of the distribution for each class is found out from the data, it can then be used for evaluating the class of a data point at test time. In case of testing of new input ˆx, the classification output is represented as 
+
+ˆy = arg max  
+
+> k∈1...... M
+
+P(ˆ x|yk) = N (ˆ x|μk, σ 2
+
+> k
+
+) (4) where μk and σ2 
+
+> k
+
+are used to classify new input ˆx.
+
+A.2 Naive Bayes (NB) 
+
+Naive Bayes is a conditional probability model, where the function f (X ) predicts highest conditional probability of given inputs. The instance probability of each class is 
+
+P(yk|x1, x 2, ......., x F ) = P(yk)P(x1, x 2, ......., x F |yk)
+
+∑M 
+
+> j=1
+
+P(yj )P(x1, x 2, ......., x F |yj )
+
+(5) where x is F dimensional input feature vector of a sample input and xi(i ∈ F ) is the ith number of feature of x.
+
+yk(k ∈ M) is the kth number of class. The assump-tion of Naive Bayes classifier is the conditional indepen-dent input features xi ∈ F with class/output yk, so that 
+
+P(yk|x1, x 2, ......., x F ) can be represented as 
+
+P(yk|x1, x 2, ......., x F ) = P(yk) ∏F 
+
+> i=1
+
+P(xi|yk)
+
+∑M 
+
+> j=1
+
+P(yj ) ∏F 
+
+> i=1
+
+P(xi|yj ) (6) So, the classification rule for each new input ˆx is 
+
+ˆy = arg max  
+
+> k∈1...... F
+
+P(yk)
+
+> M
+
+∏
+
+> i=1
+
+P(ˆ xi|yk) (7) where ˆy is the new classified output of the given input ˆx.In our case, the feature values are continuous, so the typical assumption is that the continuous values associated with each class are followed to Gaussian distribution. 
+
+A.3 Multilayer Perceptron (MLP) 
+
+MLP is a discriminative classifier and makes a computa-tional model based on the function and structure of bio-logical neural networks. This classifier always tries to find out a pattern or complex relationship between inputs and outputs dataset. MLP consists of three layers: an input layer, a hidden, and an output. Each node in a layer is connected with every node of the following layer with a certain weight 10 
+
+wi,j . Now, our objective is to find the wi,j . The function f
+
+is represented in terms of weights. As finding the weights directly are often intractable, optimization technique is used for the same. The heart of this learning is based on the error, which is back propagated to find the optimum weights, in order to match the expected output. The degree of error of output node j in the nth data sample, ej (n) can be represented as 
+
+ej (n) = tj (n) − yj (n) (8) where t and y are the ground truth and the output value produced by perceptron. The calculation of error minimiza-tion of entire output is given below. 
+
+emin (n) = 1
+
+2
+
+∑ e2 
+
+> j
+
+(n) (9) The change in each weight is calculated using gradient descent, as represented in Equation 10. 
+
+△wj,i (n) = −γ ∂e min (n)
+
+∂v j (n) yi(n) (10) where γ is the learning rate to select how quickly the weight gets converge and yi is the output of the previous node. So, the classification rule for each new input ˆx is 
+
+ˆy = arg max  
+
+> k∈1...... M
+
+yk (11) 
+
+REFERENCES 
+
+[1] G. Manogaran, T. N. Nguyen, J. Gao, and P. M. Kumar, “Deep learning-based service distribution model for wireless network assisted internet of everything,” IEEE Trans. Netw. Sci. Eng. , vol. 9, no. 5, pp. 3004–3014, 2022. [2] A. K. Mishra, M. Wazid, D. P. Singh, A. K. Das, S. Roy, and S. Shetty, “Acks-ia: An access control and key agreement scheme for securing industry 4.0 applications,” IEEE Trans. Netw. Sci. Eng. ,pp. 1–16, 2023. [3] C. E. Kaed, I. Khan, A. V. D. Berg, H. Hossayni, and C. Saint-Marcel, “SRE: Semantic rules engine for the industrial Internet-of-Things gateways,” IEEE Trans Ind. Informat. , vol. 14, no. 2, pp. 715–724, Feb. 2018. [4] F. Moutinho, L. Paiva, J. Köpke, and P. Maló, “Extended semantic annotations for generating translators in the arrowhead frame-work,” IEEE Trans Ind. Informat. , vol. 14, no. 6, pp. 2760–2769, Jun. 2018. [5] J. Köpke, “Annotation paths for matching XML-schemas,” Data & Knowledge Engineering , Dec. 2017. [6] S. N. A. U. Nambi, C. Sarkar, R. V. Prasad, and A. Rahim, “A unified semantic knowledge base for IoT,” in Proc. IEEE World Forum on Internet of Things , Mar. 2014, pp. 575–580. [7] G. Xiao, J. Guo, L. D. Xu, and Z. Gong, “User interoperability with heterogeneous iot devices through transformation,” IEEE Trans Ind. Informat. , vol. 10, no. 2, pp. 1486–1496, May 2014. [8] H. Dibowski, “Semantic interoperability evaluation model for devices in automation systems,” in 2017 22nd IEEE Int. Conf. on Emerging Technologies and Factory Automation , Sep. 2017, pp. 1–6. [9] S. Yang and R. Wei, “Tabdoc approach: An information fusion method to implement semantic interoperability between IoT de-vices and users,” IEEE Internet of Things J. , vol. 6, no. 2, pp. 1972– 1986, Apr. 2019. [10] O. Givehchi, K. Landsdorf, P. Simoens, and A. W. Colombo, “In-teroperability for industrial cyber-physical systems: An approach for legacy systems,” IEEE Trans Ind. Informat. , vol. 13, no. 6, pp. 3370–3378, Dec. 2017. [11] R. Ichise, “Machine learning approach for ontology mapping using multiple concept similarity measures,” in Proc. IEEE/ACIS Int. Conf. Comput. Informat. Sci. , May 2008, pp. 340–346. [12] A. Doan, J. Madhavan, P. Domingos, and A. Halevy, “Learning to map between ontologies on the semantic web,” in Proc. of 11 th Int. Conf. on World Wide Web . ACM, 2002, pp. 662–673. [13] C. M. Bishop, Pattern Recognition and Machine Learnin . Springer, Aug. 2006. [14] G. D. Evangelidis and R. Horaud, “Joint alignment of multiple point sets with batch and incremental expectation-maximization,” 
+
+IEEE Trans. Pattern Anal. Mach. Intell. , vol. 40, no. 6, pp. 1397–1410, Jun. 2018. [15] G. H. John and P. Langley, “Estimating continuous distributions in bayesian classifiers,” in Proc. of the Eleventh Conf. on Uncertainty in Artificial Intelligence , 1995, pp. 338–345. [16] A. Tisan and J. Chin, “An end-user platform for FPGA-based design and rapid prototyping of feedforward artificial neural networks with on-chip backpropagation learning,” IEEE Trans Ind. Informat. , vol. 12, no. 3, pp. 1124–1133, Jun. 2016. [17] “Intel Lab Data,” db.csail.mit.edu, Accessed: Oct. 2023. [Online]. Available: http://db.csail.mit.edu/labdata/labdata.html [18] “Murdoch University Weather Station,” murdoch.edu.au, Accessed: Oct. 2023. [Online]. Available: http://wwwmet. murdoch.edu.au/ [19] S. K. Roy, S. Misra, N. S. Raghuwanshi, and S. K. Das, “Agrisens: IoT-Based dynamic irrigation scheduling system for water man-agement of irrigated crops,” IEEE Internet of Things J. , vol. 8, no. 6, pp. 5023–5030, 2021. [20] “IoT-Ignite,” devzone.iot-ignite.com, Accessed: Oct. 2023. [Online]. Available: https://devzone.iot-ignite.com/ knowledge-base/getting-sensor-data [21] “SNON 2.0 Â ˚ U The Sensor Network Object Notation,” www.snon.org, Accessed: Oct. 2023. [Online]. Available: http: //www.snon.org/

@@ -1,0 +1,819 @@
+Title: mosaic-join-arxiv
+
+URL Source: https://arxiv.org/pdf/2607.21781v1
+
+Published Time: Mon, 27 Jul 2026 00:09:26 GMT
+
+Number of Pages: 14
+
+Markdown Content:
+# MosaicJoin: Compact Semantic Sketches for Value-Level Join Discovery 
+
+# Grace Fan New York University grace .fan@nyu .edu Eden Wu New York University eden .wu@nyu .edu Majid Daliri New York University daliri .majid@nyu .edu Juliana Freire New York University juliana .freire@nyu .edu 
+
+## ABSTRACT 
+
+Join discovery is a core task in dataset search, enabling users to fi nd columns that can be joined with a given query column. Early ap-proaches focused on equi-joins, but data lakes and open-data repos-itories often contain columns whose values refer to the same entity but use di ff erent syntactic representations. To address this chal-lenge, recent approaches discover semantically joinable columns but face a fundamental trade-o ff : methods that perform value-level comparisons accurately identify joinable columns but scale poorly to columns with high cardinality; column-level methods that en-code an entire column into a single embedding are e ffi cient but do not capture the fi ne-grained value alignment that determines whether a join is possible. We present Mosaic Join , a value-level semantic join discovery method that balances this trade-o ff . Mo-saic Join achieves scalability through a novel sketching strategy that approximates the joinability of a column pair without having to compare all values. At query time, Mosaic Join scores each candi-date sketch using a joinability score at a cost bounded by the sketch size, making retrieval e ffi cient even for high-cardinality columns. A query subsampling operator further reduces online search time with provable accuracy guarantees, enabling robust retrieval for large query columns. Extensive experiments show that Mosaic Join 
+
+outperforms previously published methods across all benchmarks while running up to 66 times faster than other value-level methods. 
+
+Mosaic Join requires no training or fi ne-tuning, and it scales ro-bustly to query columns containing up to 57K values and data lake columns containing up to 1M values. 
+
+PVLDB Reference Format: 
+
+Grace Fan, Eden Wu, Majid Daliri, and Juliana Freire. MosaicJoin: Compact Semantic Sketches for Value-Level Join Discovery. PVLDB, 19(11): XXX-XXX, 2026. doi:XX.XX/XXX.XX 
+
+PVLDB Artifact Availability: 
+
+The source code, data, and/or other artifacts have been made available at https://github .com/VIDA-NYU/MosaicJoin. 
+
+## 1 INTRODUCTION 
+
+The number of datasets in open and enterprise data repositories and data lakes has grown dramatically in recent years [ 47 , 53 ], This work is licensed under the Creative Commons BY-NC-ND 4.0 International License. Visit https://creativecommons . org/licenses/by-nc-nd/4 . 0/ to view a copy of this license. For any use beyond those covered by this license, obtain permission by emailing info@vldb.org. Copyright is held by the owner/author(s). Publication rights licensed to the VLDB Endowment. Proceedings of the VLDB Endowment, Vol. 19, No. 11 ISSN 2150-8097. doi:XX.XX/XXX.XX creating opportunities to augment data, improve machine learn-ing models, and enrich analyses [ 7 , 52 ]. Yet the scale and hetero-geneity of these repositories make manual data discovery infeasi-ble, as metadata in data lakes is frequently incomplete, inconsis-tent, or ambiguous [ 1, 25 , 57 , 72 ]. Automated data discovery has thus attracted signi fi cant attention [ 8 , 22 , 29 , 57 ], with join discov-ery [ 64 , 67 , 74 , 76 ] emerging as a key subtask. In particular, fi nding 
+
+semantically joinable columns [ 12 , 18 , 19 , 31 , 43 ] is essential for data enrichment [6, 9, 17, 73]. Given a query column and a large repository, join discovery aims to identify columns whose values can be joined with those in the query column. Early systems focused on equi-joins, fi nding columns that share exact string values with the query [ 27 , 64 , 74 , 76 ]. However, these approaches su ff er from low recall in real data lakes, where semantically equivalent values frequently di ff er in surface form through abbreviations, aliases, and misspellings. 
+
+Semantic Joins. To handle such variations, existing semantic join dis-covery methods determine joinability based on either column-level or value-level similarities. Value-level methods such as PEXESO [18 ]and Exact Semantic Join, an exhaustive value-embedding baseline we evaluate in Section 5, compare individual value embeddings across columns, directly measuring fi ne-grained joinability. How-ever, exhaustive value-pair comparison scales poorly: for columns with tens of thousands of values, the cost becomes prohibitive, as shown in Figure 1. Column-level methods such as DeepJoin [ 19 ]and Snoopy [ 31 ], by contrast, collapse an entire column into a single fi xed-length embedding retrieved via approximate nearest neighbor search. While e ffi cient, a single vector cannot capture the fi ne-grained value alignment that determines whether a join is possible, producing both false negatives — joinable columns whose values align but whose column-level embeddings do not, and false positives — columns that are topically similar but not value-level joinable. 
+
+Example 1. Suppose a user has a query column about football league seasons ( 𝐶 𝑄 , top left in Figure 2). Equi-join methods miss the green column 𝐶 𝐺 because its values are syntactically di ff erent: “2003 Tippeligaen” is the Norwegian name for 2003 Norwegian Pre-mier League, “1992 Vyshcha Liha” is the predecessor name of 1992 Ukrainian Premier League, and “2006 Division 1 (Swedish football)” is a formatting variant of 2006 Swedish football Division 1. Column-level methods instead return the blue column 𝐶 𝐵 that contains basketball team names, which is topically related to sports but whose values do not align with football league seasons. Our Approach. We propose Mosaic Join , a value-driven semantic join discovery method that achieves high accuracy of value-level matching while approaching the e ffi ciency of column-level retrieval, as shown in Figure 1. Compared to the exhaustive value-pair com-parison method for joinability (Exact Semantic Join), Mosaic Join Figure 1: Tradeo ff between Accuracy of Value-level Joinabil-ity and Online Search E ffi ciency of Column-level joinability, for query columns with up to 57K values (Section 5). 
+
+reduces online search time from 15.65 seconds to 0.32 seconds while preserving high accuracy. This sub-second response time is impor-tant both for interactive dataset search [ 7, 32 ], where users explore join candidates in real time, and for automated data integration pipelines [ 6, 9 ], where a large number of potential join pairs must be evaluated without the discovery process becoming a bottleneck. The key insight behind Mosaic Join is that determining the joinability of two columns does not require comparing all pairs of value embed-dings. Instead, for each data lake column, Mosaic Join constructs a fi xed-size set of representative value embeddings– a semantic sketch –that maximally covers the column’s embedding space via 𝑘 -center sampling [ 36 ]. By selecting representatives that minimize the maximum distance from any value embedding to its nearest sketch point, the k-center objective guarantees that the full embedding space of the column is covered, so that similarity computed against the sketch closely approximates similarity computed against all values. At query time, Mosaic Join scores each candidate sketch us-ing Chamfer-style similarity score [ 36 ] at a cost bounded by sketch size rather than data lake column cardinality, making retrieval ef-
+
+fi cient even for columns with a very large number of values. To further reduce online query cost, rather than embedding all query values, we subsample the values and use the resulting subset to estimate the full Chamfer score with provable accuracy guarantees. Unlike deep learning-based approaches [ 12 , 19 , 31 , 34 , 38 , 43 , 49 ], 
+
+Mosaic Join requires no training or fi ne-tuning and can be deployed immediately on any new or evolving data lake without task-speci fi cretraining. We make the following contributions: 
+
+• We propose Mosaic Join , a training-free semantic join discovery method that preserves value-level joinability evidence while enabling e ffi cient online top-𝑘 retrieval over data lakes. 
+
+• We introduce compact semantic sketches for columns, constructed with a 𝑘 -center procedure that covers the column embedding space and preserves rare but join-critical values. 
+
+• We de fi ne a Chamfer-style joinability score over semantic sketches, bounding candidate comparison cost by sketch size rather than column cardinality. We further reduce query-time cost using a subsampling estimator with provable accuracy guarantees. 
+
+• We introduce an evaluation protocol for semantic join discovery on fuzzy-join benchmarks and WDC-augmented search spaces, using LLM-as-a-judge silver labels with human validation to assess value-level alignment at scale [70]. 
+
+• We evaluate Mosaic Join on six benchmarks with up to 99K columns and 1M values and show that it outperforms previ-ously published methods by up to 17.6% in the ranking metric NDCG@20 and 135.7% in the accuracy metric Precision@10, while being up to 66 × faster than value-level baselines. 
+
+## 2 RELATED WORK Table Discovery. Table discovery has a rich line of literature [ 8,22 , 29 , 57 ]. Early work focused on keyword search over the meta-data of tables [ 4 , 5, 32 ], while recent systems support interactive exploration via data pro fi ling and relationship discovery [ 7, 21 , 26 ,53 , 55 , 56 , 61 , 72 ]. Relationships include joinability, unionability, and correlation to improve machine learning models and explain data [ 2, 3, 10 , 13 , 23 , 35 , 37 , 58 , 64 , 67 ]. We focus on join discovery. Equi-join approaches approximate Jaccard similarity and set con-tainment to fi nd value overlap [ 27 , 74 , 76 ], with later techniques sup-porting joinable and correlated tables [ 64 –66 ] and multi-attribute joins [ 20 ]. These only handle exact string overlap, missing semanti-cally equivalent joins. More recent work has incorporated semantics into join discovery [ 16 , 40 ]. PEXESO [ 18 ] performs exact value-level semantic join discovery by embedding cells individually and retriev-ing candidates within a distance threshold. Although PEXESO uti-lizes pivot-based pruning and a block-and-verify index, it remains veri fi cation-heavy with runtime scaling in both query length and the number of fi ltered candidates; we include PEXESO as an exact value-level baseline in our experiments. Column-level join methods such as Deep Join [19 ] and Warp Gate [ 12 ] encode each column into a single fi xed-length embedding via a pretrained language model and retrieve candidates via approximate nearest-neighbor (ANN) search. While e ffi cient, they must truncate high-cardinality columns, which can fail to capture value-level joinability; we use 
+
+Deep Join as the representative column-level baseline; we use Deep-
+
+Join as the representative column-level baseline. Snoopy [ 31 ] per-forms e ffi cient value-level joinability by projecting a column onto learned proxy columns to produce a fi xed-dimensional embedding for ANN retrieval. Since Snoopy ’s objective is most closely aligned with ours, we compare Mosaic Join against Snoopy directly. Several related e ff orts address distinct settings. SILKMOTH [ 15 ]and KOIOS [ 54 ] perform semantic overlap search via maximum bi-partite matching using fi lter-veri fi cation frameworks. While related to join discovery, SILKMOTH and KOIOS require exact maximum bipartite matching at query time, making it impractical for noisy data lakes that do not contain only one-to-one joins. Nonethe-less, we include SILKMOTH and KOIOS in our experiments. Om-ni Match [43 ] and Hyper Join [ 49 ] both create similarity graphs over all columns, discovering all joins fully o ffl ine rather than per-forming online top-𝑘 retrieval as Mosaic Join does. Freyja [50 ]constructs column-level pro fi les that do not capture fi ne-grained value-level alignment, and Poly Join [34 ] targets multi-key (n-ary) join search. Tab Sketch FM [38 ] uses sketch-based table representa-tions capturing only exact value overlap and numerical similarity, whereas Mosaic Join captures the semantic alignment of values in embedding space. 1 TOPJ oin [41 ] targets context-aware join-ability in enterprise settings where valid joins require table-level semantic relationships, not just value alignments; we include it as 1 The model is not publicly available for Tab Sketch FM , so we are not able to include it in our experiments. *SSXFEPP0IEKYI7IEWSR          
+
+> 8MTTIPMKEIR :]WLGLE0MLE (MZMWMSR 7[IHMWLJSSXFEPP Ɛ
+> )QFIHHMRK7TEGI (EXE0EOI
+> &EWOIXFEPP8IEQ)ZSPYXMSR
+> ,SYWXSR6SGOIXW (IRZIV6SGOIXW 7ER(MIKS6SGOIXW Ɛ
+> )QFIHHMRK7TEGI
+> 
+> 7OIXGLIW
+> *SSXFEPP0IEKYI7IEWSR
+> 2SV[IKMER4VIQMIV0IEKYI 9OVEMRMER4VIQMIV0IEKYI 7[IHMWLJSSXFEPP(MZMWMSR
+> )QFIHHMRK7TEGI 5YIV]'SPYQR &4
+> 8ST N.SMREFPI 'SPYQRW
+> 3RPMRI 3ǙMRI
+> /'IRXIV *EVXLIWX*MVWX
+> 7OIXGL7M^I P
+> î
+> )QFIHHMRK7M^I G
+> 'LEQJIV7MQMPEVMX]
+> ᭾FK &4& *! ᭾FK &4& %2YQFIVSJ'SPYQRW MR(EXE0EOI 'ERHMHEXI'SPYQR &%
+> 'ERHMHEXI'SPYQR &*
+> 7OIXGL7M^I P
+> î
+> )QFIHHMRK7M^I G
+
+Figure 2: Mosaic Join Pipeline, with real columns from our experimental evaluations [ 48 ] (Section 5). During the o ff line phase, Mosaic Join embeds column values and creates a compact semantic sketch using the 𝑘 -center procedure. During online processing, given a query column, Mosaic Join embeds the column values and ranks candidate columns using a Chamfer-style semantic joinability score. Mosaic Join correctly returns the green column ( 𝐶 𝐺 ) about Football league seasons, whose values match those in the red query column ( 𝐶 𝑄 ) in the top left. Column-based methods return the bottom blue column ( 𝐶 𝐵 ), whose column semantics are similar to those of the query column (basketball and football), but whose values do not align. 
+
+a context-aware baseline. Broadly, these approaches either require offl ine, pairwise-heavy modeling or compress columns into coarse heuristic pro fi les, whereas Mosaic Join uses bounded, deterministic value sketches to keep value-level semantic join evidence while supporting fast online top-𝑘 retrieval, even for high-cardinality columns. 
+
+Fuzzy-Joins. A complementary line of work studies approximate (fuzzy) joins between two given tables by automatically selecting similarity functions and transformation rules [ 59 ]. Auto-Fuzzy Join 
+
+auto-programs a fuzzy-join to meet a user-speci fi ed precision tar-get while maximizing recall, alleviating manual tuning of distance functions and thresholds [ 48 ]. Auto-Join [ 75 ] learns string trans-formation programs so that transformed keys can be equi-joined. More recently, DTT [14 ] uses neural language modeling to map entity columns into joinable formats, avoiding exhaustive searches over hand-crafted transformation spaces. These techniques focus on pairwise join execution or key transformation between two given tables, whereas Mosaic Join searches a large repository for columns whose values can be joined with a query column. 
+
+Multivector Search. Late-interaction retrievers represent queries and documents as sets of vectors and score relevance by aggregat-ing fi ne-grained per-element matches, enabling token-level accu-racy while allowing document representations to be precomputed for e ffi ciency. ColBERT [ 39 ] popularized this design, demonstrat-ing that it preserves token-level evidence and is more robust than collapsing a whole text into a single embedding. However, exact evaluation is expensive because it requires many cross-vector com-parisons and cannot be reduced to a single maximum inner product search (MIPS) query. MUVERA [ 36 ] addresses this by constructing 
+
+fi xed-dimensional encodings whose dot product approximates the underlying set-based similarity, enabling candidate retrieval via o ff -the-shelf MIPS indices with lightweight re-ranking. These results motivate our use of aggregate-of-best-matches scoring: it preserves 
+
+fi ne-grained evidence about which query values are supported by a candidate column while admitting e ffi cient top-k retrieval through through indexing and approximation mechanisms. 
+
+## 3 PRELIMINARIES 
+
+In this section, we introduce our notion of semantic joinability and the compact column representation used to make retrieval effi cient at data-lake scale. We fi rst de fi ne a Chamfer-style semantic joinability score for ranking candidate columns, and then motivate semantic sketches constructed via a 𝑘 -center objective. 
+
+## 3.1 Semantic Joinability 
+
+Traditional join discovery is often based on exact value overlap :two columns are considered joinable if many values in one col-umn appear verbatim in the other [ 27 , 64 , 74 , 76 ]. While e ff ective for clean, normalized data, this criterion is brittle in data lakes, where semantically equivalent values may di ff er in surface through abbreviations, aliases, formatting di ff erences, misspellings. To address this, we move from exact matching to semantic match-ing . Instead of comparing raw strings directly, we compare value embeddings produced by an embedding function 𝜙 (·) , so that val-ues with similar meaning are close in R𝑑 even when their string forms di ff er. This allows us to determine whether a value in the query column has a semantically similar counterpart in a candidate column. Let Φ(𝐶 ) denote the multiset of value embeddings for column 𝐶 :
+
+Φ(𝐶 ) = {𝜙 (𝑣 ) | 𝑣 ∈ 𝐶 }String-Based Exact-Match Joinability. A strict exact-match score can be written as 
+
+Jexact (𝐶 𝑄 , 𝐶 ) = 1
+
+|𝐶 𝑄 |
+
+!  
+
+> 𝑣 ∈𝐶 𝑄
+
+1[∃𝑣 ′ ∈ 𝐶 such that 𝑣 = 𝑣 ′ ] (1) This measures the fraction of query values that appear exactly in 𝐶 .
+
+Semantic Joinability via a Directed Chamfer-Style Score. Given a similarity function sim (e.g., cosine similarity), we de fi ne semantic joinability as 
+
+Jch (𝐶 𝑄 , 𝐶 ) = 1
+
+|𝐶 𝑄 |
+
+!  
+
+> 𝑣 ∈𝐶 𝑄
+
+max    
+
+> 𝑢 ∈Φ(𝐶 )
+
+sim (𝜙 (𝑣 ), 𝑢 ). (2) This is a directed Chamfer-style aggregation [ 36 ]: for each value in the query column 𝐶 𝑄 , we keep only the best semantic match in the candidate column – the embedding 𝑢 with the highest similarity – and then, compute the average across all values. This formulation re fl ects the semantics of joins in real data lakes, where value mappings are frequently non-bijective. For example, in a city-to-state join, several city names may map to the same state. A one-to-one bipartite matching objective would allow only one city to claim a state, discarding the remaining join evidence and underestimating joinability. The directed Chamfer score avoids this by letting each query value independently contribute its best-match similarity, so Jch measures semantic coverage of the query by the candidate column. This many-to-one modeling is not an assumption unique to MosaicJoin, it is independently motivated by SEMA-JOIN [ 33 ], which studies semantic joins beyond exact equality and explicitly models optional many-to-one mappings as a core join pattern. The distinction is one of setting: SEMA-JOIN predicts an instance-level mapping between two given columns using co-occurrence statistics from a large table corpus, whereas MosaicJoin targets top-k joinable-column retrieval over a data lake, where scores must be e ffi ciently computed across many candidates and require no corpus-level supervision. The directed Chamfer score satis fi es both requirements simultaneously. 
+
+Ranking candidate columns. Given a query column 𝐶 𝑄 and a set of candidate columns C , the score Jch (𝐶 𝑄 , 𝐶 ) provides a common scale for comparison. In particular, if 
+
+Jch (𝐶 𝑄 , 𝐶 𝑎 ) > Jch (𝐶 𝑄 , 𝐶 𝑏 ),
+
+then, on average, values in 𝐶 𝑄 have stronger best semantic matches in 𝐶 𝑎 than in 𝐶 𝑏 . Equivalently, 𝐶 𝑎 provides better semantic coverage of the query values than 𝐶 𝑏 .Therefore, top-𝑘 semantic joinable column search can be imple-mented by ranking candidate columns by Jch (𝐶 𝑄 , 𝐶 ) and returning the highest-scoring ones. Columns with high scores provide strong semantic coverage of the query, i.e., most query values have at least one close semantic match and are therefore strong join can-didates regardless of whether the value mapping is one-to-one or one-to-many. 
+
+## 3.2 Compact Semantic Sketches via 𝑘 -Center 
+
+The Need for Compact Representations. Although Jch is a natural semantic analogue of exact overlap, computing it exactly is pro-hibitively expensive at data-lake scale. For a data lake with N can-didate columns, evaluating Jch exactly requires computing, for each query value 𝑣 ∈ 𝐶 𝑄 , the maximum similarity against every value embedding in every candidate column. This yields an online cost of 𝑂 (𝑁𝑛 |𝐶 |𝑑 ), where 𝑛 = |𝐶 𝑄 | is the query column size, |C| is the candidate column size, and d is the embedding dimension — scaling with both query and data lake column cardinalities simulta-neously. For the largest columns in our evaluation (up to 57K query values and 1M data lake values [ 50 ]), this cost is re fl ected in the 15.65-second per-query latency of ESJ, our exact baseline. To make retrieval e ffi cient, we replace the full embedding multiset Φ(𝐶 ) with a compact representative subset, which we call a semantic sketch .
+
+Semantic Sketch and Representative Embeddings. For each column 𝐶 
+
+and sketch size 𝑚 , we construct a sketch 
+
+𝑆 (𝐶 ) ⊆ Φ(𝐶 ), |𝑆 (𝐶 )| = 𝑚 ≪ |𝐶 |,
+
+The goal is for 𝑆 (𝐶 ) to preserve the semantic coverage of Φ(𝐶 ) ,so that joinability computed against the sketch remains a good approximation of joinability computed against the full column. 
+
+𝑘 -center Objective for Sketch Construction. We construct 𝑆 (𝐶 ) using a 𝑘 -center-style objective (with budget 𝑚 ). Let 𝐷 (· , ·) be a distance corresponding to the similarity function (e.g., cosine distance when 
+
+sim is cosine similarity). We choose 𝑚 representatives that minimize the worst-case distance from any embedding in Φ(𝐶 ) to its nearest representative: 
+
+𝑆 (𝐶 ) ∈ arg min    
+
+> 𝑆 ⊆Φ(𝐶 )|𝑆 |=𝑚
+
+max    
+
+> 𝑥 ∈Φ(𝐶 )
+
+min   
+
+> 𝑠 ∈𝑆
+
+𝐷 (𝑥 , 𝑠 ). (3) Intuitively, this objective ensures that every value embedding in the column is close to at least one selected representative. This is well aligned with the Chamfer-style joinability score, which is based on best matches: if each original embedding is well covered by a nearby representative, then nearest-match similarities against the full column can be approximated using only the sketch. 
+
+Approximation. The objective above is the 𝑘 -center problem with budget 𝑚 , which is NP-hard in general and closely related to facility-location-style clustering. Mosaic Join therefore uses the standard greedy farthest-fi rst traversal, described in Section 4.2, rather than solving the objective exactly. This approximation is well suited to our setting because it greedily reduces the maximum distance from any column value to its nearest representative, preserving the semantic coverage needed by the Chamfer-style best-match score. For metric distances, farthest-fi rst gives a constant-factor approximation to the optimal 𝑘 -center radius. This sketch is built once o ffl ine during preprocessing and reused during online scoring, so its cost does not a ff ect query-time search e ffi ciency. 
+
+## 4 MOSAICJOIN FRAMEWORK 
+
+We now discuss the Mosaic Join framework, including its o ffl ine stage where we build compact semantic sketches (Section 4.2) and online stage where we determine semantic joinability of a query column (Section 4.3). 
+
+## 4.1 System Overview 
+
+Figure 2 shows the overall pipeline of Mosaic Join , which consists of an o ffl ine and online stage. Given a data lake with columns C ,in the offl ine stage , we embed values in each data-lake column and compress each column into a fi xed-size semantic sketch 𝑆 (𝐶 ) using a k-center (farthest-fi rst) procedure. In the online stage , given a query column 𝐶 𝑄 , we embed its values in the same way and rank Algorithm 1: Compact Column Representation via Farthest-First Selection 
+
+Input: Value embeddings Φ = {𝑥 1 , . . . , 𝑥 𝑛 } ⊂ R𝑑 , sketch size 𝑚 
+
+Output: Semantic sketch 𝑆 ⊆ Φ with |𝑆 | = 𝑚  
+
+> 1
+
+𝜇 ← 1
+
+> 𝑛
+
+"𝑛 𝑖 =1 𝑥 𝑖 // centroid 𝑠 1 ← arg min 𝑥 𝑖 ∈Φ 𝐷 (𝑥 𝑖 , 𝜇 )
+
+// most central point 𝑆 ← {𝑠 1 }; 
+
+> 2
+
+foreach 𝑥 𝑖 ∈ Φ do 3 𝛿 𝑖 ← 𝐷 (𝑥 𝑖 , 𝑠 1 ) // distance to nearest selected point  
+
+> 4
+
+for 𝑡 = 2 to 𝑚 do 5 𝑠 𝑡 ← arg max 𝑥 𝑖 ∈Φ\𝑆 𝛿 𝑖 ; 
+
+> 6
+
+𝑆 ← 𝑆 ∪ {𝑠 𝑡 }; 
+
+> 7
+
+foreach 𝑥 𝑖 ∈ Φ \ 𝑆 do 8 𝛿 𝑖 ← min (𝛿 𝑖 , 𝐷 (𝑥 𝑖 , 𝑠 𝑡 )); 
+
+> 9
+
+return 𝑆 ;candidate columns by a sketch-based semantic joinability score. Throughout, we reserve 𝑘 for top-𝑘 retrieval and use 𝑚 for the 
+
+sketch size .
+
+## 4.2 Off line Stage 
+
+Value Embeddings. Let 𝐶 be a column with values {𝑣 1 , . . . , 𝑣 𝑛 } . To capture the semantics of each value, we form the text 𝑡 𝑖 : = [𝑣 𝑖 ] and compute an embedding 𝑥 𝑖 := 𝜙 (𝑡 𝑖 ) ∈ R𝑑 where 𝜙 (·) denotes the embedding function. We denote the resulting (multi)set of value embeddings by Φ(𝐶 ) := {𝑥 1 , . . . , 𝑥 𝑛 }. Unless stated otherwise, we 
+
+ℓ2 -normalize embeddings so that ∥𝑥 𝑖 ∥ 2 = 1 and cosine similarity equals the dot product: sim (𝑥 , 𝑦 ) = 𝑥 ⊤𝑦 ∈ [−1, 1].
+
+k-center Semantic Sketch Construction. Storing all embeddings Φ(𝐶 )
+
+for every column is too expensive at a data-lake scale. Instead, we preprocess each column to derive a compact semantic sketch 
+
+𝑆 (𝐶 ) ⊆ Φ(𝐶 ), |𝑆 (𝐶 )| = 𝑚 ≪ |Φ(𝐶 )| .
+
+Intuitively, 𝑆 (𝐶 ) should preserve the semantic coverage of Φ(𝐶 ) , so that online scoring can compare a query column against sketches rather than all values. To obtain diverse representatives, we use a k-center style farthest-
+
+fi rst procedure [ 36 ]. Let 𝐷 (· , ·) be a distance consistent with our similarity; with normalized embeddings we use cosine distance 
+
+𝐷 (𝑥 , 𝑦 ) : = 1 − 𝑥 ⊤𝑦 . The k-center objective seeks a subset 𝑆 of the embeddings with size 𝑚 that minimizes the worst-case distance from any point to its nearest representative: 
+
+min      
+
+> 𝑆 ⊆Φ(𝐶 ),|𝑆 |=𝑚
+
+max    
+
+> 𝑥 ∈Φ(𝐶 )
+
+min   
+
+> 𝑠 ∈𝑆
+
+𝐷 (𝑥 , 𝑠 ).
+
+We approximate this objective with farthest-fi rst traversal, as de-scribed in Algorithm 1: we seed the sketch with the most central embedding (closest to the centroid), then repeatedly add the point farthest from its nearest selected representative. This encourages broad coverage of the embedding space and empirically preserves rare-but-informative values. 
+
+Implementation Note. Algorithm 1 runs in O( 𝑛𝑚 ) distance compu-tations per column using the maintained nearest-center distances 
+
+{𝛿 𝑖 } , and is easily parallelized across columns in the o ffl ine pipeline. 
+
+Algorithm 2: Top-𝑘 Semantic Joinable Column Re-trieval 
+
+Input: Query column 𝐶 𝑄 ; candidate columns C ; embedding function 𝜙 (·) ; compact reps {𝑅 (𝐶 )} ; return size 𝑘 ;query sample size 𝑏 
+
+Output: Top-𝑘 columns ranked by ˜J (𝑏 ) 
+
+> ch
+
+(𝐶 𝑄 , 𝐶 ) 
+
+> 1
+
+𝑄 ← {𝜙 (𝑣 ) | 𝑣 ∈ 𝐶 𝑄 }; 
+
+> 2
+
+Sample a multiset 𝑄 𝑏 ⊆ 𝑄 of size 𝑏 uniformly at random (with replacement);  
+
+> 3
+
+Initialize an empty min-heap 𝐻 (capacity 𝑘 ) storing 
+
+(score , 𝐶 ); 
+
+> 4
+
+foreach 𝐶 ∈ C do 5 𝑠 ← 0; 
+
+> 6
+
+foreach 𝑞 ∈ 𝑄 𝑏 do 7 𝑠 ← 𝑠 + max     
+
+> 𝑟 ∈𝑅 (𝐶 )
+
+⟨𝑞 , 𝑟 ⟩; 
+
+> 8
+
+𝑠 ← 𝑠 /𝑏 // query-subsampled Chamfer score  
+
+> 9
+
+if |𝐻 | < 𝑘 then 10 Heap Push (𝐻 , (𝑠 , 𝐶 )) ; 
+
+> 11
+
+else if 𝑠 > min (𝐻 ) then 12 Heap Pop Min (𝐻 ); 
+
+> 13
+
+Heap Push (𝐻 , (𝑠 , 𝐶 )) ; 
+
+> 14
+
+return Heap Items Sorted Desc (𝐻 );
+
+## 4.3 Online Query Processing 
+
+Algorithm 2 speci fi es how queries are evaluated. Given a query column 𝐶 𝑄 , we embed its values using the same embedding func-tion 𝜙 (·) and form the query embedding multiset Φ(𝐶 𝑄 ) . We then compare Φ(𝐶 𝑄 ) against the semantic sketch 𝑆 (𝐶 ) of each candi-date column 𝐶 and rank candidates by their sketch-based semantic joinability score. We return the top-𝑘 highest-scoring columns, optionally fi ltering out candidates whose score is below a fi xed threshold 𝜏 (we use 𝜏 = 0.1). 
+
+Query Subsampling for Faster Scoring. To further reduce online cost, we estimate the directed sketch-based Chamfer score using a random subset of query values. Let 𝐶 𝑄 = {𝑣 1 , . . . , 𝑣 𝑛 } , where 
+
+𝑛 = |𝐶 𝑄 | , and 𝑆 (𝐶 ) be a candidate sketch derived using Algorithm 1. 
+
+𝑎 𝑖 := max    
+
+> 𝑠 ∈𝑆 (𝐶 )
+
+(𝜙 (𝑣 𝑖 ) · 𝑠 ), 𝑖 = 1, . . . , 𝑛 .
+
+Then the full sketch-based directed Chamfer score is ̂
+
+Jch (𝐶 𝑄 , 𝐶 ) = 1
+
+𝑛 
+
+> 𝑛
+
+!
+
+> 𝑖 =1
+
+𝑎 𝑖 .
+
+We sample 𝑏 indices 𝐼 1 , . . . , 𝐼 𝑏 independently and uniformly from 
+
+𝐶 𝑄 values {1, . . . , 𝑛 }, and de fi ne the subsampled estimator 
+
+˜J (𝑏 ) 
+
+> ch
+
+(𝐶 𝑄 , 𝐶 ) = 1
+
+𝑏 
+
+> 𝑏
+
+!
+
+> 𝑡 =1
+
+𝑎 𝐼 𝑡 .
+
+Theorem 2 (99.9% confidence for qery-subsampled Cham-fer ). Fix a candidate sketch 𝑆 (𝐶 ) , assume embeddings are normalized so that 𝜙 (𝑣 𝑖 ) · 𝑠 ∈ [−1, 1] for all 𝑖 and 𝑠 ∈ 𝑆 (𝐶 ). Then 
+
+E
+
+[ ˜J (𝑏 ) 
+
+> ch
+
+(𝐶 𝑄 , 𝐶 )
+
+]
+
+=̂ Jch (𝐶 𝑄 , 𝐶 ),and with probability at least 99 .9% ,
+
+))) ˜J (𝑏 ) 
+
+> ch
+
+(𝐶 𝑄 , 𝐶 ) −̂ Jch (𝐶 𝑄 , 𝐶 )
+
+))) = 𝑂 
+
+(√ 1
+
+𝑏 
+
+)
+
+.
+
+Proof . De fi ne 𝑋 𝑡 := 𝑎 𝐼 𝑡 for 𝑡 = 1, . . . , 𝑏 . Then 
+
+˜J (𝑏 ) 
+
+> ch
+
+(𝐶 𝑄 , 𝐶 ) = 1
+
+𝑏 
+
+> 𝑏
+
+!
+
+> 𝑡 =1
+
+𝑋 𝑡 .
+
+Since each 𝐼 𝑡 is uniform on {1, . . . , 𝑛 },
+
+E[𝑋 𝑡 ] = 1
+
+𝑛 
+
+> 𝑛
+
+!
+
+> 𝑖 =1
+
+𝑎 𝑖 =̂ Jch (𝐶 𝑄 , 𝐶 ).
+
+Hence, by linearity of expectation, 
+
+E
+
+[ ˜J (𝑏 ) 
+
+> ch
+
+(𝐶 𝑄 , 𝐶 )
+
+]
+
+=̂ Jch (𝐶 𝑄 , 𝐶 ).
+
+Because embeddings are normalized, each 𝑎 𝑖 ∈ [−1, 1 ] , and there-fore 𝑋 𝑡 ∈ [−1, 1 ] . The variables 𝑋 1 , . . . , 𝑋 𝑏 are independent since the indices 𝐼 1 , . . . , 𝐼 𝑏 are sampled independently. By Hoe ff ding’s inequality, for any 𝜀 > 0,
+
+Pr 
+
+() )) ˜J (𝑏 ) 
+
+> ch
+
+(𝐶 𝑄 , 𝐶 ) −̂ Jch (𝐶 𝑄 , 𝐶 )
+
+))) ≥ 𝜀 
+
+)
+
+≤ 2 exp 
+
+(
+
+−𝑏𝜀 22
+
+)
+
+.
+
+Setting the failure probability to 0 . 001 (i.e., con fi dence 99 . 9% ) gives 
+
+2 exp 
+
+(
+
+− 𝑏𝜀 22
+
+)
+
+≤ 0 . 001 , which implies 𝜀 ≥
+
+√ 2 ln (2000 ) 
+
+> 𝑏
+
+. Since 2 ln ( 2000 )
+
+is a constant, the error bound at con fi dence 99 .9% is 𝑂 
+
+(√ 1
+
+> 𝑏
+
+)
+
+. !
+
+Query Search Complexity. Let 𝑁 := |C| be the number of candidate columns, 𝑛 : = |𝐶 𝑄 | be the number of query values, and assume each candidate sketch has size at most 𝑚 (i.e., |𝑆 (𝐶 )| ≤ 𝑚 ). Given a subsample of size 𝑏 , scoring a single candidate column requires 
+
+𝑂 (𝑏𝑚𝑑 ) time, since for each of the 𝑏 sampled query embeddings we compute the maximum inner product against its 𝑚 sketch vectors in R𝑑 . Maintaining the top-𝑘 heap adds 𝑂 (log 𝑘 ) time per candidate. Therefore, the total online query time is 
+
+𝑂 (𝑁 𝑏𝑚𝑑 + 𝑁 log 𝑘 ) .
+
+When 𝑘 ≪ 𝑁 , the dominant term is typically 𝑂 (𝑁 𝑏𝑚𝑑 ) , and with-out query subsampling (i.e., 𝑏 = 𝑛 ) this becomes 𝑂 (𝑁 𝑛𝑚𝑑 ).
+
+## 5 EXPERIMENTS 
+
+We evaluate Mosaic Join on six benchmarks, including a semantic join benchmark [ 50 ], two benchmarks originally used for fuzzy-join evaluations [ 48 , 75 ], and expanded variants of these benchmarks with larger search spaces, constructed by injecting tables from the WDC corpus [ 70 ]. To our knowledge, this is the fi rst evaluation to di-rectly assess the semantic alignment of values in columns retrieved by semantic join discovery methods. Thus, we adapt fuzzy-join benchmarks for this evaluation. First, we conduct extensive ab-lation studies to analyze di ff erent design choices of Mosaic Join .Next, we show that Mosaic Join achieves new state-of-the-art re-sults on value-level semantic join search among published methods –outperforming the best-performing published method by up to 17.6% in NDCG@20 on smaller benchmarks and up to 135.7% in Precision@10 on larger benchmarks. 
+
+## 5.1 Setup 
+
+5.1.1 Environment. We implement Mosaic Join in Python using PyTorch and Huggingface transformers library. All experiments were conducted on a server equipped with a NVIDIA L40S GPU, 128GB RAM, and 8 CPU cores. 
+
+5.1.2 Benchmarks. We perform our experiments using three bench-marks and construct expanded variants of these with WDC tables (see details in Table 1). For each benchmark, we split tables into single-column tables to evaluate joinable column search. 
+
+Auto-Fuzzy Join [48 ] and Webtables [ 75 ] benchmarks were originally designed for evaluating joins between source and tar-get tables. Auto-Fuzzy Join contains 50 diverse fuzzy-join table pairs derived from DBPedia snapshots [ 46 ] between 2013-2021, while Webtables consists of 31 table-pairs collected from Bing and Google search spanning 17 topics, where joins are transformation-based (e.g., formatting or lexical variations). Since both benchmarks evaluate value-level joins, we adapt them to our search setting. The queries are the annotated join columns from the source tables, and the search space consists of all columns across all tables. The ground truth is the corresponding annotated join column from the paired target table in the original ground truth. 2
+
+Freyja benchmark [ 50 ] was created for semantic and syntactic joinable column discovery. It comprises 160 datasets from Kaggle and OpenML, with manually labeled ground truth. 3To evaluate robustness at scale, we inject into all benchmarks a sample of the WDC Web Table Corpus [ 70 ], which has been previously used to evaluate table search [ 23 , 31 ], into the data lakes of Auto-Fuzzy Join , Webtables , and Freyja .
+
+5.1.3 Baselines. We compare our approach, Mosaic Join , with the state-of-the-art approaches for column-level join method [ 19 ], value-level method [ 18 ], proxy-based join method that bridges the two [ 31 ], semantic overlap set search methods [ 15 , 54 ], and context-aware join method [ 41 ]. We use o ff -the-shelf model weights re-leased by the authors for DeepJoin and Snoopy, and the fastText base model [ 45 ] for PEXESO. This evaluates all methods in the same setting, where they can be deployed directly on new or evolving data lakes without task-speci fi c retraining, which is exactly the setting that Mosaic Join targets. To isolate value semantics and ensure a fair comparison across methods, we evaluate all methods using column values only, without column names. This values-only setting follows prior semantic join discovery evaluations [ 18 , 31 ]and re fl ects a realistic data lake setting where metadata is often incomplete, noisy, or ambiguous [1, 25, 57]. 
+
+• Deep Join [19 ] is a column-level join discovery method that encodes each column into a single fi xed-length embedding using SBERT. We use the model that the authors pre-trained on WDC [ 63 ]to run model inference on our benchmarks. To compare fairly with 
+
+Mosaic Join , we only embed column values. 4
+
+• PEXESO [18 ], a value-level method, is the most similar baseline to Mosaic Join . PEXESO embeds all column values and retrieves candidates via pivot-based fi ltering and a grid index. 52 https://github . com/chu-data-lab/AutomaticFuzzyJoin/tree/master/src/autofj/ benchmark,https://github . com/Yeye-He/Auto-Join/tree/master/autojoin-Benchmark 3 https://freyja-data-discovery . github . io 4 https://github . com/mutong184/deepjoin 5 https://github . com/BIT-DataLab/LakeBench/tree/main/join/Pexeso Table 1: Statistics on Auto-Fuzzy Join , Webtables , and Freyja benchmarks, and WDC tables used in the expanded benchmarks.                                                      
+
+> Benchmark Split # Cols Total # Rows Max # Rows Avg # Rows Max Card. Avg Card.
+> Auto-Fuzzy Join Query 50 164.7K 6,933 3,295 6,933 3,295 Data Lake 100 182K 6,933 1,826 6,933 1,826
+> Webtables Query 32 3.8K 690 120 673 113 Data Lake 244 47K 2,195 194 2,191 82
+> Freyja Query 50 223K 57,793 4,459 1,303 159 Data Lake 1,317 16M 1,048,575 12,169 834,244 3,342 WDC Data Lake 97,703 10M 810 102 810 99
+
+• Snoopy [31 ] is a column-level method that captures value-level joinability using proxy columns, learned from the Scorpion model [ 31 ]. We use the original model weights trained on the WDC corpus. 6
+
+• KOIOS [ 54 ] is a value-level semantic join discovery method that embeds values and indexes them for neural similarity search. Since the original implementation is written in C, we re-implement it in Python while preserving the method’s original maximum bipartite matching scoring logic to ensure a fair comparison. 7
+
+• SILKMOTH [ 15 ] is a value-level join discovery method based on set containment. It retrieves joinable columns by comparing the overlap between column value sets rather than semantic simi-larity. Since the original implementation is not publicly available, we implement a Python version of SILKMOTH according to the algorithms and speci fi cations in the paper [15]. 
+
+• TOPJ oin [41 ] is a hybrid join discovery method that combines value overlap, column-level semantic similarity, and table-context signals. We use the original implementation of TOPJ oin .8
+
+• Exact-Semantic-Join (ESJ ) is a variation of Mosaic Join that performs exact semantic join search without constructing semantic sketches of value embeddings proposed in Section 3.2. Instead, it computes exact semantic join score de fi ned in Eq. (2) by, for each query value embedding, fi nding its closest value embedding in the candidate column (i.e., exact nearest-neighbor matching) and aggregating these matches at query time. 
+
+5.1.4 Ground truth Expansion. For the base benchmarks, we use the provided ground-truth labels. For the expanded benchmarks, no ground truth exists between the original query columns and the injected WDC tables, so we augment the original labels with silver labels generated by Gemini 2.5 Pro [ 11 ]. We evaluate using the union of the original benchmark ground truth and the silver labels. We use an LLM judge because many valid joins are semantic rather than exact equi-joins, and exhaustive value-pair annotation is infeasible at scale (e.g., Freyja +WDC would require up to 20K ×
+
+26M value-pair comparisons). For each query–candidate pair, we provide both columns’ unique values after minor string normaliza-tion and ask the judge to classify the pair as equijoin , semantic ,or not joinable , with a con fi dence score and brief rationale. We retain only predictions with con fi dence > 0 . 7. To avoid bias toward 
+
+Mosaic Join , for each query column we form the annotation pool as the union of the top-50 retrieved columns from Mosaic Join          
+
+> 6https://github .com/ZJU-DAILY/Snoopy/tree/main 7https://github .com/DataIntelligenceCrew/koios-semantic-search 8https://github .com/IBM/ContextAwareJoin
+
+and each baseline, excluding pairs already present in the original ground truth. Thus, silver labels can originate from any method’s retrieval list. To validate retained positive silver labels, we conduct a multi-model audit on a strati fi ed sample of 200 joinable pairs across all expanded benchmarks, including 75 semantic joins and 125 equi-joins. Each pair is independently checked by Gemini 2.5 Pro, GPT-5.5 [ 60 ], and Gemini 3.5 Flash [ 30 ]; all 200 receive major-ity support, and 185 receive unanimous support. The remaining 15 disagreement cases are manually reviewed by three human curators and con fi rmed as correct joinable pairs. For context, with 𝑛 = 200 ,a one-sided exact binomial test for detecting an improvement from 90% to 95% precision at 𝛼 = 0 . 05 has approximately 80% power, con fi rming the statistical signi fi cance of our veri fi cation results. 
+
+5.1.5 Metrics. Following previous work [ 19 , 31 ], we report Recall@ 𝑘 
+
+and NDCG@ 𝑘 for Auto-Fuzzy Join and WT, since they expect a single joinable column per query column in their ground truth. For 
+
+Freyja , which expects multiple columns per query, we also evaluate Precision@ 𝑘 . For the expanded benchmarks, where we have LLM annotations of the top-10 retrieved columns from each method, we evaluate Precision@10 and NDCG@10. For a query column 𝐶 𝑄 , let S = {𝐶 1 , ... 𝐶 | S | } be the set of ex-pected joinable columns and ˆS = { ˆ𝐶 1 , ... ˆ𝐶 𝑘 } be the set of retrieved top-𝑘 joinable columns by a speci fi c method with respect to 𝐶 𝑄 .Precision@ 𝑘 = | S ∩ ˆS | | ˆS | and Recall@ 𝑘 = | S ∩ ˆS | | S | . NDCG@ 𝑘 measures the quality of the ranking of the top-𝑘 retrieved columns. Since our ground-truth labels are binary, we de fi ne relevance as rel 𝑖 =
+
+1 [ ˆ𝐶 𝑖 ∈ S] , where ˆ𝐶 𝑖 is the column returned at rank 𝑖 . NDCG@ 𝑘 is de fi ned as 𝐷𝐶𝐺 @𝑘 𝐼 𝐷𝐶𝐺 @𝑘 , where 𝐷𝐶𝐺 @𝑘 = "𝑘 𝑖 =1 𝑟𝑒𝑙 𝑖    
+
+> 𝑙𝑜𝑔 2(𝑖 +1)
+
+and 𝐼𝐷𝐶𝐺 @𝑘 =
+
+"𝑚𝑖𝑛 (𝑘 ,| S | )    
+
+> 𝑖 =11
+> 𝑙𝑜𝑔 2(𝑖 +1)
+
+For e ffi ciency, we measure the query search time of all the meth-ods. All metrics are averaged over all queries. 
+
+## 5.2 Ablation Study 
+
+We fi rst conduct an ablation study of Mosaic Join ’s design choices on the Freyja benchmark to identify the best hyperparameter set-ting. For each ablation study, we keep the other hyperparameters 
+
+fi xed. We focus on this benchmark because it is technically our largest base benchmark and has the highest cardinality, measured by the number of rows with unique values (Table 1). 
+
+Varying Size of Query Subsamples. Figure 3 shows the NDCG@10 and runtime of Mosaic Join on the Freyja benchmark as we vary the number 𝑏 of randomly sampled rows from each query column. Table 2: Ablation studies of Precision, Recall, and NDCG for 𝑘 = 10 , 20 of Mosaic Join on Freyja for di ff erent sketch construction methods, online similarity methods, sketch sizes 𝑚 , and embedding models. (*) denotes the hyperparameters we use in the rest of the experiments.                                                                                                 
+
+> Method Precision@10 Recall@10 NDCG@10 Precision@20 Recall@20 NDCG@20 Sketch k-center* 0.876 0.287 0.885 0.829 0.543 0.848 Construction k-means 0.454 0.143 0.482 0.259 0.163 0.335 chamfer ( ̂Jch )0.890 0.292 0.907 0.801 0.526 0.838 Online inverse chamfer ( ̂Jinv )0.820 0.268 0.820 0.797 0.521 0.804 Similarity average chamfer ( ̂Jbi )* 0.876 0.287 0.885 0.829 0.543 0.848
+> 𝑚 = 128 0.882 0.289 0.888 0.850 0.558 0.864 Sketch 𝑚 = 64* 0.876 0.287 0.885 0.829 0.543 0.848 Sizes 𝑚 = 32 0.838 0.274 0.848 0.792 0.518 0.813 EmbeddingGemma [69] ( 𝑑 =128 )* 0.876 0.287 0.885 0.829 0.543 0.848 Embedding MPNet [68] ( 𝑑 =768 )0.460 0.145 0.506 0.259 0.163 0.349 Model bge-base-en-v1.5 [71] ( 𝑑 =768 )0.906 0.297 0.909 0.892 0.585 0.899
+> (a) NDCG@10 (b) Search Time
+
+Figure 3: Varying 𝑏 (number of sampled values from query columns) on Freyja benchmark 
+
+We observe that NDCG@10 quickly stabilizes around 𝑏 = 1024 ,with little improvement beyond this point, while runtime is 4 . 5×
+
+faster than using the full query column. This indicates that random query subsampling preserves retrieval quality while improving e ffi -ciency. Based on this tradeo ff , we use 𝑏 = 1024 query samples in all experiments in Section 5.3. This empirical trend is consistent with the guarantee in Theorem 2 from Section 4.3. 
+
+Comparison of Sketch Construction Methods Table 2 shows the e ff ect of di ff erent sampling strategies for constructing semantic sketches on the performance of Mosaic Join on Freyja . In particu-lar, we compare our 𝑘 -center-based method (Section 3.2) against a 
+
+𝑘 -means clustering, where we use the standard 𝑘 -means implemen-tation from [ 62 ]. We observe that 𝑘 -center sampling outperforms 
+
+𝑘 -means by large margins for all metrics. This di ff erence is expected for two main reasons. First, 𝑘 -means is optimized to minimize average squared distance to cluster cen-troids, which tends to bias the representation toward dense regions of the embedding space. On Freyja , where many values are re-peated or di ff er only slightly, this can cause multiple centroids to concentrate around highly frequent but semantically similar values, leaving other parts of the column underrepresented. In con-trast, 𝑘 -center sampling explicitly aims to maximize coverage of the embedding space, producing a more diverse set of representative points. Second, 𝑘 -means returns synthetic centroids that generally do not coincide with actual embedded values, whereas our 𝑘 -center procedure selects representatives directly from the observed embed-ding set. As a result, the semantic sketch remains grounded in real points while still e ff ectively covering the space via the farthest-fi rst traversal used by 𝑘 -center. Overall, these results show that 𝑘 -center sampling yields a more faithful and diverse summary of the column embeddings, leading to better retrieval performance. 
+
+Varying Online Similarity Methods. To compare query columns against candidate sketches, we study several Chamfer-style sim-ilarity functions, following the same nearest-neighbor matching principle used in prior retrieval work such as Muvera [ 36 ]. All variants use dot-product similarity on normalized embeddings and di ff er only in how they aggregate these matches. This ablation helps determine which aggregation rule is best aligned with semantic join discovery. 
+
+Directed Chamfer (query → candidate sketch). Our primary score is the directed average Chamfer from the query to the candidate sketch: ̂
+
+Jch (𝐶 𝑄 , 𝐶 ) = 1
+
+|Φ(𝐶 𝑄 )| 
+
+!  
+
+> 𝑞 ∈Φ(𝐶 𝑄 )
+
+max     
+
+> 𝑠 ∈𝑆 (𝐶 )
+
+(𝑞 · 𝑠 ).
+
+This is the sketch-based approximation of the directed semantic joinability score from Section 3.1. It measures, for each query em-bedding, how well it is supported by the candidate sketch, and is therefore the most natural choice for our retrieval setting. 
+
+Inverse Chamfer (candidate sketch → query). We also evaluate the inverse direction: ̂
+
+Jinv (𝐶 𝑄 , 𝐶 ) = 1
+
+|𝑆 (𝐶 )| 
+
+!   
+
+> 𝑠 ∈𝑆 (𝐶 )
+
+max    
+
+> 𝑞 ∈Φ(𝐶 𝑄 )
+
+(𝑠 · 𝑞 ).
+
+Unlike the directed score above, this variant measures how well the candidate sketch is covered by the query. While this provides a meaningful alternative, it is less directly aligned with our objective, since in join retrieval we primarily care about whether query values can be matched by the candidate column. 
+
+Bidirectional (average) Chamfer. Finally, we consider a symmetric variant obtained by averaging the two directions: ̂ Jbi (𝐶 𝑄 , 𝐶 ) =
+
+> 12
+
+(̂ 
+
+Jch (𝐶 𝑄 , 𝐶 ) + ̂ Jinv (𝐶 𝑄 , 𝐶 )
+
+)
+
+. This score balances both notions of coverage, rewarding pairs that match well in both directions. It can be viewed as a more symmetric measure of semantic similarity, (a) BGE (b) Embedding Gemma (c) MPNet Figure 4: UMAP projections of Freyja values embeddings from BGE, Embedding Gemma , and MPNet Models. All em-beddings are in gray. Red and blue points represent expected column values for two distinct queries. 
+
+though such symmetry is not necessarily required in our inherently directed retrieval task. In all three cases, we use averages to keep scores comparable across query columns with di ff erent numbers of values and can-didate sketches of di ff erent sizes. As shown in Table 2, directed Chamfer and average Chamfer perform comparably. Since the dif-ference is marginal, we adopt average Chamfer in all subsequent experiments and omit the comparison between direct Chamfer against the baselines due to space constraints. 
+
+Varying Sketch Size 𝑚 : We next study the e ff ect of the sketch size parameter 𝑚 in the 𝑘 -center sketch construction algorithm (Al-gorithm 1) on the Freyja benchmark. Here, 𝑚 controls the number of representative embeddings retained in each semantic sketch. As shown in Table 2, increasing 𝑚 beyond 64 yields only marginal gains in retrieval performance. At the same time, smaller sketches reduce search cost (e.g., 𝑚 = 64 is 1.25 × faster than 𝑚 = 128 ), lead-ing to faster query-time performance. Based on this tradeo ff , we use 
+
+𝑚 = 64 in our experiments. More generally, this accuracy-e ffi ciency balance can be tuned depending on system requirements, as further illustrated in Figure 1. 
+
+Varying Embedding Models: We also compare di ff erent em-bedding models for constructing value representations: Embed-ding Gemma [ 69 ], BGE [ 71 ], and MPNet [ 68 ]. We analyze the underlying structure of the embedding space. Figure 4 shows a uniform manifold approximation and projection (UMAP) visual-ization [ 51 ] of all embeddings of Freyja values (shown in gray) and highlights the distribution of the expected columns for two sample queries in red and blue. To evaluate embedding quality, we compute the average cosine distance of values in each expected column to its respective group centroid. Smaller cosine distance signals compact clusters, meaning the embedding model has suc-cessfully captured the shared semantic context of a column and di ff erentiated it from others. BGE, Embedding Gemma , and MPNet embeddings have average cosine distances of 0.087, 0.133, and 0.174, respectively. The relative ranking of these models by cluster com-pactness (BGE, Embedding Gemma , MPNet, in descending order) aligns exactly with their relative ranking in join discovery perfor-mance (Table 2). Thus, the embedding quality directly impacts the downstream performance. While BGE [ 71 ] with output dimension 768 achieves slightly higher retrieval accuracy, it incurs a substantially higher query-time cost: its average search time is 0.931 seconds per query, compared to only 0.080 seconds for Embedding Gemma [ 69 ] with output di-mension 128. MPNet [ 68 ] is also fast in search time (0.098 seconds),        
+
+> (a) Recall@K (b) NDCG@K
+> Auto-Fuzzy Join Benchmark
+> (c) Recall@K (d) NDCG@K
+> Webtables Benchmark
+> (e) Precision@K (f) Recall@K (g) NDCG@K
+> Freyja Benchmark
+
+Figure 5: E ff ectiveness of Mosaic Join and baselines for vary-ing 𝑘 ’s on Auto-Fuzzy Join , Webtables , and Freyja .
+
+but has signi fi cantly lower accuracy performance. We therefore select Embedding Gemma as the default embedding model because it o ff ers a much stronger e ffi ciency–accuracy tradeo ff .A key reason this works well is that Embedding Gemma is trained with Matryoshka Representation Learning [ 44 ], which concentrates the most informative semantic signal in the leading dimensions. As a result, truncating the representation to 128 dimensions preserves similar retrieval quality as higher-dimensional embeddings while signi fi cantly reducing storage and similarity computation costs at query time. Based on this tradeo ff , we use Embedding Gemma with 128-dimensional outputs in subsequent experiments. 
+
+## 5.3 Comparisons against Baselines 
+
+Table 3 reports the e ff ectiveness results on all base and expanded benchmarks. Mosaic Join outperforms existing methods Deep Join ,
+
+Snoopy , PEXESO on all six benchmarks. We also compare against 
+
+ESJ , our own exact-search variant, in detail later in this section. 
+
+Base Benchmarks. On Freyja , Mosaic Join outperforms Deep-
+
+Join , Snoopy , PEXESO by 9.1%, 42.8%, 72.4% in NDCG@20, re-spectively, and by 10.2%, 60%, 88.8% in Precision@20. On Auto-
+
+Fuzzy Join and Webtables , Mosaic Join outperforms the best-performing baseline, Deep Join , by 3.5% and 17.6% in NDCG@20, respectively. As shown in Figure 5, Mosaic Join consistently out-performs the baselines for all values of 𝑘 on all benchmarks. Since Deep Join collapses each query column into a single fi xed-length embedding, it cannot capture fi ne-grained value alignment, Table 3: E ff ectiveness of Mosaic Join and external baselines Deep Join , Snoopy , and PEXESO , and our exact-search variant ESJ 
+
+on all benchmarks. PEXESO timed out for most, if not all, queries on the expanded benchmarks.                                                                                             
+
+> Auto-Fuzzy Join Webtables Freyja Auto-Fuzzy Join +WDC Webtables +WDC Freyja +WDC Method R@20 NDCG@20 R@20 NDCG@20 P@20 R@20 NDCG@20 P@10 NDCG@10 P@10 NDCG@10 P@10 NDCG@10
+> ESJ 1.000 0.879 0.969 0.594 0.845 0.556 0.834 0.526 0.716 0.072 0.462 0.428 0.625
+> Deep Join 1.000 0.913 0.875 0.484 0.752 0.495 0.777 0.422 0.678 0.025 0.141 0.390 0.484
+> Snoopy 1.000 0.911 0.656 0.347 0.518 0.336 0.594 0.494 0.778 0.028 0.146 0.330 0.506
+> PEXESO 0.808 0.732 0.400 0.284 0.439 0.280 0.492 ––––––
+> Mosaic Join 1.000 0.945 1.000 0.569 0.829 0.543 0.848 0.630 0.819 0.066 0.423 0.428 0.562
+> (a) Precision@K (b) NDCG@K
+> Auto-Fuzzy Join +WDC Benchmark
+> (c) Precision@K (d) NDCG@K
+> Webtables +WDC Benchmark
+> (e) Precision@K (f) NDCG@K
+> Freyja +WDC Benchmark
+
+Figure 6: E ff ectiveness of Mosaic Join and baselines for vary-ing 𝑘 ’s on the expanded benchmarks. 
+
+thus producing false positives when a candidate column has a simi-lar topic but is not value-level joinable. In contrast, Snoopy projects columns onto learned proxy columns to determine column join-ability and to capture fi ne-grained value alignment. However, its proxies are trained on the WDC corpus, which may not capture the value distributions in our benchmark, including the long-tail distri-butions in high-cardinality columns such as those in Freyja . On the base benchmarks, Deep Join actually outperforms Snoopy because 
+
+Deep Join ’s SBERT encoder generalizes better out-of-domain. How-ever, on the expanded benchmarks that include injected tables from WDC (as shown in Figure 6), Snoopy ’s specialized in-domain prox-ies cover the data distributions, leading to better performance than 
+
+Deep Join ’s. Finally, although PEXESO is value-level, its accuracy is low because its pivot-based pruning can prune many joinable columns, and by counting the number of query vectors having at least one matching vector above a fi xed similarity threshold, it can return many false positives. In contrast, Mosaic Join ’s sketches and Chamfer scoring preserve value-level semantic coverage without relying on similarity thresholds or training data. 
+
+Expanded Benchmarks. After injecting WDC tables into Auto-
+
+Fuzzy Join , Webtables , Freyja benchmarks, we evaluate Preci-sion@10 and NDCG@10 on the expanded benchmarks using LLM annotations. PEXESO times out after 10 minutes per query, and thus, we cannot report its results for the expanded benchmarks. On Freyja +WDC, Mosaic Join outperforms Deep Join and Snoopy 
+
+by 9.7%, 29.7% in Precision@10, respectively. On Auto-Fuzzy Join 
+
++WDC and Webtables +WDC, Mosaic Join outperforms the best performing baseline, Snoopy , by 27.5% and 135.7% in Precision@10, respectively. The absolute scores are lower on Webtables +WDC for all methods because most of injected WDC columns are not joinable with Webtables queries (72% of columns), thus resulting in many false positives in top-𝑘 . Figure 6 shows that Mosaic Join 
+
+outperforms existing methods throughout all values of 𝑘 . Thus, 
+
+Mosaic Join is robust to larger search spaces, still outperforming existing methods on value-driven semantic join discovery. 
+
+Comparison with ESJ . As shown in Table 3, the exact variant of 
+
+Mosaic Join , ESJ , outperforms Mosaic Join by 4.4% on Webtables ,by 9.2% on Webtables +WDC in NDCG@ 𝑘 , and by 11.2% on Freyja 
+
++WDC. Since ESJ performs exhaustive pairwise matching over all value embeddings, it captures every possible value alignment, in-cluding value alignments that Mosaic Join ’s sketches may miss. Meanwhile, we observe the opposite trend on Auto-Fuzzy Join and 
+
+Auto-Fuzzy Join +WDC, where Mosaic Join outperforms ESJ by 7.5% and 14.4% in NDCG@ 𝑘 , respectively. Auto-Fuzzy Join contains one-to-many value alignments [ 48 ], and ESJ ’s exhaustive matching is sensitive to redundant or noisy variations of the same entity. In contrast, Mosaic Join ’s 𝑘 -center sketching selects distinct repre-sentative values, thus handling these complex alignments more robustly than the exhaustive variant. 
+
+Robustness to Query Column Size. We further analyze how query column size a ff ects Precision@10, Recall@10, and NDCG@10 of all methods on the Freyja benchmark, which contains the largest query columns in our evaluation (up to 57K values). We evenly split the query columns into fi ve groups of varying numbers of rows. As shown in Figure 7, Mosaic Join and ESJ are robust as the query size grows to 57K, while the performances of Deep Join ,(a) Precision@10 (b) NDCG@10 Figure 7: Analysis of Precision@10 and NDCG@10 of Mo-saic Join , ESJ , Deep Join , Snoopy , PEXESO as we vary the number of rows in query columns in the Freyja benchmark. Recall@10 follows a similar trend. The bottom row subsam-ples values from the largest query bucket (up to 57K rows) in Mosaic Join ; dashed lines show the performance of the baselines. 
+
+Snoopy , and PEXESO gradually decrease. Among the baselines, 
+
+PEXESO shows the lowest overall performance. Since PEXESO em-beds all query values and relies on pivot-based fi ltering to prune candidates, it becomes increasingly expensive and less e ff ective as the query column size increases. Deep Join ’s performance degrades more gradually as the query size increases. Deep Join truncates columns to fi t its models’ context windows, so the performance is stable on smaller queries but declines as Deep Join loses poten-tially joinable values as the query size increases to 57K. Snoopy ’s performance is generally lower than Deep Join ’s, since its proxies are trained on WDC. As the query column size increases, Snoopy ’s performance declines since its fi xed-size proxies fail to represent the long-tail of large value distributions. On the other hand, Mosaic Join and ESJ maintain stable per-formance across queries of all sizes. ESJ computes Chamfer score exhaustively over all query value embeddings, so its accuracy re-mains high. However, its runtime grows linearly with query size, taking ∼ 16 seconds per query on Freyja . In contrast, the 𝑘 -center sketches in Mosaic Join preserve the semantic coverage of candi-date columns, regardless of their size (detailed in Section 3.2), while the query subsampling bounds the online cost of scoring regardless of query size (Theorem 2), leading to accuracy that is similar to ESJ 
+
+at a faster search time of ∼ 0.4 seconds. We see that Mosaic Join 
+
+achieves high accuracy at lower query cost, even on large query columns, where all published baselines’ performances degrade. To evaluate robustness as query columns scale, we vary the per-centage of 𝑏 sampled values on the largest query columns in the 
+
+Freyja benchmark (5K to 57K rows). By reducing 𝑏 on fi xed column sizes, this experiment serves as a controlled proxy for scaling be-yond Freyja benchmark size as it represents the same reduction in sampling ratio as increasing the column size for a fi xed 𝑏 . As shown on the bottom of Figure 7, as the query sampling ratio decreases for larger columns, there is a slight decline in accuracy. However, even when sampling less than 2% of query values, Mosaic Join performs comparably to Deep Join , Snoopy , and PEXESO . While sampling does impact accuracy, these results demonstrate that Mosaic Join 
+
+remains relatively robust as query columns grow. 
+
+Effi ciency. Table 4 reports the preprocessing overhead for Mo-saic Join and ESJ on Freyja , which is the largest benchmark. While 
+
+Mosaic Join generates both embeddings and sketches and ESJ only uses embeddings, the additional time and storage overhead for sketches is minimal. Speci fi cally, sketch creation adds only 0.08, 0.07, and 0.25 seconds per column on Auto-Fuzzy Join , Webtables ,and Freyja benchmarks, respectively. Sketch construction does not increase peak memory requirements: Peak RAM and Peak GPU Memory for both Mosaic Join and ESJ are 3.69 GB and 25.71 GB, re-spectively. Importantly, this preprocessing is a one-time o ffl ine cost that scales linearly through parallelization across columns. When a new column is ingested, the update cost involves generating its embedding and sketch. For the Freyja benchmark, this update cost is 2.48 seconds and requires ∼52 MB of storage. Since columns are processed independently, ingesting new columns does not require reprocessing. Table 5 reports the search time of all methods, averaged over all queries, on Auto-Fuzzy Join , Webtables , and Freyja . Mosaic Join 
+
+is 2 to 66 times faster than the existing value-level joinable column baseline, PEXESO . Compared to the exact semantic search baseline 
+
+ESJ , Mosaic Join is 2 to 49 times faster while achieving comparable or higher accuracy. Compared to overlap set search methods, Mo-saic Join is 6 to 19 times faster than KOIOS and 120 to 224 times faster than SILKMOTH . SILKMOTH times out on the Freyja bench-mark after 10 minutes per query. Although KOIOS uses a FAISS embedding index and a fi lter-veri fi cation framework, the bipartite matching used in KOIOS scoring makes the search slower than the Chamfer-style scoring in Mosaic Join . However, KOIOS is faster than ESJ on the Freyja benchmark since ESJ must exhaustively compare all embeddings for large queries while KOIOS eff ectively prunes the search space. Mosaic Join is also up to 1.4 times faster than TOPJ oin , which uses column metadata and aggregate statis-tics and value pro fi les to retrieve joinable columns. As expected, single-vector methods like Deep Join and Snoopy are faster than 
+
+Mosaic Join at query time, since they compare one vector per can-didate column rather than 𝑚 = 64 sketch vectors. However, Figure 1 shows that the fast search time of these methods also results in lower accuracy. Beyond search time, Deep Join and Snoopy require expensive o ffl ine training on large corpora, whereas Mosaic Join 
+
+requires no training, making it easier to deploy on new data. During online search on the largest benchmark Freyja , Mo-saic Join and ESJ require 27% and 49% peak GPU Utilization, re-spectively, to embed query columns and compute Chamfer-style scores. Mosaic Join requires 2.39 GB of peak RAM and 2.13 GB of peak GPU memory, while ESJ requires 9.06 GB of peak RAM and 6.09 GB of peak GPU memory. These metrics demonstrate that the compact sketches in Mosaic Join not only save memory but also signi fi cantly reduce the computational load on the GPU compared to ESJ . In contrast, the value-level baseline PEXESO requires 3% of GPU utilization, 8.53 GB of peak RAM and 0.51 GB of peak GPU memory, since it mainly uses CPU for pruning and veri fi cation. However, Mosaic Join achieves faster search time and nearly four times lower memory usage than ESJ and PEXESO .
+
+Indexing. We further evaluate Mosaic Join against baseline meth-ods that use indexing, speci fi cally overlap set search methods KOIOS Table 4: Preprocessing and update costs of Mosaic Join and 
+
+ESJ on the Freyja benchmark.            
+
+> Time / Col Total Time Storage / Col Total Storage
+> Mosaic Join 2.48 sec 3,259.17 sec 52.17 MB 68.65 GB
+> ESJ 2.23 sec 2,935.38 sec 51.96 MB 68.38 GB
+
+Table 5: Average Online Search Time (in seconds) on Auto-
+
+Fuzzy Join , Webtables , Freyja benchmarks.                            
+
+> Method Auto-Fuzzy Join Webtables Freyja
+> Deep Join 0.002 0.001 0.001
+> Snoopy 0.004 0.001 0.001
+> PEXESO 5.256 0.071 1.337
+> ESJ 0.507 0.060 15.646
+> KOIOS 1.547 0.383 1.832
+> SILKMOTH 17.936 4.809 –
+> TOPJ oin 0.106 0.040 0.459
+> Mosaic Join 0.080 0.040 0.322
+
+and SILKMOTH , and TOPJ oin . To allow for a fair comparison of scoring methods, we incorporate the same Faiss embedding index used in KOIOS for Mosaic Join candidate retrieval. Figure 8 shows the e ff ectiveness results on the Auto-Fuzzy Join benchmark, which is the largest benchmark where all methods successfully complete within a 10-minute query timeout. 9 Additionally, Auto-Fuzzy Join 
+
+contains one-to-many column cardinalities, which is a realistic scenario in a data lake setting where denormalized tables often result in multiple values mapping to a single query value [ 48 ]. As shown in Figure 8, Mosaic Join outperforms TOPJ oin , KOIOS , and 
+
+SILKMOTH by 8.7%, 15.1%, and 523.4% in NDCG@20, respectively. Thus, Chamfer-style joinability in Mosaic Join is better suited for the one-to-many semantic mappings prevalent in noisy data lakes compared to exact bipartite matching. We further analyze the distinction between value-level methods like Mosaic Join and hybrid methods like TOPJ oin . Mosaic Join 
+
+successfully fi nds semantically joinable columns that contain se-mantically aligned values. For example, in the Auto-Fuzzy Join 
+
+benchmark, query values like “2004 Tiger Cup” and joinable column values like “2004 AFF Championship” share no string overlap, but both refer to the same sports tournament. In this case, Mosaic Join 
+
+ranks this column fi rst, whereas TOPJ oin ranks it below top 3. 
+
+TOPJ oin utilizes table-level context, including column headers and table metadata, which is helpful when value semantics and thus the joins are ambiguous. For example, for a query column “country” in table “USA cars datasets” with values {“usa”, “canada”}, TOPJ oin 
+
+successfully retrieves a joinable column on “sales territory” with values {“Northwest”, “Northeast”}. While Mosaic Join currently relies on value-level information, we will explore incorporating table-level contextual signals in future work. 
+
+## 6 CONCLUSION 
+
+We present Mosaic Join , a value-driven semantic join discovery method that achieves the high accuracy of value-level methods at 9 Experiments on Webtables and Freyja are included in the technical report [24].  
+
+> (a) Recall@K (b) NDCG@K
+
+Figure 8: E ff ectiveness of Mosaic Join with an index on Auto-
+
+Fuzzy Join , compared to KOIOS , SILKMOTH , TOPJ oin .
+
+much faster query search time. Mosaic Join constructs 𝑘 -center se-mantic sketches for each data lake column that maximize coverage of the column’s embedding space, producing a compact represen-tation that captures the full semantics of even high-cardinality columns and enables Chamfer joinability scoring at a cost bounded by the sketch size, rather than by the column size. A query subsam-pling estimator further reduces online query search time regardless of query column size, while preserving accuracy within provable error bounds, enabling robust retrieval even for query columns with up to 57K values. Experiments on fuzzy-join and semantic-join benchmarks, including larger variants, show that Mosaic Join 
+
+outperforms existing methods across all benchmarks, making it im-mediately deployable on new data without task-speci fi c retraining. However, value-level join discovery methods involve an inherent trade-o ff between accuracy and e ffi ciency, as shown in Figure 1. Although Mosaic Join achieves sub-second retrieval, there is a trade-o ff between sketch size and retrieval accuracy, in which a larger sketch size may result in higher accuracy but slower runtime. If we consider all value embeddings in a column, like in ESJ , the accuracy may be higher (Figures 5 and 6) but the runtime is much slower (Table 5). Our results across benchmarks and ablation stud-ies (Table 2) show that the accuracy of this sketch-based method can vary depending on the embedding quality, sketch size, and the sketch construction method. Furthermore, while query sub-sampling signi fi cantly reduces search time (Figure 3), especially for larger columns in the Freyja benchmark, subsampling may overlook rare joinable values in extremely skewed distributions. While we focus solely on values to fi nd semantic joins, in future work we will explore whether incorporating metadata, semantic type annotations, and column pro fi les [ 28 , 42 , 72 ] could improve precision by capturing column-level and table-level context to bet-ter disambiguate semantically similar columns [ 40 ]. Additionally, while Mosaic Join ’s query search time is already faster than other value-level methods, even for benchmarks with up to 99K columns that each contain up to 1M values, approximate nearest neighbor indexing over sketch embeddings [ 36 ] could enable faster retrieval for very large data lakes. 
+
+## ACKNOWLEDGMENTS 
+
+This work was supported in part by DARPA ASKEM (HR0011262087), ARPA-H BDF, and NSF (OAC-2411221). The views, opinions, and 
+
+fi ndings expressed are those of the authors and should not be inter-preted as representing the views or policies of these agencies. REFERENCES 
+
+[1] Marco D. Adel fi o and Hanan Samet. 2013. Schema Extraction for Tabular Data on the Web. Proc. VLDB Endow. 6, 6 (2013), 421–432. [2] Aline Bessa, Juliana Freire, Tamraparni Dasu, and Divesh Srivastava. 2020. Ef-fective discovery of meaningful outlier relationships. ACM Transactions on Data Science 1, 2 (2020), 1–33. [3] Alex Bogatu, Alvaro A. A. Fernandes, Norman W. Paton, and Nikolaos Konstanti-nou. 2020. Dataset Discovery in Data Lakes. In ICDE . 709–720. [4] Dan Brickley, Matthew Burgess, and Natasha F. Noy. 2019. Google Dataset Search: Building a search engine for datasets in an open Web ecosystem. In 
+
+WWW . 1365–1375. [5] Michael J. Cafarella, Alon Y. Halevy, and Nodira Khoussainova. 2009. Data Integration for the Relational Web. Proc. VLDB Endow. 2, 1 (2009), 1090–1101. [6] Riccardo Cappuzzo, Aimee Coelho, Félix Lefebvre, Paolo Papotti, and Gaël Varo-quaux. 2025. Retrieve, Merge, Predict: Augmenting Tables with Data Lakes. 
+
+TMLR (2025). [7] Sonia Castelo, Rémi Rampin, Aécio S. R. Santos, Aline Bessa, Fernando Chirigati, and Juliana Freire. 2021. Auctus: A Dataset Search Engine for Data Discovery and Augmentation. Proc. VLDB Endow. 14, 12 (2021), 2791–2794. [8] Adriane Chapman, Elena Simperl, Laura Koesten, George Konstantinidis, Luis-Daniel Ibáñez, Emilia Kacprzak, and Paul Groth. 2020. Dataset search: a survey. 
+
+VLDB J. 29, 1 (2020), 251–272. [9] Nadiia Chepurko, Ryan Marcus, Emanuel Zgraggen, Raul Castro Fernandez, Tim Kraska, and David R. Karger. 2020. ARDA: Automatic Relational Data Augmentation for Machine Learning. Proc. VLDB Endow. 13, 9 (2020), 1373–1387. [10] Fernando Chirigati, Harish Doraiswamy, Theodoros Damoulas, and Juliana Freire. 2016. Data polygamy: the many-many relationships among urban spatio-temporal data sets. In SIGMOD . 1011–1025. [11] Gheorghe Comanici, Eric Bieber, Mike Schaekermann, Ice Pasupat, Noveen Sachdeva, Inderjit Dhillon, Marcel Blistein, Ori Ram, Dan Zhang, Evan Rosen, et al . 2025. Gemini 2.5: Pushing the frontier with advanced reasoning, multi-modality, long context, and next generation agentic capabilities. arXiv preprint arXiv:2507.06261 (2025). [12] Tianji Cong, James Gale, Jason Frantz, H. V. Jagadish, and Çagatay Demiralp. 2023. WarpGate: A Semantic Join Discovery System for Cloud Data Warehouses. In CIDR . 1–7. [13] Tianji Cong, Fatemeh Nargesian, and HV Jagadish. 2023. Pylon: Semantic Table Union Search in Data Lakes. arXiv preprint arXiv:2301.04901 (2023). [14] Arash Dargahi Nobari and Davood Ra fi ei. 2024. DTT: An example-driven tabular transformer for joinability by leveraging large language models. Proc. ACM Manag. Data 2, 1 (2024), 1–24. [15] Dong Deng, Albert Kim, Samuel Madden, and Michael Stonebraker. 2017. Silk-Moth: An E ffi cient Method for Finding Related Sets with Maximum Matching Constraints. Proc. VLDB Endow. 10, 10 (2017), 1082–1093. [16] Yuhao Deng, Chengliang Chai, Lei Cao, Qin Yuan, Siyuan Chen, Yanrui Yu, Zhaoze Sun, Junyi Wang, Jiajun Li, Ziqi Cao, et al . 2024. Lakebench: A benchmark for discovering joinable and unionable tables in data lakes. Proc. VLDB Endow. 
+
+17, 8 (2024), 1925–1938. [17] Yuyang Dong and Masafumi Oyamada. 2022. Table enrichment system for machine learning. In SIGIR . 3267–3271. [18] Yuyang Dong, Kunihiro Takeoka, Chuan Xiao, and Masafumi Oyamada. 2021. Effi cient joinable table discovery in data lakes: A high-dimensional similarity-based approach. In ICDE . IEEE, 456–467. [19] Yuyang Dong, Chuan Xiao, Takuma Nozawa, Masafumi Enomoto, and Masafumi Oyamada. 2023. DeepJoin: Joinable Table Discovery with Pre-Trained Language Models. Proc. VLDB Endow. 16, 10 (2023), 2458–2470. [20] Mahdi Esmailoghli, Jorge-Arnulfo Quiané-Ruiz, and Ziawasch Abedjan. 2022. MATE: Multi-Attribute Table Extraction. Proc. VLDB Endow. 15, 8 (2022), 1684– 1696. [21] Grace Fan and Juliana Freire. 2025. Hierarchical table semantics for exploratory table discovery. In Proceedings of the Workshop on Human-In-the-Loop Data Analytics . 1–7. [22] Grace Fan, Jin Wang, Yuliang Li, and Renée J. Miller. 2023. Table Discovery in Data Lakes: State-of-the-art and Future Directions. In SIGMOD Conference Companion . ACM, 69–75. [23] Grace Fan, Jin Wang, Yuliang Li, Dan Zhang, and Renée J. Miller. 2023. Semantics-aware Dataset Discovery from Data Lakes with Contextualized Column-based Representation Learning. Proc. VLDB Endow. 16, 7 (2023), 1726–1739. [24] Grace Fan, Eden Wu, Majid Daliri, and Juliana Freire. 2026. Technical Report on MosaicJoin: Compact Semantic Sketches for Value-Level Join Discovery. https://github . com/gracefan2020/MosaicJoin/blob/main/technical_report . pdf [25] Mina H. Farid, Alexandra Roatis, Ihab F. Ilyas, Hella-Franziska Ho ff mann, and Xu Chu. 2016. CLAMS: Bringing Quality to Data Lakes. In SIGMOD . 2089–2092. [26] Raul Castro Fernandez, Ziawasch Abedjan, Famien Koko, Gina Yuan, Samuel Madden, and Michael Stonebraker. 2018. Aurum: A Data Discovery System. In 
+
+ICDE . 1001–1012. [27] Raul Castro Fernandez, Jisoo Min, Demitri Nava, and Samuel Madden. 2019. Lazo: A cardinality-based method for coupled estimation of jaccard similarity and containment. In ICDE . 1190–1201. [28] Benjamin Feuer, Yurong Liu, Chinmay Hegde, and Juliana Freire. 2024. ArcheType: A Novel Framework for Open-Source Column Type Annotation using Large Language Models. Proc. VLDB Endow. 17, 9 (2024), 2279–2292. [29] Juliana Freire, Grace Fan, Benjamin Feuer, Christos Koutras, Yurong Liu, Eduardo Pena, Aécio Santos, Cláudio T Silva, and Eden Wu. 2025. Large language models for data discovery and integration: Challenges and opportunities. IEEE Data Engineering Bulletin (2025). [30] Google. 2026. Gemini 3.5 Flash. https://ai . google . dev/gemini-api/docs/models/ gemini-3 . 5-fl ash. [31] Yuxiang Guo, Yuren Mao, Zhonghao Hu, Lu Chen, and Yunjun Gao. 2025. Snoopy: Eff ective and E ffi cient Semantic Join Discovery via Proxy Columns. IEEE Trans. Knowl. Data Eng. 37, 5 (2025), 2971–2985. [32] Alon Y. Halevy, Flip Korn, Natalya Fridman Noy, Christopher Olston, Neoklis Polyzotis, Sudip Roy, and Steven Euijong Whang. 2016. Goods: Organizing Google’s Datasets. In SIGMOD . 795–806. [33] Yeye He, Kris Ganjam, and Xu Chu. 2015. Sema-join: joining semantically-related tables using big table corpora. Proceedings of the VLDB Endowment 8, 12 (2015), 1358–1369. [34] Xuming Hu, Chuan Lei, Xiao Qin, Asterios Katsifodimos, Christos Faloutsos, and Huzefa Rangwala. 2025. POLYJOIN: Semantic Multi-key Joinable Table Search in Data Lakes. In NAACL . 384–395. [35] Xuming Hu, Shen Wang, Xiao Qin, Chuan Lei, Zhengyuan Shen, Christos Falout-sos, Asterios Katsifodimos, George Karypis, Lijie Wen, and Philip S. Yu. 2023. Automatic Table Union Search with Tabular Representation Learning. In ACL .3786–3800. [36] Rajesh Jayaram, Laxman Dhulipala, Majid Hadian, Jason D Lee, and Vahab Mir-rokni. 2024. MUVERA: Multi-Vector Retrieval via Fixed Dimensional Encoding. 
+
+NeurIPS 37 (2024), 101042–101073. [37] Aamod Khatiwada, Grace Fan, Roee Shraga, Zixuan Chen, Wolfgang Gatter-bauer, Renée J Miller, and Mirek Riedewald. 2023. SANTOS: Relationship-based semantic table union search. SIGMOD 1, 1 (2023), 1–25. [38] Aamod Khatiwada, Harsha Kokel, Ibrahim Abdelaziz, Subhajit Chaudhury, Ju-lian Dolby, Oktie Hassanzadeh, Zhenhan Huang, Tejaswini Pedapati, Horst Samulowitz, and Kavitha Srinivas. 2025. Tabsketchfm: Sketch-based tabular representation learning for data discovery over data lakes. In ICDE . 1523–1536. [39] Omar Khattab and Matei Zaharia. 2020. Colbert: E ffi cient and e ff ective passage search via contextualized late interaction over bert. In SIGIR . 39–48. [40] Harsha Kokel, Aamod Khatiwada, Tejaswini Pedapati, Haritha Ananthakrishnan, Oktie Hassanzadeh, Horst Samulowitz, and Kavitha Srinivas. 2025. Evaluating Joinable Column Discovery Approaches for Context-Aware Search. arXiv preprint arXiv:2510.24599 (2025). [41] Harsha Kokel, Aamod Khatiwada, Tejaswini Pedapati, Haritha Ananthakr-ishnan, Oktie Hassanzadeh, Horst Samulowitz, and Kavitha Srinivas. 2025. TOPJoin: A Context-Aware Multi-Criteria Approach for Joinable Column Search. arXiv:2507.11505 [cs.DB] [42] Christos Koutras and Juliana Freire. 2026. StraTyper: Automated Semantic Type Discovery and Multi-Type Annotation for Dataset Collections. arXiv preprint arXiv:2602.04004 (2026). [43] Christos Koutras, Jiani Zhang, Xiao Qin, Chuan Lei, Vassilis N Ioannidis, Christos Faloutsos, George Karypis, and Asterios Katsifodimos. 2025. OmniMatch: Join-ability discovery in data products. Proc. VLDB Endow. 18, 11 (2025), 4588–4601. [44] Aditya Kusupati, Gantavya Bhatt, Aniket Rege, Matthew Wallingford, Aditya Sinha, Vivek Ramanujan, William Howard-Snyder, Kaifeng Chen, Sham Kakade, Prateek Jain, and Ali Farhadi. 2024. Matryoshka Representation Learning. arXiv:2205.13147 [cs.LG] [45] Facebook AI Research Lab. 2015. fastText: Library for fast text representation and classi fi cation. (2015). https://fasttext . cc/ [46] Jens Lehmann, Robert Isele, Max Jakob, Anja Jentzsch, Dimitris Kontokostas, Pablo N Mendes, Sebastian Hellmann, Mohamed Morsey, Patrick Van Kleef, Sören Auer, et al . 2015. Dbpedia–a large-scale, multilingual knowledge base extracted from wikipedia. Semantic web 6, 2 (2015), 167–195. [47] Oliver Lehmberg, Dominique Ritze, Robert Meusel, and Christian Bizer. 2016. A Large Public Corpus of Web Tables containing Time and Context Metadata. In 
+
+WWW . 75–76. [48] Peng Li, Xiang Cheng, Xu Chu, Yeye He, and Surajit Chaudhuri. 2021. Auto-fuzzyjoin: Auto-program fuzzy similarity joins without labeled examples. In 
+
+SIGMOD . 1064–1076. [49] Shiyuan Liu, Jianwei Wang, Xuemin Lin, Lu Qin, Wenjie Zhang, and Ying Zhang. 2026. HyperJoin: LLM-augmented Hypergraph Link Prediction for Joinable Table Discovery. arXiv preprint arXiv:2601.01015 (2026). [50] Marc Maynou, Sergi Nadal, Raquel Panadero, Javier Flores, Oscar Romero, and Anna Queralt. 2026. FREYJA: E ffi cient join discovery in data lakes. IEEE Trans. Knowl. Data Eng. 38 (2026), 1–12. [51] Leland McInnes, John Healy, Nathaniel Saul, and Lukas Großberger. 2018. UMAP: Uniform Manifold Approximation and Projection. Journal of Open Source Software 3, 29 (2018), 861. https://doi . org/10 . 21105/joss . 00861 [52] Renée J. Miller. 2018. Open Data Integration. Proc. VLDB Endow. 11, 12 (2018), 2130–2139. [53] Renée J. Miller, Fatemeh Nargesian, Erkang Zhu, Christina Christodoulakis, Ken Q. Pu, and Periklis Andritsos. 2018. Making Open Data Transparent: Data Discovery on Open Data. IEEE Data Eng. Bull. 41, 2 (2018), 59–70. [54] Pranay Mundra, Jianhao Zhang, Fatemeh Nargesian, and Nikolaus Augsten. 2023. Koios: Top-k semantic overlap set search. In ICDE . 1531–1543. [55] Fatemeh Nargesian, Ken Q. Pu, Bahar Ghadiri Bashardoost, Erkang Zhu, and Renée J. Miller. 2023. Data Lake Organization. IEEE Trans. Knowl. Data Eng. 35, 1 (2023), 237–250. [56] Fatemeh Nargesian, Ken Q. Pu, Erkang Zhu, Bahar Ghadiri Bashardoost, and Renée J. Miller. 2020. Organizing Data Lakes for Navigation. In SIGMOD . 1939– 1950. [57] Fatemeh Nargesian, Erkang Zhu, Renée J. Miller, Ken Q. Pu, and Patricia C. Arocena. 2019. Data Lake Management: Challenges and Opportunities. Proc. VLDB Endow. 12, 12 (2019), 1986–1989. [58] Fatemeh Nargesian, Erkang Zhu, Ken Q. Pu, and Renée J. Miller. 2018. Table Union Search on Open Data. Proc. VLDB Endow. 11, 7 (2018), 813–825. [59] Arash Dargahi Nobari and Davood Ra fi ei. 2022. E ffi ciently transforming tables for joinability. In ICDE . 1649–1661. [60] OpenAI. 2026. GPT-5.5. https://developers . openai . com/api/docs/models/gpt-5 . 5. [61] Paul Ouellette, Aidan Sciortino, Fatemeh Nargesian, Bahar Ghadiri Bashardoost, Erkang Zhu, Ken Pu, and Renée J. Miller. 2021. RONIN: Data Lake Exploration. 
+
+Proc. VLDB Endow. 14, 12 (2021), 2863–2866. [62] Fabian Pedregosa, Gaël Varoquaux, Alexandre Gramfort, Vincent Michel, Bertrand Thirion, Olivier Grisel, Mathieu Blondel, Andreas Müller, Joel Nothman, Gilles Louppe, Peter Prettenhofer, Ron Weiss, Vincent Dubourg, Jake Vander-plas, Alexandre Passos, David Cournapeau, Matthieu Brucher, Matthieu Per-rot, and Édouard Duchesnay. 2018. Scikit-learn: Machine Learning in Python. arXiv:1201.0490 [cs.LG] [63] D. Ritze, O. Lehmberg, R. Meusel, C. Bizer, and S. Zope. 2015. WDC Web Table Cor-pus. http://webdatacommons . org/webtables/2015/downloadInstructions . html [64] Aécio Santos, Aline Bessa, Fernando Chirigati, Christopher Musco, and Juliana Freire. 2021. Correlation sketches for approximate join-correlation queries. In 
+
+SIGMOD . 1531–1544. [65] Aécio S. R. Santos, Aline Bessa, Christopher Musco, and Juliana Freire. 2022. A Sketch-based Index for Correlated Dataset Search. In ICDE . 2928–2941. [66] Aécio S. R. Santos, Flip Korn, and Juliana Freire. 2024. E ffi ciently Estimating Mutual Information Between Attributes Across Tables. In ICDE . 193–206. [67] Anish Das Sarma, Lujun Fang, Nitin Gupta, Alon Y. Halevy, Hongrae Lee, Fei Wu, Reynold Xin, and Cong Yu. 2012. Finding related tables. In SIGMOD . 817–828. [68] Kaitao Song, Xu Tan, Tao Qin, Jianfeng Lu, and Tie-Yan Liu. 2020. Mpnet: Masked and permuted pre-training for language understanding. NeurIPS 33 (2020), 16857–16867. [69] Henrique Schechter Vera, Sahil Dua, Biao Zhang, Daniel Salz, Ryan Mullins, Sindhu Raghuram Panyam, Sara Smoot, Iftekhar Naim, Joe Zou, Feiyang Chen, et al . 2025. Embeddinggemma: Powerful and lightweight text representations. 
+
+arXiv preprint arXiv:2509.20354 (2025). [70] WDC. [n.d.]. http://webdatacommons . org/webtables/goldstandard . html, last accessed on Feb 15, 2026. [71] Shitao Xiao, Zheng Liu, Peitian Zhang, and Niklas Muennigho ff . 2023. C-Pack: Packaged Resources To Advance General Chinese Embedding. arXiv:2309.07597 [cs.CL] [72] Haoxiang Zhang, Yurong Liu, Aécio Santos, Wei-Lun (Allen) Hung, and Juliana Freire. 2026. AutoDDG: Automated Dataset Description Generation using Large Language Models. Proc. ACM Manag. Data 4, 1, Article 12 (April 2026), 27 pages. https://doi . org/10 . 1145/3786626 [73] Zixuan Zhao and Raul Castro Fernandez. 2022. Leva: Boosting Machine Learning Performance with Relational Embedding Data Augmentation. In SIGMOD . 1504– 1517. [74] Erkang Zhu, Dong Deng, Fatemeh Nargesian, and Renée J. Miller. 2019. JOSIE: Overlap Set Similarity Search for Finding Joinable Tables in Data Lakes. In 
+
+SIGMOD . 847–864. [75] Erkang Zhu, Yeye He, and Surajit Chaudhuri. 2017. Auto-join: Joining tables by leveraging transformations. Proc. VLDB Endow. 10, 10 (2017), 1034–1045. [76] Erkang Zhu, Fatemeh Nargesian, Ken Q. Pu, and Renée J. Miller. 2016. LSH Ensemble: Internet-Scale Domain Search. Proc. VLDB Endow. 9, 12 (2016), 1185– 1196.

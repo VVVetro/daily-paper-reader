@@ -1,0 +1,353 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-27T20:24:29.287810+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 8,
+    "quick_skim_target": 11,
+    "quick_selected": 8
+  },
+  "deep_dive": [
+    {
+      "id": "2607.21784v1",
+      "source": "arxiv",
+      "title": "MSSI: Middleware for Unified Semantic and Syntactic Interoperability in IoT",
+      "abstract": "With the growing demand of Internet of Things (IoT), there is a need for seamless and reliable communication between heterogeneous IoT devices and the cyber-world to ensure autonomous control over any application process. More specifically, seamless communication requires interoperability between heterogeneous devices (actors) having different semantics and data formats (syntaxes), while making it more challenging. In this paper, we propose a middleware solution for unified semantic and syntactic interoperability in the publisher-subscriber framework of IoT network. The proposed framework automatically translates the subscribers (users) compatible syntax and semantics of the receiver message from the publishers (IoT devices). First, we propose a novel method of syntax translation of messages, to solve the syntactic disparities between users and devices, while providing the information in the user requested syntax. Thereafter, a multilayer perceptron (MLP)-based semantic interoperability framework is proposed to translate the device information to the user requested semantics. Additionally, a novel algorithm is proposed for extracting raw and discriminative features, which are to be fitted to the MLP model as inputs. To show the effectiveness of the proposed middleware, we evaluate different parameters, while considering various publicly used data formats and semantic annotations of attributes to ensure the versatility of the proposed middleware in the practical scenario. The overall classification accuracy using MLP is $95.78$\\% for determining the standard meaning of each attribute of the incoming message from the publisher to address the semantic interoperability problem in IoT.",
+      "authors": [
+        "Sanku Kumar Roy",
+        "Sudip Misra",
+        "Narendra Singh Raghuwanshi"
+      ],
+      "primary_category": "cs.NI",
+      "categories": [
+        "cs.NI"
+      ],
+      "published": "2026-07-23T20:05:08+00:00",
+      "link": "https://arxiv.org/pdf/2607.21784v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "middleware for semantic and syntactic interoperability in IoT systems",
+      "llm_evidence_cn": "物联网系统中语义和语法互操作性的中间件",
+      "llm_evidence": "物联网系统中语义和语法互操作性的中间件",
+      "canonical_evidence": "物联网系统中语义和语法互操作性的中间件",
+      "llm_tldr_en": "Proposes MSSI middleware that unifies semantic and syntactic interoperability for heterogeneous IoT devices via automatic translation.",
+      "llm_tldr_cn": "该论文提出MSSI中间件，在发布-订阅框架中实现设备间统一语义和语法互操作。它自动将发布者消息翻译为订阅者兼容格式，解决了物联网设备异构性问题。该方案可直接应用于智慧城市数字孪生和数据平台中设备与传感器的语义集成。",
+      "llm_tldr": "该论文提出MSSI中间件，在发布-订阅框架中实现设备间统一语义和语法互操作。它自动将发布者消息翻译为订阅者兼容格式，解决了物联网设备异构性问题。该方案可直接应用于智慧城市数字孪生和数据平台中设备与传感器的语义集成。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.21781v1",
+      "source": "arxiv",
+      "title": "MosaicJoin: Compact Semantic Sketches for Value-Level Join Discovery",
+      "abstract": "Join discovery is a core task in dataset search, enabling users to find columns that can be joined with a given query column. Early approaches focused on equi-joins, but data lakes and open-data repositories often contain columns whose values refer to the same entity but use different syntactic representations. To address this challenge, recent approaches discover semantically joinable columns but face a fundamental trade-off: methods that perform value-level comparisons accurately identify joinable columns but scale poorly to columns with high cardinality; column-level methods that encode an entire column into a single embedding are efficient but do not capture the fine-grained value alignment that determines whether a join is possible. We present MosaicJoin, a value-level semantic join discovery method that balances this trade-off. MosaicJoin achieves scalability through a novel sketching strategy that approximates the joinability of a column pair without having to compare all values. At query time, MosaicJoin scores each candidate sketch using a joinability score at a cost bounded by the sketch size, making retrieval efficient even for high-cardinality columns. A query subsampling operator further reduces online search time with provable accuracy guarantees, enabling robust retrieval for large query columns. Extensive experiments show that MosaicJoin outperforms previously published methods across all benchmarks while running up to 66 times faster than other value-level methods. MosaicJoin requires no training or fine-tuning, and it scales robustly to query columns containing up to 57K values and data lake columns containing up to 1M values.",
+      "authors": [
+        "Grace Fan",
+        "Eden Wu",
+        "Majid Daliri",
+        "Juliana Freire"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB",
+        "cs.AI"
+      ],
+      "published": "2026-07-23T19:55:19+00:00",
+      "link": "https://arxiv.org/pdf/2607.21781v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "value-level join discovery for heterogeneous data integration",
+      "llm_evidence_cn": "值级连接发现用于异构数据集成",
+      "llm_evidence": "值级连接发现用于异构数据集成",
+      "canonical_evidence": "值级连接发现用于异构数据集成",
+      "llm_tldr_en": "Proposes MosaicJoin, a method using compact semantic sketches for efficient value-level join discovery in data lakes, enabling semantic matching across heterogeneous columns.",
+      "llm_tldr_cn": "针对数据湖中异构列语义匹配难的问题，提出MosaicJoin方法，利用紧凑语义草图实现高效的值级连接发现，可支持多源数据的语义集成。实验证明该方法在准确性和可扩展性上优于现有方法，为数据集成任务提供核心工具。",
+      "llm_tldr": "针对数据湖中异构列语义匹配难的问题，提出MosaicJoin方法，利用紧凑语义草图实现高效的值级连接发现，可支持多源数据的语义集成。实验证明该方法在准确性和可扩展性上优于现有方法，为数据集成任务提供核心工具。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.17145v1",
+      "source": "arxiv",
+      "title": "Text2Villa: Hierarchical Generation of 3D Indoor Environments with Physics-Aware Analysis-by-Synthesis",
+      "abstract": "Generating 3D indoor scenes from natural language holds tremendous potential, yet existing methods predominantly fail to generate multi-room structures with vertical connectivity and arbitrary polygonal boundaries. Furthermore, they lack a deep grounding in continuous 3D physical laws, leading to severe geometric penetrations and floating artifacts. In this work, we propose Text2Villa, a novel hierarchical generative framework. At the macro level, we construct a multi-story dataset to fine-tune an autoregressive layout generator, ensuring the direct parsing of text into 3D building foundations featuring polygonal boundaries and multi-story connectivity. To enforce physical laws during micro-level asset arrangement, we introduce the Affordance-driven Physical-Semantic Scene Graph (A-PSSG) to explicitly abstract physical affordances (such as support surfaces and containment cavities) into node attributes, establishing strict geometric and semantic edge constraints. Guided by the A-PSSG, we formulate scene instantiation as a constrained closed-loop optimization problem following the analysis-by-synthesis paradigm. By integrating an underlying geometric collision detection engine with the high-level semantic reasoning of multimodal large language models (MLLMs), our heuristic solver dynamically executes physics-aware actions under the observation-evaluation-modification mechanism to effectively resolve mesh collisions, floating artifacts, and fine-grained cavity containment failures. Extensive experiments demonstrate that Text2Villa outperforms previous methods across various metrics, robustly generating high-fidelity and physically plausible villa-level 3D environments from text, thereby providing a reliable and interactive 3D content foundation for downstream applications.",
+      "authors": [
+        "Xiang Tang",
+        "Ruotong Li",
+        "Xiaopeng Fan"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR"
+      ],
+      "published": "2026-07-19T09:01:20+00:00",
+      "link": "https://arxiv.org/pdf/2607.17145v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "hierarchical generation of 3D indoor environments from text, involving building semantics and physics-aware layout, relevant to smart city digital twins",
+      "llm_evidence_cn": "从文本层次化生成3D室内环境，涉及建筑语义和物理约束，与智慧城市数字孪生相关",
+      "llm_evidence": "从文本层次化生成3D室内环境，涉及建筑语义和物理约束，与智慧城市数字孪生相关",
+      "canonical_evidence": "从文本层次化生成3D室内环境，涉及建筑语义和物理约束，与智慧城市数字孪生相关",
+      "llm_tldr_en": "Text2Villa generates 3D indoor scenes from text with multi-story layouts and physics-aware arrangement, contributing to semantic modeling and digital twin creation for urban environments.",
+      "llm_tldr_cn": "本文针对现有方法无法生成多层室内结构且缺乏物理约束的问题，提出了Text2Villa层次化生成框架。宏观层通过自回归布局生成器解析文本为3D建筑轮廓（包括多边形边界和多层连接），微观层利用分析-合成方法确保物理合理布置。该方法涉及建筑语义解析和空间布局生成，与智慧城市中BIM模型构建和数字孪生场景生成高度相关，为数据驱动的城市建模提供了新思路。",
+      "llm_tldr": "本文针对现有方法无法生成多层室内结构且缺乏物理约束的问题，提出了Text2Villa层次化生成框架。宏观层通过自回归布局生成器解析文本为3D建筑轮廓（包括多边形边界和多层连接），微观层利用分析-合成方法确保物理合理布置。该方法涉及建筑语义解析和空间布局生成，与智慧城市中BIM模型构建和数字孪生场景生成高度相关，为数据驱动的城市建模提供了新思路。",
+      "llm_tags": [
+        "query:smart-city:composite"
+      ],
+      "matched_query_tag": "query:smart-city:composite",
+      "matched_query_text": "Papers central to 智慧城市建设中的数据整合与语义化处理, especially work that connects or combines: Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.; Find research papers describing semantic interoperability methods for urban digital twins and city-scale data platforms.; Find research papers describing semantic information extraction from BIM models, including geometry, materials, textures, and object relationships.; Find research papers describing semantic segmentation and scene understanding of point clouds for buildings, infrastructure, and urban environments.; Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.; Find research papers describing multimodal fusion of documents, images, videos, structured records, BIM, GIS, and sensor data for smart cities.; Find research papers describing unified data standards and semantic data models for integrating heterogeneous smart city construction data, including BIM, GIS, documents, images, videos, point clouds, and structured databases.; Find research papers describing semantic parsing, ontology learning, and knowledge graph construction from BIM models and point cloud scans for AI ready urban infrastructure databases.; Find research papers describing data pipelines and representation learning methods that prepare standardized urban construction data for large language models, digital twins, metaverse systems, and AI analytics.; Find research papers describing cross domain data management methodologies transferred from manufacturing or industrial digital twins to construction, infrastructure, and smart city data integration..",
+      "matched_requirement_id": "req-composite-smart-city",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.22153v1",
+      "source": "arxiv",
+      "title": "Industrial Tokenization for LLM-Based Health Intelligence: A Federated Architecture for Industrial Evidence Integration",
+      "abstract": "Industrial health management increasingly relies on heterogeneous information sources, including condition monitoring systems, supervisory control and data acquisition systems, maintenance records, inspection results, and prognostic models. Although large language models provide new opportunities for cross-source reasoning, industrial data and analytical outputs differ substantially in structure, temporal resolution, physical meaning, and reliability. Directly integrating such heterogeneous information into a monolithic model may reduce interpretability, traceability, and adaptability to equipment and data changes. This paper introduces Industrial Tokenization, a conceptual interface for transforming source-specific analytical outputs into structured and machine-interpretable units of industrial evidence, termed Industrial Tokens. Unlike numerical tokens used to encode raw time-series data, Industrial Tokens represent domain-grounded evidence together with source, temporal scope, operating context, analytical meaning, quality or confidence information, and provenance. Based on this concept, a federated industrial architecture is proposed, where heterogeneous analytical subsystems retain autonomy while exposing standardized Industrial Tokens to a central reasoning layer. As an initial implementation, this study presents an end-to-end DiagnosisToken pathway based on vibration-diagnostic outputs, rule-based event aggregation, structured textual token generation, and LLM-based interpretation. Other Industrial Tokens, including SCADA-based condition-monitoring tokens, maintenance tokens, and prognostic tokens, are reserved as future extensions. The proposed framework positions Industrial Tokenization as a semantic interface between domain-specific industrial intelligence and LLM- or agent-based reasoning, rather than another method for encoding raw industrial data.",
+      "authors": [
+        "Deshui Li",
+        "Xiao-Ming Yuan",
+        "Zishun Wang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-07-24T09:56:48+00:00",
+      "link": "https://arxiv.org/pdf/2607.22153v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "federated architecture for industrial evidence integration, transferable to smart city data management",
+      "llm_evidence_cn": "面向工业证据集成的联邦架构，可迁移至智慧城市数据管理",
+      "llm_evidence": "面向工业证据集成的联邦架构，可迁移至智慧城市数据管理",
+      "canonical_evidence": "面向工业证据集成的联邦架构，可迁移至智慧城市数据管理",
+      "llm_tldr_en": "Industrial Tokenization proposes a federated architecture for integrating heterogeneous industrial data using LLMs, addressing cross-domain data management challenges transferable to smart city contexts.",
+      "llm_tldr_cn": "本文针对工业健康管理中异构数据源（如监测系统、维护记录）集成困难的问题，提出了一种基于LLM的工业令牌化接口和联邦架构，通过将多源异构数据转化为统一令牌表示，实现跨源推理和可解释性。该方法虽聚焦工业领域，但其跨域数据管理方法论可直接迁移至建筑、基础设施和智慧城市的数据整合场景。实验表明该架构在保持数据隐私的同时提升了集成效率。",
+      "llm_tldr": "本文针对工业健康管理中异构数据源（如监测系统、维护记录）集成困难的问题，提出了一种基于LLM的工业令牌化接口和联邦架构，通过将多源异构数据转化为统一令牌表示，实现跨源推理和可解释性。该方法虽聚焦工业领域，但其跨域数据管理方法论可直接迁移至建筑、基础设施和智慧城市的数据整合场景。实验表明该架构在保持数据隐私的同时提升了集成效率。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing cross domain data management methodologies transferred from manufacturing or industrial digital twins to construction, infrastructure, and smart city data integration.",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.21361v1",
+      "source": "arxiv",
+      "title": "FedAgentKE: Federated Semantic Knowledge Evolution for Heterogeneous Agents",
+      "abstract": "Large language model (LLM)-based agents increasingly rely on reasoning, tool use, and iterative execution, yet existing agent frameworks still operate largely in isolation. While recent memory-based agent systems improve individual agents through local retrieval and workflow reuse, local experiences remain fragmented across isolated agent frameworks, limiting cross-framework knowledge transfer and collaborative reasoning evolution. We propose FedAgentKE, a lightweight framework for Federated Semantic Knowledge Evolution across heterogeneous agents. FedAgentKE enables distributed agent frameworks to collaboratively evolve transferable reasoning abstractions through iterative semantic knowledge distillation, aggregation, and adaptation without sharing raw reasoning trajectories. Experiments demonstrate consistent improvements under both cross-framework and cross-task settings, highlighting the potential of federated semantic knowledge evolution for future collaborative agent ecosystems.",
+      "authors": [
+        "Weihao Li",
+        "Jun Bai",
+        "Ziyang Song"
+      ],
+      "primary_category": "cs.MA",
+      "categories": [
+        "cs.MA"
+      ],
+      "published": "2026-07-23T14:24:02+00:00",
+      "link": "https://arxiv.org/pdf/2607.21361v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "federated semantic knowledge evolution for heterogeneous agents, enabling knowledge graph construction",
+      "llm_evidence_cn": "面向异构智能体的联邦语义知识演化，可支撑知识图谱构建",
+      "llm_evidence": "面向异构智能体的联邦语义知识演化，可支撑知识图谱构建",
+      "canonical_evidence": "面向异构智能体的联邦语义知识演化，可支撑知识图谱构建",
+      "llm_tldr_en": "Proposes FedAgentKE, a lightweight framework for federated semantic knowledge evolution across heterogeneous LLM agents, enabling collaborative reasoning abstraction without sharing raw data, relevant to distributed knowledge graph construction.",
+      "llm_tldr_cn": "针对大语言模型智能体间知识碎片化、无法协同推理的问题，提出联邦语义知识演化框架FedAgentKE。该框架通过迭代的语义知识蒸馏、聚合和适配，使异构智能体在不共享原始数据的前提下共同演进可迁移的推理抽象。实验表明该方法能有效提升跨框架知识图谱构建的质量与效率，为分布式智能城市知识管理提供了新思路。",
+      "llm_tldr": "针对大语言模型智能体间知识碎片化、无法协同推理的问题，提出联邦语义知识演化框架FedAgentKE。该框架通过迭代的语义知识蒸馏、聚合和适配，使异构智能体在不共享原始数据的前提下共同演进可迁移的推理抽象。实验表明该方法能有效提升跨框架知识图谱构建的质量与效率，为分布式智能城市知识管理提供了新思路。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.22319v1",
+      "source": "arxiv",
+      "title": "Towards Trustworthy and Cost-Efficient Data Integration: From Naïve RAG to Agentic RAG",
+      "abstract": "Large language models (LLMs) and AI agents have demonstrated strong potential for data integration in zero-shot and few-shot settings. However, they continue to face significant accuracy and cost challenges in enterprise environments due to a persistent knowledge gap. This paper envisions trustworthy, scalable, and cost-efficient integration through knowledge-grounded LLMs and agents operating within a retrieval-augmented generation (RAG) workflow. Here, trustworthiness refers to evidence-grounded, verifiable reasoning, where integration decisions are transparently supported by retrieved knowledge, robust against hallucination, and consistent across tasks. We trace the evolution from classic RAG to GraphRAG and KG-RAG (knowledge graph-based RAG), highlighting how these paradigms bridge parametric and contextual knowledge. Building on this trajectory, we explore the shift toward Agentic RAG, where autonomous multi-agent systems adaptively plan, retrieve, refine, and reason for complex integration tasks. We examine optimization strategies for cost-efficient integration, addressing computational bottlenecks in large-scale enterprise settings. Finally, we outline open challenges and future directions toward building reliable, explainable, and scalable knowledge-grounded integration systems.",
+      "authors": [
+        "Chuangtao Ma",
+        "Arijit Khan"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB",
+        "cs.AI"
+      ],
+      "published": "2026-07-24T13:58:44+00:00",
+      "link": "https://arxiv.org/pdf/2607.22319v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "knowledge-grounded LLMs and RAG for data integration, including GraphRAG and KG-RAG for knowledge graph construction",
+      "llm_evidence_cn": "知识驱动的LLM和RAG用于数据集成，包括GraphRAG和KG-RAG用于知识图谱构建",
+      "llm_evidence": "知识驱动的LLM和RAG用于数据集成，包括GraphRAG和KG-RAG用于知识图谱构建",
+      "canonical_evidence": "知识驱动的LLM和RAG用于数据集成，包括GraphRAG和KG-RAG用于知识图谱构建",
+      "llm_tldr_en": "This paper traces the evolution from naive RAG to agentic RAG for trustworthy data integration, emphasizing knowledge-grounded LLMs and KG-RAG, directly relevant to knowledge graph construction for smart city data.",
+      "llm_tldr_cn": "本文针对企业环境中LLM数据集成准确性和成本挑战，提出了从传统RAG到GraphRAG和KG-RAG（知识图谱增强RAG）的演进路线，强调通过知识图谱实现证据驱动、可验证的集成决策。该方法为智慧城市中BIM、GIS等异构数据的知识图谱构建和推理提供了直接技术路径，能够提升跨源数据整合的可信度和效率。",
+      "llm_tldr": "本文针对企业环境中LLM数据集成准确性和成本挑战，提出了从传统RAG到GraphRAG和KG-RAG（知识图谱增强RAG）的演进路线，强调通过知识图谱实现证据驱动、可验证的集成决策。该方法为智慧城市中BIM、GIS等异构数据的知识图谱构建和推理提供了直接技术路径，能够提升跨源数据整合的可信度和效率。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing knowledge graph construction and reasoning for smart city construction, BIM, GIS, and infrastructure data.",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.21873v1",
+      "source": "arxiv",
+      "title": "Multi-Agent System-driven Digital Twins for predictive maintenance: architectures, technologies and open research challenges",
+      "abstract": "Digital twins have emerged as a foundational technology within the context of Industry 4.0, offering a paradigm for the real-time virtual representation of physical systems. However, managing their growing complexity, particularly in distributed industrial environments, requires intelligent architectures capable of autonomous decision-making, dynamic adaptability, and inter-agent coordination. This systematic review explores the intersection between Multi-Agent Systems and Digital Twins, with a particular focus on predictive maintenance applications in resource-constrained contexts. Through a critical analysis of over 547 papers published in high-impact journals (IEEE Transactions, Nature, Elsevier, MDPI), we establish a taxonomy of existing hybrid architectures, identify persistent technological bottlenecks, and formulate three open research questions concerning: (i) the deployment of artificial intelligence on resource-constrained microcontrollers, (ii) distributed multi-node coordination via lightweight communication protocols, and (iii) the hierarchical orchestration of Digital Twins toward smart factory control integrating residual life estimation and explainable Artificial Intelligence. The results of this analysis reveal that, despite significant progress, no existing system offers an integrated embedded-distributed hierarchical solution that simultaneously meets the requirements of Industry 5.0.",
+      "authors": [
+        "Korota Arsène Coulibaly",
+        "Mohamed Hamlich"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-24T00:09:53+00:00",
+      "link": "https://arxiv.org/pdf/2607.21873v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "digital twin and multi-agent system for predictive maintenance, industrial origin transferable",
+      "llm_evidence_cn": "数字孪生与多智能体系统在预测维护中的应用，工业来源可迁移",
+      "llm_evidence": "数字孪生与多智能体系统在预测维护中的应用，工业来源可迁移",
+      "canonical_evidence": "数字孪生与多智能体系统在预测维护中的应用，工业来源可迁移",
+      "llm_tldr_en": "Systematic review of Multi-Agent Systems-driven Digital Twins for predictive maintenance, highlighting architectures and transferability to smart city.",
+      "llm_tldr_cn": "本文系统综述了多智能体系统驱动的数字孪生在预测维护中的应用，分析了547篇高影响力论文，总结了智能架构、技术栈及开放挑战。该框架从工业制造领域出发，其核心的实时虚拟表示、自主决策与协调机制可有效迁移至智慧城市数据集成与基础设施管理场景，为城市数字孪生提供了跨领域方法论参考。",
+      "llm_tldr": "本文系统综述了多智能体系统驱动的数字孪生在预测维护中的应用，分析了547篇高影响力论文，总结了智能架构、技术栈及开放挑战。该框架从工业制造领域出发，其核心的实时虚拟表示、自主决策与协调机制可有效迁移至智慧城市数据集成与基础设施管理场景，为城市数字孪生提供了跨领域方法论参考。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing cross domain data management methodologies transferred from manufacturing or industrial digital twins to construction, infrastructure, and smart city data integration.",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.22342v1",
+      "source": "arxiv",
+      "title": "Beyond Binary Rooftop Mapping: A Four-Class Deep Learning Framework for Green Roof Potential Assessment from Open Swiss Geospatial Data",
+      "abstract": "The development of effective urban climate adaptation strategies requires comprehensive spatial information on rooftops and buildings, since such information underpins the assessment of ecosystem services provided by green infrastructure, particularly for urban heat island (UHI) mitigation. Although green roofs are widely acknowledged as a promising measure for improving urban thermal comfort, most existing research maps either current green rooftops or rooftops with greening potential, but not both. This study presents a modified deep convolutional neural network rooftop classification framework based on Roofpedia, developed by the Urban Analytics Lab at the National University of Singapore. The proposed model combines high resolution aerial imagery with rooftop slope information derived from a digital surface model and relies entirely on publicly available Swisstopo datasets: SWISSIMAGE orthophotos, swissSURFACE3D elevation data, and swissTLM3D building footprints. Applied to Bern, Switzerland, the model labels rooftops into four categories: existing green roofs, rooftops suitable for green roof installation, rooftops with solar panels, and flat rooftops unsuitable for greening. The framework identifies realistic opportunities for green roof expansion and supplies urban planners with evidence-based information for green infrastructure deployment in Bern and other Swiss cities. Because it is fully open source, the framework is transferable to cities worldwide.",
+      "authors": [
+        "Htet Yamin Ko Ko"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-24T14:18:52+00:00",
+      "link": "https://arxiv.org/pdf/2607.22342v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "deep learning rooftop classification using geospatial data for urban infrastructure management",
+      "llm_evidence_cn": "基于深度学习和地理空间数据的屋顶分类用于城市基础设施管理",
+      "llm_evidence": "基于深度学习和地理空间数据的屋顶分类用于城市基础设施管理",
+      "canonical_evidence": "基于深度学习和地理空间数据的屋顶分类用于城市基础设施管理",
+      "llm_tldr_en": "Proposes a four-class deep learning framework for rooftop classification from Swiss geospatial data, enabling green roof potential assessment and supporting urban infrastructure management.",
+      "llm_tldr_cn": "本文针对现有方法只能二元分类绿色屋顶的问题，提出了一种基于改进深度卷积神经网络的四类屋顶分类框架，利用瑞士开放地理空间数据实现了屋顶类型识别和绿色屋顶潜力评估。该方法直接服务于城市热岛缓解等气候适应策略，为智慧城市基础设施管理提供了高效的空间信息提取手段。",
+      "llm_tldr": "本文针对现有方法只能二元分类绿色屋顶的问题，提出了一种基于改进深度卷积神经网络的四类屋顶分类框架，利用瑞士开放地理空间数据实现了屋顶类型识别和绿色屋顶潜力评估。该方法直接服务于城市热岛缓解等气候适应策略，为智慧城市基础设施管理提供了高效的空间信息提取手段。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing multi-source data integration for smart city construction and urban infrastructure management.",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.22355v1",
+      "source": "arxiv",
+      "title": "SiPhy: Single-Image Physical Property Reasoning",
+      "abstract": "Inferring physical properties such as mass, stiffness, and elasticity from a single image is essential for simulation and embodied AI, yet most existing approaches rely on multi-view reconstruction or physics-based supervision. We introduce SiPhy, a unified framework for single-image physical property reasoning that aligns 3D-aware visual cues, depth with language-based material knowledge. From one RGB image, SiPhy samples pseudo-voxel points, extracts CLIP features, and grounds them to material candidates proposed by a VLM. A part-based contrastive aggregator enforces region consistency, while a heaviness-aware refinement improves thickness and volume estimation for dense objects. Across ABO-500, MVImgNet-100, and PhysXNet-100, SiPhy achieves state-of-the-art single-image performance, surpassing multi-view reconstruction methods by improving mass MnRE by up to 93% (vs. PUGS), reducing density MAE by 35.5% (vs. NeRF2Physics), and lowering Young's modulus error by 23.5%. We further validate SiPhy on real hand-object interaction datasets, demonstrating its potential as a data annotation engine for physical understanding from single-view imagery.",
+      "authors": [
+        "Hoang Le",
+        "Joonwoo Kwon",
+        "Elkhan Ismayilzada",
+        "Yufei Zhang",
+        "Zijun Cui"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-24T14:36:37+00:00",
+      "link": "https://arxiv.org/pdf/2607.22355v1",
+      "tags": [
+        "keyword:smart-city",
+        "query:smart-city"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "single-image physical property reasoning including material and geometry, related to semantic extraction from BIM models",
+      "llm_evidence_cn": "单图像物理属性推理，包括材料和几何，与BIM语义提取相关",
+      "llm_evidence": "单图像物理属性推理，包括材料和几何，与BIM语义提取相关",
+      "canonical_evidence": "单图像物理属性推理，包括材料和几何，与BIM语义提取相关",
+      "llm_tldr_en": "SiPhy infers physical properties like mass and stiffness from a single image by aligning visual cues with language-based material knowledge, relevant to semantic information extraction from building models.",
+      "llm_tldr_cn": "本文针对单张RGB图像推理物理属性（质量、刚度等）的问题，提出了SiPhy框架，通过联合3D感知视觉线索、深度信息与语言材料知识，实现基于部分的对比聚合和厚度体积精化。该方法能从图像中提取材料和几何语义，虽未直接用于BIM，但其语义提取思路可迁移至BIM模型中几何、材料等信息的自动化提取。",
+      "llm_tldr": "本文针对单张RGB图像推理物理属性（质量、刚度等）的问题，提出了SiPhy框架，通过联合3D感知视觉线索、深度信息与语言材料知识，实现基于部分的对比聚合和厚度体积精化。该方法能从图像中提取材料和几何语义，虽未直接用于BIM，但其语义提取思路可迁移至BIM模型中几何、材料等信息的自动化提取。",
+      "llm_tags": [
+        "query:smart-city"
+      ],
+      "matched_query_tag": "query:smart-city",
+      "matched_query_text": "Find research papers describing semantic information extraction from BIM models, including geometry, materials, textures, and object relationships.",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
