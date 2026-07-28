@@ -1,0 +1,69 @@
+{
+  "label": "2026-07-28",
+  "date": "2026-07-28",
+  "generated_at": "2026-07-28T21:41:39",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202607/28/2607.24492v1-sint-flow-schema-integration-using-large-language-model-workflows",
+      "section": "deep",
+      "title_en": "SINT-Flow: Schema Integration using Large Language Model Workflows",
+      "authors": "Keti Korini, Christian Bizer",
+      "date": "2026-07-27",
+      "pdf": "https://arxiv.org/pdf/2607.24492v1",
+      "score": "9.0",
+      "evidence": "基于LLM工作流的模式集成框架，用于多源数据集成",
+      "tldr": "模式集成旨在从多个输入模式生成统一全局模式，现有方法难以处理非规范化表及自动端到端集成。本文提出SINT-Flow，基于五个LLM操作符组合成工作流，能够分解非规范化表为实体特定关系，并实现全自动集成。在包含10个任务93个表的SINT-Bench基准上，使用GPT-5.2和Qwen-3.6-27B，实体检测F1≥96%，属性检测≥85%，模式映射≥83%。消融实验证明自我一致性策略和审查循环的有效性，贡献开源基准及实用框架。",
+      "tags": "query:smart-city",
+      "abstract_en": "The goal of schema integration is, given a set of input schemata or tables, to derive a global, unified schema that is able to represent the concepts, attributes, and relationships of all input tables in a coherent fashion. This paper presents SINT-Flow, a schema integration framework composed of five LLM-based operators that can be combined into workflows to perform fully automated, end-to-end schema integration. In contrast to existing approaches, SINT-Flow can process denormalized source tables that contain attributes describing multiple entity types. During the schema integration process, these tables are decomposed into separate entity-specific relations. To evaluate SINT-Flow, we introduce SINT-Bench, a schema integration benchmark comprising 10 schema integration tasks consisting of altogether 93 relational tables, including tables that describe multiple types of entities. We evaluate SINT-Flow using GPT-5.2 as well as the open-weight model Qwen-3.6-27B as alternative backbone models. Using these models, SINT-Flow achieves F1 scores of at least 96% for entity-type detection, 85% for attribute detection, and 83% for schema mapping. Furthermore, we perform an ablation study to prove the utility of the applied self-consistency strategy as well as the inclusion of a review loop into the schema matching operator.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/28/2607.21906v1-a-knowledge-grounded-behavioral-reasoning-framework-for-training-free-urban-healthcare-od-prediction",
+      "section": "deep",
+      "title_en": "A Knowledge-Grounded Behavioral Reasoning Framework for Training-Free Urban Healthcare OD Prediction",
+      "authors": "Linzhen Yang, Xueliang Liu, Chengbo Zhang, Meng Meng",
+      "date": "2026-07-24",
+      "pdf": "https://arxiv.org/pdf/2607.21906v1",
+      "score": "8.0",
+      "evidence": "基于知识的推理处理城市异构数据，用于出行预测",
+      "tldr": "现有医疗OD预测依赖监督深度学习，训练成本高且可解释性差。本文提出无训练框架，将城市异构信息组织为知识图谱，通过多智能体协同LLM进行证据检索、行为推理和偏好排序，结合贝叶斯验证预测OD。在深圳137家医院、6341个任务上，Top-5达68.03%，较MLP提升22.1%，较直接LLM提升141%。表明知识引导的行为推理是实现准确、可解释、无训练预测的关键。",
+      "tags": "query:smart-city",
+      "abstract_en": "Understanding urban healthcare mobility is essential for healthcare resource allocation, hospital capacity planning, and resilient urban governance. Existing healthcare origin-destination (OD) prediction methods primarily rely on supervised deep learning, requiring expensive model training while providing limited interpretability into the behavioral mechanisms of hospital choice. This paper presents a training-free urban healthcare OD prediction framework based on knowledge-grounded behavioral reasoning, replacing gradient-based neural network learning with collaborative LLM reasoning over structured urban knowledge. The framework organizes heterogeneous urban information, including healthcare resources, population characteristics, transportation accessibility, weather conditions, and historical mobility, into a unified knowledge graph, enabling evidence retrieval, urban context understanding, behavioral reasoning, preference ranking, and Bayesian verification through a multi-agent reasoning pipeline. Experiments on a real-world Shenzhen dataset containing 137 hospitals and 6,341 prediction tasks demonstrate that the proposed framework achieves CPC = 0.5449, Top-1 = 66.19%, Top-5 = 68.03%, and Top-10 = 74.03%, consistently outperforming conventional deep learning baselines on all Top-K metrics (e.g., Top-5 improves by 22.1% over MLP). Compared with Direct LLM using the same backbone without structured reasoning, the proposed framework improves CPC by 87.5% and Top-1 accuracy by 141%, demonstrating that knowledge-grounded behavioral reasoning, rather than raw LLM capability, is the key to accurate, interpretable, and training-free healthcare OD prediction. These findings highlight the potential of urban intelligence to move healthcare mobility modeling beyond data fitting toward knowledge-driven behavioral reasoning.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/28/2607.24056v1-capacity-aware-deep-learning-for-generalizable-traffic-volume-estimation-across-links-and-cities",
+      "section": "quick",
+      "title_en": "Capacity-Aware Deep Learning for Generalizable Traffic Volume Estimation Across Links and Cities",
+      "authors": "Léo Hein, Giovanni De Nunzio, Aurélie Pirayre, Laurent Najman",
+      "date": "2026-07-27",
+      "pdf": "https://arxiv.org/pdf/2607.24056v1",
+      "score": "7.0",
+      "evidence": "多源领土数据融合用于跨城市交通估计",
+      "tldr": "现有交通量估计方法依赖固定传感器测量，在传感器稀疏网络下部署受限。本文提出容量感知深度学习框架，仅利用广泛可用的探头速度、道路拓扑和天气数据，将交通量建模为链接结构容量与小时利用率的乘积，嵌入交通理论约束。在空间分布偏移下的两种泛化场景（网络内未见链接和跨城市）中，该方法持续优于现有基线。本研究为稀疏传感器环境下的网络级交通量估计提供了有效范式，降低了部署成本。",
+      "tags": "query:smart-city",
+      "abstract_en": "Network-wide traffic volume estimation typically relies on propagating measurements from fixed sensors, making performance highly dependent on sensor density and limiting deployment in sparsely instrumented networks. We propose a link-level learning framework that estimates hourly traffic volumes from widely available territorial data only, including probe speed profiles, road and topological descriptors, along with weather observations. A supervised local mapping is learned from sparse sensor measurements and evaluated under two generalization settings: intra-network (unseen links within the training network) and inter-network (unseen city). This formulation frames traffic volume estimation as a spatial out-of-distribution generalization problem under sparse supervision. To enhance spatial robustness, we introduce a capacity-aware formulation that models volume as the product of a link-specific structural capacity and an hourly regime-aware utilization ratio, embedding traffic-theoretic constraints directly into the learning process. Extensive experiments in both generalization settings demonstrate that the proposed structural constraints consistently outperform a state-of-the-art baseline under spatial distribution shift.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/28/2607.24551v1-llm-assisted-ontology-engineering-and-construction-of-a-french-legal-knowledge-graph",
+      "section": "quick",
+      "title_en": "LLM-Assisted Ontology Engineering and Construction of a French Legal Knowledge Graph",
+      "authors": "G{é}nesis Montenegro, Mokhtar Boumedyen Billami, Catherine Faron, Fabien Gandon, Pierre Monnin",
+      "date": "2026-07-27",
+      "pdf": "https://arxiv.org/pdf/2607.24551v1",
+      "score": "6.0",
+      "evidence": "利用大语言模型辅助本体工程与法律文本的知识图谱构建",
+      "tldr": "维护法规文本复杂难以直接应用。本文提出两阶段LLM辅助工作流：先基于SEMLEG核心本体进行本体工程，包括从语料样本开放抽取实体和三元组、通过嵌入融合标准化标签、归纳候选对象属性；再使用所建本体引导全语料封闭抽取三元组构建RDF知识图谱。实验使用GPT-4.1和mistral-large-2512获得稳健结构化输出，类对齐近乎完整，融合后重复实体和谓词大幅减少，仅不到20%的三元组引入未见属性。结果指出谓词标准化和新关系签名验证是工业维护场景的关键改进方向。",
+      "tags": "query:smart-city",
+      "abstract_en": "Maintenance regulations are complex legal texts that are difficult to exploit when addressing a specific case and challenging to integrate into operational systems. This paper presents a two-stage LLM-assisted workflow for French maintenance regulations: ontology engineering from a SEMLEG-based core ontology, followed by construction of an ontology-grounded French legal knowledge graph. The first stage consists in the open extraction of typed entities and triples from a stratified corpus sample, the normalization of labels through embedding-based fusion, and the induction of candidate object properties with their signature (domain and range). The second stage uses the resulting ontology to guide the closed extraction of triples and RDF graph construction over the full corpus. Experiments with GPT-4.1 and mistral-large-2512 show robust structured outputs, near-complete class alignment, and a substantial reduction of duplicated entities and predicates after fusion. Fewer than 20% of triples introduce unseen properties, while lower exact signature compliance reveals new domain-range combinations for existing predicates. These results point to predicate normalization and the validation of newly observed relation signatures as key refinement steps for industrial maintenance settings.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

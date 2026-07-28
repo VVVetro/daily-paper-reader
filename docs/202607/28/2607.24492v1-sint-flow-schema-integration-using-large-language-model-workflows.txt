@@ -1,0 +1,744 @@
+Title: SINT-Flow: Schema Integration using Large Language Model Workflows
+
+URL Source: https://arxiv.org/pdf/2607.24492v1
+
+Published Time: Tue, 28 Jul 2026 02:05:40 GMT
+
+Number of Pages: 14
+
+Markdown Content:
+# SINT-Flow: Schema Integration using Large Language Model Workflows 
+
+# Keti Korini 
+
+kkorini@uni-mannheim.de University of Mannheim Mannheim, Germany 
+
+# Christian Bizer 
+
+christian.bizer@uni-mannheim.de University of Mannheim Mannheim, Germany 
+
+## Abstract 
+
+The goal of schema integration is, given a set of input schemata or tables, to derive a global, unified schema that is able to represent the concepts, attributes, and relationships of all input tables in a coherent fashion. This paper presents SINT-Flow, a schema integra-tion framework composed of five LLM-based operators that can be combined into workflows to perform fully automated, end-to-end schema integration. In contrast to existing approaches, SINT-Flow can process denormalized source tables that contain attributes de-scribing multiple entity types. During the schema integration pro-cess, these tables are decomposed into separate entity-specific rela-tions. To evaluate SINT-Flow, we introduce SINT-Bench, a schema integration benchmark comprising 10 schema integration tasks consisting of altogether 93 relational tables, including tables that describe multiple types of entities. We evaluate SINT-Flow using GPT-5.2 as well as the open-weight model Qwen-3.6-27B as alter-native backbone models. Using these models, SINT-Flow achieves F1 scores of at least 96% for entity-type detection, 85% for attribute detection, and 83% for schema mapping. Furthermore, we perform an ablation study to prove the utility of the applied self-consistency strategy as well as the inclusion of a review loop into the schema matching operator. 
+
+## Keywords 
+
+Schema Integration, Schema Inference, Schema Management, Schema Integration Benchmark, Large Language Models 
+
+## 1 Introduction 
+
+Many applications in decision-making, data analysis, and machine learning require the integration of data from multiple heteroge-neous sources as a data preparation step. Two basic data integration scenarios can be distinguished with respect to the target schema to which the source tables are mapped. In the first scenario, the target schema is determined by the use case at hand, e.g., the specific goal of the use case determines which types of entities and which at-tributes describing these entities are relevant and therefore should be part of the target schema. The heterogeneous input schemas are mapped to this use-case-specific target schema. In the second scenario, data from heterogeneous sources are integrated into a single representation, which is subsequently used for multiple, not yet fully known use cases. In order not to lose potentially useful data, a global, unified schema that can represent all data from the sources is derived from the input tables in this scenario. This task is called schema integration [1, 8]. According to Batini et al. [ 8], the integrated schema should fulfill the following requirements: 1) Completeness and Correctness : The integrated schema should correctly represent all concepts contained in any of the source showName  close  opens  Synopsis  Ticket  theater  Theater Address  Theater City  ZipCode              
+
+> name Category description showDates venue address state city
+> show type description fullDates theater address
+> Event
+> name
+> close
+> opens
+> description
+> Ticket
+> fullDates
+> Category
+> venue _id
+> Venue
+> venue _id
+> venue
+> address
+> state
+> city
+> ZipCode
+> Event
+> name
+> close
+> opens
+> description
+> Ticket
+> fullDates
+> Category
+> venue
+> address
+> state
+> city
+> ZipCode
+> a) b)
+> Input: Set of Tables
+> Output: Integrated Schema
+
+Figure 1: Example of a schema integration task consisting of a set of input tables together with two alternative integrated schemata that can be derived from the input tables a) flat global schema b) entity-specific global schema. 
+
+schemas. 2) Minimality : A concept occurring in multiple source schemas should be represented only once in the integrated schema. 
+
+3) Understandability : The integrated schema should be easy to understand in order to facilitate the use of the integrated data for downstream tasks. Figure 1 illustrates a schema integration task in which the in-put consists of a collection of relational tables describing events and their associated venues. These tables are shown in the upper part of the figure. The lower part presents two alternative inte-grated schemata that can be derived from the source tables. The first alternative, shown in Figure 1a), is obtained by identifying at-tribute correspondences across the source schemata and grouping semantically equivalent attributes. The resulting flat global schema contains the union of the source attributes while representing each distinct concept only once. The source tables, however, combine attributes describing two different entity types, namely Event and 
+
+Venue . Thus, the sources can alternatively be integrated into the normalized integrated schema shown in Figure 1b). This schema decomposes the data into separate relations for Event and Venue ,which are linked through a generated venue identifier used as a foreign key. Such a decomposition reduces redundancy and helps avoid update anomalies by separating attributes according to their underlying functional dependencies. There exists a large body of related research on schema integra-tion [ 1 , 8]. Earlier methods from the 1980s and 1990s are usually arXiv:2607.24492v1 [cs.CL] 27 Jul 2026 Korini and Bizer 
+
+semi-automatic and combine integration rules with human involve-ment [ 7 , 8, 28 , 32 ]. In the 2000s, fully automatic probabilistic schema integration methods were introduced which exploit attribute co-occurence [ 11 , 12 , 16 , 17 , 33 ]. Other works use clustering algorithms to derive the integrated schemata [ 22 , 30 , 40 ]. In 2025, initial re-search started to use large language models (LLMs) to discover hierarchical integrated schemata [ 40 , 41 ], but without splitting input tables that describe multiple entity types. 
+
+Research gap: To the best of our knowledge, existing schema integration methods are either semi-automatic or do not split in-put tables that describe multiple entity types. In this paper, we investigate the use of LLM-based workflows to derive integrated schemas that separate attributes by entity type from collections of input tables, each of which may describe multiple entity types. We construct LLM workflows by building five different LLM-based operators: the Table Splitting , Schema Matching , Table Grouping ,
+
+Attribute Merging , and Integrated Schema Output operators. We test the workflows using two LLMs: one hosted LLM OpenAI’s GPT-5.2 and an open-weight model Qwen-3.6-27B to cover the use case where local data processing is required due to legal constraints. To compare to other works, we test part of our workflow on a collec-tion of real world tables called the Real Benchmark [ 22 ] and the full workflow on SINT-Bench, a schema integration benchmark consisting of 10 tasks which we create and which includes inte-grated schemata for multiple entity types. We further show how we apply the self-consistency strategy [ 38 ] to build consistent op-erator outputs from multiple runs. Our method does not make any transformations at the instance level and does not include entity deduplication. 
+
+Contributions: The contributions of the paper are: (1) We introduce SINT-Flow, a schema integration framework consisting of five LLM-based operators which can be com-bined in different sequences to form schema integration workflows. In the paper, we propose three workflows. What distinguishes these workflows from existing approaches is their ability to split denormalized tables describing multiple types of entities into separate entity tables and derive the integrated schemata for the detected entity types. (2) We introduce SINT-Bench, a schema integration benchmark consisting of 10 schema integration tasks with altogether 93 tables. Eight of the tasks involve 2 or more entity types and require the splitting of the columns of each input table per entity type. Compared to existing benchmarks, SINT-Bench is the first schema integration benchmark to include ground truth for the detection of entity types and their attributes within each input table. (3) We evaluate the proposed workflows using SINT-Bench. The evaluation shows that GPT-5.2 performs best with a work-flow that detects entity types for each input table individually while Qwen-3.6-27B achieves better results on a workflow where the entity types are detected on an integrated table constructed from all input tables. Respectively the models achieve an F1-score of at least 96% in entity type detection, at least 85% for assigning the correct integrated attributes to the entity types and 83% for mapping the input columns to the correct integrated attributes. (4) We perform an ablation study to prove the utility of the self-consistency strategy and the inclusion of a review loop in the Schema Matching Operator. The review loop increases the F1-score of the integrated attribute detection by 5% and the mappings by 10% for both models, while the operator outputs created using self-consistency increase the mapping F1-score for Qwen by 13% and by 3% for GPT-5.2 when compared to the averaged workflow results of 3 separate runs. 
+
+Structure of the paper: Sections 2 and 3 describe the SINT-Flow operators and how the self-consistency strategy is used on the operator outputs. Section 4 explains how the operators are arranged into different schema integration workflows. Section 5 introduces the SINT-Bench schema integration benchmark, which we use to evaluate and compare the different workflows. Section 6 introduces the experimental setup, while Section 7 presents the results of the experiments, including an ablation study. Section 8 compares the attribute clustering abilities of related work to the Schema Matching Operator. Section 9 compares SINT-Flow to related work. 
+
+Resource Availability: All artifacts that are necessary to repli-cate the experiments presented in this paper are available for public download in the SINT-Flow repository 1 on GitHub. 
+
+## 2 The SINT-Flow Framework 
+
+This section describes the SINT-Flow framework. The framework consists of five operators that can be arranged in different orders into schema integration workflows. The operators are described in detail below. Afterwards, Section 4 explains the combination of the operators into different schema integration workflows. 
+
+## 2.1 Table Splitting Operator 
+
+The goal of this operator is to detect the relevant entity types in a given input table and to assign each table column to its associated entity type. We consider an entity type to be relevant if at least 3 columns can be associated with it, otherwise the operator does not include that entity type in its response. The reason why we employ this minimum number is to avoid splitting an input table into too narrow output tables. 
+
+Input/Output. The input to the operator is a set of tables 𝑇 =
+
+{𝑡 1, 𝑡 2, ..., 𝑡 𝑛 } where 𝑆 𝑇 = {𝑆 𝑡 1 , 𝑆 𝑡 2 , . . . , 𝑆 𝑡 𝑛 } is the schema (i.e. collec-tion of columns) of each table in 𝑇 and the output is the set of entity type table schemata 𝑆 𝑇 𝐸 = {𝑆 𝑒𝑡 1,1 , 𝑆 𝑒𝑡 1,2 , . . . , 𝑆 𝑒𝑡 𝑛,𝑚 } where 𝑆 𝑒𝑡 𝑛,𝑚 is the collection of columns assigned to the 𝑚 𝑡ℎ entity type detected in table 𝑡 𝑛 . All columns of the input tables are assigned to an entity type table schema in 𝑆 𝑇 𝐸 .
+
+Response Verification. The operator provides the LLM with a tool to check the number of columns per detected entity type, so that the minimum number can be verified, ensuring that the LLM has followed the rule included in the prompt. We also introduce a post-splitting check to verify that all table columns have been assigned to at least one of the entity types detected. In the case where columns are missed, an LLM is asked to assign the missed columns to one of the detected types. 
+
+Running Example. Figure 2 shows an example of the input, prompt, and output of the Table Splitting Operator. The upper 
+
+> 1https://github.com/wbsg-uni-mannheim/SINT-Flow
+
+SINT-Flow: Schema Integration using Large Language Model Workflows showName  close  opens  Synopsis  Ticket  theater  Theater Address  Theater City  ZipCode                                             
+
+> name Category description showDates venue address state city
+> show type description fullDates theater address
+> t1
+> t2
+> t3
+> You are given a ninput table and your task is to identify the entity types present in the table and
+> split the table if needed based on the types found.
+> [INPUT TABLE]
+> Your instructions are the following:
+> 1. Identify the entity types described by the table. 2. Choose one main entity type that the table
+> primarily describes. 3. Identify any other entity types that relate to the main entity. 4. For the
+> main entity and each related entity, list the attributes (columns) that belong to it. 5. Split the table
+> into multiple tables ONLY if there is low overlap between attribute groups. 6. Return the
+> schemata of all resulting output tables in the following JSON format { \"table_name \":
+> {\"attributes \": [ \"names \"]}} .Be brief in the naming of the output tables and use general terms
+> without parenthesis. Use the original attribute names of the input table in the output tables.
+> Make sure that you do not generate tables with less than three attributes.
+> showName close opens Synopsis Ticket theater
+> name Category description showDates venue
+> show type description fullDates theater address
+> theater Theater Address Theater City ZipCode
+> venue address state city
+> S(et 1,1 : Show) S(et 1,2 : Theater)
+> S(et 2,1 : Event) S(et 2,2 : Venue)
+> S(et 3,1 : Show)
+
+Figure 2: Table Splitting Operator: input, prompt and output. 
+
+part of the figure shows the set of input tables 𝑇 = {𝑡 1, 𝑡 2, 𝑡 3 }. The three tables describe events/shows and the venues where they are taking place. As shown in the bottom part of the figure, the Table Splitting Operator has generated the schema for entity type table 
+
+Show (𝑆 𝑒𝑡 1,1 ) and Theater (𝑆 𝑒𝑡 1,2 ) derived from 𝑡 1 and Event (𝑆 𝑒𝑡 2,1 )and Venue (𝑆 𝑒𝑡 2,2 ) derived from 𝑡 2 by assigning to them the columns that depend on each type. In the last input table 𝑡 3, a Theater entity type could also be detected. However since the columns that can be assigned to Theater are only two ( theater , address ), only the schema for the entity type table Show (𝑆 𝑒𝑡 3,1 ) is generated from this table. 
+
+Functional Dependencies. We do not rely on functional de-pendency discovery algorithms to normalize the input tables into entity-specific tables, because the quality and completeness of the discovered dependencies strongly depend on the size and quality of the input data [ 24 ]. To ensure that the Table Splitting Opera-tor remains applicable to noisy tables with only a small number of rows, we instead employ an LLM to identify the entity types represented in a table. This approach leverages the background knowledge acquired by the LLM during pre-training and supple-ments it with example rows included in the prompt. These examples help the model infer attribute semantics and assign attributes to the appropriate entity types. 
+
+## 2.2 Schema Matching Operator 
+
+Schema matching is the task of discovering correspondences (matches) between attributes in different schemata [31]. The Schema Match-ing Operator’s task is to find matching pairs of columns in the input Your task 
+
+source an 
+
+and targe 
+
+mean tha 
+
+match, th 
+
+have corr 
+
+[PAIR OF 
+
+Please fin 
+
+return the 
+
+{source_t 
+
+no additio 
+
+other targ 
+
+{"event_t 
+
+"theater" 
+
+Your task is schema matching i.e. find matching columns between the given 
+
+source and target tables. Please find correspondences between the source 
+
+and target columns of the input tables. Correspondences between columns 
+
+mean that the column s match semantically. For the columns to semantically 
+
+match, they should also refer to the same semantic type. Not all columns can 
+
+have correspondences. 
+
+Please find the correspondences between the source and target tables and 
+
+return them using the following JSON format { target_table_name :
+
+{source_table_column_name : matching_target_table_column_name }} with 
+
+no additional commentary. Return correspondences of the source table to the 
+
+other target tables not the other way around! 
+
+{"event_table_2": {" showName ": “name", “Synopsis": “description", 
+
+"theater": "venue"}} 
+
+showName  close  opens  Synopsis  Ticket  theater 
+
+name  Category  description  showDates  venue 
+
+et 1,1 : Show 
+
+et 2,1 : Event 
+
+Figure 3: Schema Matching Prompt: an example. 
+
+tables which refer to the same semantic concept. Based on previous work on schema matching for tabular data [ 26 ], we prompt the LLM to find the matching columns in a table-pair-wise manner, i.e. we pass the input tables in pairs and ask the LLM to return all correspondences between the columns of the tables. Figure 3 show an example of a schema matching prompt together with a re-sponse from the LLM. The matches found between the columns are used to create attribute groups where each attribute group includes columns that were matched directly or indirectly to each other, e.g. if column 𝑧𝑖𝑝𝑐𝑜𝑑𝑒 from table a is matched to 𝑐𝑜𝑑𝑒 from table b and 
+
+𝑧𝑖𝑝 from table c is matched to 𝑧𝑖𝑝𝑐𝑜𝑑𝑒 from table a, one attribute group formed would be (𝑡𝑎𝑏𝑙𝑒 𝑎 .𝑧𝑖𝑝𝑐𝑜𝑑𝑒, 𝑡𝑎𝑏𝑙𝑒 𝑏 .𝑐𝑜𝑑𝑒, 𝑡𝑎𝑏𝑙𝑒 𝑐 .𝑧𝑖𝑝 ).
+
+Input/Output. The input to this operator are pairs of entity type tables from 𝑇 𝐸 (or 𝑇 depending on the sequence of the operators) and the output is a set of correspondences between their columns 
+
+𝐶𝑜𝑟𝑟 = {( 𝑒𝑡 1,1.𝑐 1, 𝑒𝑡 2,1.𝑐 1), . . . , (𝑒𝑡 𝑎 .𝑐 𝑥 , 𝑒𝑡 𝑏 .𝑐 𝑦 )} and the formed at-tribute groups 𝐴𝐺 based on the discovered correspondences 𝐶𝑜𝑟𝑟 .
+
+Post-Schema Matching Reviewer Loop. Because column cor-respondences form the basis for constructing attribute groups, false-positive matches can substantially compromise the resulting groups. A wrong correspondence between columns would lead to the merg-ing of two attribute groups which should be separate and a loss of an integrated attribute. For this reason we introduce a post-schema matching LLM reviewer loop to review the matches while forming the attribute groups. The idea behind this loop is to check whether a column A that is matched to a column B can also be matched to at least one other column to which column B is matched. We introduce our algorithm for the reviewer loop in Algorithm 1. We start forming the attribute groups by looping over the column corre-spondences (line 2) and we retrieve for each column the group they are currently assigned to (lines 3-4) . At the beginning of the process the set of groups 𝐴𝐺 is empty, therefore in the first case when both columns do not belong to any group, the LLM reviewer is called to re-check if the match between these columns is correct and if TRUE both columns form a new group which is added to the overall Korini and Bizer 
+
+Algorithm 1 Post-Schema Matching Review Loop 
+
+Input: Ordered list of matched column pairs 
+
+𝐶𝑜𝑟𝑟 = {( 𝑒𝑡 1,1.𝑐 1, 𝑒𝑡 1,2.𝑐 1), . . . , (𝑒𝑡 𝑎 .𝑐 𝑥 , 𝑒𝑡 𝑏 .𝑐 𝑦 )} 
+
+Output: Set of attribute groups 
+
+𝐴𝐺 = {𝐴𝐺 1, 𝐴𝐺 2, . . . , 𝐴𝐺 𝑘 }
+
+1: 𝐴𝐺 ← ∅ 
+
+2: for all matched pairs (𝑒𝑡 𝑎 .𝑐 𝑥 , 𝑒𝑡 𝑏 .𝑐 𝑦 ) ∈ 𝐶𝑜𝑟𝑟 do 
+
+3: 𝐴𝐺 𝑋 ← FindGroup (𝑒𝑡 𝑎 .𝑐 𝑥 )
+
+4: 𝐴𝐺 𝑌 ← FindGroup (𝑒𝑡 𝑏 .𝑐 𝑦 )
+
+⊲ Case 1: Neither column belongs to a group 
+
+5: if 𝐴𝐺 𝑋 = ∅ and 𝐴𝐺 𝑌 = ∅ then 
+
+6: if LLM_Review (𝑒𝑡 𝑎 .𝑐 𝑥 , 𝑒𝑡 𝑏 .𝑐 𝑦 ) = TRUE then 
+
+7: 𝐴𝐺 ← 𝐴𝐺 ∪ { 𝑒𝑡 𝑎 .𝑐 𝑥 , 𝑒𝑡 𝑏 .𝑐 𝑦 }
+
+8: end if 
+
+⊲ Case 2: 𝑒𝑡 𝑎 .𝑐 𝑥 belongs to a group but 𝑒𝑡 𝑏 .𝑐 𝑦 does not 
+
+9: else if 𝐴𝐺 𝑋 ≠ ∅ and 𝐴𝐺 𝑌 = ∅ then 
+
+10: if HasConnections (𝑒𝑡 𝑏 .𝑐 𝑦 , 𝐴𝐺 𝑋 ) = TRUE then 
+
+11: AddToGroup (𝑒𝑡 𝑏 .𝑐 𝑦 , 𝐴𝐺 𝑋 )
+
+12: else if LLM_Review (𝑒𝑡 𝑏 .𝑐 𝑦 , 𝐴𝐺 𝑋 ) = TRUE then 
+
+13: AddToGroup (𝑒𝑡 𝑏 .𝑐 𝑦 , 𝐴𝐺 𝑋 )
+
+14: end if 
+
+⊲ Case 3: 𝑒𝑡 𝑏 .𝑐 𝑦 belongs to a group but 𝑒𝑡 𝑎 .𝑐 𝑥 does not 
+
+15: else if 𝐴𝐺 𝑋 = ∅ and 𝐴𝐺 𝑌 ≠ ∅ then 
+
+16: if HasConnections (𝑒𝑡 𝑎 .𝑐 𝑥 , 𝐴𝐺 𝑌 ) = TRUE then 
+
+17: AddToGroup (𝑒𝑡 𝑎 .𝑐 𝑥 , 𝐴𝐺 𝑌 )
+
+18: else if LLM_Review (𝑒𝑡 𝑎 .𝑐 𝑥 , 𝐴𝐺 𝑌 ) = TRUE then 
+
+19: AddToGroup (𝑒𝑡 𝑎 .𝑐 𝑥 , 𝐴𝐺 𝑌 )
+
+20: end if 
+
+⊲ Case 4: Both columns belong to different groups 
+
+21: else if 𝐴𝐺 𝑋 ≠ 𝐴𝐺 𝑌 then 
+
+22: if LLM_Review (𝐴𝐺 𝑋 , 𝐴𝐺 𝑌 ) = TRUE then 
+
+23: 𝐺 merged ← MergeGroups (𝐴𝐺 𝑋 , 𝐴𝐺 𝑌 )
+
+24: 𝐴𝐺 ← 𝐴𝐺 \ { 𝐴𝐺 𝑋 , 𝐴𝐺 𝑌 }
+
+25: 𝐴𝐺 ← 𝐴𝐺 ∪ 𝐺 merged 
+
+26: end if 
+
+27: end if 
+
+28: end for 
+
+29: return 𝐴𝐺 
+
+set of groups (lines 5-8) . If only one of the columns is assigned to a group, we check if the unassigned column was matched to any of the other columns in the group of the assigned column, and if TRUE the unassigned column is added to this group, otherwise the LLM reviewer is asked if the column can be added to this group 
+
+(lines 9-20) . In the final case, if both columns have been assigned to separate groups, the LLM reviewer is directly called to review if these two groups can be merged (lines 21-25) . The post-schema matching loop returns the created attribute groups 𝐴𝐺 .
+
+## 2.3 Table Grouping Operator 
+
+This operator is used to group the entity tables derived from the output of the Table Splitting Operator by entity type. 
+
+Input/Output. Formally, the input to this operator is a set of entity type tables 𝑇 𝐸 = {𝑒𝑡 1,1, 𝑒𝑡 1,2..., 𝑒𝑡 𝑛,𝑚 } that can be derived from the schemata 𝑆 𝑇 𝐸 that were generated by the Table Splitting Operator .Your task is to group (cluster) the tables that describe the same entity type, so that                                   
+
+> all tables that describe the same or semantically similar entity types are put into the
+> same group. Name each group according to the entity type of the grouped tables. If a
+> hierarchy can be observed between the found groups, combine the tables that are
+> connected through this hierarchy and name the overall group after the highest entity
+> type in the hierarchy.
+> <set of tables to be grouped>
+> et 1,1 : Show, et 1,2 : Theater, et 2,1 : Event, et 2,2 : Venue, et 3,1 : Show
+> </set of tables to be grouped>
+> …
+> Please group (cluster) the set of tables by entity type, so that all tables that describe
+> the same or similar entity types are put into the same group. Return the names of
+> the groups together with the names of the tables in each group strictly using the
+> following JSON format {" group_name ": [names of tables in the group]} with no
+> additional commentary.
+> …
+> {“event”: [“show_table_1”, “event_table_2”, “show_table_3”], “venue” :
+> [“theater_table_1”, “venue_table_2”]}
+> Your task is to group (cluster) the tables that describe the same entity type, so that all tables that
+> describe the same or semantically similar entity types are put into the same group. Name each
+> group according to the entity type of the grouped tables. If a hierarchy can be observed between
+> the found groups, combine the tables that are connected through this hierarchy and name the
+> overall group after the highest entity type in the hierarchy.
+> …
+> Please group (cluster) the set of tables by entity type, so that all tables that describe the same or
+> similar entity types are put into the same group. Return the names of the groups together with the
+> names of the tables in each group strictly using the following JSON format {" group_name ": [names
+> of tables in the group]} with no additional commentary.
+> …
+> showName close opens Synopsis Ticket theater
+> name Category description showDates venue
+> show type description fullDates theater address
+> theater Theater Address Theater City ZipCode
+> venue address state city
+> et 1,1 : Show et 1,2 : Theater
+> et 2,1 : Event et 2,2 : Venue
+> et 3,1 : Show
+> {“ Event ”: [“show_table_1”, “event_table_2”, “show_table_3”], “Venue ” : [“theater_table_1”,
+> “venue_table_2”]}
+
+Figure 4: Table Grouping Prompt: an example. 
+
+The output of the operator is the grouping of the tables under their respective entity type 𝐸 = {𝐸 1, 𝐸 2, ...𝐸 𝑘 } where 𝐸 𝑘 is composed of all tables in 𝑇 𝐸 that refer to the entity type 𝐸 𝑘 and 𝑘 is the number of distinct entity types found in the input tables. At this operator, the previously created attribute groups 𝐴𝐺 from the Schema Matching Operator are split into attribute groups per entity type 𝐴𝐺 𝐸 .
+
+Response Verification. In this operator we introduce several checks on the model response. First, we ensure that a table is as-signed to only one entity type group. If a table is found in multiple groups, the table is deleted from all. Similarly, if a non-existing table is added, the table is deleted. As a next step, we prompt the LLM to add each missing table (including the tables deleted due to being in more than one group) to the post-processed groups. 
+
+Running Example. Using the prompt that we show in Figure 4, the output entity tables from the Table Splitting Operator can be grouped as follows: entity tables 𝑒𝑡 1,1: Show , 𝑒𝑡 2,1: Event and 𝑒𝑡 3,1:
+
+Show are grouped under the more general entity type Event , while the entity tables 𝑒𝑡 1,2: Theater and 𝑒𝑡 2,2: Venue are grouped under the entity type Venue . Overall two distinct entity types have been detected in all input tables 𝐸 = {𝐸𝑣𝑒𝑛𝑡, 𝑉 𝑒𝑛𝑢𝑒 }.
+
+## 2.4 Attribute Merging Operator 
+
+The task of this operator is to choose for each attribute group a representative attribute from the group. The chosen attribute will be added to the intermediate integrated schema of its respective entity type and is called an integrated attribute. 
+
+Input/Output. Specifically, the input to the operator are the attribute groups of each entity type 𝐴𝐺 𝐸 and the output of the operator is the intermediate integrated schema for each entity type 
+
+𝐼𝐼𝑆 𝐸 and the mappings of all table columns in 𝑆 𝑇 𝐸 to an integrated attribute in the intermediate integrated schemata 𝑀 𝑆 𝑇 𝐸 →𝐼𝐼𝑆 𝐸 . In the case where the Table Splitting Operator is not run before the 
+
+Attribute Merging Operator 𝐴𝐺 𝐸 = 𝐴𝐺 , i.e. the attribute groups have not been split by entity type yet. In the case where the Schema SINT-Flow: Schema Integration using Large Language Model Workflows IS Event                               
+
+> name
+> close
+> opens
+> description
+> Ticket
+> fullDates
+> Category
+> venue_id
+> IS Venue
+> venue_id
+> venue
+> address
+> state
+> city
+> ZipCode
+> showName close opens Synopsis Ticket theater
+> name Category description showDates venue
+> show type description fullDates theater address
+> name close opens description Ticket venue venue_id
+> Met 1,1 →IIS Event
+> name Category description fullDates venue venue_id
+> Met 2,1 →IIS Event
+> name Category description fullDates venue venue_id
+> Met 3,1 →IIS Event
+> address
+
+Event                
+
+> theater Theater Address Theater City ZipCode
+> venue address state city
+> theater address
+> venue address city zipCode venue_id
+> Met 1,2 →IIS Venue
+> venue address state venue_id
+> Met 2,2 →IIS Venue
+> venue address
+> Met 3,2 →IIS Venue
+
+Venue  
+
+> venue_id
+> city
+> et 1,1
+> et 2,1
+> et 3,1 et 3,2
+> et 2,2
+> et 1,2
+
+Figure 5: Integrated Schema Output Operator: an example of its input and output. 
+
+Matching Operator is not used i.e. attribute groups are not defined, the input to this operator are the entity type tables 𝑇 𝐸 .
+
+Running Example. An example of an attribute group for the Event type is ( 𝑒𝑡 1,1.𝑠ℎ𝑜𝑤 𝑁 𝑎𝑚𝑒 , 𝑒𝑡 2,1.𝑛𝑎𝑚𝑒 , 𝑒𝑡 3,1.𝑠ℎ𝑜𝑤 ). The LLM in this case chooses name as a representative attribute as it can cover the values of all the columns in that group. By choosing for each group an attribute, the intermediate integrated schema of Event 
+
+can be built: 𝐼𝐼𝑆 𝐸𝑣𝑒𝑛𝑡 = {name, close, opens, description, Ticket, venue, Category, fullDates, address }. Along with the schema, the mappings of the input columns to the integrated attributes are output. For example, for the entity type table 𝑒𝑡 1,1, the mappings of its columns to the intermediate integrated schema of Event is 
+
+𝑀 𝑆 𝑒𝑡 1,1 →𝐼𝐼𝑆 𝐸𝑣𝑒𝑛𝑡 = { showName : name, close : close, opens : opens, Synopsis : description, Ticket : Ticket, theater : venue}. Other map-ping examples can be seen in the left part of Figure 5 above the columns of each entity table. 
+
+## 2.5 Integrated Schema Output Operator 
+
+This operator has a fixed position at the end of the workflows as its tasks are to i) remove redundant attributes between the interme-diate integrated schemata of entity types i.e. attributes that show up in more than one schema, ii) introduce identifiers if not already present, and iii) output foreign keys to link entity types. 
+
+Input/Output. Specifically, the input to the operator are the intermediate integrated schemata of all entity types 𝐼𝐼𝑆 𝐸 and the output is the final set of integrated schemata 𝐼𝑆 𝐸 for each entity type, their foreign keys and the mappings of all table columns to the integrated attributes in the integrated schemata 𝑀 𝑆 𝑇 𝐸 →𝐼𝑆 𝐸 .
+
+Response Verification. In this operator, we check whether the instruction to remove redundant attributes brings the complete removal of any attribute from all schemata. For this, we check that all integrated attributes present in the intermediate integrated schemata are assigned to at least one entity type schema. If this is not the case, we prompt the LLM to add the removed attributes to one of the schemata. This operator also provides a tool to the LLM that can check if any entity type schema is a subset of another so that if any redundant entity type exists, it can be removed. 
+
+Running Example. Figure 5 shows an example of the input and outputs of the operator. In the left part the entity type tables are mapped to the integrated attributes in the intermediate integrated schemata. First the operator adds a venue_id identifier which can be used to link the two entity types. Afterwards, it removes redun-dant attributes venue and address from the Event schema which are already present in the Venue integrated schema. The removal of these two attributes brings the creation of a new entity table 𝑒𝑡 3,2
+
+previously not created due to not meeting the minimum require-ment in the Table Splitting Operator . At this point as it is known that the Venue entity type can be found in other input tables and more than 2 attributes can be assigned to it, 𝑒𝑡 3,2 can be created. Finally, the mappings of the input columns are updated and the final integrated schemata for all entity types are output together with the mappings and foreign keys (shown in the right part of Figure 5). All prompts used can be found in our GitHub repository. 
+
+## 3 Self-consistency for Operator Outputs 
+
+Self-consistency is a decoding strategy introduced by Wang et al. [ 38 ] where an LLM is prompted multiple times with a high tem-perature in order to generate diverse reasoning paths that lead to an answer. The final response is constructed via majority voting and is considered to be a consistent output. The idea behind the technique is that diverse reasoning paths should lead to the same re-sult. Following this work, we integrate self-consistency by running 3 times each operator and the three responses are used to create 
+
+consistent outputs for each operator. For the construction of consistent operator outputs, for some operators the majority voting method can be directly applied, while for others it can not. For the Schema Matching , Attribute Merging 
+
+and the Integrated Schema Output operators majority voting can be applied directly. In Schema Matching , if a match between two table columns is found in more than half the number of the runs the cor-respondence is added to the consistent output. In Attribute Merging ,the attribute that is chosen the most as a representative of each attribute group is added to the consistent intermediate integrated schemata. The Integrated Schema Output Operator consists of either Korini and Bizer EventName  MovieName  Movie Closed     
+
+> Caption
+> Movie
+> Rating
+> Location Zipcode Phone Contact
+> Name
+> Contact
+> Email
+> Run 1
+> Event
+> EventName
+> MovieName
+> Location
+> Zipcode
+> Phone
+> ContactName
+> ContactEmail
+> Location 1
+> MovieName
+> MovieClosed
+> Caption
+> MovieRating
+> Event
+> EventName
+> MovieName
+> Location
+> Park
+> Location
+> Zipcode
+> Phone
+> Location 1
+> Movie
+> MovieName
+> MovieClosedC
+> aption
+> MovieRating
+> Contact
+> ContactName
+> ContactEmail
+> Phone
+> Run 2 Run 3
+> Event
+> EventName
+> MovieName
+> Location
+> Zipcode
+> Phone
+> ContactName
+> ContactEmail
+> Location 1
+> Movie
+> MovieName
+> MovieClosedC
+> aption
+> MovieRating
+> Movie
+> MovieName
+> MovieClosedC
+> aption
+> MovieRating
+> Event
+> EventName
+> MovieName
+> Location
+> ContactName
+> ContactEmail
+> Location 1
+> Phone
+> Zipcode
+> Consistent Output
+
+Figure 6: Table Splitting Operator: example of consistent output construction with self-consistency. 
+
+removing redundant attributes, moving attributes between tables if they were misplaced, or adding foreign keys. For each addition and deletion of attributes and for each foreign key added, we check if this operation is done in more than half the runs, and if true then this addition/deletion/foreign key is reflected in the consistent 
+
+output of the operator. For the other two operators, Table Splitting and Table Grouping ,majority voting can not be applied directly therefore we rely on co-occurences between attributes/tables to construct the consis-tent output for each operator respectively. Our method counts for each attribute/table the amount of times they occur in the same entity type/group with all other attributes/tables. After counting the co-occurences, if the co-occurence with an attribute/table is higher than half of the number of runs, we conclude that the pair of attributes/tables should be in the same entity type/group in the 
+
+consistent output. We loop through all attributes/tables and form the consistent groupings of the attributes/tables for each operator respectively. 
+
+Self-consistency Output example. We show an example of the Table Splitting self-consistency output construction in Figure 6. In the figure, a table containing events of movie screenings in parks is the input. At this step the relevant entity types in the table should be detected and the correct attributes should be assigned to each detected type. In this table there are three main entity types: 
+
+Movie , Park and Event . In the first run of the LLM, the model has detected only two of the types, in the second run it has detected only the Event entity and in the last it has detected all three correct entities with the addition of a fourth entity Contact . To form the self-consistency output, we check the co-occurences of all attributes of the table. From the co-occurences, we can determine that the attributes listed under the Contact entity in the last run have been grouped with EventName and MovieName in a total of 2 runs, therefore all these attributes should be assigned to the same entity type and the Contact entity is not transferred to the consistent SCHEMA       
+
+> MATCHING
+> TABLE
+> SPLITTING
+> TABLE
+> GROUPING
+> ATTRIBUTE
+> MERGING
+> SCHEMA
+> OUTPUT
+> 1. Entity Type Detection on Input Tables Workflow
+> 2.Implicit Schema Matching Workflow
+> 3. Entity Type Detection on Integrated Table Workflow
+> TABLE
+> SPLITTING
+> TABLE
+> GROUPING
+> ATTRIBUTE
+> MERGING
+> SCHEMA
+> OUTPUT
+> ATTRIBUTE
+> MERGING
+> SCHEMA
+> MATCHING
+> TABLE
+> SPLITTING
+> SCHEMA
+> OUTPUT
+
+Figure 7: The three schema integration workflows combining the operators to alternative sequences. 
+
+output. Similarly, the attributes in the Park entity detected in the last run co-occur in 2 runs with the attributes of the Event entity in the other runs therefore the Park entity is not transferred to the consistent output and its attributes are put in the Event entity. This process leads to the construction of the self-consistency output that can be seen on the right side of the figure. 
+
+## 4 The Workflows 
+
+Using the operators described in Section 2, we build three differ-ent schema integration workflows. Each of the workflows applies the operators in a different order. Figure 7 depicts the different sequences. All workflows take as input a set of tables and output an integrated schema for representing the data of the input tables. The workflows are described below: (1) Entity Type Detection on Input Tables Workflow : This work-flow starts with the Table Splitting Operator, which detects the entity types for each input table separately. Afterwards, the Schema Matching Operator identifies matching columns between the entity type tables, reviews the found matches and deletes likely false positives. Next, the Table Grouping Operator is used to group all tables together that refer to the same entity type. The Attribute Merging Operator is then applied to select the integrated attributes and build the in-termediate integrated schema per entity type. Finally, the In-tegrated Schema Output Operator adds identifiers, removes redundant attributes and outputs the integrated schema per entity type and the mappings of the input columns to the integrated attributes. (2) Implicit Schema Matching Workflow : This workflow is similar to the first workflow but does not use the Schema Matching Operator. In this workflow, the tasks of the Schema Matching and Attribute Merging operators are combined. We do not ask the LLM to output the correspondences between the tables, but we input all entity type tables and expect the LLM to output for each of these tables the mappings of the columns to a chosen integrated attribute, where matching columns are mapped to the same integrated attribute. The motivation behind this step is to test the ability of the LLMs to process a large number of tables at once and be able to map each column to an integrated attribute without relying on an intermediate schema matching step, which creates attribute groups beforehand. SINT-Flow: Schema Integration using Large Language Model Workflows 
+
+Table 1: Statistics about the SINT-Bench tasks: the number of tables, average rows and columns, structure overlap, data types, average number of entity types per table, and the specific entity types per task together with in brackets the number of attributes per type. Task Name Tables Avg. Rows Avg. Cols Structure Overlap Data Types Entity Types Entity Types (Integrated attributes)                                                                       
+
+> Volcanic Eruptions 10 318 ( ±220 )14 ( ±2)45% ( ±13 )59% Numeric, 41% Text 1.6 ( ±0.5)Volcano (15), Eruption (18) Movie Park Events 6235 ( ±16 )9 ( ±4)56% ( ±6)5% Numeric, 88% Text, 7% Date 2.0 ( ±1.0)Movie (4), Park (6), Event (10) Events (GOBY) 15 1016 ( ±1993 )15 ( ±3)59% ( ±10 )10% Numeric, 84% Text, 6% Date 1.9 ( ±0.3)Event (20), Venue (11) Flight Information 10 1736 ( ±1692 )13 ( ±2)47% ( ±6)17% Numeric, 79% Text, % Date 2.0 ( ±1.0)Flight (6), Passenger (7), Airport (15) Games 64784 ( ±7148 )13 ( ±3)63% ( ±12 )58% Numeric, 41% Text, 1% Date 1.0 ( ±0.0)Game (18) Car Listings 10 335 ( ±76 )10 ( ±1)71% ( ±10 )43% Numeric, 57% Text 1.0 ( ±0.0)Car Listing (14) Movie Characters 438 ( ±2)10 ( ±2)64% ( ±5)85% Text, 15% Date 2.8 ( ±0.4)Work (6), Character (5), Actor (6) Paintings 11 1208 ( ±1245 )12 ( ±3)41% ( ±8)23% Numeric, 73% Text, 4% Date 2.8 ( ±0.5)Painting (13), Artist (10), Location (9) Publications 13 155 ( ±68 )13 ( ±3)58% ( ±3)14% Numeric, 77% Text, 10% Date 1.6 ( ±0.5)Publication (14), Journal (8) Monuments 81260 ( ±857 )9 ( ±2)44% ( ±14 )20% Numeric, 80% Text 1.8 ( ±0.4)Monument (14), Location (7)
+
+(3) Entity Type Detection on an Integrated Table Workflow : In this workflow, we position the Table Splitting Operator at the end of the workflow. The workflow starts with the Schema Matching and Attribute Merging operators. The attribute groups and intermediate integrated schema are not divided by entity type at this point of the workflow, in contrast to the other workflows. The Table Splitting Operator is then ap-plied to the single resulting integrated table , whose columns are the integrated attributes in the intermediate schema and which is populated by transferring the entities (without dedu-plication) and their values (without value transformation) of all input tables into the corresponding columns using the mappings generated by the Attribute Merging Operator. At the end, the Integrated Schema Output Operator is used. The motivation of applying the Table Splitting Operator at the end of the workflow is to test whether using a single inte-grated table makes entity type detection easier. The Table Grouping Operator is not required in this workflow as the table splitting is done on the integrated table. 
+
+## 5 The SINT-Bench Benchmark 
+
+This section introduces SINT-Bench, a schema integration bench-mark for evaluating methods for the creation of integrated schemata of multiple entity types. SINT-Bench consists of 10 schema integra-tion tasks requiring the integration of altogether 93 different tables. Eight of the tasks involve 2 or more entity types and require split-ting input tables by entity type. To the best of our knowledge, no other schema integration benchmark considers splitting denormal-ized input tables by entity type and assigning the table columns to the resulting types. We build SINT-Bench by collecting tabular data from existing benchmarks and defining for each input table ground truth for the detection of entity types and the assignment of the ta-ble columns to these types. In addition to this table splitting ground truth, we include ground truth for the output of each operator: a table grouping ground truth that groups the split tables according to their entity types, a schema matching ground truth (in the use cases where it doesn’t already exist) and an integrated schema for each entity type. The integrated schema includes entity identifiers as well as foreign key relationships connecting the schemata. 
+
+Data Collection. We gather the tabular data for SINT-Bench from various existing benchmarks. The data from the Events task has been sampled from the GOBY benchmark [ 21 ], which includes real-world tabular data on different events and already provides a mapping of all columns to a common schema. The data from the Volcanic Eruptions, Flight Information, Games and Car Listings tasks are collected from the GDS benchmark [ 40 ] which was built by collecting tabular data using the Google Search Engine. The original benchmark provides mappings of columns and tables to Schema.org types. As these tables had similar structure and column headers, we randomly dropped some columns from the tables and renamed the column headers using an LLM to make the integration use case more difficult. The Movie Park Events task is retrieved from the Join Benchmark [ 22 ], where the unified schema is already provided, thus we only divide this schema for the entity types detected in the tables. The remaining tasks were built using data from WikiDBs [ 35 ], which is a large corpus of 100,000 relational databases extracted from Wikidata [ 36 ]. As the tables provided are already normalized, we create denormalized tables by joining on the foreign keys provided and randomly dropping up to 4 columns per new table created. To further increase heterogeneity, we rename column headers using an LLM and in the Paintings and Monuments tasks, we add some tables from other sources discovered through Google Dataset Search [ 10 ]. For these tasks, we manually map the columns to integrated attributes and create their integrated schema. 
+
+Statistics. Table 1 given an overview of the SINT-Bench tasks. The tasks require the integration of the schemata of 4 to 15 tables consisting of 9 to 15 columns per table. The GOBY task features the widest tables with an average of 15 columns. Two tasks, Games and Car Listings, include only 1 entity type per table, while the other 8 tasks cover 2 and 3 entity types. To find how similar the tables within the tasks are to each other, we calculate the structure overlap 
+
+by averaging the Jaccard similarity of the columns between pairs of tables. Higher structure overlap shows a high similarity between the columns of the tables within a task. From the table, we can see that the Car Listings task has the highest structure overlap i.e. the tables included in this task have a higher number of overlapping columns. The data types that are covered in the tables are mostly composed of textual values, while in some tasks numeric data is present in more than 40% of the columns. The date type is the least covered, with a maximum of 15% date columns in the Movie Characters task. 
+
+Comparison to related benchmarks. Existing tabular bench-marks for schema integration include the Real Benchmark [ 22 ] and the GDS and WDC benchmarks [ 40 ]. The Real Benchmark includes Korini and Bizer 
+
+Table 2: Statistics comparing SINT-Bench and related bench-marks. Name Tasks Tables Width Length Structure Overlap                               
+
+> Real Benchmark 11 102 12 ( ±2) 2166 ( ±851) 67% ( ±9) GDS 42* 660 23 ( ±7) 1090 ( ±579) 61% ( ±11) WDC 47* 601 354 ( ±249) 6 ( ±2) 38% ( ±9) Burr-Synthetic 54 117 4 ( ±2) 518 ( ±192) -Burr-Real World 4134 12 ( ±8) 1130 ( ±1348) -SINT-Bench 10 93 12 ( ±2) 1108 ( ±1332) 55% ( ±9)
+> *Derived by grouping tables by their lowest associated entity class in the hierarchy.
+
+tables divided into tasks, while in the latter ones the tables are not divided so that methods can be evaluated on the detection of table topics. The distinction of SINT-Bench from these existing benchmarks is the inclusion of the table splitting ground truth. For each input table, the columns in the table are grouped according to entity types. For each entity type, SINT-Bench includes a ground truth for its integrated schema, which includes foreign keys and added identifiers. XBenchMatch [ 15 ] is a schema matching and in-tegration benchmark for XML schemata. The benchmark provides 10 integration tasks, each with a pair of XML schemata from dif-ferent sources, the matches between the schema elements, and the integrated schema ground truth. A benchmark for ontology learn-ing from relational databases is Burr [ 25 ]. The benchmark consists of 54 LLM-generated ontology learning tasks, organized around challenging aspects such as normalization degree and relationship cardinality, and 4 real-world use cases requiring learning ontolo-gies from databases containing between 8 and 71 relational tables. Table 2 compares SINT-Bench and the other tabular benchmarks. 
+
+## 6 Experimental Setup 
+
+The following sections present the evaluation of SINT-Flow using the SINT-Bench benchmark. We evaluate the final output of the workflows, as well as the results of each individual operator. This section provides details on the employed LLMs, the table serializa-tion format, and the evaluaiton metrics used in the experiments. All code and data for replicating the experiments is available in the GitHub repository referenced in Section 1. 
+
+Models. We test a hosted LLM OpenAI’s GPT-5.2 2 (full version name: gpt-5.2-2025-12-11) and an open-weight model Qwen-3.6-27B 3. We test both types of models to cover cases where hosted LLMs can not be used due to data privacy concerns. We prompt and invoke GPT-5.2 using the LangChain library 4 and Qwen-3.6-27B using the HuggingFace library 5. For the Qwen model, we use the recommended settings for non-thinking mode: temperature=0.7, top_p=0.80, top_k=20, while for GPT-5.2 we use temperature=1. For the ablation study experiments without self-consistency, we lower the temperature to 0.001 for the Qwen model and to 0 for GPT-5.2. 
+
+Table Serialization. We serialize the tables in a markdown format. We first sort the table rows based on the empty column values per row i.e. the fuller rows are placed at the beginning, and we insert in the prompt the first 10 rows of the tables. We 
+
+> 2https://developers.openai.com/api/docs/models/gpt-5.2
+> 3https://huggingface.co/Qwen/Qwen3.6-27B
+> 4https://www.langchain.com/
+> 5https://huggingface.co/
+
+Table 3: Evaluation of the three workflow outputs on three aspects: entity type and attribute detection, and mappings between input columns and integrated attributes. Model W. Entity Types Attributes Mappings P R F1 P R F1 P R F1 Qwen27B                                                       
+
+> 10.90 0.93 0.88 0.82 0.80 0.80 0.73 0.70 0.71 20.90 1.00 0.93 0.69 0.87 0.76 0.80 0.72 0.76 30.97 0.97 0.97 0.89 0.81 0.85 0.87 0.81 0.83 GPT-5.2
+> 10.93 1.00 0.96 0.87 0.87 0.87 0.86 0.82 0.84
+> 20.90 1.00 0.94 0.71 0.92 0.79 0.79 0.73 0.76 31.00 0.88 0.92 0.83 0.81 0.82 0.83 0.79 0.81
+
+experiment in the setting where column headers are available and thus the column headers are included in the prompts. 
+
+Evaluation Metrics. We use Precision, Recall and the F1-score as evaluation metrics to evaluate all operator outputs. For some operators, we evaluate multiple aspects. For the Attribute Merging and the Integrated Schema Output operators we evaluate three aspects: 1) Entity Type Detection : we evaluate if all correct entity types are included in the (intermediate) integrated schemata 2) At-tribute Detection : this aspect evaluates how good the model is at assigning the integrated attributes to the entity types. 3) Mappings :we evaluate how good the model is at mapping the input columns to their correct integrated attributes. We consider the Mapping re-sults of the Integrated Schema Output Operator to be the results that represent how well the models perform overall on the whole workflow. For the Table Splitting Operator we evaluate its results on the Entity Type and Attribute Detection aspects: they measure how well the model is at finding the entity types of each input table and assigning the columns of each table to their correct entity type. To evaluate the three mentioned aspects, the predicted entity types are firstly mapped to the entity types in the ground truth based on the overlap between attributes assigned to the types. Similarly, we map the predicted attributes to the ground truth attributes using the overlap between column values of columns mapped to these attributes. In the Schema Matching and Table Grouping Operator we evaluate only one aspect for each: attribute correspondences and grouping of the entity tables respectively. For the attribute cor-respondences, we simply check the correct, incorrect and missing matches between the table columns. The Table Grouping Opera-tor’s group predictions are firstly mapped to groups in the ground truth based on the overlap between their tables and then we check the correct, incorrect and missing tables in each group. 
+
+## 7 End-to-End Evaluation 
+
+This section presents the evaluation of the output of all workflows, discusses the operator results, and conducts an ablation study. 
+
+## 7.1 Workflows’ Results 
+
+In Table 3 we report the averaged metrics over the 10 tasks of SINT-Bench for the integrated schema and mappings output by the three LLM workflows. For brevity, each workflow in the table will be referred by their assigned numbers in Section 4. We report the metrics for three aspects: Entity Type Detection which evaluates the presence of the correct entity types in the schema, Attribute SINT-Flow: Schema Integration using Large Language Model Workflows 
+
+Table 4: Detailed Operator Results for the three LLM workflows per model. Model Work- Table Splitting Grouping Schema Matching Attribute Merge Integrated Schema flow Entity Types Attributes Mappings Mappings P R F1 P R F1 P R F1 P R F1 P R F1 P R F1 Qwen-27B                                                                                                             
+
+> 10.95 0.89 0.91 0.91 0.87 0.89 0.88 0.82 0.84 0.94 0.94 0.94 0.78 0.75 0.77 0.73 0.70 0.71 20.92 0.89 0.89 0.87 0.83 0.85 0.88 0.85 0.86 ---0.78 0.75 0.76 0.80 0.72 0.76 30.85 0.97 0.90 0.87 0.83 0.85 ---0.96 0.95 0.95 0.93 0.93 0.93 0.87 0.81 0.83
+> GPT-5.2
+> 10.99 0.90 0.94 0.92 0.91 0.92 0.93 0.86 0.89 0.95 0.95 0.95 0.86 0.84 0.85 0.86 0.82 0.84 20.99 0.92 0.95 0.94 0.91 0.92 0.90 0.84 0.87 ---0.80 0.78 0.79 0.79 0.73 0.76 30.93 0.91 0.90 0.89 0.86 0.88 ---0.97 0.96 0.96 0.94 0.94 0.94 0.83 0.79 0.81
+
+Detection which evaluates the assignment and existence of inte-grated attributes under the correct entity type and the Mappings of the input columns to the integrated attributes. The workflow that achieves the highest F1-score for all aspects is different for both models. For GPT-5.2 detecting the entity types individually for each input table (Workflow 1) leads to an average F1-score of 96% for entity type detection and 87% for assigning the correct integrated attributes and adding the correct identifiers to each entity type. For Qwen-3.6-27B the workflow where the entity types are detected on the integrated table created from all input tables (Workflow 3) reaches an average F1-score of 97% for entity type detection and 85% for attribute detection. All these values translate into an overall mapping F1-score of 84% for GPT-5.2 and 83% for Qwen-3.6-27B. Comparing Workflow 3, we can see that GPT-5.2 is more reluc-tant to split the integrated table according to entity types which leads to only 92% F1 in entity detection and affects the low score for attribute detection, while for Qwen-3.6-27B this unified view of the input tables helps distinguish the entity types better. For both models, the implicit schema matching workflow (Workflow 2) achieves the lowest F1-score on attribute detection, but the highest Recall in this aspect. Since this workflow does not use the Schema Matching Operator, the model misses matches between columns which leads to the existence of more integrated attributes in the integrated schema. This shows the advantage of finding the cor-respondences in a separate step and then creating the integrated schema, rather than combining both tasks in one step. 
+
+## 7.2 Per-Operator Evaluation and Error Analysis 
+
+In this section, we present the detailed results for each operator used in the three LLM workflows per model listed in Table 4. In this table we do not repeat the entity type and attribute detection results for the last operator and refer to them in Table 3. As the operators are run in sequence, the results of one operator affects the results of the subsequent operators, i.e. errors are propagated through the workflow. The Schema Matching Operator is an exception to this as its input is not dependent on any other operator’s output. 
+
+Table Splitting Operator. Detecting entity types using the Table Splitting Operator is similar for the Qwen model whether the de-tection is done on each table individually (Workflow 1 and 2) or on the integrated table (Workflow 3) created by merging all input tables. There is only a 1-2% F1-score difference. On the other hand, GPT-5.2 has an F1-score gap of 4-5% between the two methods. We can see that the Recall of the entity type detection between the two models for Workflow 3 is 6% higher for Qwen. By analyzing the errors done by GPT-5.2 for Workflow 1 for the attribute detection aspect, we find out that 69% of the errors are done because some entity types are not detected by the operator. As for the rest of the errors, 6% of them are due to models not assigning overlapping columns to multiple entity types (e.g. the venue column should be assigned to both Event and Venue types) and 25% of the errors are made because of wrong assignment of columns to the wrong entity types, due to semantically ambiguous dependencies. 
+
+Table Grouping Operator. In the grouping operator by conducting an error analysis on the GPT-5.2 results, we discover that only 35% of the errors are made because of the “grouping” ability of the LLM operator. These errors are done due to the LLM not grouping entity types that belong to the same concept but are in different hierarchy levels (e.g. Show and Event). The remaining 65% of the errors are influenced directly by the Table Splitting Operator, where most entity types are not detected and can therefore not be grouped. 
+
+Integrated Output Operator. In the Integrated Output Mappings, we similarly see that 71% of the errors are inherited from the other operators of the workflows, mainly the Table Splitting and Schema Matching operators. The other 29% of the errors are made by the operator itself, where errors are made due to not adding identi-fiers when they are not present in the schema, and not removing redundant attributes. 
+
+Verification Loops. Regarding the verification loops implemented for checking operator outputs, we notice that GPT-5.2 uses the verification loop of the Integrated Schema Output Operator 4 times out of the overall 30 runs of the operator (10 tasks, 3 runs), while the verification loops of the Table Splitting and Integrated Schema Output operators are used 18 and 11 times by Qwen-3.6-27B, i.e. in 18 instances Qwen had forgotten to assign a column from an input table to at least one entity type detected and had deleted 11 times entirely an attribute in the integrated schemata. Neither model uses the verification loop of the Table Grouping Operator. 
+
+## 7.3 Runtime and Token Usage 
+
+Table 5 shows the average runtime and token usage per schema integration task for each of the three workflows. The tokens re-ported include both input and output tokens as well as the token usage of the tools provided to the LLMs. We access GPT-5.2 using the OpenAI API, while we run Qwen-3.6-27B locally on a single NVIDIA RTX A6000 48GB GPU. Therefore, the runtime of the latter model is higher. Workflow 1 has the highest average runtime for Korini and Bizer 
+
+Table 5: Average runtime (in minutes and seconds) and token usage per task for the different workflows. Model Workflow Total Table Splitting Schema Matching Table Grouping Attribute Grouping Schema Output Tokens Time Tokens Time Tokens Time Tokens Time Tokens Time Tokens Time GPT-5.2                                                                         
+
+> 1683,865 13:28 66,044 02:13 568,819 10:28 15,906 00:11 19,098 00:20 13,999 00:14 2119,694 04:59 66,130 02:06 --15,883 00:08 22,116 00:52 15,564 01:51 3279,333 05:05 6,411 00:18 249,481 04:29 --16,243 00:10 7,198 00:06
+> Qwen-27B
+> 1657,935 52:49 48,947 27:13 560,157 21:43 16,163 00:32 18,366 01:00 14,303 02:18 299,651 40:32 48,359 25:47 --14,729 00:33 20,647 05:15 15,916 08:56 3312,010 23:58 6,241 04:16 278,810 14:39 --16,459 00:47 10,590 04:15
+
+Table 6: Evaluation of the mappings output from the best performing workflows per model when applying self-consistency (Self-Cons.) and average of 3 individual runs (Avg. 3 runs). Standard deviation is reported for the latter. Model Setup Mappings to Integrated Schema P R F1 Qwen-27B 
+
+Self-Cons. 0.87 0.81 0.83 Avg. 3 runs 0.74 (±0.08 )0.68 (±0.08 )0.71 (±0.08 )
+
+GPT-5.2 
+
+Self-Cons. 0.86 0.82 0.84 Avg. 3 runs 0.84 (±0.04 )0.79 (±0.03 )0.81 (±0.03 )
+
+both models, as the Table Splitting Operator takes as input the tables sequentially, while the Schema Matching Operator compares the tables pair-wise to find correspondences. The Schema Matching Operator’s average runtime is lower in Workflow 3, where the in-put tables have not been split by entity types, which creates fewer pairwise comparisons. Similarly for the Table Splitting Operator, the splitting in Workflow 3 is done on the integrated table, which influences the low token usage in this setup. Overall, Workflow 2 has the lowest average token usage, however, performance-wise, this setup reaches the lowest F1-score (see Table 3). 
+
+## 7.4 Ablation Study 
+
+In this section we perform an ablation study of the usage of self-consistency to construct consistent workflow outputs and of the usage of the LLM Review Loop in the Schema Matching Operator. 
+
+7.4.1 Self-consistency. In Table 6, we report the evaluation of the mappings between input columns and integrated attributes that were output by the best performing workflow per model on two setups: i) Self-Consistency: Each operator is run 3 times to build a consistent operator output before using this output as an input to the next operator. Only one consistent output is generated per workflow in this setup. ii) Average of 3 runs: The workflows are run 3 separate times which leads to 3 different outputs. We evalu-ate them and report their averaged results as well as the standard deviation of all metrics. As can be seen from the results listed in the table, when the workflow is run 3 separate times it produces results whose F1-scores vary with a standard deviation of ±0.08 for Qwen-3.6-27B and ±0.03 for GPT-5.2 (both models in this setup are run 
+
+Table 7: Schema matching feedback loop effects on the at-tribute detection in the intermediate integrated schemata and the mappings of the columns to this schema. Model Setup P R F1 Qwen-27B SMO + loop (Attributes) 0.91 0.91 0.90 SMO + loop (Mappings) 0.93 0.93 0.93 SMO w/o loop (Attributes) 0.91 0.81 0.85 SMO w/o loop (Mappings) 0.82 0.82 0.82 
+
+GPT-5.2 SMO + loop (Attributes) 0.88 0.95 0.90 SMO + loop (Mappings) 0.86 0.84 0.85 SMO w/o loop (Attributes) 0.88 0.84 0.85 SMO w/o loop (Mappings) 0.76 0.75 0.75 
+
+with a low temperature of 0.001 and 0 respectively to reduce ran-domness). When we compare these results to the self-consistency setup, we can see that using the self-consistency strategy improves the F1-score by 13% for the Qwen model, while in the more stable GPT-5.2 model the overall F1 score is improved by 3%. 
+
+7.4.2 Schema Matching Operator Reviewer Loop. In Table 7, we report the Precision, Recall and F1-score of attribute detection (At-tributes) in the intermediate integrated schema and the mappings of the input columns to the integrated attributes present in this schema (Mappings). These integrated attributes have been chosen from the created attribute groups ( 𝐴𝐺 ) formed using the Schema Matching Operator (SMO). In the table we report the results when the attribute groups are refined using the SMO Reviewer Loop (SMO + loop) and when the Reviewer Loop is not used (SMO w/o loop). From the results, we notice that for both aspects, attribute detection and mappings, the F1-score increases by 5% and 10% respectively for both models. The Recall metric for the attribute detection increases for both models when the loop is used, indicating that without the reviewing some false positives have led to the wrong merging of attribute groups which in turn has led to missing integrated at-tributes and incorrect column mappings. In Table 8, we show some correct and incorrect match removals. From the ablation study we can conclude that both using self-consistency and a reviewer loop to catch potential false matches impact the performance of the workflows positively. SINT-Flow: Schema Integration using Large Language Model Workflows 
+
+Table 8: Correct and incorrect match removals for GPT-5.2. Error pairs and some of their values 
+
+Correct removal ParkUrl : {http://www.chicagoparkdistrict. com /parks/ ...} → EventUrl :{http://www.chicagoparkdistrict. com /events/ ...} Correct removal Country Name : {India, Panama, ...} → Na-tionality : {Albania, China, ...} Correct removal VEI_Holoce : {3, 5, ...} → vei_category : {Colos-sal, Super-Colossal, ...} Incorrect removal sTheaterAddress : {74 Warrenton Street; 3790 Las Vegas Blvd S; ...} address : {1408 Locust, Des Moines, IA; I -80, Exit 142, Altoona, IA 50021; ... }, Reason: Due to one column having only partial information. Incorrect removal closes : {Open Run; Open Run; ...} endDate :{2011-06-22; 2011-09-02 }, Reason: Different value representation. 
+
+## 8 Attribute Grouping Baselines 
+
+Baselines. To the best of our knowledge, no other works on schema integration or holistic schema matching divide the columns of a single input table based on entity types. Therefore, we can not compare the full workflow including table splitting to baselines. As attribute grouping is a key operation in the SINT-Flow framework for generating the integrated schema, we compare the performance of the Schema Matching Operator with that of existing attribute clustering approaches. We choose the following baseline methods: 
+
+1) COMA [ 14 ] a well-known schema matching symbolic label and instance-based matcher, which we run by using the Python im-plementation by Koutras et al [ 23 ]6. 2) ALITE [ 22 ] an integration method that embeds columns using different models and uses these embeddings to cluster the columns and create attribute groups. In their work they demonstrate that using the TURL [ 13 ] model to create the column embeddings achieves the highest performance among other models tested. In their default embedding generation, ALITE does not consider the column headers as they test their system under the scenario of no table metadata available. In our paper, however when we generate embeddings for the ALITE sys-tem we use the column headers and in addition to TURL, we test embedding the columns using the Qwen-3-8B embedding model 7.
+
+3) SI-LLM [40 ] an LLM-based method for inferring a hierarchical schema from tabular repositories which includes entity types, their unified attributes and annotated relationships between entity types. While in this work entity types are detected within a single input table, this detection is limited to named entity columns and to the main entity types detected in other input tables, and columns within the table are not assigned/related to the detected sub-entity types. Because of this, similarly to the other two baselines, we evaluate on the creation of the attribute groups within the tasks without dividing them into entity types. We use the prompts proposed in the paper for attribute renaming , which renames the column headers 
+
+> 6https://github.com/delftdata/valentine
+> 7https://huggingface.co/Qwen/Qwen3-Embedding-8B
+
+Table 9: Attribute grouping results using the Schema Match-ing Operator (SMO) and the baselines. Benchmark Method Precision Recall F1 Real 
+
+COMA 0.74 0.64 0.68 ALITE+TURL 0.87 0.58 0.68 ALITE+Qwen-8B 0.76 0.75 0.74 SI-LLM (GPT-5.2) 0.92 0.66 0.76 SMO + Qwen-27B 0.91 0.95 0.92 SMO + GPT-5.2 0.94 0.98 0.96 
+
+SINT 
+
+COMA 0.62 0.61 0.60 ALITE+TURL 0.78 0.58 0.63 ALITE+Qwen-8B 0.74 0.76 0.73 SI-LLM (GPT-5.2) 0.98 0.86 0.91 SMO + Qwen-27B 0.91 0.99 0.94 SMO + GPT-5.2 0.94 0.98 0.96 
+
+based on the main entity type of the table, and for attribute merg-ing where the renamed column headers are asked to be grouped under unified concepts which form the attribute groups. We use the prompts with GPT-5.2. 
+
+Benchmarks. To compare to existing works, in addition to SINT-Bench we evaluate on a collection of 102 real world tables divided into 11 tasks called the Real Benchmark [ 22 ] which includes tables from topics such as transactions, school reports, events etc. 
+
+Results. We report the results in Table 9. From the F1 results we notice that COMA and ALITE using TURL embeddings reach similar results on the creation of attribute groups. COMA achieves higher results when instance data overlaps between tables, e.g. when categorical attributes such as car type or brand are present in the use-case tables. TURL performs better in the use-cases where some data was gathered from the WikiDBs corpus. This can be attibuted to TURL being pre-trained with WikiData information. On the other hand, TURL reaches lower F1s in the use-cases where numeric or date columns are involved such as low scores on the GOBY and Games use-cases which includes a high number of sales information. ALITE combined with Qwen embeddings has similar disadvantages related to numerical and date columns however over-all is able to identify the attribute groups with a higher F1-score. Comparing the three prompt-based LLM methods, we see high results on both benchmarks for the Schema Matching Operator (SMO) for both Qwen-3.6-27B and GPT-5.2, while for SI-LLM we see high results on SINT-Bench but lower results on the Real Bench-mark. For SI-LLM the use-cases that have the lowest F1-scores are use-cases with a higher number of numerical columns and lower structural overlap. These lower results compared to the SMO using the same model can indicate that finding column correspondences in a separate step is beneficial. This is similar to the conclusion that we reached when comparing Workflow 2 which does not use the SMO and Workflow 1 and 3 which do (see Section 7.1). Some errors done by the Schema Matching Operator using GPT-5.2 are listed in Table 10. The GOBY and Flights were the use-cases with the lowest F1s for GPT-5.2 and some of the errors were made due to different value representations and on columns that had similar surface forms but pointed to different semantic concepts. Korini and Bizer 
+
+Table 10: Schema Matching Operator false positives and false negatives done by GPT-5.2 on SINT-Bench. Type of error Error pairs and some of their values 
+
+FP (Flights) ArrAirport : {RNI, YWA, ...} → IATA_code : {NTY, CVN, ...}, Reason: while the values match and both describe the code of an airport, semanti-cally within the use-case they refer to two dif-ferent concepts: one includes all airport codes and the other includes only the arrival airports for certain flights. FP (GOBY) fullDates : {May 22 at 4:30, May 21 at 4:30,...} 
+
+→ times : {Every Monday 6:30PM, 7:30 p.m., 10 a.m.-4 p.m., Friday, April 29, 2011 at 8:00pm}, Reason: Some overlap in the values. FN (GOBY) subCategory : {Variety and Specialty Show, Plays and Musicals, ... } → type : {Classes and Workshops, Visual Arts and Museums, ...}, Rea-son: No value overlap. FN (GOBY) showTime : {7 pm, 9:00PM, ...} → time : {8:30 p.m., Every Tuesday 7-8pm, 7:30 p.m. and 9:45 p.m., ...}, Reason: Different value representations. 
+
+## 9 Related Work 
+
+This section compares the proposed method with related work. We include papers covering schema integration as well as the closely related task of holistic schema matching .
+
+Rule-based Symbolic Methods. Earlier methods for schema integration are manual or semi-automatic approaches based on integration rules and human interaction [ 7 , 8, 28 , 32 ]. Batini et al. [ 8 ] define a framework to compare some early schema integra-tion methods and establish the characteristics that an integrated schema should have: completeness, correctness, minimality and understandability. Navathe et al. [ 28 ] propose a semi-automatic ap-proach where schemata are integrated using the class and attribute correspondences found by the similarity between their naming and definitions. In certain points, a designer is asked to confirm/review the connections found by the method. Spaccapietra et al.[ 32 ] intro-duce a rule-based method that uses inter-schema correspondence as-sertions to link similar elements (entity types/attributes/references). 
+
+Workflow 1 in our work is inspired by this paper’s methodology, where we find entity type correspondences with the Table Group-ing Operator and attribute-level correspondences with the Schema Matching Operator. Janga et al. [ 19 ] propose a framework for schema discovery and integration of web tables, where they unify the schemata by finding inter-schema relationships based on col-umn name similarity and number of columns per schema. 
+
+Probabilistic/Statistical Methods. Das Sarma et al. [ 12 ] intro-duce the concept of probabilistic integrated schema where multiple possible integrated schemata are generated and associated with probabilities indicating the likelihood that they correctly describe the input schemata. He et al. [ 16 ] propose a statistical holistic schema matching method by presenting the idea of the existence of a hidden schema that probabilistically generates from the schemata observed. Following work by Su et al. [ 33 ] present a holistic schema matching method for web query interfaces relying on synonym discovery and attribute co-occurences to find attribute matches. He et al. [ 18 ] view the task of schema matching as correlation mining and use both positive and negative correlations between attributes of different schemata to find complex matching beyond 1:1 matches. 
+
+Clustering-based Methods. In this category, attributes are clustered and an integrated attribute can be derived from each at-tribute cluster [ 2, 39 ]. Pei et al. [ 30 ] use TF-IDF to represent the attribute schemata (composed of their names and descriptions) as vectors and use the incremental K-Means clustering algorithm. In ALITE [ 22 ] agglomerative hierarchical clustering is used on embed-ded columns where the number of clusters is selected by finding the number that maximizes the Silhouette Coefficient. The columns are embedded using an iterative method, where a sample of rows is first embedded per column and then compared (via the Euclidean distance) to another sample of rows from the same column. If the distance is not above a threshold, the embeddings are merged until the threshold is met. 
+
+LLM-based Methods. Ji et al. [ 20 ] focus on tabular integration, however they tackle the tasks of entity matching and data fusion and assume that schemata have already been aligned. Wu et al. [ 41 ]develop both the embedding-based clustering approach EmTT and the LLM-based approach GeTT for inferring a hierarchical schema of entity types derived from input tables. This work is expanded in SI-LLM [ 40 ] where in addition to finding the entity types of each input table, the attributes with the same entity types are clustered and an integrated schema is created for each type. Furthermore, named entity columns are detected within each input table and assigned an entity type to annotate the relationships between differ-ent entity types. In our work, we do not limit the detection to entity types grounded in named entity columns but allow the detection of abstract types like Flight, Eruptions etc. and we additionally split the tables by assigning attributes dependent on each type. 
+
+Comparison of the Methods. Table 11 shows a comparison of the discussed methods. We categorize the metods by type and degree of automation, and distinguish whether a method derives explicit correspondences between entity types and/or attributes, if attribute names and/or instances are used as signal to discover correspondences, and if the method splits denormalized input tables according to the entity types detected. SINT-Flow covers the table splitting aspect in contrast to all the other methods. 
+
+Other Related Work. Arora et al. [ 3] propose using LLMs to infer the schema of semi-structured heterogeneous data. Wang et al. [ 37 ] use LLM agents to design a database schema from user queries/specifications. Bongertmann et al. [ 9] tackle the problem of integrating heterogeneous sources with LLMs however the target schema in this case is known. Barret et al. [ 6] propose a method to create dataset abstractions by representing the datasets as label directed graphs and classifies its nodes into collections based on their semantic types (Person, Product etc.) as well as detects the main entities and relationships between them. Closely related to schema integration and schema inference is the task of ontology learning [ 4 ] where LLMs have been tested on building an ontology from unstructured data [ 5]. Closer to our paper, there are works that focus on ontology learning from structured data [ 27 ]. Onto-genix [ 34 ] builds an ontology from a single CSV dataset in multiple steps by generating first information about the dataset, columns SINT-Flow: Schema Integration using Large Language Model Workflows 
+
+Table 11: Comparison of SINT-Flow to related methods. Method Category Entity Attribute Attribute Values Table Splitting Correspondences Correspondences Names 
+
+Navathe et al. [28] Symbolic, semi-automatic yes yes yes no no Spaccapietra et al.[32] Symbolic, semi-automatic yes yes yes no no Janga et al. [19] Symbolic, automatic no yes yes no no Das Sarma et al. [12] Probabilistic, automatic no yes yes no no He et al. [16] Probabilistic, automatic no yes yes no no Su et al. [33] Statistical, automatic no yes yes no no Pei et al. [30] TF-IDF-based clustering, automatic no yes yes no no ALITE [22] Embedding-based clustering, automatic no yes no yes no SI-LLM [40] LLM-based, automatic yes yes yes yes no SINT-Flow (Ours) LLM-based, automatic yes yes yes yes yes 
+
+descriptions and their data types and asking an LLM to enumerate the classes, subclasses and their properties. Laskowski et al. [ 25 ]further extend this in their paper to evaluate the Burr benchmark by generating the descriptions and the ontology for multiple tables. The difference to our work stands in the inclusion of tables from different sources which requires the unification of their schemata. Similarly, Nayyeri et al. [ 29 ] use LLMs to generate ontologies for a relational database by using and extending a core ontology and by generating textual descriptions of columns and tables. 
+
+## 10 Conclusion 
+
+This paper introduced SINT-Flow, a framework for constructing schema integration workflows that derive integrated schemata for the entity types identified in a set of input tables. The framework consists of five LLM-based operators that can be arranged into different schema integration workflows. The paper also introduced SINT-Bench, a schema integration benchmark that covers denormal-ized tables and integration task which require the identification of up to 3 different entity types per task. The evaluation of SINT-Flow on the SINT-Bench tasks demonstrated that its operator pipelines can derive integrated schemas without human intervention. We show that GPT-5.2 achieves the highest results when entity types are detected individually for each input table in contrast to the Qwen-3.6-27B model which favors the detection of entity types on an integrated view of all tables. Both models reach at least 96% F1-score on entity type detection, while attributes are detected with an F1-score of at least 85%. Both these aspects translate into an F1-score of at least 83% for mapping input columns to the integrated attributes. We additionally show that the inclusion of the Schema Matching Operator in the workflows is beneficial, as the implicit schema matching workflow had the lowest F1-scores compared to the others tested. Finally, the inclusion of self-consistency to create consistent outputs per LLM operator shows to have a pos-itive impact to the F1 score for both models, 13% for the Qwen model and 3% for the GPT-5.2 model, compared to the average of three individual runs. Seen from a broader data engineering per-spective, our experiments demonstrated the capability of LLMs, when combined with workflows that decompose the overall task into subtasks, to perform end-to-end schema integration without human intervention. 
+
+## References 
+
+[1] Suad Alagić and Philip A. Bernstein. 2002. A Model Theory for Generic Schema Management. In Database Programming Languages , Giorgio Ghelli and Gösta Grahne (Eds.). Springer Berlin Heidelberg, Berlin, Heidelberg, 228–246. [2] Basel Alshaikhdeeb and Kamsuriah Ahmad. 2015. Integrating correlation clus-tering and agglomerative hierarchical clustering for holistic schema matching. 
+
+Journal of Computer Science 11, 3 (2015), 484. [3] Simran Arora, Brandon Yang, Sabri Eyuboglu, Avanika Narayan, Andrew Ho-jel, Immanuel Trummer, and Christopher Ré. 2023. Language Models Enable Simple Systems for Generating Structured Views of Heterogeneous Data Lakes. 
+
+Proceedings of the VLDB Endowment 17, 2 (2023), 92–105. [4] Muhammad Nabeel Asim, Muhammad Wasim, Muhammad Usman Ghani Khan, Waqar Mahmood, and Hafiza Mahnoor Abbasi. 2018. A survey of ontology learning techniques and applications. Database 2018 (2018), bay101. [5] Hamed Babaei Giglou, Jennifer D’Souza, and Sören Auer. 2023. LLMs4OL: Large language models for ontology learning. In International semantic web conference .Springer, 408–427. [6] Nelly Barret, Ioana Manolescu, and Prajna Upadhyay. 2024. Computing generic abstractions from application datasets. In EDBT 2024-27th International Conference on Extending Database Technology , Vol. 27. 94–107. [7] Carlo Batini, B Demo, and Antonio Di Leva. 1984. A methodology for conceptual design of office data bases. Information Systems 9, 3-4 (1984), 251–263. [8] Carlo Batini, Maurizio Lenzerini, and Shamkant B. Navathe. 1986. A comparative analysis of methodologies for database schema integration. ACM computing surveys (CSUR) 18, 4 (1986), 323–364. [9] Henrik Bongertmann, Benjamin Nast, Leon Griesch, Henry Rotzoll, and Kurt Sandkuhl. 2025. Large Language Models for Structuring and Integration of Heterogeneous Data. (2025). [10] Dan Brickley, Matthew Burgess, and Natasha Noy. 2019. Google dataset search: Building a search engine for datasets in an open web ecosystem. In The world wide web conference . 1365–1375. [11] Shui-Lung Chuang and Kevin Chen-Chuan Chang. 2008. Integrating web query results: holistic schema matching. In Proceedings of the 17th ACM conference on Information and knowledge management . 33–42. [12] Anish Das Sarma, Xin Dong, and Alon Halevy. 2008. Bootstrapping pay-as-you-go data integration systems. In Proceedings of the 2008 ACM SIGMOD international conference on Management of data . 861–874. [13] Xiang Deng, Huan Sun, Alyssa Lees, You Wu, and Cong Yu. 2022. Turl: Table understanding through representation learning. ACM SIGMOD Record 51, 1 (2022), 33–40. [14] Hong-Hai Do and Erhard Rahm. 2002. COMA—a system for flexible combination of schema matching approaches. In VLDB’02: Proceedings of the 28th International Conference on Very Large Databases . Elsevier, 610–621. [15] Fabien Duchateau, Zohra Bellahsene, and Ela Hunt. 2007. XBenchMatch: a Benchmark for XML Schema Matching Tools.. In VLDB , Vol. 7. 1318–1321. [16] Bin He and Kevin Chen-Chuan Chang. 2003. Statistical schema matching across web query interfaces. In Proceedings of the 2003 ACM SIGMOD international conference on Management of data . 217–228. [17] Bin He and Kevin Chen-Chuan Chang. 2006. Automatic complex schema match-ing across web query interfaces: A correlation mining approach. ACM Transac-tions on Database Systems (TODS) 31, 1 (2006), 346–395. [18] Bin He, Kevin Chen-Chuan Chang, and Jiawei Han. 2004. Discovering complex matchings across web query interfaces: a correlation mining approach. In Proceed-ings of the tenth ACM SIGKDD international conference on Knowledge discovery and data mining . 148–157. Korini and Bizer 
+
+[19] Prudhvi Janga and Karen C Davis. 2013. Tabular web data: schema discovery and integration. In International Conference on Data Warehousing and Knowledge Discovery . Springer, 26–33. [20] Daomin Ji, Hui Luo, Zhifeng Bao, and J Shane Culpepper. 2025. Table integration in data lakes unleashed: pairwise integrability judgment, integrable set discovery, and multi-tuple conflict resolution. The VLDB Journal 34, 3 (2025), 36. [21] Moe Kayali, Fabian Wenz, Nesime Tatbul, and Çağatay Demiralp. 2024. Mind the data gap: Bridging llms to enterprise data integration. arXiv preprint arXiv:2412.20331 (2024). [22] Aamod Khatiwada, Roee Shraga, Wolfgang Gatterbauer, and Renée J Miller. 2022. Integrating data lake tables. Proceedings of the VLDB Endowment 16, 4 (2022), 932–945. [23] Christos Koutras, George Siachamis, Andra Ionescu, Kyriakos Psarakis, Jerry Brons, Marios Fragkoulis, Christoph Lofi, Angela Bonifati, and Asterios Katsi-fodimos. 2021. Valentine: Evaluating matching techniques for dataset discovery. In 2021 IEEE 37th International Conference on Data Engineering (ICDE) . IEEE, 468–479. [24] Sebastian Kruse and Felix Naumann. 2018. Efficient discovery of approximate dependencies. Proceedings of the VLDB Endowment 11, 7 (2018), 759–772. [25] Lukas Laskowski, Michael Hladik, Jan Portisch, Fabian Panse, and Felix Naumann. 2025. Burr: A Benchmark for Ontology Learning from Relational Databases. 
+
+Proceedings of the ACM on Management of Data 3, 6 (2025), 1–27. [26] Peng Li, Yeye He, Dror Yashar, Weiwei Cui, Song Ge, Haidong Zhang, Danielle Rifinski Fainman, Dongmei Zhang, and Surajit Chaudhuri. 2024. Table-gpt: Table fine-tuned gpt for diverse table tasks. Proceedings of the ACM on Management of Data 2, 3 (2024), 1–28. [27] Chuangtao Ma and Bálint Molnár. 2022. Ontology learning from relational database: Opportunities for semantic information integration. Vietnam Journal of Computer Science 9, 01 (2022), 31–57. [28] Shamkant B Navathe and Suresh G Gadgil. 1982. A Methodology for View Inegration in Logical Database Design. In Proceedings of the 8th International Conference on Very Large Data Bases . 142–164. [29] Mojtaba Nayyeri, Athish A Yogi, Nadeen Fathallah, Ratan Bahadur Thapa, Hans-Michael Tautenhahn, Anton Schnurpel, and Steffen Staab. 2025. Retrieval-Augmented Generation of Ontologies from Relational Databases. arXiv preprint arXiv:2506.01232 (2025). [30] Jin Pei, Jun Hong, and David Bell. 2006. A novel clustering-based approach to schema matching. In International Conference on Advances in Information Systems .Springer, 60–69. [31] Erhard Rahm and Philip A Bernstein. 2001. A survey of approaches to automatic schema matching. the VLDB Journal 10 (2001), 334–350. [32] Stefano Spaccapietra, Christine Parent, and Yann Dupont. 1992. Model indepen-dent assertions for integration of heterogeneous schemas. The VLDB Journal 1, 1 (1992), 81–126. [33] Weifeng Su, Jiying Wang, and Frederick Lochovsky. 2006. Holistic schema matching for web query interfaces. In International Conference on Extending Database Technology . Springer, 77–94. [34] Mikel Val-Calvo, Mikel Egaña Aranguren, Juan Mulero-Hernández, Ginés Almagro-Hernández, Prashant Deshmukh, José Antonio Bernabé-Díaz, Paola Espinoza-Arias, José Luis Sánchez-Fernández, Juergen Mueller, and Jesu-aldo Tomás Fernández-Breis. 2025. OntoGenix: Leveraging Large Language Models for enhanced ontology engineering from datasets. Information Processing & Management 62, 3 (2025), 104042. [35] Liane Vogel, Jan-Micha Bodensohn, and Carsten Binnig. 2024. WikiDBs: A Large-Scale Corpus Of Relational Databases From Wikidata. In The Thirty-eight Conference on Neural Information Processing Systems Datasets and Benchmarks Track . https://openreview.net/pdf?id=abXaOcvujs [36] Denny Vrandečić and Markus Krötzsch. 2014. Wikidata: a free collaborative knowledgebase. Commun. ACM 57, 10 (2014), 78–85. [37] Qin Wang, Youhuan Li, Yansong Feng, Si Chen, Ziming Li, Pan Zhang, Zhichao Shi, Yuequn Dou, Zebin Huang, Zihui Si, et al . 2025. Schemaagent: a multi-agents framework for generating relational database schema. arXiv e-prints (2025), arXiv–2503. [38] Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc V Le, et al . 2023. Self-Consistency Improves Chain of Thought Reasoning in Language Models. In 
+
+The Eleventh International Conference on Learning Representations .[39] Wensheng Wu, Clement Yu, AnHai Doan, and Weiyi Meng. 2004. An interactive clustering-based approach to integrating source query interfaces on the deep web. In Proceedings of the 2004 ACM SIGMOD international conference on Management of data . 95–106. [40] Zhenyu Wu, Jiaoyan Chen, and Norman W Paton. 2025. Schema Inference for Tabular Data Repositories Using Large Language Models. arXiv preprint arXiv:2509.04632 (2025). [41] Zhenyu Wu, Jiaoyan Chen, and Norman W Paton. 2025. Taxonomy inference for tabular data using large language models. In European Semantic Web Conference .Springer, 403–422.
