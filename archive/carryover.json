@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-09-09T22:15:58.607065+00:00",
-  "updated_date": "20260909",
+  "generated_at": "2026-09-10T21:39:10.243269+00:00",
+  "updated_date": "20260910",
   "carryover_days": 9,
   "tag_states": {
     "smart-city": {
-      "updated_date": "20260909",
+      "updated_date": "20260910",
       "carryover_days": 9,
       "items": []
     }
